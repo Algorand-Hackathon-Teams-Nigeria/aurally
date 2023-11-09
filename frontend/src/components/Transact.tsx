@@ -4,6 +4,7 @@ import algosdk from 'algosdk'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import { getAlgodConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
+import toast from 'react-hot-toast'
 
 interface TransactInterface {
   openModal: boolean
@@ -21,15 +22,13 @@ const Transact = ({ openModal, setModalState }: TransactInterface) => {
     token: algodConfig.token,
   })
 
-  const { enqueueSnackbar } = useSnackbar()
-
   const { signer, activeAddress, signTransactions, sendTransactions } = useWallet()
 
   const handleSubmitAlgo = async () => {
     setLoading(true)
 
     if (!signer || !activeAddress) {
-      enqueueSnackbar('Please connect wallet first', { variant: 'warning' })
+      toast.error('Please connect wallet first')
       return
     }
 
@@ -49,12 +48,12 @@ const Transact = ({ openModal, setModalState }: TransactInterface) => {
     const waitRoundsToConfirm = 4
 
     try {
-      enqueueSnackbar('Sending transaction...', { variant: 'info' })
+      toast('Sending transaction...')
       const { id } = await sendTransactions(signedTransactions, waitRoundsToConfirm)
-      enqueueSnackbar(`Transaction sent: ${id}`, { variant: 'success' })
+      toast.success(`Transaction sent: ${id}`)
       setReceiverAddress('')
     } catch (e) {
-      enqueueSnackbar('Failed to send transaction', { variant: 'error' })
+      toast.error('Failed to send transaction')
     }
 
     setLoading(false)

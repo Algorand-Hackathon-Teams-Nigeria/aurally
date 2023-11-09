@@ -1,0 +1,104 @@
+.navbar {
+  display: none;
+  flex-shrink: 0;
+}
+
+.navbarMain {
+  min-height: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  overflow-y: scroll;
+}
+
+.link {
+  height: 48px;
+  display: flex;
+  padding: 12px;
+  align-items: center;
+  gap: 8px;
+  align-self: stretch;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.svg1,
+.svg2 {
+  margin: 32px 0 48px;
+}
+
+.svg1 {
+  display: block;
+}
+
+.svg2 {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .navbar {
+    width: 90px;
+    height: 100vh;
+    padding-left: 20px;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--Border-colour, #444);
+    overflow: hidden;
+    position: sticky;
+    top: 0;
+  }
+  .link {
+    width: max-content;
+  }
+  .logout {
+    background: inherit;
+    padding: 20px 8px 40px;
+  }
+  .link span {
+    display: none;
+  }
+}
+
+@media (min-width: 1280px) {
+  .navbar {
+    padding-left: 40px;
+    width: 270px;
+  }
+  .link {
+    width: 100%;
+  }
+  .link span {
+    display: inline-block;
+  }
+
+  .svg1 {
+    display: none;
+  }
+
+  .svg2 {
+    display: block;
+  }
+}
+
+[data-path=''] .link[data-path=''],
+[data-path='marketplace'] .link[data-path='/marketplace'],
+/* [data-path='communities'] .link[data-path='/communities'], */
+/* [data-path='upload'] .link[data-path='/upload'], */
+/* [data-path='events'] .link[data-path='/events'], */
+[data-path='earnings'] .link[data-path='/earnings'],
+[data-path='streams'] .link[data-path='/streams'],
+[data-path='profile'] .link[data-path='/profile'] {
+  &,
+  &:hover {
+    box-shadow: var(--mantine-shadow-sm);
+    background-color: rgba(235, 235, 235, 0.1);
+  }
+}
+
+.link svg {
+  flex-shrink: 0;
+  stroke: 1.5;
+}

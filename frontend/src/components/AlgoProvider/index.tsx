@@ -3,7 +3,6 @@ import { DaffiWalletConnect } from '@daffiwallet/connect'
 import { PeraWalletConnect } from '@perawallet/connect'
 import { PROVIDER_ID, ProvidersArray, WalletProvider, useInitializeProviders } from '@txnlab/use-wallet'
 import algosdk from 'algosdk'
-import { SnackbarProvider } from 'notistack'
 import { getAlgodConfigFromViteEnvironment } from '../../utils/network/getAlgoClientConfigs'
 // hello
 let providersArray: ProvidersArray
@@ -24,7 +23,7 @@ type Props = {
   children: React.ReactNode
 }
 
-const AlgoWrapper = ({ children }: Props) => {
+const AlgoProvider = ({ children }: Props) => {
   const algodConfig = getAlgodConfigFromViteEnvironment()
 
   const walletProviders = useInitializeProviders({
@@ -38,11 +37,7 @@ const AlgoWrapper = ({ children }: Props) => {
     algosdkStatic: algosdk,
   })
 
-  return (
-    <SnackbarProvider maxSnack={3}>
-      <WalletProvider value={walletProviders}>{children}</WalletProvider>
-    </SnackbarProvider>
-  )
+  return <WalletProvider value={walletProviders}>{children}</WalletProvider>
 }
 
-export default AlgoWrapper
+export default AlgoProvider

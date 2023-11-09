@@ -1,24 +1,41 @@
 import { Route, Routes } from 'react-router-dom'
-import AlgokitDefault from './Pages/AlgokitDefault'
-import Hello from './Pages/Hello'
-import AppNav from './components/Navs/AppNav'
-import AppSideBar from './components/Navs/AppSideBar'
-import AlgoWrapper from './components/Wrappers/AlgoWrapper'
+// import Communities from './Pages/Communities'
+import Home from './Pages/Home'
+import MarketPlace from './Pages/MarketPlace'
+import MusicDetails from './Pages/MusicDetails'
+import Profile from './Pages/Profile'
+import AppNav from './components/AppNav'
+import AppSideBar from './components/AppSideBar'
+// import Events from './Pages/Events'
+import Assets from './Pages/Assets'
+// import AddEvent from './Pages/AddEvent'
+import Upload from './Pages/Upload'
+import AlgoProvider from './components/AlgoProvider'
+import WalletModal from './components/WalletModal'
+import BuyModal from './components/BuyModal'
+// import ProtectedRoute from './Pages/ProtectedRoute'
 
 export default function App() {
   return (
-    <main className="flex h-[100lvh] overflow-hidden">
+    <main className="w-full min-h-[100lvh] bg-[#111111] flex">
       <AppSideBar />
-      <div className="flex-1 h-full flex flex-col relative">
+      <div className="w-full">
         <AppNav />
-        <div className="flex-1 max-h-full overflow-y-scroll px-[5%] min-[375px]:px-5 lg:px-8">
-          <AlgoWrapper>
-            <Routes>
-              <Route path="/hello" Component={Hello} />
-              <Route index Component={AlgokitDefault} />
-            </Routes>
-          </AlgoWrapper>
-        </div>
+        <Routes>
+          <Route index Component={Home} />
+          <Route path="/marketplace" Component={MarketPlace} />
+          <Route path="/marketplace/music/:musicId" Component={MusicDetails} />
+          {/* <Route path="/communities" Component={Communities} /> */}
+          {/* <Route path="/events" Component={Events} /> */}
+          {/* <Route path="/events/add" Component={AddEvent} /> */}
+          <Route path="/earnings" Component={Assets} />
+          <Route path="/upload" Component={Upload} />
+          <Route path="/profile" Component={Profile} />
+        </Routes>
+        <AlgoProvider>
+          <WalletModal />
+          <BuyModal />
+        </AlgoProvider>
       </div>
     </main>
   )

@@ -1,0 +1,7 @@
+.root {
+  @apply border-[#444] text-white text-sm h-max py-2;
+}
+
+.inner span {
+  @apply flex gap-5;
+}

@@ -4,17 +4,20 @@ import '@mantine/core/styles.css'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
-import { MantineProvider } from '@mantine/core'
+import { ColorSchemeScript, MantineProvider } from '@mantine/core'
 
 import App from './App'
 import ErrorBoundary from './components/ErrorBoundary'
-import { resolver, theme } from './theme'
+import { resolver, theme, toastTheme } from './theme'
+import { Toaster } from 'react-hot-toast'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <ErrorBoundary>
       <BrowserRouter>
-        <MantineProvider defaultColorScheme="dark" theme={theme} cssVariablesResolver={resolver}>
+        <ColorSchemeScript forceColorScheme="dark" />
+        <MantineProvider forceColorScheme="dark" theme={theme} cssVariablesResolver={resolver}>
+          <Toaster toastOptions={toastTheme} position="top-right" />
           <App />
         </MantineProvider>
       </BrowserRouter>

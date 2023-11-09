@@ -1,0 +1,31 @@
+.root {
+  @apply w-full;
+}
+
+.viewport {
+  @apply pr-[4.5%] min-[375px]:pr-5 lg:pr-8;
+}
+
+.slide {
+  @apply max-w-[240px] pr-4 sm:pr-5;
+}
+
+.controls {
+  transition: opacity 150ms ease;
+  opacity: 0;
+}
+.control {
+  @apply bg-[#444444] text-white opacity-100 w-9 h-9 border-none shadow-2xl;
+  &[data-inactive] {
+    opacity: 0;
+    cursor: default;
+  }
+}
+
+.root {
+  &:hover {
+    .controls {
+      opacity: 1;
+    }
+  }
+}

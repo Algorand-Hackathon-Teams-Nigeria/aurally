@@ -1,0 +1,13 @@
+.content {
+  background: var(--Sub-Background, #1e1e1e);
+  @apply rounded-[32px] pb-3;
+}
+
+.header {
+  background: var(--Sub-Background, #1e1e1e);
+  @apply px-4 mt-2;
+}
+
+.title {
+  @apply flex-1 pl-5 text-center text-lg font-bold;
+}
