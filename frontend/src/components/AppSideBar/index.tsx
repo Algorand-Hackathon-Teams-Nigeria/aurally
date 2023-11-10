@@ -11,7 +11,7 @@ const data = [
   { link: '', label: 'Home', icon: 'solar:home-2-broken' },
   { link: '/marketplace', label: 'Marketplace', icon: 'solar:shop-broken' },
   // { link: '/communities', label: 'Communities', icon: 'fluent:people-community-16-regular' },
-  // { link: '/upload', label: 'Upload Music', icon: 'prime:upload' },
+  { link: '/upload', label: 'Upload Music', icon: 'prime:upload' },
   // { link: '/events', label: 'Events', icon: 'streamline:entertainment-ticket-hobby-ticket-event-entertainment-stub-theater' },
   { link: '/earnings', label: 'My Earnings', icon: 'bi:currency-dollar' },
   { link: '/streams', label: 'My Streams', icon: 'solar:play-broken' },
@@ -48,12 +48,12 @@ const AppSideBar = () => {
       <div className={classes.navbarMain}>
         <Links />
         <div className="w-full xl:pr-5 pl-1 xl:pl-2 mt-14 mb-10">
-          <Link to="/upload" className="md:hidden xl:block">
+          <Link to="/create" className="md:hidden xl:block">
             <Button size="lg" fullWidth radius={30} leftSection={icon}>
-              Upload
+              Create
             </Button>
           </Link>
-          <Link to="/upload" className="hidden md:block xl:hidden">
+          <Link to="/create" className="hidden md:block xl:hidden">
             <ActionIcon radius={50} size="xl" className="w-20">
               {icon}
             </ActionIcon>

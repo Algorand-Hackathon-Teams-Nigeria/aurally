@@ -1,9 +1,10 @@
 import { Icon } from '@iconify/react'
-import { ActionIcon, Indicator, TextInput } from '@mantine/core'
+import { ActionIcon, TextInput } from '@mantine/core'
 import BigLogo from '../General/BigLogo'
 import ConnectButton from '../General/ConnectButton'
 import SideDrawer from '../SideDrawer'
 import classes from './appnav.module.css'
+import NotifcationDrawer from '../NotifcationDrawer'
 
 const SearchBar = () => {
   return <TextInput classNames={{ input: classes.searchbar }} placeholder="Search music, artists, playlist" />
@@ -32,11 +33,7 @@ const AppNav = () => {
           <SearchBar />
         </div>
         <div className="flex items-center ml-5 lg:ml-14">
-          <ActionIcon variant="filled" aria-label="Settings" color="#1E1E1E" radius={'xl'} size={'xl'} mr={10}>
-            <Indicator color="red" size={8} offset={4}>
-              <Icon icon="carbon:notification" width={20} />
-            </Indicator>
-          </ActionIcon>
+          <NotifcationDrawer />
           <div className="md:hidden">
             <ActionIcon variant="filled" aria-label="Settings" color="purple" radius={'xl'} size={'xl'}>
               <Icon icon="line-md:account" />

@@ -15,6 +15,7 @@ import WalletModal from './components/WalletModal'
 import { ModalsProvider } from '@mantine/modals'
 import MessageModal from './components/Modals/MessageModal'
 import BuyModal from './components/Modals/BuyModal'
+import CreateNft from './Pages/CreateNft'
 // import ProtectedRoute from './Pages/ProtectedRoute'
 
 export default function App() {
@@ -33,6 +34,7 @@ export default function App() {
             {/* <Route path="/events/add" Component={AddEvent} /> */}
             <Route path="/earnings" Component={Assets} />
             <Route path="/upload" Component={Upload} />
+            <Route path="/create" Component={CreateNft} />
             <Route path="/profile" Component={Profile} />
           </Routes>
         </ModalsProvider>

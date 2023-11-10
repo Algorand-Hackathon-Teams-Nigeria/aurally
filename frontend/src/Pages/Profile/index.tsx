@@ -11,7 +11,7 @@ import noActiviy from '../../assets/no-activity.svg'
 
 const ProfileTab = () => {
   const [type, setType] = useState(0)
-  const bg = (num: number) => (type === num ? '#444' : 'transparent')
+  const bg = (num: number) => (type === num ? '#1e1e1e' : 'transparent')
   const navigate = useNavigate()
   const stream = () => {
     navigate('/marketplace/music/12')
@@ -66,6 +66,16 @@ const Profile = () => {
             <CopyButton text={activeAddress} />
           </div>
         )}
+      </div>
+      <div className="flex flex-wrap gap-5 mt-8">
+        <div className="gcard-with-bg">
+          <div>Minted</div>
+          <div>0</div>
+        </div>
+        <div className="gcard-with-bg">
+          <div>Created</div>
+          <div>0</div>
+        </div>
       </div>
       <div className="mb-10 mt-20">
         <ProfileTab />

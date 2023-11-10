@@ -64,5 +64,5 @@ section {
 .gcard-with-bg {
   border: 1px solid var(--Border-colour, #444);
   background: var(--Sub-Background, #1e1e1e);
-  @apply p-4 space-y-2;
+  @apply p-4 space-y-2 rounded-lg min-w-[200px];
 }

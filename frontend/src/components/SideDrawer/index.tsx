@@ -44,9 +44,9 @@ const SideDrawer = () => {
             <div className={classes2.navs}>
               <div className={classes.navbarMain}>
                 <Links isMobile />
-                <Link className="w-full flex justify-center" to="/upload">
+                <Link className="w-full flex justify-center" to="/create">
                   <Button size="lg" mt={40} fullWidth maw={250} radius={30} leftSection={icon}>
-                    Upload
+                    Create
                   </Button>
                 </Link>
               </div>

@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import { Button, TextInput, Text, Select, FileInput } from '@mantine/core'
 import { Dropzone, FileRejection, FileWithPath, IMAGE_MIME_TYPE } from '@mantine/dropzone'
 import '@mantine/dropzone/styles.css'
-import classes from './textinput.module.css'
+import classes from '../../styles/textinput.module.css'
 import { Icon } from '@iconify/react'
 import { modals } from '@mantine/modals'
 

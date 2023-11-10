@@ -85,9 +85,9 @@
 
 [data-path=''] .link[data-path=''],
 [data-path='marketplace'] .link[data-path='/marketplace'],
-/* [data-path='communities'] .link[data-path='/communities'], */
-/* [data-path='upload'] .link[data-path='/upload'], */
-/* [data-path='events'] .link[data-path='/events'], */
+[data-path='communities'] .link[data-path='/communities'],
+[data-path='upload'] .link[data-path='/upload'],
+[data-path='events'] .link[data-path='/events'],
 [data-path='earnings'] .link[data-path='/earnings'],
 [data-path='streams'] .link[data-path='/streams'],
 [data-path='profile'] .link[data-path='/profile'] {
