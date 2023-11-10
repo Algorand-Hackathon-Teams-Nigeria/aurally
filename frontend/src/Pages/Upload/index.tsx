@@ -24,7 +24,7 @@ const Upload = () => {
       modal: 'message',
       innerProps: {
         title: 'Upload Successful',
-        icon: 'ph:check-circle-thin',
+        icon: 'success',
         desc: 'Your Music has been uploaded successfully',
         btnLabel: 'View activity',
       },
