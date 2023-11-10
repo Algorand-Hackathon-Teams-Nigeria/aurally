@@ -4,6 +4,7 @@ import { Dropzone, FileRejection, FileWithPath, IMAGE_MIME_TYPE } from '@mantine
 import '@mantine/dropzone/styles.css'
 import classes from './textinput.module.css'
 import { Icon } from '@iconify/react'
+import { modals } from '@mantine/modals'
 
 const GENRES = ['Pop', 'Electronic', 'R&B', 'Alte', 'Reggae', 'Afrobeat', 'Rock', 'Amapiano']
 
@@ -18,7 +19,17 @@ const Upload = () => {
   const name = imageFile?.name || imageFile?.path
   const error = errors[0]?.errors[0]?.message
 
-  const uploadcall = () => {}
+  const uploadcall = () => {
+    modals.openContextModal({
+      modal: 'message',
+      innerProps: {
+        title: 'Upload Successful',
+        icon: 'ph:check-circle-thin',
+        desc: 'Your Music has been uploaded successfully',
+        btnLabel: 'View activity',
+      },
+    })
+  }
 
   return (
     <div className="routePage mb-32">

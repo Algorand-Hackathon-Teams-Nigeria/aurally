@@ -12,29 +12,32 @@ import Assets from './Pages/Assets'
 import Upload from './Pages/Upload'
 import AlgoProvider from './components/AlgoProvider'
 import WalletModal from './components/WalletModal'
-import BuyModal from './components/BuyModal'
+import { ModalsProvider } from '@mantine/modals'
+import MessageModal from './components/Modals/MessageModal'
+import BuyModal from './components/Modals/BuyModal'
 // import ProtectedRoute from './Pages/ProtectedRoute'
 
 export default function App() {
   return (
     <main className="w-full min-h-[100lvh] bg-[#111111] flex">
       <AppSideBar />
-      <div className="w-full">
+      <div className="w-full overflow-hidden">
         <AppNav />
-        <Routes>
-          <Route index Component={Home} />
-          <Route path="/marketplace" Component={MarketPlace} />
-          <Route path="/marketplace/music/:musicId" Component={MusicDetails} />
-          {/* <Route path="/communities" Component={Communities} /> */}
-          {/* <Route path="/events" Component={Events} /> */}
-          {/* <Route path="/events/add" Component={AddEvent} /> */}
-          <Route path="/earnings" Component={Assets} />
-          <Route path="/upload" Component={Upload} />
-          <Route path="/profile" Component={Profile} />
-        </Routes>
+        <ModalsProvider modals={{ message: MessageModal, buy: BuyModal }}>
+          <Routes>
+            <Route index Component={Home} />
+            <Route path="/marketplace" Component={MarketPlace} />
+            <Route path="/marketplace/music/:musicId" Component={MusicDetails} />
+            {/* <Route path="/communities" Component={Communities} /> */}
+            {/* <Route path="/events" Component={Events} /> */}
+            {/* <Route path="/events/add" Component={AddEvent} /> */}
+            <Route path="/earnings" Component={Assets} />
+            <Route path="/upload" Component={Upload} />
+            <Route path="/profile" Component={Profile} />
+          </Routes>
+        </ModalsProvider>
         <AlgoProvider>
           <WalletModal />
-          <BuyModal />
         </AlgoProvider>
       </div>
     </main>

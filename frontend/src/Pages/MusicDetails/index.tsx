@@ -5,32 +5,9 @@ import classes from './musicdetail.module.css'
 import profile from '../../assets/profile.jpg'
 import cover from '../../assets/musicover.jpg'
 import { useNavigate } from 'react-router-dom'
-import { useEffect, useRef } from 'react'
-import { atom, useAtom, useSetAtom } from 'jotai'
-import { buyDetailsAtom } from '../../components/BuyModal'
+import { useEffect, useRef, useState } from 'react'
 import WaveSurfer from 'wavesurfer.js'
-
-const typeAtom = atom('Overview')
-const TYPES = ['Overview', 'Analytics']
-
-const ButtonTab = () => {
-  const [type, setType] = useAtom(typeAtom)
-  return (
-    <div className="flex overflow-x-scroll remove-scroll pb-0.5">
-      {TYPES.map((item) => (
-        <Button
-          key={item}
-          size="lg"
-          onClick={() => setType(item)}
-          classNames={{ root: classes.greyButton }}
-          bg={item === type ? '#444' : 'transparent'}
-        >
-          {item}
-        </Button>
-      ))}
-    </div>
-  )
-}
+import { modals } from '@mantine/modals'
 
 const Stat = ({ title, title2 }: { title: string; title2: string }) => {
   return (
@@ -41,27 +18,63 @@ const Stat = ({ title, title2 }: { title: string; title2: string }) => {
   )
 }
 
+const DetailsTab = () => {
+  const [type, setType] = useState(0)
+  const bg = (num: number) => (type === num ? '#444' : 'transparent')
+
+  return (
+    <div className="gboard mt-6 mb-[90px] min-h-[434px]">
+      <div className="flex overflow-x-scroll remove-scroll pb-0.5">
+        <Button size="lg" onClick={() => setType(0)} classNames={{ root: classes.greyButton }} bg={bg(0)}>
+          Overview
+        </Button>
+        <Button size="lg" onClick={() => setType(1)} classNames={{ root: classes.greyButton }} bg={bg(1)}>
+          Analytics
+        </Button>
+      </div>
+      {type === 0 ? (
+        <>
+          <div className="pt-4 pb-5">
+            Lorem ipsum dolor sit amet consectetur. Ullamcorper auctor duis felis dui interdum eget proin pharetra. Id venenatis venenatis
+            molestie vitae nisi sed cursus metus. Lectus maecenas a pulvinar netus. Tristique facilisi augue faucibus urna est nulla ac.
+            Pretium duis aliquet condimentum scelerisque quis. Platea netus integer dolor bibendum urna massa molestie suspendisse. Nunc sed
+            semper in turpis enim orci lorem. Quisque sagittis ut in augue nisl at. Blandit et feugiat nulla ut aliquet morbi.
+          </div>
+          <div className="flex flex-wrap gap-5 sm:gap-20">
+            <Stat title="GENRES" title2="RnB" />
+            <Stat title="Date Created" title2="Sept 2022" />
+            <Stat title="Total Voume" title2="Unlimited" />
+          </div>
+        </>
+      ) : (
+        <div className="w-full text-center mt-24">No Activity</div>
+      )}
+    </div>
+  )
+}
+
 const MusicDetails = () => {
   const navigate = useNavigate()
   const wavesurferRef = useRef<WaveSurfer | null>(null)
-  const setDetails = useSetAtom(buyDetailsAtom)
 
   const goBack = () => {
     navigate(-1)
   }
 
   const openBuyModal = () => {
-    setDetails({
-      opened: true,
-      name: 'Beat the Flow',
-      author: 'Tyler Faye',
-      total_stream: '10,343',
-      price: '0.25 ETH',
-      relase_date: '0.25 ETH',
-    })
     if (wavesurferRef.current?.isPlaying()) {
       wavesurferRef.current?.playPause()
     }
+    modals.openContextModal({
+      modal: 'buy',
+      innerProps: {
+        name: 'Beat the Flow',
+        author: 'Tyler Faye',
+        total_stream: '10,343',
+        price: '0.25 ETH',
+        relase_date: '0.25 ETH',
+      },
+    })
   }
 
   useEffect(() => {
@@ -112,20 +125,7 @@ const MusicDetails = () => {
         </div>
         <div className="font-bold text-sm text-[#afafaf] mb-1 mt-3.5">Preview</div>
         <AudioPlayer wavesurferRef={wavesurferRef} />
-        <div className="gboard mt-6 mb-[90px] min-h-[434px]">
-          <ButtonTab />
-          <div className="pt-4 pb-5">
-            Lorem ipsum dolor sit amet consectetur. Ullamcorper auctor duis felis dui interdum eget proin pharetra. Id venenatis venenatis
-            molestie vitae nisi sed cursus metus. Lectus maecenas a pulvinar netus. Tristique facilisi augue faucibus urna est nulla ac.
-            Pretium duis aliquet condimentum scelerisque quis. Platea netus integer dolor bibendum urna massa molestie suspendisse. Nunc sed
-            semper in turpis enim orci lorem. Quisque sagittis ut in augue nisl at. Blandit et feugiat nulla ut aliquet morbi.
-          </div>
-          <div className="flex flex-wrap gap-5 sm:gap-20">
-            <Stat title="GENRES" title2="RnB" />
-            <Stat title="Date Created" title2="Sept 2022" />
-            <Stat title="Total Voume" title2="Unlimited" />
-          </div>
-        </div>
+        <DetailsTab />
       </div>
     </div>
   )

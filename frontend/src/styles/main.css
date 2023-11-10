@@ -55,3 +55,14 @@ section {
   background: var(--Sub-Background, #1e1e1e);
   @apply flex py-6 px-4 sm:py-8 sm:px-6 flex-col items-start gap-4 self-stretch rounded-3xl;
 }
+
+.gboard-no-bg {
+  border: 1px solid var(--Border-colour, #444);
+  @apply flex py-6 px-4 sm:py-8 sm:px-6 flex-col items-start gap-4 self-stretch rounded-3xl;
+}
+
+.gcard-with-bg {
+  border: 1px solid var(--Border-colour, #444);
+  background: var(--Sub-Background, #1e1e1e);
+  @apply p-4 space-y-2;
+}
