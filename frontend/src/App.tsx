@@ -7,7 +7,7 @@ import Profile from './Pages/Profile'
 import AppNav from './components/AppNav'
 import AppSideBar from './components/AppSideBar'
 // import Events from './Pages/Events'
-import Assets from './Pages/Assets'
+import MyStreams from './Pages/MyStreams'
 // import AddEvent from './Pages/AddEvent'
 import Upload from './Pages/Upload'
 import AlgoProvider from './components/AlgoProvider'
@@ -32,7 +32,8 @@ export default function App() {
             {/* <Route path="/communities" Component={Communities} /> */}
             {/* <Route path="/events" Component={Events} /> */}
             {/* <Route path="/events/add" Component={AddEvent} /> */}
-            <Route path="/earnings" Component={Assets} />
+            <Route path="/earnings" Component={MyStreams} />
+            <Route path="/streams" Component={MyStreams} />
             <Route path="/upload" Component={Upload} />
             <Route path="/create" Component={CreateNft} />
             <Route path="/profile" Component={Profile} />

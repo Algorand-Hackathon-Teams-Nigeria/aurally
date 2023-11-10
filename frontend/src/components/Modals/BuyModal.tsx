@@ -20,7 +20,7 @@ const BuyModal = ({
       modal: 'message',
       innerProps: {
         title: 'Stream Purchase successful',
-        icon: 'ph:check-circle-thin',
+        icon: 'success',
         purpleDesc: 'Beat the flow',
         desc: 'You have successfully purchased',
         btnLabel: 'Start streaming',
