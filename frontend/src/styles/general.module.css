@@ -1,13 +1,22 @@
-.content {
+.modalcontent {
   background: var(--Sub-Background, #1e1e1e);
   @apply rounded-[32px] pb-3;
 }
 
-.header {
+.modalheader {
   background: var(--Sub-Background, #1e1e1e);
   @apply px-4 mt-2;
 }
 
-.title {
+.modaltitle {
   @apply flex-1 pl-5 text-center text-lg font-bold;
+}
+
+.menudropdown {
+  background: var(--Sub-Background, #1e1e1e);
+  @apply rounded-xl p-2 space-y-2;
+}
+
+.menulabel {
+  @apply hover:bg-[#111]/75;
 }

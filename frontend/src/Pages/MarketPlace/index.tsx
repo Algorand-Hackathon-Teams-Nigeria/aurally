@@ -20,7 +20,7 @@ const MarketPlace = () => {
               title="Beat the flow"
               title2="Bid"
               title3="Tyler Faye"
-              title4="0.25 ETH"
+              title4="0.25 ALGO"
               key={item}
               buttonLabel="Stream Now"
             />
@@ -36,7 +36,7 @@ const MarketPlace = () => {
               title="Beat the flow"
               title2="Bid"
               title3="Tyler Faye"
-              title4="0.25 ETH"
+              title4="0.25 ALGO"
               key={item}
               buttonLabel="Stream Now"
             />
@@ -52,7 +52,7 @@ const MarketPlace = () => {
               title="Beat the flow"
               title2="Bid"
               title3="Tyler Faye"
-              title4="0.25 ETH"
+              title4="0.25 ALGO"
               key={item}
               buttonLabel="Stream Now"
             />

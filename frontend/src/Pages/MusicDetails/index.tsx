@@ -71,8 +71,8 @@ const MusicDetails = () => {
         name: 'Beat the Flow',
         author: 'Tyler Faye',
         total_stream: '10,343',
-        price: '0.25 ETH',
-        relase_date: '0.25 ETH',
+        price: '0.25 ALGO',
+        relase_date: '0.25 ALGO',
       },
     })
   }
@@ -93,14 +93,9 @@ const MusicDetails = () => {
         <ActionIcon onClick={goBack} classNames={{ root: classes.arrowBack }}>
           <Icon icon="typcn:arrow-back-outline" width={24} />
         </ActionIcon>
-        <div className="flex gap-4 md:hidden">
-          <ActionIcon classNames={{ root: classes.arrowBack }}>
-            <Icon icon="icon-park-outline:like" width={20} />
-          </ActionIcon>
-          <ActionIcon classNames={{ root: classes.arrowBack }}>
-            <Icon icon="solar:download-outline" width={20} />
-          </ActionIcon>
-        </div>
+        <ActionIcon classNames={{ root: classes.arrowBack }}>
+          <Icon icon="icon-park-outline:like" width={20} />
+        </ActionIcon>
       </div>
       <div className="relative pt-28">
         <h1 className={classes.title}>Beat the Flow</h1>
@@ -116,7 +111,7 @@ const MusicDetails = () => {
             </div>
           </div>
           <div className="flex items-end gap-4 sm:gap-6 self-start">
-            <Stat title="Price" title2="0.25 ETH" />
+            <Stat title="Price" title2="0.25 ALGO" />
             <Stat title="Streams" title2="0,343" />
             <Button onClick={openBuyModal} classNames={{ root: classes.btnGet }} size="xl">
               Get Now

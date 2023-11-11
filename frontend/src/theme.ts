@@ -1,5 +1,5 @@
-import { CSSVariablesResolver, DEFAULT_THEME, MantineColorsTuple, Modal, createTheme, mergeMantineTheme } from '@mantine/core'
-import modalClass from './styles/modalwrapper.module.css'
+import { CSSVariablesResolver, DEFAULT_THEME, MantineColorsTuple, Modal, createTheme, mergeMantineTheme, Menu } from '@mantine/core'
+import general from './styles/general.module.css'
 
 const purple: MantineColorsTuple = [
   '#f8ebff',
@@ -24,8 +24,20 @@ const themeOverride = createTheme({
   components: {
     Modal: Modal.extend({
       defaultProps: {
-        classNames: modalClass,
+        classNames: {
+          header: general.modalheader,
+          content: general.modalcontent,
+          title: general.modaltitle,
+        },
         centered: true,
+      },
+    }),
+    Menu: Menu.extend({
+      defaultProps: {
+        classNames: {
+          dropdown: general.menudropdown,
+          item: general.menulabel,
+        },
       },
     }),
   },

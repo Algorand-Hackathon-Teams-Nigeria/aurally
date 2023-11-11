@@ -10,7 +10,7 @@ const GENRES = ['Pop', 'Electronic', 'R&B', 'Alte', 'Reggae', 'Afrobeat', 'Rock'
 
 const SButton = () => <Button radius="md">Upload File</Button>
 
-const Upload = () => {
+const CreateSoundNFt = () => {
   const [files, setFiles] = useState<FileWithPath[]>([])
   const [errors, setErrors] = useState<FileRejection[]>([])
   const openRef = useRef<() => void>(null)
@@ -140,4 +140,4 @@ const Upload = () => {
   )
 }
 
-export default Upload
+export default CreateSoundNFt

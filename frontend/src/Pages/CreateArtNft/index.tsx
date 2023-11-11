@@ -6,7 +6,7 @@ import classes from '../../styles/textinput.module.css'
 import { Icon } from '@iconify/react'
 import { modals } from '@mantine/modals'
 
-const CreateNft = () => {
+const CreateArtNft = () => {
   const [files, setFiles] = useState<FileWithPath[]>([])
   const [errors, setErrors] = useState<FileRejection[]>([])
   const openRef = useRef<() => void>(null)
@@ -90,4 +90,4 @@ const CreateNft = () => {
   )
 }
 
-export default CreateNft
+export default CreateArtNft

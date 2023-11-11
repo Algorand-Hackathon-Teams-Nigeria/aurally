@@ -7,6 +7,7 @@ import { ActionIcon, Avatar, Image, Button } from '@mantine/core'
 import { atom, useAtom } from 'jotai'
 import { Icon } from '@iconify/react'
 import { Carousel } from '@mantine/carousel'
+import '@mantine/carousel/styles.css'
 import { useRef } from 'react'
 import HeroHome from '../../../assets/heroHome2.jpg'
 import classes from '../home.module.css'
@@ -77,7 +78,7 @@ const CoverSection = ({ audioRef, index, mySrc }: Prop1) => {
           </div>
         </div>
         <Button size="md" w={150} bg={'#1E1E1E'}>
-          Mint
+          Get Now
         </Button>
       </div>
     </div>

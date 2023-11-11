@@ -22,7 +22,7 @@ const SummaryBox = ({ to }: { to: string }) => {
             <Avatar size={16} src={profile} alt="music owner" />
             <div className={classes2.title2}>Tyler Faye</div>
           </div>
-          <div className={classes2.title3}>0.25 ETH</div>
+          <div className={classes2.title3}>0.25 ALGO</div>
         </div>
       </div>
     </Link>

@@ -1,4 +1,3 @@
-import { Carousel } from '@mantine/carousel'
 import MusicCard from '../../components/MusicCard'
 import { Button } from '@mantine/core'
 import { Link } from 'react-router-dom'
@@ -20,7 +19,7 @@ const WithAsset = () => {
             title="Beat the flow"
             title2="Bid"
             title3="Tyler Faye"
-            title4="0.25 ETH"
+            title4="0.25 ALGO"
             key={item}
             buttonLabel="Sell Now"
           />
@@ -39,9 +38,9 @@ const MyStreams = () => {
         modals.openContextModal({
           modal: 'message',
           innerProps: {
-            title: 'Upload Successful',
+            title: 'You have Earned 20 AURA',
             icon: 'gift',
-            desc: 'Your Music has been uploaded successfully',
+            desc: '',
             btnLabel: 'View activity',
           },
         })

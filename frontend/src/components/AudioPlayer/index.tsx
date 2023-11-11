@@ -103,9 +103,6 @@ const AudioPlayer = ({
       <ActionIcon className={classes.otherIcon}>
         <Icon icon="icon-park-outline:like" width={24} />
       </ActionIcon>
-      <ActionIcon className={classes.otherIcon}>
-        <Icon icon="solar:download-outline" width={24} />
-      </ActionIcon>
     </div>
   )
 }

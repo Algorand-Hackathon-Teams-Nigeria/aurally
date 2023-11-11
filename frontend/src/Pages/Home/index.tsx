@@ -30,7 +30,7 @@ const Home = () => {
     <div>
       <MusicPlayerCarousel />
       <section className="routePage mb-32">
-        <div className="text-[2rem] font-bold mb-6 mt-6">Trending Music</div>
+        <div className="text-[2rem] font-bold mb-6 mt-6">Trending Auras</div>
         <MusicType />
         <div className="w-full grid grid-cols-music-card gap-[18px]">
           {[1, 2, 3, 4, 5, 6].map((item) => (
@@ -39,9 +39,9 @@ const Home = () => {
               title="Beat the flow"
               title2="Bid"
               title3="Tyler Faye"
-              title4="0.25 ETH"
+              title4="0.25 ALGO"
               key={item}
-              buttonLabel="Stream Now"
+              buttonLabel="Buy and Stream Now"
             />
           ))}
         </div>
