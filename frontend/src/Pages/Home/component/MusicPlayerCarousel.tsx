@@ -21,8 +21,6 @@ const audioAtom = atom({
   index: 0,
 })
 
-// const isPlayingAtom = atom((get) => get(audioAtom).isPlaying)
-
 type Prop1 = { audioRef: React.MutableRefObject<HTMLAudioElement | null>; index: number; mySrc: string }
 
 const CoverSection = ({ audioRef, index, mySrc }: Prop1) => {

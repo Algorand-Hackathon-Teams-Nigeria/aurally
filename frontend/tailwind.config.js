@@ -5,6 +5,7 @@ module.exports = {
     extend: {
       gridTemplateColumns: {
         'music-card': 'repeat(auto-fit, minmax(238px, 1fr))',
+        'dao-card': 'repeat(auto-fit, minmax(220px, 1fr))',
       },
       backgroundImage: {
         'shadow-gradient': 'linear-gradient(0deg, #111 0%, rgba(17, 17, 17, 0.10) 98.63%)',

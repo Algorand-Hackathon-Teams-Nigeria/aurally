@@ -8,15 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
 import WaveSurfer from 'wavesurfer.js'
 import { modals } from '@mantine/modals'
-
-const Stat = ({ title, title2 }: { title: string; title2: string }) => {
-  return (
-    <div>
-      <div className="text-sm font-sans mb-1">{title}</div>
-      <div className={classes.stat}>{title2}</div>
-    </div>
-  )
-}
+import Stat1 from '../../components/General/Stat1'
 
 const DetailsTab = () => {
   const [type, setType] = useState(0)
@@ -41,9 +33,9 @@ const DetailsTab = () => {
             semper in turpis enim orci lorem. Quisque sagittis ut in augue nisl at. Blandit et feugiat nulla ut aliquet morbi.
           </div>
           <div className="flex flex-wrap gap-5 sm:gap-20">
-            <Stat title="GENRES" title2="RnB" />
-            <Stat title="Date Created" title2="Sept 2022" />
-            <Stat title="Total Voume" title2="Unlimited" />
+            <Stat1 title="GENRES" title2="RnB" />
+            <Stat1 title="Date Created" title2="Sept 2022" />
+            <Stat1 title="Total Voume" title2="Unlimited" />
           </div>
         </>
       ) : (
@@ -72,7 +64,7 @@ const MusicDetails = () => {
         author: 'Tyler Faye',
         total_stream: '10,343',
         price: '0.25 ALGO',
-        relase_date: '0.25 ALGO',
+        relase_date: '4 Nov, 2023',
       },
     })
   }
@@ -93,12 +85,14 @@ const MusicDetails = () => {
         <ActionIcon onClick={goBack} classNames={{ root: classes.arrowBack }}>
           <Icon icon="typcn:arrow-back-outline" width={24} />
         </ActionIcon>
-        <ActionIcon classNames={{ root: classes.arrowBack }}>
-          <Icon icon="icon-park-outline:like" width={20} />
-        </ActionIcon>
+        <div className="md:hidden">
+          <ActionIcon classNames={{ root: classes.arrowBack }}>
+            <Icon icon="icon-park-outline:like" width={20} />
+          </ActionIcon>
+        </div>
       </div>
       <div className="relative pt-28">
-        <h1 className={classes.title}>Beat the Flow</h1>
+        <h1 className="detailsTitle">Beat the Flow</h1>
         <div className={classes.details}>
           <div className="flex gap-5 items-center">
             <Avatar src={profile} size="lg" radius="md" classNames={{ image: 'border-2 sm:border-[3px] rounded-lg' }} />
@@ -111,8 +105,8 @@ const MusicDetails = () => {
             </div>
           </div>
           <div className="flex items-end gap-4 sm:gap-6 self-start">
-            <Stat title="Price" title2="0.25 ALGO" />
-            <Stat title="Streams" title2="0,343" />
+            <Stat1 title="Price" title2="0.25 ALGO" />
+            <Stat1 title="Streams" title2="0,343" />
             <Button onClick={openBuyModal} classNames={{ root: classes.btnGet }} size="xl">
               Get Now
             </Button>

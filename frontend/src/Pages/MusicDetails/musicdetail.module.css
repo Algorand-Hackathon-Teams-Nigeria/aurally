@@ -1,15 +1,5 @@
-.title {
-  letter-spacing: -0.25px;
-  @apply font-bold text-[32px] leading-[40px] sm:text-[57px] sm:leading-[64px];
-}
-
 .details {
   @apply mt-4 mb-3 flex flex-wrap gap-5 justify-between;
-}
-
-.stat {
-  background: var(--Border-colour, #444);
-  @apply flex p-2 justify-center items-center gap-2.5 rounded text-xs sm:text-sm;
 }
 
 .aspectRatio {

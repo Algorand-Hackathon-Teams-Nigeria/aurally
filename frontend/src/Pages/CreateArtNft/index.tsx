@@ -32,7 +32,7 @@ const CreateArtNft = () => {
       <div className="flex items-center justify-between flex-wrap gap-5 mb-10">
         <div className="routeName">Create NFT</div>
         <div className="hidden md:block">
-          <Button size="md" fz={14} radius={'md'} onClick={uploadcall}>
+          <Button size="md" radius={'md'} onClick={uploadcall}>
             Upload
           </Button>
         </div>
@@ -56,7 +56,7 @@ const CreateArtNft = () => {
           radius="md"
           bg={'#1E1E1E'}
         >
-          <div className=" pointer-events-none py-6">
+          <div className=" pointer-events-none py-10">
             <Icon className="mx-auto" icon="fluent:collections-20-regular" width="38px" stroke="1.5" />
             <Text ta="center" fw={700} fz="lg" mt="lg">
               <Dropzone.Accept>Drop files here</Dropzone.Accept>
@@ -80,6 +80,7 @@ const CreateArtNft = () => {
         <TextInput classNames={classes} required label="Supply" placeholder="1" />
         <TextInput classNames={classes} required label="Description" placeholder="Enter a description" />
         <TextInput classNames={classes} required label="Link" placeholder="Paste link" />
+        <TextInput classNames={classes} required label="Bid Price" placeholder="0.0 ALGO" />
       </div>
       <div className="md:hidden mt-8">
         <Button fullWidth size="lg" fz={14} radius={'md'} onClick={uploadcall}>

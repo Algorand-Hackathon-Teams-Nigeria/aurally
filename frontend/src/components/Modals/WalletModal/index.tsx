@@ -1,18 +1,11 @@
-import { Avatar, Button, Modal } from '@mantine/core'
+import { Avatar, Button } from '@mantine/core'
 import { Provider, useWallet } from '@txnlab/use-wallet'
-import { useAtom } from 'jotai'
-import { walletModalAtom } from '../General/ConnectButton'
 import Account from './Account'
 import classes from './wallet.module.css'
 
 const WalletModal = () => {
   const { providers, activeAddress } = useWallet()
   const isKmd = (provider: Provider) => provider.metadata.name.toLowerCase() === 'kmd'
-  const [opened, setClose] = useAtom(walletModalAtom)
-
-  const close = () => {
-    setClose(false)
-  }
 
   const logout = () => {
     if (providers) {
@@ -30,7 +23,7 @@ const WalletModal = () => {
   }
 
   return (
-    <Modal title={activeAddress ? 'My Wallet' : 'Select wallet provider'} opened={opened} onClose={close}>
+    <>
       <div className="flex flex-col items-center">
         {!activeAddress && (
           <div className="text-sm max-w-xs tracking-wider text-center mt-3">You can talk about our music journey and achievements</div>
@@ -66,7 +59,7 @@ const WalletModal = () => {
           Disconnect
         </Button>
       )}
-    </Modal>
+    </>
   )
 }
 

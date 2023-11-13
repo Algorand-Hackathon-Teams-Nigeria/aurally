@@ -2,14 +2,17 @@
 import { Button } from '@mantine/core'
 import { useWallet } from '@txnlab/use-wallet'
 import { ellipseAddress } from '../../utils/ellipseAddress'
-import { atom, useSetAtom } from 'jotai'
-
-export const walletModalAtom = atom(false)
+import { modals } from '@mantine/modals'
 
 const ConnectButton = () => {
   const { activeAddress } = useWallet()
-  const setIsModal = useSetAtom(walletModalAtom)
-  const open = () => setIsModal(true)
+  const open = () => {
+    modals.openContextModal({
+      modal: 'wallet',
+      title: activeAddress ? 'My Wallet' : 'Select wallet provider',
+      innerProps: {},
+    })
+  }
 
   const elipsedAddress = activeAddress && ellipseAddress(activeAddress, 5)
 

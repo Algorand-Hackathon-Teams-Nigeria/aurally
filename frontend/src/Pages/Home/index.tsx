@@ -37,7 +37,7 @@ const Home = () => {
             <MusicCard
               action={joinAction}
               title="Beat the flow"
-              title2="Bid"
+              title2="$10"
               title3="Tyler Faye"
               title4="0.25 ALGO"
               key={item}

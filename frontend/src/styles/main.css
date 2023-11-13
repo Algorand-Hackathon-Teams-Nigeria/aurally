@@ -66,3 +66,8 @@ section {
   background: var(--Sub-Background, #1e1e1e);
   @apply p-4 space-y-2 rounded-lg min-w-[200px];
 }
+
+.detailsTitle {
+  letter-spacing: -0.25px;
+  @apply font-bold text-[32px] leading-[40px] sm:text-[57px] sm:leading-[64px];
+}

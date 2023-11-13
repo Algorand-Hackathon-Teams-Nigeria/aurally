@@ -1,5 +1,5 @@
 import { Icon } from '@iconify/react'
-import { Burger, Button, Drawer } from '@mantine/core'
+import { Burger, Button, Drawer, Menu } from '@mantine/core'
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
@@ -44,11 +44,21 @@ const SideDrawer = () => {
             <div className={classes2.navs}>
               <div className={classes.navbarMain}>
                 <Links isMobile />
-                <Link className="w-full flex justify-center" to="/create">
-                  <Button size="lg" mt={40} fullWidth maw={250} radius={30} leftSection={icon}>
-                    Create
-                  </Button>
-                </Link>
+                <Menu width={200} openDelay={100} closeDelay={400} offset={14}>
+                  <Menu.Target>
+                    <Button size="lg" fullWidth radius={30} leftSection={icon}>
+                      Create
+                    </Button>
+                  </Menu.Target>
+                  <Menu.Dropdown>
+                    <Menu.Item to="/create/sound" component={Link} leftSection={<Icon icon="mdi:music" />}>
+                      Sound NFT
+                    </Menu.Item>
+                    <Menu.Item to="/create/art" component={Link} leftSection={<Icon icon="mdi:art" />}>
+                      Art NFT
+                    </Menu.Item>
+                  </Menu.Dropdown>
+                </Menu>
               </div>
             </div>
           </Drawer.Body>

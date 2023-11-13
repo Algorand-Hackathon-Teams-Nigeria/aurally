@@ -5,12 +5,15 @@ import '@mantine/dropzone/styles.css'
 import classes from '../../styles/textinput.module.css'
 import { Icon } from '@iconify/react'
 import { modals } from '@mantine/modals'
+import { DateInput } from '@mantine/dates'
+import '@mantine/dates/styles.css'
 
 const GENRES = ['Pop', 'Electronic', 'R&B', 'Alte', 'Reggae', 'Afrobeat', 'Rock', 'Amapiano']
 
 const SButton = () => <Button radius="md">Upload File</Button>
 
 const CreateSoundNFt = () => {
+  const [dateValue, setDateValue] = useState<Date | null>(null)
   const [files, setFiles] = useState<FileWithPath[]>([])
   const [errors, setErrors] = useState<FileRejection[]>([])
   const openRef = useRef<() => void>(null)
@@ -35,8 +38,8 @@ const CreateSoundNFt = () => {
     <div className="routePage mb-32">
       <div className="flex items-center justify-between flex-wrap gap-5 mb-10">
         <div className="routeName">Upload</div>
-        <Button size="md" fz={14} radius={'md'} onClick={uploadcall}>
-          Save & Upload
+        <Button size="md" radius={'md'} onClick={uploadcall}>
+          Upload
         </Button>
       </div>
       <div className="space-y-5 max-w-[850px]">
@@ -45,7 +48,7 @@ const CreateSoundNFt = () => {
             Music Cover <span className="text-[#8A2BE2]">*</span>
           </div>
           <div>
-            <div className="text-sm opacity-70">File types supported: JPG, PNG, GIF, Max size: 100 MB</div>
+            <div className="text-sm opacity-70">File types supported: JPG, PNG, GIF, Max size: 5 MB</div>
           </div>
         </div>
         <Dropzone
@@ -58,7 +61,7 @@ const CreateSoundNFt = () => {
           radius="md"
           bg={'#1E1E1E'}
         >
-          <div className=" pointer-events-none py-6">
+          <div className=" pointer-events-none py-10">
             <Icon className="mx-auto" icon="fluent:collections-20-regular" width="38px" stroke="1.5" />
             <Text ta="center" fw={700} fz="lg" mt="lg">
               <Dropzone.Accept>Drop files here</Dropzone.Accept>
@@ -78,16 +81,45 @@ const CreateSoundNFt = () => {
             </Text>
           </div>
         </Dropzone>
+        <FileInput
+          rightSection={<SButton />}
+          label="Audio File"
+          placeholder="(WAV or MP3)"
+          required
+          rightSectionPointerEvents="none"
+          classNames={{ ...classes, input: classes.input2, section: classes.section2 }}
+          mt="md"
+        />
+        <FileInput
+          rightSection={<SButton />}
+          label="Sample Audio File"
+          description="No more than 15 seconds"
+          placeholder="No more than 15 seconds"
+          required
+          rightSectionPointerEvents="none"
+          classNames={{ ...classes, input: classes.input2, section: classes.section2 }}
+          mt="md"
+        />
         <TextInput classNames={classes} required label="Music Title" placeholder="Your music title" />
         <TextInput classNames={classes} required label="Music Label" placeholder="Your music label" />
         <TextInput classNames={classes} required label="Artist" placeholder="Add name of artists" />
+        <DateInput
+          classNames={classes}
+          rightSection={<Icon icon="uil:calender" width="20px" />}
+          value={dateValue}
+          onChange={setDateValue}
+          label="Date input"
+          placeholder="Date input"
+        />
         <div>
           <div className="mb-2">
             Genre <span className="text-[#8A2BE2]">*</span>
           </div>
           <Select placeholder="Pick a genre" data={GENRES} classNames={classes} />
         </div>
-        <div className="pt-10">
+        <TextInput classNames={classes} required label="Music Link" placeholder="Paste link" />
+        <TextInput classNames={classes} required label="Stream Price" placeholder="0.0 ALGO" />
+        {/* <div className="pt-10">
           <div>
             <div>
               Audio Files for Selling <span className="text-[#8A2BE2]">*</span>
@@ -134,7 +166,7 @@ const CreateSoundNFt = () => {
               mt="md"
             />
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   )

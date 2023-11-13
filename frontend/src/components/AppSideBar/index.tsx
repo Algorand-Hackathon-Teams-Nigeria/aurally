@@ -9,10 +9,7 @@ import classes from './sidebar.module.css'
 const data = [
   { link: '', label: 'Home', icon: 'solar:home-2-broken' },
   { link: '/marketplace', label: 'Marketplace', icon: 'solar:shop-broken' },
-  // { link: '/communities', label: 'Communities', icon: 'fluent:people-community-16-regular' },
-  // { link: '/upload', label: 'Upload Music', icon: 'prime:upload' },
-  // { link: '/events', label: 'Events', icon: 'streamline:entertainment-ticket-hobby-ticket-event-entertainment-stub-theater' },
-  // { link: '/earnings', label: 'My Earnings', icon: 'bi:currency-dollar' },
+  { link: '/dao', label: 'DAO', icon: 'tabler:ticket' },
   { link: '/streams', label: 'My Streams', icon: 'solar:play-broken' },
   { link: '/profile', label: 'Profile', icon: 'line-md:account' },
 ]
@@ -63,11 +60,11 @@ const AppSideBar = () => {
               </div>
             </Menu.Target>
             <Menu.Dropdown>
-              <Menu.Item to="/create/sound" component={Link}>
-                Art NFT
-              </Menu.Item>
-              <Menu.Item to="/create/art" component={Link}>
+              <Menu.Item to="/create/sound" component={Link} leftSection={<Icon icon="mdi:music" />}>
                 Sound NFT
+              </Menu.Item>
+              <Menu.Item to="/create/art" component={Link} leftSection={<Icon icon="mdi:art" />}>
+                Art NFT
               </Menu.Item>
             </Menu.Dropdown>
           </Menu>

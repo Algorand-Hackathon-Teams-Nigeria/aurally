@@ -21,7 +21,7 @@ const WithAsset = () => {
             title3="Tyler Faye"
             title4="0.25 ALGO"
             key={item}
-            buttonLabel="Sell Now"
+            buttonLabel="Play Now"
           />
         ))}
       </div>

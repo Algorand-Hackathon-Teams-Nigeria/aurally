@@ -1,8 +1,8 @@
 import { Icon } from '@iconify/react'
 import { useMemo } from 'react'
-import { ellipseAddress } from '../../utils/ellipseAddress'
-import { getAlgodConfigFromViteEnvironment } from '../../utils/network/getAlgoClientConfigs'
-import CopyButton from '../General/CopyButton'
+import { ellipseAddress } from '../../../utils/ellipseAddress'
+import { getAlgodConfigFromViteEnvironment } from '../../../utils/network/getAlgoClientConfigs'
+import CopyButton from '../../General/CopyButton'
 
 const BalanceList = ({ title }: { title: string }) => {
   return (
