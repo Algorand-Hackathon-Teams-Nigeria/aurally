@@ -1,0 +1,335 @@
+{
+  "name": "Aurally",
+  "desc": "",
+  "methods": [
+    {
+      "name": "createApplication",
+      "args": [],
+      "desc": "",
+      "returns": {
+        "type": "void",
+        "desc": ""
+      }
+    },
+    {
+      "name": "createSoundNFT",
+      "args": [
+        {
+          "name": "creator",
+          "type": "account",
+          "desc": ""
+        },
+        {
+          "name": "nft",
+          "type": "string",
+          "desc": ""
+        },
+        {
+          "name": "_fullname",
+          "type": "string",
+          "desc": ""
+        },
+        {
+          "name": "_username",
+          "type": "string",
+          "desc": ""
+        },
+        {
+          "name": "supply",
+          "type": "uint64",
+          "desc": ""
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "desc": ""
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "desc": ""
+        },
+        {
+          "name": "artist",
+          "type": "string",
+          "desc": ""
+        },
+        {
+          "name": "genre",
+          "type": "string",
+          "desc": ""
+        },
+        {
+          "name": "price",
+          "type": "uint64",
+          "desc": ""
+        },
+        {
+          "name": "releaseDate",
+          "type": "uint64",
+          "desc": ""
+        },
+        {
+          "name": "coverImageIpfs",
+          "type": "string",
+          "desc": ""
+        },
+        {
+          "name": "audioSampleIpfs",
+          "type": "string",
+          "desc": ""
+        }
+      ],
+      "desc": "",
+      "returns": {
+        "type": "bool",
+        "desc": ""
+      }
+    },
+    {
+      "name": "createArtNFT",
+      "args": [
+        {
+          "name": "creator",
+          "type": "account",
+          "desc": ""
+        },
+        {
+          "name": "nft",
+          "type": "(string,uint64,string,uint64,string,string,uint64,uint64,address,bool)",
+          "desc": ""
+        },
+        {
+          "name": "_fullname",
+          "type": "string",
+          "desc": ""
+        },
+        {
+          "name": "_username",
+          "type": "string",
+          "desc": ""
+        }
+      ],
+      "desc": "",
+      "returns": {
+        "type": "bool",
+        "desc": ""
+      }
+    },
+    {
+      "name": "startAuction",
+      "args": [
+        {
+          "name": "nftIpfs",
+          "type": "string",
+          "desc": ""
+        },
+        {
+          "name": "nftName",
+          "type": "string",
+          "desc": ""
+        },
+        {
+          "name": "minBid",
+          "type": "uint64",
+          "desc": ""
+        }
+      ],
+      "desc": "",
+      "returns": {
+        "type": "void",
+        "desc": ""
+      }
+    },
+    {
+      "name": "bidOnArtAuction",
+      "args": [
+        {
+          "name": "bidder",
+          "type": "account",
+          "desc": ""
+        },
+        {
+          "name": "nftIpfs",
+          "type": "string",
+          "desc": ""
+        },
+        {
+          "name": "bidAmount",
+          "type": "uint64",
+          "desc": ""
+        }
+      ],
+      "desc": "",
+      "returns": {
+        "type": "void",
+        "desc": ""
+      }
+    },
+    {
+      "name": "endArtAuction",
+      "args": [
+        {
+          "name": "seller",
+          "type": "account",
+          "desc": ""
+        },
+        {
+          "name": "nftIpfs",
+          "type": "string",
+          "desc": ""
+        }
+      ],
+      "desc": "",
+      "returns": {
+        "type": "void",
+        "desc": ""
+      }
+    },
+    {
+      "name": "purchaseNFT",
+      "args": [
+        {
+          "name": "buyer",
+          "type": "account",
+          "desc": ""
+        },
+        {
+          "name": "nftIpfs",
+          "type": "string",
+          "desc": ""
+        },
+        {
+          "name": "isSoundNFT",
+          "type": "bool",
+          "desc": ""
+        }
+      ],
+      "desc": "",
+      "returns": {
+        "type": "bool",
+        "desc": ""
+      }
+    },
+    {
+      "name": "transferNFT",
+      "args": [
+        {
+          "name": "sender",
+          "type": "account",
+          "desc": ""
+        },
+        {
+          "name": "receiver",
+          "type": "address",
+          "desc": ""
+        },
+        {
+          "name": "nftIpfs",
+          "type": "string",
+          "desc": ""
+        },
+        {
+          "name": "isSoundNFT",
+          "type": "bool",
+          "desc": ""
+        }
+      ],
+      "desc": "",
+      "returns": {
+        "type": "bool",
+        "desc": ""
+      }
+    },
+    {
+      "name": "voteOnProposal",
+      "args": [
+        {
+          "name": "voter",
+          "type": "account",
+          "desc": ""
+        },
+        {
+          "name": "vote",
+          "type": "bool",
+          "desc": ""
+        },
+        {
+          "name": "propID",
+          "type": "uint64",
+          "desc": ""
+        }
+      ],
+      "desc": "",
+      "returns": {
+        "type": "bool",
+        "desc": ""
+      }
+    },
+    {
+      "name": "createProposal",
+      "args": [
+        {
+          "name": "creator",
+          "type": "account",
+          "desc": ""
+        },
+        {
+          "name": "proposalDetails",
+          "type": "string",
+          "desc": ""
+        },
+        {
+          "name": "id",
+          "type": "uint64",
+          "desc": ""
+        }
+      ],
+      "desc": "",
+      "returns": {
+        "type": "bool",
+        "desc": ""
+      }
+    },
+    {
+      "name": "streamNFT",
+      "args": [
+        {
+          "name": "owner",
+          "type": "address",
+          "desc": ""
+        },
+        {
+          "name": "ipfslocation",
+          "type": "string",
+          "desc": ""
+        }
+      ],
+      "desc": "",
+      "returns": {
+        "type": "bool",
+        "desc": ""
+      }
+    },
+    {
+      "name": "optInToAsset",
+      "args": [
+        {
+          "name": "user",
+          "type": "account",
+          "desc": ""
+        },
+        {
+          "name": "asset",
+          "type": "asset",
+          "desc": ""
+        }
+      ],
+      "desc": "",
+      "returns": {
+        "type": "bool",
+        "desc": ""
+      }
+    }
+  ]
+}
