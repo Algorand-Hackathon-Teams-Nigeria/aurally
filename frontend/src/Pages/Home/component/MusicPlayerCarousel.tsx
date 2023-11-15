@@ -63,7 +63,7 @@ const CoverSection = ({ audioRef, index, mySrc }: Prop1) => {
               className="text-2xl sm:text-4xl"
             />
           </ActionIcon>
-          <div className="">
+          <div>
             <div className={classes.title}>Beat the Flow</div>
             <div className="flex flex-wrap items-center gap-2">
               <Avatar src={profile} size="sm" radius="xl" />
@@ -76,7 +76,7 @@ const CoverSection = ({ audioRef, index, mySrc }: Prop1) => {
           </div>
         </div>
         <Button size="md" w={150} bg={'#1E1E1E'}>
-          Get Now
+          Stream Now
         </Button>
       </div>
     </div>
