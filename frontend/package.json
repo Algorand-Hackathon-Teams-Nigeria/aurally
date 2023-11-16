@@ -66,6 +66,7 @@
     "dev2":"vite --host",
     "dev": "npm run generate:app-clients && vite --host",
     "build": "npm run generate:app-clients && tsc && vite build",
+    "build2": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "lint:fix": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --fix",
     "preview": "vite preview"
