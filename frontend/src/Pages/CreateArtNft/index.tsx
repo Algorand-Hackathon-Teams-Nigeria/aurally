@@ -5,23 +5,91 @@ import '@mantine/dropzone/styles.css'
 import classes from '../../styles/textinput.module.css'
 import { Icon } from '@iconify/react'
 import { modals } from '@mantine/modals'
+import { useCreateArtNFT } from '../../hooks/useContractHook'
+import { useWallet } from '@txnlab/use-wallet'
+import toast from 'react-hot-toast'
+import { create } from 'ipfs-http-client'
+import { Buffer } from 'buffer'
+
+const projectId = '2Y2uzvQN5CSqHMciRnMlmlaFtI0'
+const projectSecret = '7f68efcacf3a67ceb9b738728c235d02'
+
+const auth = `Basic ${Buffer.from(`${projectId}:${projectSecret}`).toString('base64')}`
+
+const options = {
+  host: 'ipfs.infura.io',
+  port: 5001,
+  protocol: 'https',
+  apiPath: '/api/v0',
+  headers: {
+    authorization: auth,
+  },
+}
+
+const client = create(options)
 
 const CreateArtNft = () => {
+  const { isPending, mutateAsync } = useCreateArtNFT()
+  const { activeAddress } = useWallet()
+  const [name, setName] = useState('')
+  const [desc, setDesc] = useState('')
+  const [supply, setSupply] = useState('')
+  const [price, setPrice] = useState('')
   const [files, setFiles] = useState<FileWithPath[]>([])
   const [errors, setErrors] = useState<FileRejection[]>([])
   const openRef = useRef<() => void>(null)
 
   const imageFile = files[0]
-  const name = imageFile?.name || imageFile?.path
+  const imageName = imageFile?.name || imageFile?.path
   const error = errors[0]?.errors[0]?.message
 
-  const uploadcall = () => {
+  const uploadToIpfs = async () => {
+    const reader = new FileReader()
+    reader.readAsArrayBuffer(imageFile)
+    let url = ''
+    reader.onloadend = async () => {
+      const arrayBuffer = new Uint8Array(reader.result as ArrayBuffer)
+      const { cid } = await client.add(arrayBuffer)
+      url = `https://ipfs.infura.io/ipfs/${cid}`
+      // url = `https://gateway.pinata.cloud/ipfs/${cid}`
+    }
+    return url
+  }
+
+  const uploadcall = async () => {
+    if (!activeAddress) {
+      toast.error('Connect Your Wallet')
+    }
+
+    const url = await uploadToIpfs()
+
+    const nft: [string, bigint | number, string, bigint | number, string, string, bigint | number, bigint | number, string, boolean] = [
+      name,
+      Number(supply), // Replace with the actual supply
+      desc,
+      Number(price),
+      'Creator Name', // Replace with the actual creator's name
+      'Creator Username', // Replace with the actual creator's username
+      Date.now(), // Replace with the actual creation date
+      Math.random(), // Replace with a unique ID
+      url,
+      true,
+    ]
+
+    const a = await mutateAsync({
+      creator: activeAddress as string,
+      nft,
+      _fullname: activeAddress as string,
+      _username: activeAddress as string,
+    })
+
+    console.log(url, a)
     modals.openContextModal({
       modal: 'message',
       innerProps: {
-        title: 'Upload Successful',
+        title: 'Sound Nft Created',
         icon: 'success',
-        desc: 'Your Music has been uploaded successfully',
+        desc: 'Your Sound art has been created successfully',
         btnLabel: 'View activity',
       },
     })
@@ -32,7 +100,7 @@ const CreateArtNft = () => {
       <div className="flex items-center justify-between flex-wrap gap-5 mb-10">
         <div className="routeName">Create NFT</div>
         <div className="hidden md:block">
-          <Button size="md" radius={'md'} onClick={uploadcall}>
+          <Button size="md" radius={'md'} loading={isPending} onClick={uploadcall}>
             Upload
           </Button>
         </div>
@@ -64,8 +132,8 @@ const CreateArtNft = () => {
               <Dropzone.Idle>
                 {error ? (
                   <span className="text-red-500">{error}</span>
-                ) : name ? (
-                  <span className="text-[#8A2BE2]">{name}</span>
+                ) : imageName ? (
+                  <span className="text-[#8A2BE2]">{imageName}</span>
                 ) : (
                   'Upload Media'
                 )}
@@ -76,14 +144,42 @@ const CreateArtNft = () => {
             </Text>
           </div>
         </Dropzone>
-        <TextInput classNames={classes} required label="Name" placeholder="Your NFT" />
-        <TextInput classNames={classes} required label="Supply" placeholder="1" />
-        <TextInput classNames={classes} required label="Description" placeholder="Enter a description" />
+        <TextInput
+          value={name}
+          onChange={(e) => setName(e.currentTarget.value)}
+          classNames={classes}
+          required
+          label="Name"
+          placeholder="Your NFT"
+        />
+        <TextInput
+          value={supply}
+          onChange={(e) => setSupply(e.currentTarget.value)}
+          classNames={classes}
+          required
+          label="Supply"
+          placeholder="1"
+        />
+        <TextInput
+          value={desc}
+          onChange={(e) => setDesc(e.currentTarget.value)}
+          classNames={classes}
+          required
+          label="Description"
+          placeholder="Enter a description"
+        />
         <TextInput classNames={classes} required label="Link" placeholder="Paste link" />
-        <TextInput classNames={classes} required label="Bid Price" placeholder="0.0 ALGO" />
+        <TextInput
+          value={price}
+          onChange={(e) => setPrice(e.currentTarget.value)}
+          classNames={classes}
+          required
+          label="Bid Price"
+          placeholder="0.0 ALGO"
+        />
       </div>
       <div className="md:hidden mt-8">
-        <Button fullWidth size="lg" fz={14} radius={'md'} onClick={uploadcall}>
+        <Button fullWidth size="lg" fz={14} radius={'md'} loading={isPending} onClick={uploadcall}>
           Upload
         </Button>
       </div>

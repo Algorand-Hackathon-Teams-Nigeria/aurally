@@ -16,7 +16,11 @@
       "backend/": true,
       "frontend/": true
     },
-    "jest.disabledWorkspaceFolders": ["ROOT", "backend"],
+    "jest.disabledWorkspaceFolders": [
+      "ROOT",
+      "backend",
+      "frontend"
+    ],
     "dotenv.enableAutocloaking": false
   },
   "extensions": {

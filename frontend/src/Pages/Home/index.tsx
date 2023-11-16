@@ -26,6 +26,7 @@ const Home = () => {
   const joinAction = () => {
     navigate('/marketplace/music/12')
   }
+
   return (
     <div>
       <MusicPlayerCarousel />

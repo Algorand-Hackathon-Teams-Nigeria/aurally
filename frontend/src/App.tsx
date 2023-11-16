@@ -19,6 +19,7 @@ import WalletModal from './components/Modals/WalletModal'
 import DAO from './Pages/DAO'
 import DaoModal from './components/Modals/DaoModal'
 import ArtDetails from './Pages/ArtDetails'
+import ErrorBoundary from './components/ErrorBoundary'
 // import ProtectedRoute from './Pages/ProtectedRoute'
 // jk
 export default function App() {
@@ -27,26 +28,29 @@ export default function App() {
       <AppSideBar />
       <div className="w-full overflow-hidden">
         <AppNav />
-        <AlgoProvider>
-          <ModalsProvider modals={{ message: MessageModal, buy: BuyModal, wallet: WalletModal, dao: DaoModal }}>
-            <Routes>
-              <Route index Component={Home} />
-              <Route path="/marketplace" Component={MarketPlace} />
-              <Route path="/marketplace/music/:musicId" Component={MusicDetails} />
-              <Route path="/marketplace/art/:artId" Component={ArtDetails} />
-              {/* <Route path="/communities" Component={Communities} /> */}
-              {/* <Route path="/events" Component={Events} /> */}
-              {/* <Route path="/events/add" Component={AddEvent} /> */}
-              {/* <Route path="/earnings" Component={MyStreams} /> */}
-              {/* <Route path="/upload" Component={Upload} /> */}
-              <Route path="/dao" Component={DAO} />
-              <Route path="/streams" Component={MyStreams} />
-              <Route path="/create/art" Component={CreateArtNft} />
-              <Route path="/create/sound" Component={CreateSoundNFt} />
-              <Route path="/profile" Component={Profile} />
-            </Routes>
-          </ModalsProvider>
-        </AlgoProvider>
+
+        <ErrorBoundary>
+          <AlgoProvider>
+            <ModalsProvider modals={{ message: MessageModal, buy: BuyModal, wallet: WalletModal, dao: DaoModal }}>
+              <Routes>
+                <Route index Component={Home} />
+                <Route path="/marketplace" Component={MarketPlace} />
+                <Route path="/marketplace/music/:musicId" Component={MusicDetails} />
+                <Route path="/marketplace/art/:artId" Component={ArtDetails} />
+                {/* <Route path="/communities" Component={Communities} /> */}
+                {/* <Route path="/events" Component={Events} /> */}
+                {/* <Route path="/events/add" Component={AddEvent} /> */}
+                {/* <Route path="/earnings" Component={MyStreams} /> */}
+                {/* <Route path="/upload" Component={Upload} /> */}
+                <Route path="/dao" Component={DAO} />
+                <Route path="/streams" Component={MyStreams} />
+                <Route path="/create/art" Component={CreateArtNft} />
+                <Route path="/create/sound" Component={CreateSoundNFt} />
+                <Route path="/profile" Component={Profile} />
+              </Routes>
+            </ModalsProvider>
+          </AlgoProvider>
+        </ErrorBoundary>
       </div>
     </main>
   )

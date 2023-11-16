@@ -3,25 +3,43 @@ import { useMemo } from 'react'
 import { ellipseAddress } from '../../../utils/ellipseAddress'
 import { getAlgodConfigFromViteEnvironment } from '../../../utils/network/getAlgoClientConfigs'
 import CopyButton from '../../General/CopyButton'
+import useAppClient from '../../../hooks/useAppClient'
+import { useQuery } from '@tanstack/react-query'
 
-const BalanceList = ({ title }: { title: string }) => {
+const BalanceList = ({ name, amount, price }: { name: string; amount: number; price: number }) => {
   return (
     <div className="flex items-center justify-between gap-5 p-4 border-[#444] border rounded-xl">
       <div className="flex items-center gap-3">
         <Icon icon="cryptocurrency:algo" width="20" />
-        <span>0 {title}</span>
+        <span>
+          {amount.toFixed(2)} {name}
+        </span>
       </div>
-      <span>$0.00</span>
+      <span>${(amount * price).toFixed(2)}</span>
     </div>
   )
 }
 
 const Account = ({ activeAddress }: { activeAddress?: string }) => {
+  const { getBalance } = useAppClient()
   const algoConfig = getAlgodConfigFromViteEnvironment()
 
   const dappFlowNetworkName = useMemo(() => {
     return algoConfig.network === '' ? 'sandbox' : algoConfig.network.toLocaleLowerCase()
   }, [algoConfig.network])
+
+  const { data } = useQuery({
+    queryKey: ['algo-balance'],
+    queryFn: () => getBalance(activeAddress),
+    enabled: !!activeAddress,
+    initialData: {
+      name: 'ALGO',
+      amount: 0,
+      price: 0,
+    },
+  })
+
+  // console.log(data)
 
   return (
     <div>
@@ -40,8 +58,8 @@ const Account = ({ activeAddress }: { activeAddress?: string }) => {
       </a>
       <div className="w-max font-bold mt-6">Assets</div>
       <div className="space-y-4 mt-2 mb-4">
-        <BalanceList title="ALGO" />
-        <BalanceList title="AURA" />
+        <BalanceList {...data} />
+        <BalanceList name="AURA" amount={0} price={0} />
       </div>
       {/* <div className="text-xl">Network: {algoConfig.network === '' ? 'localnet' : algoConfig.network}</div> */}
     </div>
