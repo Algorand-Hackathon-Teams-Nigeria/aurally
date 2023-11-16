@@ -1,213 +1,171 @@
-import { Aurally } from '../contracts/AurallyClient'
 import toast from 'react-hot-toast'
-import useAppClient from './useAppClient'
 import { useMutation } from '@tanstack/react-query'
+import { AppClientProps } from '../utils/contract-config'
+import {
+  bidOnArtAuction,
+  createArtNFT,
+  createProposal,
+  createSoundNFT,
+  endArtAuction,
+  optInToAsset,
+  purchaseNFT,
+  startAuction,
+  streamNFT,
+  transferNFT,
+  voteOnProposal,
+} from '../utils/contractcalls'
+import { handleContractError } from '../utils/handlingErrors'
 
-export const useCreateSoundNFT = () => {
-  const { deployCall, appClient } = useAppClient()
-  const createSoundNFT = async (props: Aurally['methods']['createSoundNFT']['argsObj']) => {
-    await deployCall()
-    return await appClient.createSoundNft(props)
-  }
-  const { mutateAsync, isPending } = useMutation({
-    mutationFn: createSoundNFT,
+export const useCreateSoundNFT = (props: AppClientProps) => {
+  const data = useMutation({
+    mutationFn: createSoundNFT(props),
     onSuccess: () => {
       toast.success(`Sound Nft was created successfully`)
     },
-    onError: () => {
-      toast.error(`Error while creating Sound Nft`)
+    onError: (error) => {
+      handleContractError(error, `Error while creating Sound Nft`)
     },
   })
 
-  return { mutateAsync, isPending }
+  return data
 }
 
-export const useCreateArtNFT = () => {
-  const { deployCall, appClient } = useAppClient()
-  const createArtNFT = async (props: Aurally['methods']['createArtNFT']['argsObj']) => {
-    await deployCall()
-    return await appClient.createArtNft(props)
-  }
-  const { mutateAsync, isPending } = useMutation({
-    mutationFn: createArtNFT,
+export const useCreateArtNFT = (props: AppClientProps) => {
+  const data = useMutation({
+    mutationFn: createArtNFT(props),
     onSuccess: () => {
       toast.success(`Art Nft was created successfully`)
     },
-    onError: () => {
-      toast.error(`Error while creating Art Nft`)
+    onError: (error) => {
+      handleContractError(error, `Error while creating Art Nft`)
     },
   })
 
-  return { mutateAsync, isPending }
+  return data
 }
 
-export const useStartAuction = () => {
-  const { deployCall, appClient } = useAppClient()
-  const startAuction = async (props: Aurally['methods']['startAuction']['argsObj']) => {
-    await deployCall()
-    return await appClient.startAuction(props)
-  }
-  const { mutateAsync, isPending } = useMutation({
-    mutationFn: startAuction,
+export const useStartAuction = (props: AppClientProps) => {
+  const data = useMutation({
+    mutationFn: startAuction(props),
     onSuccess: () => {
       toast.success(`Auction was started successfully`)
     },
-    onError: () => {
-      toast.error(`Error while starting auction`)
+    onError: (error) => {
+      handleContractError(error, `Error while starting auction`)
     },
   })
 
-  return { mutateAsync, isPending }
+  return data
 }
 
-export const useBidOnArtAuction = () => {
-  const { deployCall, appClient } = useAppClient()
-  const bidOnArtAuction = async (props: Aurally['methods']['bidOnArtAuction']['argsObj']) => {
-    await deployCall()
-    return await appClient.bidOnArtAuction(props)
-  }
-  const { mutateAsync, isPending } = useMutation({
-    mutationFn: bidOnArtAuction,
+export const useBidOnArtAuction = (props: AppClientProps) => {
+  const data = useMutation({
+    mutationFn: bidOnArtAuction(props),
     onSuccess: () => {
       toast.success(`Your bid is placed succesfully`)
     },
-    onError: () => {
-      toast.error(`Error while placing bid`)
+    onError: (error) => {
+      handleContractError(error, `Error while placing bid`)
     },
   })
 
-  return { mutateAsync, isPending }
+  return data
 }
 
-export const useEndArtAuction = () => {
-  const { deployCall, appClient } = useAppClient()
-  const endArtAuction = async (props: Aurally['methods']['endArtAuction']['argsObj']) => {
-    await deployCall()
-    return await appClient.endArtAuction(props)
-  }
-  const { mutateAsync, isPending } = useMutation({
-    mutationFn: endArtAuction,
+export const useEndArtAuction = (props: AppClientProps) => {
+  const data = useMutation({
+    mutationFn: endArtAuction(props),
     onSuccess: () => {
       toast.success(`Nft Auction Ended`)
     },
-    onError: () => {
-      toast.error(`Error ending nft auction`)
+    onError: (error) => {
+      handleContractError(error, `Error ending nft auction`)
     },
   })
 
-  return { mutateAsync, isPending }
+  return data
 }
 
-export const usePurchaseNFT = () => {
-  const { deployCall, appClient } = useAppClient()
-  const purchaseNFT = async (props: Aurally['methods']['purchaseNFT']['argsObj']) => {
-    await deployCall()
-    return await appClient.purchaseNft(props)
-  }
-  const { mutateAsync, isPending } = useMutation({
-    mutationFn: purchaseNFT,
+export const usePurchaseNFT = (props: AppClientProps) => {
+  const data = useMutation({
+    mutationFn: purchaseNFT(props),
     onSuccess: () => {
       toast.success(`Nft purchased successfully`)
     },
-    onError: () => {
-      toast.error(`Error while purchasing Nft`)
+    onError: (error) => {
+      handleContractError(error, `Error while purchasing Nft`)
     },
   })
 
-  return { mutateAsync, isPending }
+  return data
 }
 
-export const useTransferNFT = () => {
-  const { deployCall, appClient } = useAppClient()
-  const transferNFT = async (props: Aurally['methods']['transferNFT']['argsObj']) => {
-    await deployCall()
-    return await appClient.transferNft(props)
-  }
-  const { mutateAsync, isPending } = useMutation({
-    mutationFn: transferNFT,
+export const useTransferNFT = (props: AppClientProps) => {
+  const data = useMutation({
+    mutationFn: transferNFT(props),
     onSuccess: () => {
       toast.success(`Nft transferred successfully`)
     },
-    onError: () => {
-      toast.error(`Error while transfering Nft`)
+    onError: (error) => {
+      handleContractError(error, `Error while transfering Nft`)
     },
   })
 
-  return { mutateAsync, isPending }
+  return data
 }
 
-export const useVoteOnProposal = () => {
-  const { deployCall, appClient } = useAppClient()
-  const voteOnProposal = async (props: Aurally['methods']['voteOnProposal']['argsObj']) => {
-    await deployCall()
-    return await appClient.voteOnProposal(props)
-  }
-  const { mutateAsync, isPending } = useMutation({
-    mutationFn: voteOnProposal,
+export const useVoteOnProposal = (props: AppClientProps) => {
+  const data = useMutation({
+    mutationFn: voteOnProposal(props),
     onSuccess: () => {
       toast.success(`You have voted successfully`)
     },
-    onError: () => {
-      toast.error(`Error while casting vote.`)
+    onError: (error) => {
+      handleContractError(error, `Error while casting vote.`)
     },
   })
 
-  return { mutateAsync, isPending }
+  return data
 }
 
-export const useCreateProposal = () => {
-  const { deployCall, appClient } = useAppClient()
-  const createProposal = async (props: Aurally['methods']['createProposal']['argsObj']) => {
-    await deployCall()
-    return await appClient.createProposal(props)
-  }
-  const { mutateAsync, isPending } = useMutation({
-    mutationFn: createProposal,
+export const useCreateProposal = (props: AppClientProps) => {
+  const data = useMutation({
+    mutationFn: createProposal(props),
     onSuccess: () => {
       toast.success(`Proposal created successfully`)
     },
-    onError: () => {
-      toast.error(`Error creating Proposal`)
+    onError: (error) => {
+      handleContractError(error, `Error creating Proposal`)
     },
   })
 
-  return { mutateAsync, isPending }
+  return data
 }
 
-export const useStreamNFT = () => {
-  const { deployCall, appClient } = useAppClient()
-  const streamNFT = async (props: Aurally['methods']['streamNFT']['argsObj']) => {
-    await deployCall()
-    return await appClient.streamNft(props)
-  }
-  const { mutateAsync, isPending } = useMutation({
-    mutationFn: streamNFT,
+export const useStreamNFT = (props: AppClientProps) => {
+  const data = useMutation({
+    mutationFn: streamNFT(props),
     onSuccess: () => {
       toast.success(`Aura streamed successfully`)
     },
-    onError: () => {
-      toast.error(`Error streaming nft`)
+    onError: (error) => {
+      handleContractError(error, `Error streaming nft`)
     },
   })
 
-  return { mutateAsync, isPending }
+  return data
 }
 
-export const useOptInToAsset = () => {
-  const { deployCall, appClient } = useAppClient()
-  const optInToAsset = async (props: Aurally['methods']['optInToAsset']['argsObj']) => {
-    await deployCall()
-    return await appClient.optInToAsset(props)
-  }
-  const { mutateAsync, isPending } = useMutation({
-    mutationFn: optInToAsset,
+export const useOptInToAsset = (props: AppClientProps) => {
+  const data = useMutation({
+    mutationFn: optInToAsset(props),
     onSuccess: (_, variable) => {
       toast.success(`Nft ${variable.asset} Created successfully`)
     },
-    onError: () => {
-      toast.error(`Error creating NFT`)
+    onError: (error) => {
+      handleContractError(error, `Error creating NFT`)
     },
   })
 
-  return { mutateAsync, isPending }
+  return data
 }

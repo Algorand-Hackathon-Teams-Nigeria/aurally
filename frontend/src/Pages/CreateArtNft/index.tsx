@@ -10,6 +10,7 @@ import { useWallet } from '@txnlab/use-wallet'
 import toast from 'react-hot-toast'
 import { create } from 'ipfs-http-client'
 import { Buffer } from 'buffer'
+// import { deployCall } from '../../utils/contractcalls'
 
 const projectId = '2Y2uzvQN5CSqHMciRnMlmlaFtI0'
 const projectSecret = '7f68efcacf3a67ceb9b738728c235d02'
@@ -29,8 +30,8 @@ const options = {
 const client = create(options)
 
 const CreateArtNft = () => {
-  const { isPending, mutateAsync } = useCreateArtNFT()
-  const { activeAddress } = useWallet()
+  const { activeAddress, signer } = useWallet()
+  const { isPending, isError, mutateAsync } = useCreateArtNFT({ address: activeAddress, signer })
   const [name, setName] = useState('')
   const [desc, setDesc] = useState('')
   const [supply, setSupply] = useState('')
@@ -47,13 +48,15 @@ const CreateArtNft = () => {
     const reader = new FileReader()
     reader.readAsArrayBuffer(imageFile)
     let url = ''
+    let cid = ''
     reader.onloadend = async () => {
       const arrayBuffer = new Uint8Array(reader.result as ArrayBuffer)
-      const { cid } = await client.add(arrayBuffer)
+      const { cid: cidInner } = await client.add(arrayBuffer)
       url = `https://ipfs.infura.io/ipfs/${cid}`
       // url = `https://gateway.pinata.cloud/ipfs/${cid}`
+      cid = cidInner as unknown as string
     }
-    return url
+    return { url, cid }
   }
 
   const uploadcall = async () => {
@@ -61,20 +64,24 @@ const CreateArtNft = () => {
       toast.error('Connect Your Wallet')
     }
 
-    const url = await uploadToIpfs()
+    const { cid, url } = await uploadToIpfs()
 
-    const nft: [string, bigint | number, string, bigint | number, string, string, bigint | number, bigint | number, string, boolean] = [
+    console.log(cid, url)
+
+    const nft: [string, number | bigint, string, number | bigint, string, string, number | bigint, number | bigint, string, boolean] = [
       name,
-      Number(supply), // Replace with the actual supply
+      0,
+      name,
+      Number(supply),
       desc,
+      cid,
       Number(price),
-      'Creator Name', // Replace with the actual creator's name
-      'Creator Username', // Replace with the actual creator's username
-      Date.now(), // Replace with the actual creation date
-      Math.random(), // Replace with a unique ID
-      url,
+      0,
+      activeAddress as string,
       true,
     ]
+
+    // await deployCall({ address: activeAddress, signer })
 
     const a = await mutateAsync({
       creator: activeAddress as string,
@@ -83,7 +90,7 @@ const CreateArtNft = () => {
       _username: activeAddress as string,
     })
 
-    console.log(url, a)
+    console.log(a)
     modals.openContextModal({
       modal: 'message',
       innerProps: {
@@ -96,16 +103,9 @@ const CreateArtNft = () => {
   }
 
   return (
-    <div className="routePage mb-32">
-      <div className="flex items-center justify-between flex-wrap gap-5 mb-10">
-        <div className="routeName">Create NFT</div>
-        <div className="hidden md:block">
-          <Button size="md" radius={'md'} loading={isPending} onClick={uploadcall}>
-            Upload
-          </Button>
-        </div>
-      </div>
-      <div className="space-y-5 max-w-[850px]">
+    <div className="routePage mb-32 max-w-[850px]">
+      <div className="routeName mb-10">Create NFT</div>
+      <div className="space-y-5">
         <div>
           <div>
             Upload Media <span className="text-[#8A2BE2]">*</span>
@@ -150,7 +150,7 @@ const CreateArtNft = () => {
           classNames={classes}
           required
           label="Name"
-          placeholder="Your NFT"
+          placeholder="Your NFT Name"
         />
         <TextInput
           value={supply}
@@ -168,7 +168,6 @@ const CreateArtNft = () => {
           label="Description"
           placeholder="Enter a description"
         />
-        <TextInput classNames={classes} required label="Link" placeholder="Paste link" />
         <TextInput
           value={price}
           onChange={(e) => setPrice(e.currentTarget.value)}
@@ -178,11 +177,9 @@ const CreateArtNft = () => {
           placeholder="0.0 ALGO"
         />
       </div>
-      <div className="md:hidden mt-8">
-        <Button fullWidth size="lg" fz={14} radius={'md'} loading={isPending} onClick={uploadcall}>
-          Upload
-        </Button>
-      </div>
+      <Button fullWidth size="lg" radius={'md'} mt={32} loading={isPending && !isError} onClick={uploadcall}>
+        Upload
+      </Button>
     </div>
   )
 }

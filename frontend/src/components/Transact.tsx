@@ -2,8 +2,8 @@ import * as algokit from '@algorandfoundation/algokit-utils'
 import { useWallet } from '@txnlab/use-wallet'
 import algosdk from 'algosdk'
 import { useState } from 'react'
-import { getAlgodConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
 import toast from 'react-hot-toast'
+import { getAlgodConfigFromViteEnvironment } from '../utils/algo-constants'
 
 interface TransactInterface {
   openModal: boolean

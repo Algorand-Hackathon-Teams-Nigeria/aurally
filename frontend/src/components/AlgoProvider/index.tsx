@@ -3,7 +3,7 @@ import { DaffiWalletConnect } from '@daffiwallet/connect'
 import { PeraWalletConnect } from '@perawallet/connect'
 import { PROVIDER_ID, ProvidersArray, WalletProvider, useInitializeProviders } from '@txnlab/use-wallet'
 import algosdk from 'algosdk'
-import { getAlgodConfigFromViteEnvironment } from '../../utils/network/getAlgoClientConfigs'
+import { getAlgodConfigFromViteEnvironment } from '../../utils/algo-constants'
 // hello
 let providersArray: ProvidersArray
 if (import.meta.env.VITE_ALGOD_NETWORK === '') {

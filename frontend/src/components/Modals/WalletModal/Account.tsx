@@ -1,10 +1,10 @@
 import { Icon } from '@iconify/react'
-import { useMemo } from 'react'
-import { ellipseAddress } from '../../../utils/ellipseAddress'
-import { getAlgodConfigFromViteEnvironment } from '../../../utils/network/getAlgoClientConfigs'
-import CopyButton from '../../General/CopyButton'
-import useAppClient from '../../../hooks/useAppClient'
 import { useQuery } from '@tanstack/react-query'
+import { useMemo } from 'react'
+import { getAlgodConfigFromViteEnvironment } from '../../../utils/algo-constants'
+import { ellipseAddress } from '../../../utils/ellipseAddress'
+import { getBalance } from '../../../utils/walletcalls'
+import CopyButton from '../../General/CopyButton'
 
 const BalanceList = ({ name, amount, price }: { name: string; amount: number; price: number }) => {
   return (
@@ -21,7 +21,6 @@ const BalanceList = ({ name, amount, price }: { name: string; amount: number; pr
 }
 
 const Account = ({ activeAddress }: { activeAddress?: string }) => {
-  const { getBalance } = useAppClient()
   const algoConfig = getAlgodConfigFromViteEnvironment()
 
   const dappFlowNetworkName = useMemo(() => {

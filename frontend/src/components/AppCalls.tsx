@@ -3,9 +3,9 @@ import { TransactionSignerAccount } from '@algorandfoundation/algokit-utils/type
 import { AppDetails } from '@algorandfoundation/algokit-utils/types/app-client'
 import { useWallet } from '@txnlab/use-wallet'
 import { useState } from 'react'
-import { HelloWorldClient } from '../contracts/hello_world'
-import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
 import toast from 'react-hot-toast'
+import { HelloWorldClient } from '../contracts/hello_world'
+import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from '../utils/algo-constants'
 
 interface AppCallsInterface {
   openModal: boolean
