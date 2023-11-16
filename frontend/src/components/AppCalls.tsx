@@ -52,14 +52,14 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
     const deployParams = {
       onSchemaBreak: 'append',
       onUpdate: 'append',
-    }
-    await appClient.deploy(deployParams).catch((e: Error) => {
+    } as const
+    await appClient.deploy(deployParams).catch(() => {
       toast.success(`Error deploying the contract`)
       setLoading(false)
       return
     })
 
-    const response = await appClient.hello({ name: contractInput }).catch((e: Error) => {
+    const response = await appClient.hello({ name: contractInput }).catch(() => {
       toast.success(`Error calling the contract`)
       setLoading(false)
       return
