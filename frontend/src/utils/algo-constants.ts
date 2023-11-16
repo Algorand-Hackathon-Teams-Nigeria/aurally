@@ -1,3 +1,5 @@
+import { AppClientDeployCoreParams } from '@algorandfoundation/algokit-utils/types/app-client'
+import { AurallyDeployArgs } from '../contracts/AurallyClient'
 import { AlgoViteClientConfig, AlgoViteKMDConfig } from '../interfaces/network'
 
 export function getAlgodConfigFromViteEnvironment(): AlgoViteClientConfig {
@@ -40,7 +42,7 @@ export function getKmdConfigFromViteEnvironment(): AlgoViteKMDConfig {
   }
 }
 
-export const deployParams = {
+export const deployParams: AurallyDeployArgs & AppClientDeployCoreParams = {
   onSchemaBreak: 'append',
   onUpdate: 'append',
-} as const
+}
