@@ -22,7 +22,7 @@ const MarketPlace = () => {
             />
           ))}
           {filteredList.length === 0 && (
-            <div className="py-28  flex justify-center items-center text-center text-[#8A2BE2] font-bold">No NFTs found</div>
+            <div className="w-full py-28  flex justify-center items-center text-center text-[#8A2BE2] font-bold">No NFTs found</div>
           )}
         </div>
       </div>
