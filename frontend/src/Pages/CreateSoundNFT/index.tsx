@@ -113,7 +113,7 @@ const CreateSoundNFt = () => {
         artist: form.values.artist,
         supply: 1000_000,
         desc: form.values.desc,
-        price: form.values.price.toString(),
+        price: form.values.price,
         genre: form.values.genre,
         audio: audioUrl,
         sample: sampleUrl,
