@@ -21,10 +21,10 @@ const MarketPlace = () => {
               link={`/dapp/marketplace/${item.type === 'sound' ? 'music' : 'art'}/${item.id}`}
             />
           ))}
-          {filteredList.length === 0 && (
-            <div className="w-full py-28  flex justify-center items-center text-center text-[#8A2BE2] font-bold">No NFTs found</div>
-          )}
         </div>
+        {filteredList.length === 0 && (
+          <div className="w-full py-28  flex justify-center items-center text-center text-[#8A2BE2] font-bold">No NFTs found</div>
+        )}
       </div>
     </div>
   )
