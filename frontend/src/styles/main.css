@@ -71,3 +71,49 @@ section {
   letter-spacing: -0.25px;
   @apply font-bold text-[32px] leading-[40px] sm:text-[57px] sm:leading-[64px];
 }
+
+.roadmap-top::after,
+.roadmap-bottom::before,
+.roadmap::before,
+.roadmap::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  width: 14.521px;
+  height: 14.521px;
+  background: #8a2be2;
+  border-radius: 50%;
+}
+
+.roadmap-top::after,
+.roadmap::after {
+  top: 0;
+  transform: translate(-50%, -8px);
+}
+
+.roadmap-bottom::before,
+.roadmap::before {
+  bottom: 0;
+  transform: translate(-50%, 8px);
+}
+
+.arrow-right {
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 10px solid #8a2be2;
+}
+
+.arrow-left {
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-right: 10px solid #8a2be2;
+}
+
+
+html {
+  scroll-behavior: smooth;
+}

@@ -5,32 +5,12 @@ import { useEffect, useRef } from 'react'
 import WaveSurfer from 'wavesurfer.js'
 import AudioPlayer from '../../components/AudioPlayer'
 import { modals } from '@mantine/modals'
-
-const assetList = [1]
-
-const WithAsset = () => {
-  return (
-    <div className="mb-10">
-      <div className="routeName mb-6">My Streams</div>
-      <div className="grid grid-cols-music-card gap-4 sm:gap-5">
-        {[1, 2, 3, 4, 5, 6].map((item) => (
-          <MusicCard
-            action={() => {}}
-            title="Beat the flow"
-            title2="Bid"
-            title3="Tyler Faye"
-            title4="0.25 ALGO"
-            key={item}
-            buttonLabel="Play Now"
-          />
-        ))}
-      </div>
-    </div>
-  )
-}
+import { useAtomValue } from 'jotai'
+import { myStreamAtom } from '../../store/atoms'
 
 const MyStreams = () => {
   const wavesurferRef = useRef<WaveSurfer | null>(null)
+  const nftList = useAtomValue(myStreamAtom)
 
   useEffect(() => {
     if (wavesurferRef.current) {
@@ -55,12 +35,28 @@ const MyStreams = () => {
         <div className="mb-2 text-xl">Beat the flow</div>
         <AudioPlayer wavesurferRef={wavesurferRef} />
       </div>
-      {assetList.length > 0 ? (
-        <WithAsset />
+      {nftList.length > 0 ? (
+        <div className="mb-10">
+          <div className="routeName mb-6">My Streams</div>
+          <div className="grid grid-cols-music-card gap-4 sm:gap-5">
+            {nftList.map((item) => (
+              <MusicCard
+                img={item.imgUrl}
+                title={item.title}
+                title2="Bid"
+                title3={item.artist}
+                title4={`${Number(item.price)} ALGO`}
+                key={item.id}
+                buttonLabel="Play"
+                // link={`/dapp/marketplace/music/${item.id}`}
+              />
+            ))}
+          </div>
+        </div>
       ) : (
         <>
           <div>You don't have any assets in your wallet. Check out the marketplace for available sales.</div>
-          <Link to="/marketplace">
+          <Link to="/dapp/marketplace">
             <Button className="mt-8" size="md" px={40}>
               Go to Marketplace
             </Button>

@@ -7,11 +7,11 @@ import Logo from '../General/Logo'
 import classes from './sidebar.module.css'
 
 const data = [
-  { link: '', label: 'Home', icon: 'solar:home-2-broken' },
-  { link: '/marketplace', label: 'Marketplace', icon: 'solar:shop-broken' },
-  { link: '/dao', label: 'DAO', icon: 'tabler:ticket' },
-  { link: '/streams', label: 'My Streams', icon: 'solar:play-broken' },
-  { link: '/profile', label: 'Profile', icon: 'line-md:account' },
+  { link: '/dapp', label: 'Home', icon: 'solar:home-2-broken' },
+  { link: '/dapp/marketplace', label: 'Marketplace', icon: 'solar:shop-broken' },
+  { link: '/dapp/dao', label: 'DAO', icon: 'tabler:ticket' },
+  { link: '/dapp/streams', label: 'My Streams', icon: 'solar:play-broken' },
+  { link: '/dapp/profile', label: 'Profile', icon: 'line-md:account' },
 ]
 
 export const Links = memo(({ isMobile }: { isMobile?: boolean }) => {
@@ -39,7 +39,7 @@ const AppSideBar = () => {
   const icon = <Icon icon="octicon:plus-16" stroke="2" width={20} />
 
   return (
-    <nav data-path={sliced[1]} className={`${classes.navbar} transition-all`} data-sub-bg={sliced[2] === 'music'}>
+    <nav data-path={sliced[2] || ''} className={`${classes.navbar} transition-all`} data-sub-bg={sliced[3] === 'music'}>
       <Logo className={classes.svg1} /> <BigLogo className={classes.svg2} />
       <div className={classes.navbarMain}>
         <Links />
@@ -60,10 +60,10 @@ const AppSideBar = () => {
               </div>
             </Menu.Target>
             <Menu.Dropdown>
-              <Menu.Item to="/create/sound" component={Link} leftSection={<Icon icon="mdi:music" />}>
+              <Menu.Item to="/dapp/create/sound" component={Link} leftSection={<Icon icon="mdi:music" />}>
                 Sound NFT
               </Menu.Item>
-              <Menu.Item to="/create/art" component={Link} leftSection={<Icon icon="mdi:art" />}>
+              <Menu.Item to="/dapp/create/art" component={Link} leftSection={<Icon icon="mdi:art" />}>
                 Art NFT
               </Menu.Item>
             </Menu.Dropdown>

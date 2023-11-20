@@ -1,31 +1,71 @@
 import { Button } from '@mantine/core'
 import { ContextModalProps, modals } from '@mantine/modals'
+import { useWallet } from '@txnlab/use-wallet'
+import { algodClient } from '../../utils/contract-config'
+import algosdk from 'algosdk'
+import { useMutation } from '@tanstack/react-query'
+import toast from 'react-hot-toast'
 
 const BuyModal = ({
   context,
   id,
   innerProps,
 }: ContextModalProps<{
-  name: string
-  author: string
-  total_stream: string
-  price: string
+  id: number
+  title: string
+  artist: string
+  streams: string
+  price: number
   relase_date: string
-  btnAction?: () => void
+  btnAction?: () => Promise<void>
 }>) => {
-  const buy = () => {
+  const { activeAddress, signTransactions, sendTransactions } = useWallet()
+  const sendTransaction = async (from = activeAddress, to = activeAddress, amount = 0.1) => {
+    try {
+      if (!from || !to || !amount) {
+        throw new Error('Missing transaction params.')
+      }
+      amount = amount * 1000000
+
+      const suggestedParams = await algodClient.getTransactionParams().do()
+
+      const transaction = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+        from,
+        to,
+        amount,
+        suggestedParams,
+      })
+
+      const encodedTransaction = algosdk.encodeUnsignedTransaction(transaction)
+      const signedTransactions = await signTransactions([encodedTransaction])
+      const waitRoundsToConfirm = 4
+      const { id } = await sendTransactions(signedTransactions, waitRoundsToConfirm)
+      return id
+    } catch (error) {
+      throw new Error('Error while sending transaction')
+    }
+  }
+
+  const { isPending, isError, mutateAsync } = useMutation({
+    mutationFn: () => sendTransaction(activeAddress, activeAddress, innerProps.price),
+    onSuccess: () => {
+      modals.openContextModal({
+        modal: 'message',
+        innerProps: {
+          title: `Nft #${innerProps.id} purchased`,
+          icon: 'success',
+          desc: 'Your art has been created successfully',
+          btnLabel: 'Close',
+        },
+      })
+    },
+    onError: (error) => {
+      toast.error(error.message)
+    },
+  })
+  const buy = async () => {
+    await mutateAsync()
     context.closeModal(id)
-    innerProps.btnAction?.()
-    modals.openContextModal({
-      modal: 'message',
-      innerProps: {
-        title: 'Stream Purchase successful',
-        icon: 'success',
-        purpleDesc: 'Beat the flow',
-        desc: 'You have successfully purchased',
-        btnLabel: 'Start streaming',
-      },
-    })
   }
 
   return (
@@ -35,20 +75,20 @@ const BuyModal = ({
       <div className="border-[#444] border py-2 px-3 rounded-lg mb-6">
         <table className="w-full">
           <tr>
-            <td className="py-2">Summary</td>
-            <td className="text-end text-[#AFAFAF]">{innerProps.name}</td>
+            <td className="py-2">Title</td>
+            <td className="text-end text-[#AFAFAF]">{innerProps.title}</td>
           </tr>
           <tr>
-            <td className="py-2">Creator</td>
-            <td className="text-end text-[#AFAFAF]">{innerProps.author}</td>
+            <td className="py-2">Artist</td>
+            <td className="text-end text-[#AFAFAF]">{innerProps.artist}</td>
           </tr>
           <tr>
             <td className="py-2">Total streams</td>
-            <td className="text-end text-[#AFAFAF]">{innerProps.total_stream}</td>
+            <td className="text-end text-[#AFAFAF]">{innerProps.streams}</td>
           </tr>
           <tr>
             <td className="py-2">Price</td>
-            <td className="text-end text-[#AFAFAF]">{innerProps.price}</td>
+            <td className="text-end text-[#AFAFAF]">{`${innerProps.price} ALGO`}</td>
           </tr>
           <tr>
             <td className="py-2">Released date</td>
@@ -56,7 +96,7 @@ const BuyModal = ({
           </tr>
         </table>
       </div>
-      <Button size="md" fullWidth radius={'md'} onClick={buy}>
+      <Button size="md" fullWidth loading={isPending && !isError} radius={'md'} onClick={buy}>
         Get Now
       </Button>
     </>

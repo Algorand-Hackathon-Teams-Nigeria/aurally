@@ -1,8 +1,8 @@
 import { Button } from '@mantine/core'
-import { atom, useAtom } from 'jotai'
-import { useNavigate } from 'react-router-dom'
+import { atom, useAtom, useAtomValue } from 'jotai'
 import MusicCard from '../../components/MusicCard'
 import MusicPlayerCarousel from './component/MusicPlayerCarousel'
+import { nftListAtom } from '../../store/atoms'
 
 const musicTypeAtom = atom('On Sale')
 const TYPES = ['On Sale', 'Top', 'Recently Added']
@@ -22,10 +22,7 @@ const MusicType = () => {
 }
 
 const Home = () => {
-  const navigate = useNavigate()
-  const joinAction = () => {
-    navigate('/marketplace/music/12')
-  }
+  const nftList = useAtomValue(nftListAtom)
 
   return (
     <div>
@@ -34,15 +31,16 @@ const Home = () => {
         <div className="text-[2rem] font-bold mb-6 mt-6">Trending Auras</div>
         <MusicType />
         <div className="w-full grid grid-cols-music-card gap-[18px]">
-          {[1, 2, 3, 4, 5, 6].map((item) => (
+          {nftList.map((item) => (
             <MusicCard
-              action={joinAction}
-              title="Beat the flow"
-              title2="$10"
-              title3="Tyler Faye"
-              title4="0.25 ALGO"
-              key={item}
-              buttonLabel="Buy and Stream Now"
+              img={item.imgUrl}
+              title={item.title}
+              title2="Bid"
+              title3={item.type === 'art' ? item.creator : item.artist}
+              title4={`${Number(item.price)} ALGO`}
+              key={item.id}
+              buttonLabel={item.type === 'sound' ? 'Stream and Buy' : 'Buy'}
+              link={`/dapp/marketplace/${item.type === 'sound' ? 'music' : 'art'}/${item.id}`}
             />
           ))}
         </div>

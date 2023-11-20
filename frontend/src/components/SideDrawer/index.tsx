@@ -51,10 +51,10 @@ const SideDrawer = () => {
                     </Button>
                   </Menu.Target>
                   <Menu.Dropdown>
-                    <Menu.Item to="/create/sound" component={Link} leftSection={<Icon icon="mdi:music" />}>
+                    <Menu.Item to="/dapp/create/sound" component={Link} leftSection={<Icon icon="mdi:music" />}>
                       Sound NFT
                     </Menu.Item>
-                    <Menu.Item to="/create/art" component={Link} leftSection={<Icon icon="mdi:art" />}>
+                    <Menu.Item to="/dapp/create/art" component={Link} leftSection={<Icon icon="mdi:art" />}>
                       Art NFT
                     </Menu.Item>
                   </Menu.Dropdown>

@@ -1,105 +1,129 @@
-import { useRef, useState } from 'react'
-import { Button, TextInput, Text } from '@mantine/core'
+import { useRef } from 'react'
+import { Button, TextInput, Text, NumberInput, Textarea } from '@mantine/core'
 import { Dropzone, FileRejection, FileWithPath, IMAGE_MIME_TYPE } from '@mantine/dropzone'
 import '@mantine/dropzone/styles.css'
 import classes from '../../styles/textinput.module.css'
 import { Icon } from '@iconify/react'
 import { modals } from '@mantine/modals'
-import { useCreateArtNFT } from '../../hooks/useContractHook'
 import { useWallet } from '@txnlab/use-wallet'
 import toast from 'react-hot-toast'
-import { create } from 'ipfs-http-client'
-import { Buffer } from 'buffer'
-// import { deployCall } from '../../utils/contractcalls'
-
-const projectId = '2Y2uzvQN5CSqHMciRnMlmlaFtI0'
-const projectSecret = '7f68efcacf3a67ceb9b738728c235d02'
-
-const auth = `Basic ${Buffer.from(`${projectId}:${projectSecret}`).toString('base64')}`
-
-const options = {
-  host: 'ipfs.infura.io',
-  port: 5001,
-  protocol: 'https',
-  apiPath: '/api/v0',
-  headers: {
-    authorization: auth,
-  },
-}
-
-const client = create(options)
+import { algodClient } from '../../utils/contract-config'
+import algosdk from 'algosdk'
+import { useMutation } from '@tanstack/react-query'
+import { nftListAtom } from '../../store/atoms'
+import { useAtom } from 'jotai'
+import { uploadToIpfs } from '../../utils/ipfs-calls'
+import { useForm } from '@mantine/form'
 
 const CreateArtNft = () => {
-  const { activeAddress, signer } = useWallet()
-  const { isPending, isError, mutateAsync } = useCreateArtNFT({ address: activeAddress, signer })
-  const [name, setName] = useState('')
-  const [desc, setDesc] = useState('')
-  const [supply, setSupply] = useState('')
-  const [price, setPrice] = useState('')
-  const [files, setFiles] = useState<FileWithPath[]>([])
-  const [errors, setErrors] = useState<FileRejection[]>([])
+  const { activeAddress, signTransactions, sendTransactions } = useWallet()
   const openRef = useRef<() => void>(null)
+  const [nftList, setNftList] = useAtom(nftListAtom)
+  const form = useForm({
+    initialValues: {
+      title: '',
+      desc: '',
+      artist: '',
+      price: 0,
+      supply: 0,
+      files: [] as FileWithPath[],
+      errors: [] as FileRejection[],
+    },
+    validate: {
+      title: (value) => (!value ? 'title is required' : null),
+      artist: (value) => (!value ? 'artist is required' : null),
+      desc: (value) => (!value ? 'description is required' : null),
+      price: (value) => (value <= 0 ? 'price is required' : null),
+      supply: (value) => (value <= 0 ? 'supply is required' : null),
+      files: (value) => (!value[0] ? 'Provide a cover image' : null),
+    },
+  })
 
-  const imageFile = files[0]
+  const imageFile = form.values.files[0]
   const imageName = imageFile?.name || imageFile?.path
-  const error = errors[0]?.errors[0]?.message
+  const error = form.values.errors[0]?.errors[0]?.message
 
-  const uploadToIpfs = async () => {
-    const reader = new FileReader()
-    reader.readAsArrayBuffer(imageFile)
-    let url = ''
-    let cid = ''
-    reader.onloadend = async () => {
-      const arrayBuffer = new Uint8Array(reader.result as ArrayBuffer)
-      const { cid: cidInner } = await client.add(arrayBuffer)
-      url = `https://ipfs.infura.io/ipfs/${cid}`
-      // url = `https://gateway.pinata.cloud/ipfs/${cid}`
-      cid = cidInner as unknown as string
+  const sendTransaction = async (from = activeAddress, to = activeAddress, amount = 0.1) => {
+    try {
+      if (!from || !to || !amount) {
+        throw new Error('Missing transaction params.')
+      }
+      amount = amount * 1000000
+
+      const suggestedParams = await algodClient.getTransactionParams().do()
+
+      const transaction = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+        from,
+        to,
+        amount,
+        suggestedParams,
+      })
+
+      const encodedTransaction = algosdk.encodeUnsignedTransaction(transaction)
+      const signedTransactions = await signTransactions([encodedTransaction])
+      const waitRoundsToConfirm = 4
+      const { id } = await sendTransactions(signedTransactions, waitRoundsToConfirm)
+      return id
+    } catch (error) {
+      throw new Error('Error while sending transaction')
     }
-    return { url, cid }
   }
 
-  const uploadcall = async () => {
+  const createArtCall = async () => {
     if (!activeAddress) {
-      toast.error('Connect Your Wallet')
+      throw new Error('Connect Your Wallet')
     }
-
-    const { cid, url } = await uploadToIpfs()
-
-    console.log(cid, url)
-
-    const nft: [string, number | bigint, string, number | bigint, string, string, number | bigint, number | bigint, string, boolean] = [
-      name,
-      0,
-      name,
-      Number(supply),
-      desc,
-      cid,
-      Number(price),
-      0,
-      activeAddress as string,
-      true,
-    ]
-
-    // await deployCall({ address: activeAddress, signer })
-
-    const a = await mutateAsync({
-      creator: activeAddress as string,
-      nft,
-      _fullname: activeAddress as string,
-      _username: activeAddress as string,
+    if (error) {
+      throw new Error(error)
+    }
+    if (!form.isValid()) {
+      const a = form.validate()
+      const errorsKey = Object.keys(a.errors)
+      throw new Error(a.errors[errorsKey[0]] as string)
+    }
+    const toastId = toast.loading('Uploading files')
+    const url = await uploadToIpfs(imageFile)
+    toast.success('File uploaded successfully', {
+      id: toastId,
     })
+    await sendTransaction(activeAddress, activeAddress, Number(form.values.price.toString()))
 
-    console.log(a)
-    modals.openContextModal({
-      modal: 'message',
-      innerProps: {
-        title: 'Sound Nft Created',
-        icon: 'success',
-        desc: 'Your Sound art has been created successfully',
-        btnLabel: 'View activity',
+    setNftList((prev) => [
+      ...prev,
+      {
+        id: nftList.length,
+        title: form.values.title,
+        supply: form.values.supply,
+        desc: form.values.desc,
+        price: form.values.price,
+        creator: '@user23456',
+        imgUrl: url,
+        type: 'art',
       },
-    })
+    ])
+  }
+
+  const { isPending, isError, mutateAsync } = useMutation({
+    mutationFn: createArtCall,
+    onSuccess: () => {
+      modals.openContextModal({
+        modal: 'message',
+        innerProps: {
+          title: 'Art Nft Created',
+          icon: 'success',
+          desc: 'Your art has been created successfully',
+          btnLabel: 'View activity',
+          link: `/dapp/marketplace/art/${nftList.length}`,
+        },
+      })
+    },
+    onError: (error) => {
+      toast.error(error.message)
+    },
+  })
+
+  const create = async () => {
+    await mutateAsync()
   }
 
   return (
@@ -116,8 +140,8 @@ const CreateArtNft = () => {
         </div>
         <Dropzone
           openRef={openRef}
-          onReject={setErrors}
-          onDrop={setFiles}
+          onReject={(value) => form.setFieldValue('errors', value)}
+          onDrop={(value) => form.setFieldValue('files', value)}
           maxSize={5 * 1024 ** 2}
           accept={IMAGE_MIME_TYPE}
           className="flex justify-center"
@@ -144,41 +168,13 @@ const CreateArtNft = () => {
             </Text>
           </div>
         </Dropzone>
-        <TextInput
-          value={name}
-          onChange={(e) => setName(e.currentTarget.value)}
-          classNames={classes}
-          required
-          label="Name"
-          placeholder="Your NFT Name"
-        />
-        <TextInput
-          value={supply}
-          onChange={(e) => setSupply(e.currentTarget.value)}
-          classNames={classes}
-          required
-          label="Supply"
-          placeholder="1"
-        />
-        <TextInput
-          value={desc}
-          onChange={(e) => setDesc(e.currentTarget.value)}
-          classNames={classes}
-          required
-          label="Description"
-          placeholder="Enter a description"
-        />
-        <TextInput
-          value={price}
-          onChange={(e) => setPrice(e.currentTarget.value)}
-          classNames={classes}
-          required
-          label="Bid Price"
-          placeholder="0.0 ALGO"
-        />
+        <TextInput {...form.getInputProps('title')} classNames={classes} required label="Title" placeholder="Your NFT Title" />
+        <NumberInput {...form.getInputProps('supply')} classNames={classes} required label="Supply" placeholder="1" />
+        <NumberInput {...form.getInputProps('price')} classNames={classes} required label="Bid Price" placeholder="0.0 ALGO" />
+        <Textarea {...form.getInputProps('desc')} classNames={classes} required label="Description" placeholder="Enter a description" />
       </div>
-      <Button fullWidth size="lg" radius={'md'} mt={32} loading={isPending && !isError} onClick={uploadcall}>
-        Upload
+      <Button fullWidth size="lg" radius={'md'} mt={32} loading={isPending && !isError} onClick={create}>
+        Create
       </Button>
     </div>
   )

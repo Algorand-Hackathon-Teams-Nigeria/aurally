@@ -1,6 +1,5 @@
 import { Avatar, Button } from '@mantine/core'
 import { useWallet } from '@txnlab/use-wallet'
-import { useNavigate } from 'react-router-dom'
 import profile from '../../assets/profile.jpg'
 import CopyButton from '../../components/General/CopyButton'
 import MusicCard from '../../components/MusicCard'
@@ -8,14 +7,13 @@ import { ellipseAddress } from '../../utils/ellipseAddress'
 import { useState } from 'react'
 import classes from '../MusicDetails/musicdetail.module.css'
 import noActiviy from '../../assets/no-activity.svg'
+import { useAtomValue } from 'jotai'
+import { createdNftsAtom } from '../../store/atoms'
 
 const ProfileTab = () => {
   const [type, setType] = useState(0)
   const bg = (num: number) => (type === num ? '#1e1e1e' : 'transparent')
-  const navigate = useNavigate()
-  const stream = () => {
-    navigate('/marketplace/music/12')
-  }
+  const nftList = useAtomValue(createdNftsAtom)
 
   return (
     <div className="gboard-no-bg mt-6 mb-[90px] min-h-[434px]">
@@ -29,14 +27,16 @@ const ProfileTab = () => {
       </div>
       {type === 0 ? (
         <div className="w-full grid grid-cols-music-card gap-5">
-          {[1, 2, 3, 4, 5, 6].map((item) => (
+          {nftList.map((item) => (
             <MusicCard
-              action={stream}
-              title="Beat the flow"
-              title2="$50"
-              desc="This event is to help new artist grow their fanbase and promote their music."
-              key={item}
+              img={item.imgUrl}
+              title={item.title}
+              title2="Bid"
+              title3={item.type === 'art' ? item.creator : item.artist}
+              title4={`${Number(item.price)} ALGO`}
+              key={item.id}
               buttonLabel="View Details"
+              link={`/dapp/marketplace/${item.type === 'sound' ? 'music' : 'art'}/${item.id}`}
             />
           ))}
         </div>

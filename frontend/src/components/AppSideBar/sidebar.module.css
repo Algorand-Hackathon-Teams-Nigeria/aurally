@@ -83,11 +83,11 @@
   }
 }
 
-[data-path=''] .link[data-path=''],
-[data-path='marketplace'] .link[data-path='/marketplace'],
-[data-path='dao'] .link[data-path='/dao'],
-[data-path='streams'] .link[data-path='/streams'],
-[data-path='profile'] .link[data-path='/profile'] {
+[data-path=''] .link[data-path='/dapp'],
+[data-path='marketplace'] .link[data-path='/dapp/marketplace'],
+[data-path='dao'] .link[data-path='/dapp/dao'],
+[data-path='streams'] .link[data-path='/dapp/streams'],
+[data-path='profile'] .link[data-path='/dapp/profile'] {
   &,
   &:hover {
     box-shadow: var(--mantine-shadow-sm);

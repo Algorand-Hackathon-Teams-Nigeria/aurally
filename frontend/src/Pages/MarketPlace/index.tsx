@@ -1,62 +1,29 @@
-import { useNavigate } from 'react-router-dom'
-import TitleHeader from '../../components/General/TitleHeader'
 import MusicCard from '../../components/MusicCard'
+import { useAtomValue } from 'jotai'
+import { filteredListAtom } from '../../store/atoms'
 
 const MarketPlace = () => {
-  const navigate = useNavigate()
-
-  const joinAction = () => {
-    navigate('music/12')
-  }
+  const filteredList = useAtomValue(filteredListAtom)
 
   return (
     <div className="space-y-8 mb-32 routePage">
       <div>
-        <TitleHeader title="Recently added" />
         <div className="grid grid-cols-music-card gap-3">
-          {[1, 2, 3, 4].map((item) => (
+          {filteredList.map((item) => (
             <MusicCard
-              action={joinAction}
-              title="Beat the flow"
+              img={item.imgUrl}
+              title={item.title}
               title2="Bid"
-              title3="Tyler Faye"
-              title4="0.25 ALGO"
-              key={item}
-              buttonLabel="Stream Now"
+              title3={item.type === 'art' ? item.creator : item.artist}
+              title4={`${Number(item.price)} ALGO`}
+              key={item.id}
+              buttonLabel={item.type === 'sound' ? 'Stream and Buy' : 'Buy'}
+              link={`/dapp/marketplace/${item.type === 'sound' ? 'music' : 'art'}/${item.id}`}
             />
           ))}
-        </div>
-      </div>
-      <div>
-        <TitleHeader title="Popular Picks" />
-        <div className="grid grid-cols-music-card gap-3">
-          {[1, 2, 3, 4].map((item) => (
-            <MusicCard
-              action={joinAction}
-              title="Beat the flow"
-              title2="Bid"
-              title3="Tyler Faye"
-              title4="0.25 ALGO"
-              key={item}
-              buttonLabel="Stream Now"
-            />
-          ))}
-        </div>
-      </div>
-      <div>
-        <TitleHeader title="Recommended Picks" />
-        <div className="grid grid-cols-music-card gap-3">
-          {[1, 2, 3, 4].map((item) => (
-            <MusicCard
-              action={joinAction}
-              title="Beat the flow"
-              title2="Bid"
-              title3="Tyler Faye"
-              title4="0.25 ALGO"
-              key={item}
-              buttonLabel="Stream Now"
-            />
-          ))}
+          {filteredList.length === 0 && (
+            <div className="py-28  flex justify-center items-center text-center text-[#8A2BE2] font-bold">No NFTs found</div>
+          )}
         </div>
       </div>
     </div>

@@ -5,9 +5,19 @@ import ConnectButton from '../General/ConnectButton'
 import SideDrawer from '../SideDrawer'
 import classes from './appnav.module.css'
 import NotifcationDrawer from '../NotifcationDrawer'
+import { useAtom } from 'jotai'
+import { searchAtom } from '../../store/atoms'
 
 const SearchBar = () => {
-  return <TextInput classNames={{ input: classes.searchbar }} placeholder="Search music, artists, playlist" />
+  const [search, setSearch] = useAtom(searchAtom)
+  return (
+    <TextInput
+      value={search}
+      onChange={(e) => setSearch(e.currentTarget.value)}
+      classNames={{ input: classes.searchbar }}
+      placeholder="Search music, artists, playlist"
+    />
+  )
 }
 
 const SearchAndFilter = () => {

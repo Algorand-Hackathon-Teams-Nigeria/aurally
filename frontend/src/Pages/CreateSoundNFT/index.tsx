@@ -1,48 +1,156 @@
-import { useRef, useState } from 'react'
-import { Button, TextInput, Text, Select, FileInput } from '@mantine/core'
+import { useRef } from 'react'
+import { Button, TextInput, Text, Select, FileInput, NumberInput, Textarea } from '@mantine/core'
 import { Dropzone, FileRejection, FileWithPath, IMAGE_MIME_TYPE } from '@mantine/dropzone'
 import '@mantine/dropzone/styles.css'
 import classes from '../../styles/textinput.module.css'
 import { Icon } from '@iconify/react'
 import { modals } from '@mantine/modals'
-import { DateInput } from '@mantine/dates'
 import '@mantine/dates/styles.css'
+import { useMutation } from '@tanstack/react-query'
+import { nftListAtom } from '../../store/atoms'
+import { useAtom } from 'jotai'
+import { useWallet } from '@txnlab/use-wallet'
+import { algodClient } from '../../utils/contract-config'
+import algosdk from 'algosdk'
+import toast from 'react-hot-toast'
+import { uploadToIpfs } from '../../utils/ipfs-calls'
+import { useForm } from '@mantine/form'
 
 const GENRES = ['Pop', 'Electronic', 'R&B', 'Alte', 'Reggae', 'Afrobeat', 'Rock', 'Amapiano']
 
 const SButton = () => <Button radius="md">Upload File</Button>
 
 const CreateSoundNFt = () => {
-  const [dateValue, setDateValue] = useState<Date | null>(null)
-  const [files, setFiles] = useState<FileWithPath[]>([])
-  const [errors, setErrors] = useState<FileRejection[]>([])
+  const { activeAddress, signTransactions, sendTransactions } = useWallet()
+  const [nftList, setNftList] = useAtom(nftListAtom)
   const openRef = useRef<() => void>(null)
+  const form = useForm({
+    initialValues: {
+      title: '',
+      label: '',
+      artist: '',
+      genre: '',
+      desc: '',
+      price: 0,
+      sample: null as File | null,
+      audio: null as File | null,
+      files: [] as FileWithPath[],
+      errors: [] as FileRejection[],
+    },
+    validate: {
+      title: (value) => (!value ? 'title is required' : null),
+      label: (value) => (!value ? 'label is required' : null),
+      artist: (value) => (!value ? 'artist is required' : null),
+      genre: (value) => (!value ? 'genre is required' : null),
+      desc: (value) => (!value ? 'description is required' : null),
+      price: (value) => (value <= 0 ? 'price is required' : null),
+      sample: (value) => (!value ? 'Provide a sample audio file' : null),
+      audio: (value) => (!value ? 'Provide a valid audio file' : null),
+      files: (value) => (!value[0] ? 'Provide a cover image' : null),
+    },
+  })
 
-  const imageFile = files[0]
+  const imageFile = form.values.files[0]
   const name = imageFile?.name || imageFile?.path
-  const error = errors[0]?.errors[0]?.message
+  const error = form.values.errors[0]?.errors[0]?.message
 
-  const uploadcall = () => {
-    modals.openContextModal({
-      modal: 'message',
-      innerProps: {
-        title: 'Upload Successful',
-        icon: 'success',
-        desc: 'Your Music has been uploaded successfully',
-        btnLabel: 'View activity',
-      },
+  const sendTransaction = async (from = activeAddress, to = activeAddress, amount = 0.1) => {
+    try {
+      if (!from || !to || !amount) {
+        throw new Error('Missing transaction params.')
+      }
+      amount = amount * 1000000
+
+      const suggestedParams = await algodClient.getTransactionParams().do()
+
+      const transaction = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+        from,
+        to,
+        amount,
+        suggestedParams,
+      })
+
+      const encodedTransaction = algosdk.encodeUnsignedTransaction(transaction)
+      const signedTransactions = await signTransactions([encodedTransaction])
+      const waitRoundsToConfirm = 4
+      const { id } = await sendTransactions(signedTransactions, waitRoundsToConfirm)
+      return id
+    } catch (error) {
+      throw new Error('Error while sending transaction')
+    }
+  }
+
+  const createArtCall = async () => {
+    if (!activeAddress) {
+      throw new Error('Connect Your Wallet')
+    }
+    if (error) {
+      throw new Error(error)
+    }
+    if (!form.isValid() || !form.values.sample || !form.values.audio) {
+      const a = form.validate()
+      const errorsKey = Object.keys(a.errors)
+      throw new Error(a.errors[errorsKey[0]] as string)
+    }
+
+    const toastId = toast.loading('Uploading files')
+    const imageUrl = await uploadToIpfs(imageFile)
+    const sampleUrl = await uploadToIpfs(form.values.sample)
+    const audioUrl = await uploadToIpfs(form.values.audio)
+
+    toast.success('File uploaded successfully', {
+      id: toastId,
     })
+
+    await sendTransaction(activeAddress, activeAddress, Number(form.values.price.toString()))
+
+    setNftList((prev) => [
+      ...prev,
+      {
+        id: nftList.length,
+        title: form.values.title,
+        label: form.values.label,
+        artist: form.values.artist,
+        supply: 1000_000,
+        desc: form.values.desc,
+        price: form.values.price.toString(),
+        genre: form.values.genre,
+        audio: audioUrl,
+        sample: sampleUrl,
+        streams: 0,
+        imgUrl: imageUrl,
+        type: 'sound',
+      },
+    ])
+  }
+
+  const { isPending, isError, mutateAsync } = useMutation({
+    mutationFn: createArtCall,
+    onSuccess: () => {
+      modals.openContextModal({
+        modal: 'message',
+        innerProps: {
+          title: 'Aura Nft Created',
+          icon: 'success',
+          desc: 'Your aura has been created successfully',
+          btnLabel: 'View activity',
+          link: `/dapp/marketplace/music/${nftList.length}`,
+        },
+      })
+    },
+    onError: (error) => {
+      toast.error(error.message)
+    },
+  })
+
+  const create = async () => {
+    await mutateAsync()
   }
 
   return (
-    <div className="routePage mb-32">
-      <div className="flex items-center justify-between flex-wrap gap-5 mb-10">
-        <div className="routeName">Upload</div>
-        <Button size="md" radius={'md'} onClick={uploadcall}>
-          Upload
-        </Button>
-      </div>
-      <div className="space-y-5 max-w-[850px]">
+    <div className="routePage mb-32 max-w-[850px]">
+      <div className="routeName mb-10">Upload</div>
+      <div className="space-y-5">
         <div>
           <div>
             Music Cover <span className="text-[#8A2BE2]">*</span>
@@ -53,8 +161,8 @@ const CreateSoundNFt = () => {
         </div>
         <Dropzone
           openRef={openRef}
-          onReject={setErrors}
-          onDrop={setFiles}
+          onReject={(value) => form.setFieldValue('errors', value)}
+          onDrop={(value) => form.setFieldValue('files', value)}
           maxSize={5 * 1024 ** 2}
           accept={IMAGE_MIME_TYPE}
           className="flex justify-center"
@@ -86,7 +194,9 @@ const CreateSoundNFt = () => {
           label="Audio File"
           placeholder="(WAV or MP3)"
           required
+          accept="audio/*"
           rightSectionPointerEvents="none"
+          {...form.getInputProps('audio')}
           classNames={{ ...classes, input: classes.input2, section: classes.section2 }}
           mt="md"
         />
@@ -96,77 +206,34 @@ const CreateSoundNFt = () => {
           description="No more than 15 seconds"
           placeholder="No more than 15 seconds"
           required
+          accept="audio/*"
           rightSectionPointerEvents="none"
+          {...form.getInputProps('sample')}
           classNames={{ ...classes, input: classes.input2, section: classes.section2 }}
           mt="md"
         />
-        <TextInput classNames={classes} required label="Music Title" placeholder="Your music title" />
-        <TextInput classNames={classes} required label="Music Label" placeholder="Your music label" />
-        <TextInput classNames={classes} required label="Artist" placeholder="Add name of artists" />
-        <DateInput
-          classNames={classes}
-          rightSection={<Icon icon="uil:calender" width="20px" />}
-          value={dateValue}
-          onChange={setDateValue}
-          label="Date input"
-          placeholder="Date input"
-        />
+        <TextInput {...form.getInputProps('title')} classNames={classes} required label="Music Title" placeholder="Your music title" />
+        <TextInput {...form.getInputProps('label')} classNames={classes} required label="Music Label" placeholder="Your music label" />
+        <TextInput {...form.getInputProps('artist')} classNames={classes} required label="Artist" placeholder="Add name of artists" />
         <div>
           <div className="mb-2">
             Genre <span className="text-[#8A2BE2]">*</span>
           </div>
-          <Select placeholder="Pick a genre" data={GENRES} classNames={classes} />
+          <Select {...form.getInputProps('genre')} placeholder="Pick a genre" data={GENRES} classNames={classes} />
         </div>
-        <TextInput classNames={classes} required label="Music Link" placeholder="Paste link" />
-        <TextInput classNames={classes} required label="Stream Price" placeholder="0.0 ALGO" />
-        {/* <div className="pt-10">
-          <div>
-            <div>
-              Audio Files for Selling <span className="text-[#8A2BE2]">*</span>
-            </div>
-            <div>
-              <div className="text-sm opacity-70">Upload the necessarv beat tiles here</div>
-            </div>
-          </div>
-          <div className=" grid md:grid-cols-2 md:gap-10">
-            <FileInput
-              rightSection={<SButton />}
-              label="Un-Tagged Beat"
-              placeholder="Un-Tagged (WAV or MP3)"
-              required
-              rightSectionPointerEvents="none"
-              classNames={{ ...classes, input: classes.input2, section: classes.section2 }}
-              mt="md"
-            />
-            <FileInput
-              rightSection={<SButton />}
-              label="Terms or Use"
-              placeholder="Terms of use (PDF or.DOC)"
-              required
-              rightSectionPointerEvents="none"
-              classNames={{ ...classes, input: classes.input2, section: classes.section2 }}
-              mt="md"
-            />
-            <FileInput
-              rightSection={<SButton />}
-              label="Track Stems"
-              placeholder="Track Stems (ZIP or RAR)"
-              required
-              rightSectionPointerEvents="none"
-              classNames={{ ...classes, input: classes.input2, section: classes.section2 }}
-              mt="md"
-            />
-            <FileInput
-              rightSection={<SButton />}
-              label="Tagged Beat (Audio File for streaming)"
-              placeholder="Tagged (WAV or MP3)"
-              required
-              rightSectionPointerEvents="none"
-              classNames={{ ...classes, input: classes.input2, section: classes.section2 }}
-              mt="md"
-            />
-          </div>
-        </div> */}
+        <NumberInput {...form.getInputProps('price')} classNames={classes} required label="Stream Price" placeholder="0.0 ALGO" />
+        <Textarea
+          required
+          autosize
+          minRows={8}
+          label="Description"
+          {...form.getInputProps('desc')}
+          classNames={classes}
+          placeholder="Description about your music"
+        />
+        <Button fullWidth size="lg" radius={'md'} mt={32} loading={isPending && !isError} onClick={create}>
+          Create
+        </Button>
       </div>
     </div>
   )

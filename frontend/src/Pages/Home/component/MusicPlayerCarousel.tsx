@@ -12,6 +12,7 @@ import { useRef } from 'react'
 import HeroHome from '../../../assets/heroHome2.jpg'
 import classes from '../home.module.css'
 import profile from '../../../assets/profile.jpg'
+import { Link } from 'react-router-dom'
 
 const example = 'https://www.mfiles.co.uk/mp3-downloads/brahms-st-anthony-chorale-theme-two-pianos.mp3'
 const example2 = 'https://codeskulptor-demos.commondatastorage.googleapis.com/GalaxyInvaders/theme_01.mp3'
@@ -75,9 +76,11 @@ const CoverSection = ({ audioRef, index, mySrc }: Prop1) => {
             </div>
           </div>
         </div>
-        <Button size="md" w={150} bg={'#1E1E1E'}>
-          Get Now
-        </Button>
+        <Link to="/dapp/marketplace/music/12">
+          <Button size="md" w={150} bg={'#1E1E1E'}>
+            Get Now
+          </Button>
+        </Link>
       </div>
     </div>
   )
