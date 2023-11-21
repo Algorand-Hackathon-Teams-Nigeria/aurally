@@ -76,11 +76,14 @@ const CoverSection = ({ audioRef, index, mySrc }: Prop1) => {
             </div>
           </div>
         </div>
-        <Link to="/dapp/marketplace/music/12">
+        {/* <Link to="/dapp/marketplace/music/3">
           <Button size="md" w={150} bg={'#1E1E1E'}>
             Get Now
           </Button>
-        </Link>
+        </Link> */}
+        <Button size="md" w={150} bg={'#1E1E1E'}>
+          Get Now
+        </Button>
       </div>
     </div>
   )
