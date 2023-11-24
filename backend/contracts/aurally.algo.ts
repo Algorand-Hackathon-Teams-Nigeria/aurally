@@ -238,6 +238,11 @@ class Aurally extends Contract {
 
   startAuction(nftIpfs: string, nftName: string, minBid: uint64): void {
     // Logic to start the auction
+    /**
+     * The Plan
+     * -> There's supposed to be some kind of time for the auction to last
+     *
+      */
     // Set initial auction data
     this.artAuctions(nftIpfs).value = {
       nftHash: nftIpfs,

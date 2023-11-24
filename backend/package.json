@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@algorandfoundation/algokit-utils": "^2.3.2",
+    "@types/jest": "^29.5.10",
     "algosdk": "^2.4.0"
   },
   "devDependencies": {

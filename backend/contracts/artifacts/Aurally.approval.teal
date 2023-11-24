@@ -1231,7 +1231,7 @@ abi_route_startAuction:
 startAuction:
 	proto 3 0
 
-	// contracts/aurally.algo.ts:242
+	// contracts/aurally.algo.ts:247
 	// this.artAuctions(nftIpfs).value = {
 	//       nftHash: nftIpfs,
 	//       nftName: nftName,
@@ -1311,7 +1311,7 @@ abi_route_bidOnArtAuction:
 bidOnArtAuction:
 	proto 5 0
 
-	// contracts/aurally.algo.ts:253
+	// contracts/aurally.algo.ts:258
 	// auctionExists = this.artAuctions(nftIpfs).exists
 	frame_dig -2 // nftIpfs: bytes
 	dup
@@ -1325,19 +1325,19 @@ bidOnArtAuction:
 	pop
 	frame_bury -4 // auctionExists: uint64
 
-	// contracts/aurally.algo.ts:254
+	// contracts/aurally.algo.ts:259
 	// assert(auctionExists)
 	frame_dig -4 // auctionExists: uint64
 	assert
 
 	// if2_condition
-	// contracts/aurally.algo.ts:256
+	// contracts/aurally.algo.ts:261
 	// auctionExists
 	frame_dig -4 // auctionExists: uint64
 	bz if2_end
 
 	// if2_consequent
-	// contracts/aurally.algo.ts:257
+	// contracts/aurally.algo.ts:262
 	// auction = this.artAuctions(nftIpfs).value
 	frame_dig -2 // nftIpfs: bytes
 	dup
@@ -1348,7 +1348,7 @@ bidOnArtAuction:
 	concat
 	frame_bury -5 // storage key//auction
 
-	// contracts/aurally.algo.ts:260
+	// contracts/aurally.algo.ts:265
 	// assert(bidAmount > auction.highestBid)
 	frame_dig -3 // bidAmount: uint64
 	frame_dig -5 // storage key//auction
@@ -1361,7 +1361,7 @@ bidOnArtAuction:
 	>
 	assert
 
-	// contracts/aurally.algo.ts:263
+	// contracts/aurally.algo.ts:268
 	// auction.highestBid = bidAmount
 	frame_dig -5 // storage key//auction
 	box_get
@@ -1379,7 +1379,7 @@ bidOnArtAuction:
 	swap
 	box_put
 
-	// contracts/aurally.algo.ts:264
+	// contracts/aurally.algo.ts:269
 	// auction.highestBidder = bidder.authAddr
 	frame_dig -5 // storage key//auction
 	box_get
@@ -1398,7 +1398,7 @@ bidOnArtAuction:
 	swap
 	box_put
 
-	// contracts/aurally.algo.ts:265
+	// contracts/aurally.algo.ts:270
 	// this.artAuctions(nftIpfs).value = auction
 	frame_dig -2 // nftIpfs: bytes
 	dup
@@ -1439,7 +1439,7 @@ abi_route_endArtAuction:
 endArtAuction:
 	proto 4 0
 
-	// contracts/aurally.algo.ts:270
+	// contracts/aurally.algo.ts:275
 	// auction = this.artAuctions(nftIpfs).value
 	frame_dig -2 // nftIpfs: bytes
 	dup
@@ -1450,7 +1450,7 @@ endArtAuction:
 	concat
 	frame_bury -3 // storage key//auction
 
-	// contracts/aurally.algo.ts:271
+	// contracts/aurally.algo.ts:276
 	// assert(this.artAuctions(nftIpfs).exists)
 	frame_dig -2 // nftIpfs: bytes
 	dup
@@ -1464,7 +1464,7 @@ endArtAuction:
 	pop
 	assert
 
-	// contracts/aurally.algo.ts:272
+	// contracts/aurally.algo.ts:277
 	// assert(this.artNFTs(nftIpfs).value.owner === seller.authAddr)
 	byte 0x6172744e4654 // "artNFT"
 	frame_dig -2 // nftIpfs: bytes
@@ -1486,7 +1486,7 @@ endArtAuction:
 	==
 	assert
 
-	// contracts/aurally.algo.ts:276
+	// contracts/aurally.algo.ts:281
 	// nft = this.artNFTs(nftIpfs).value
 	byte 0x6172744e4654 // "artNFT"
 	frame_dig -2 // nftIpfs: bytes
@@ -1499,7 +1499,7 @@ endArtAuction:
 	concat
 	frame_bury -4 // storage key//nft
 
-	// contracts/aurally.algo.ts:277
+	// contracts/aurally.algo.ts:282
 	// nft.owner = auction.highestBidder
 	frame_dig -4 // storage key//nft
 	box_get
@@ -1521,7 +1521,7 @@ endArtAuction:
 	swap
 	box_put
 
-	// contracts/aurally.algo.ts:278
+	// contracts/aurally.algo.ts:283
 	// this.artNFTs(nftIpfs).value.owner = nft.owner
 	byte 0x6172744e4654 // "artNFT"
 	frame_dig -2 // nftIpfs: bytes
@@ -1592,7 +1592,7 @@ purchaseNFT:
 	proto 3 0
 
 	// if3_condition
-	// contracts/aurally.algo.ts:287
+	// contracts/aurally.algo.ts:292
 	// isSoundNFT ? this.soundNFTs(nftIpfs).exists : this.artNFTs(nftIpfs).exists
 	frame_dig -3 // isSoundNFT: bool
 	bz ternary0_false
@@ -1628,7 +1628,7 @@ ternary0_end:
 	bz if3_else
 
 	// if3_consequent
-	// contracts/aurally.algo.ts:288
+	// contracts/aurally.algo.ts:293
 	// this.soundNFTs(nftIpfs).value.owner = buyer.authAddr
 	byte 0x736f756e644e4654 // "soundNFT"
 	frame_dig -2 // nftIpfs: bytes
@@ -1663,7 +1663,7 @@ ternary0_end:
 	swap
 	box_put
 
-	// contracts/aurally.algo.ts:290
+	// contracts/aurally.algo.ts:295
 	// assert(this.soundNFTs(nftIpfs).value.owner !== buyer.authAddr)
 	byte 0x736f756e644e4654 // "soundNFT"
 	frame_dig -2 // nftIpfs: bytes
@@ -1685,7 +1685,7 @@ ternary0_end:
 	!=
 	assert
 
-	// contracts/aurally.algo.ts:292
+	// contracts/aurally.algo.ts:297
 	// this.pay(this.soundNFTs(nftIpfs).value.owner, this.soundNFTs(nftIpfs).value.price)
 	byte 0x736f756e644e4654 // "soundNFT"
 	frame_dig -2 // nftIpfs: bytes
@@ -1720,7 +1720,7 @@ ternary0_end:
 	b if3_end
 
 if3_else:
-	// contracts/aurally.algo.ts:294
+	// contracts/aurally.algo.ts:299
 	// this.artNFTs(nftIpfs).value.owner = buyer.authAddr
 	byte 0x6172744e4654 // "artNFT"
 	frame_dig -2 // nftIpfs: bytes
@@ -1755,7 +1755,7 @@ if3_else:
 	swap
 	box_put
 
-	// contracts/aurally.algo.ts:296
+	// contracts/aurally.algo.ts:301
 	// assert(this.artNFTs(nftIpfs).value.owner !== buyer.authAddr)
 	byte 0x6172744e4654 // "artNFT"
 	frame_dig -2 // nftIpfs: bytes
@@ -1777,7 +1777,7 @@ if3_else:
 	!=
 	assert
 
-	// contracts/aurally.algo.ts:298
+	// contracts/aurally.algo.ts:303
 	// this.pay(this.artNFTs(nftIpfs).value.owner, this.soundNFTs(nftIpfs).value.price)
 	byte 0x736f756e644e4654 // "soundNFT"
 	frame_dig -2 // nftIpfs: bytes
@@ -1811,7 +1811,7 @@ if3_else:
 	callsub pay
 
 if3_end:
-	// contracts/aurally.algo.ts:301
+	// contracts/aurally.algo.ts:306
 	// return true;
 	int 1
 	byte 0x00
@@ -1864,7 +1864,7 @@ transferNFT:
 	proto 4 0
 
 	// if4_condition
-	// contracts/aurally.algo.ts:307
+	// contracts/aurally.algo.ts:312
 	// isSoundNFT ? this.soundNFTs(nftIpfs).exists : this.artNFTs(nftIpfs).exists
 	frame_dig -4 // isSoundNFT: bool
 	bz ternary1_false
@@ -1900,7 +1900,7 @@ ternary1_end:
 	bz if4_else
 
 	// if4_consequent
-	// contracts/aurally.algo.ts:308
+	// contracts/aurally.algo.ts:313
 	// this.soundNFTs(nftIpfs).value.owner = receiver.authAddr
 	byte 0x736f756e644e4654 // "soundNFT"
 	frame_dig -3 // nftIpfs: bytes
@@ -1937,7 +1937,7 @@ ternary1_end:
 	b if4_end
 
 if4_else:
-	// contracts/aurally.algo.ts:310
+	// contracts/aurally.algo.ts:315
 	// this.artNFTs(nftIpfs).value.owner = receiver.authAddr
 	byte 0x6172744e4654 // "artNFT"
 	frame_dig -3 // nftIpfs: bytes
@@ -1973,7 +1973,7 @@ if4_else:
 	box_put
 
 if4_end:
-	// contracts/aurally.algo.ts:313
+	// contracts/aurally.algo.ts:318
 	// return true;
 	int 1
 	byte 0x00
@@ -2019,7 +2019,7 @@ abi_route_voteOnProposal:
 voteOnProposal:
 	proto 6 0
 
-	// contracts/aurally.algo.ts:319
+	// contracts/aurally.algo.ts:324
 	// proposalExists = this.aurallyDaoProposals(propID).exists
 	byte 0x70726f706f73616c73 // "proposals"
 	frame_dig -3 // propID: uint64
@@ -2030,13 +2030,13 @@ voteOnProposal:
 	pop
 	frame_bury -4 // proposalExists: uint64
 
-	// contracts/aurally.algo.ts:320
+	// contracts/aurally.algo.ts:325
 	// assert(proposalExists)
 	frame_dig -4 // proposalExists: uint64
 	assert
 
 	// if5_condition
-	// contracts/aurally.algo.ts:322
+	// contracts/aurally.algo.ts:327
 	// vote === true
 	frame_dig -2 // vote: bool
 	int 1
@@ -2044,7 +2044,7 @@ voteOnProposal:
 	bz if5_else
 
 	// if5_consequent
-	// contracts/aurally.algo.ts:323
+	// contracts/aurally.algo.ts:328
 	// a = this.aurallyDaoProposals(propID).value.yesVotes
 	byte 0x70726f706f73616c73 // "proposals"
 	frame_dig -3 // propID: uint64
@@ -2058,7 +2058,7 @@ voteOnProposal:
 	btoi
 	frame_bury -5 // a: uint64
 
-	// contracts/aurally.algo.ts:324
+	// contracts/aurally.algo.ts:329
 	// this.aurallyDaoProposals(propID).value.yesVotes = a + 1
 	byte 0x70726f706f73616c73 // "proposals"
 	frame_dig -3 // propID: uint64
@@ -2086,7 +2086,7 @@ voteOnProposal:
 	b if5_end
 
 if5_else:
-	// contracts/aurally.algo.ts:326
+	// contracts/aurally.algo.ts:331
 	// b = this.aurallyDaoProposals(propID).value.noVotes
 	byte 0x70726f706f73616c73 // "proposals"
 	frame_dig -3 // propID: uint64
@@ -2100,7 +2100,7 @@ if5_else:
 	btoi
 	frame_bury -6 // b: uint64
 
-	// contracts/aurally.algo.ts:327
+	// contracts/aurally.algo.ts:332
 	// this.aurallyDaoProposals(propID).value.yesVotes = b + 1
 	byte 0x70726f706f73616c73 // "proposals"
 	frame_dig -3 // propID: uint64
@@ -2127,7 +2127,7 @@ if5_else:
 	box_put
 
 if5_end:
-	// contracts/aurally.algo.ts:330
+	// contracts/aurally.algo.ts:335
 	// return true;
 	int 1
 	byte 0x00
@@ -2163,7 +2163,7 @@ abi_route_createProposal:
 createProposal:
 	proto 3 0
 
-	// contracts/aurally.algo.ts:335
+	// contracts/aurally.algo.ts:340
 	// assert(this.aurallyNFTOwner(creator.authAddr).exists)
 	byte 0x6e66744f776e6572 // "nftOwner"
 	frame_dig -1 // creator: account
@@ -2175,7 +2175,7 @@ createProposal:
 	pop
 	assert
 
-	// contracts/aurally.algo.ts:338
+	// contracts/aurally.algo.ts:343
 	// this.aurallyDaoProposals(id).value = {
 	//       proposalHash: id + 1,
 	//       yesVotes: 0,
@@ -2213,7 +2213,7 @@ createProposal:
 	concat // concat head and tail
 	box_put
 
-	// contracts/aurally.algo.ts:344
+	// contracts/aurally.algo.ts:349
 	// return true;
 	int 1
 	byte 0x00
@@ -2252,7 +2252,7 @@ abi_route_streamNFT:
 streamNFT:
 	proto 4 0
 
-	// contracts/aurally.algo.ts:349
+	// contracts/aurally.algo.ts:354
 	// nft = this.soundNFTs(ipfslocation).value
 	byte 0x736f756e644e4654 // "soundNFT"
 	frame_dig -2 // ipfslocation: bytes
@@ -2265,7 +2265,7 @@ streamNFT:
 	concat
 	frame_bury -3 // storage key//nft
 
-	// contracts/aurally.algo.ts:350
+	// contracts/aurally.algo.ts:355
 	// assert(this.soundNFTs(ipfslocation).exists)
 	byte 0x736f756e644e4654 // "soundNFT"
 	frame_dig -2 // ipfslocation: bytes
@@ -2281,7 +2281,7 @@ streamNFT:
 	pop
 	assert
 
-	// contracts/aurally.algo.ts:351
+	// contracts/aurally.algo.ts:356
 	// assert(nft.owner === owner)
 	frame_dig -3 // storage key//nft
 	box_get
@@ -2293,7 +2293,7 @@ streamNFT:
 	==
 	assert
 
-	// contracts/aurally.algo.ts:354
+	// contracts/aurally.algo.ts:359
 	// currentEarnings = this.aurallyStreamEarnings(owner).value || 0
 	byte 0x73747265616d4561726e696e6773 // "streamEarnings"
 	frame_dig -1 // owner: address
@@ -2309,7 +2309,7 @@ streamNFT:
 skip_or1:
 	frame_bury -4 // currentEarnings: uint64
 
-	// contracts/aurally.algo.ts:355
+	// contracts/aurally.algo.ts:360
 	// this.aurallyStreamEarnings(owner).value = currentEarnings + 1
 	byte 0x73747265616d4561726e696e6773 // "streamEarnings"
 	frame_dig -1 // owner: address
@@ -2320,7 +2320,7 @@ skip_or1:
 	itob
 	box_put
 
-	// contracts/aurally.algo.ts:356
+	// contracts/aurally.algo.ts:361
 	// return true;
 	int 1
 	byte 0x00
@@ -2336,7 +2336,7 @@ skip_or1:
 getAccountBalance:
 	proto 1 1
 
-	// contracts/aurally.algo.ts:361
+	// contracts/aurally.algo.ts:366
 	// return this.aurallyStreamEarnings(accountAddress.authAddr).value || 0;
 	byte 0x73747265616d4561726e696e6773 // "streamEarnings"
 	frame_dig -1 // accountAddress: address
@@ -2374,7 +2374,7 @@ abi_route_optInToAsset:
 optInToAsset:
 	proto 2 0
 
-	// contracts/aurally.algo.ts:366
+	// contracts/aurally.algo.ts:371
 	// sendAssetTransfer({
 	//       assetReceiver: user.authAddr,
 	//       xferAsset: asset,
@@ -2384,19 +2384,19 @@ optInToAsset:
 	int axfer
 	itxn_field TypeEnum
 
-	// contracts/aurally.algo.ts:367
+	// contracts/aurally.algo.ts:372
 	// assetReceiver: user.authAddr
 	frame_dig -1 // user: account
 	acct_params_get AcctAuthAddr
 	assert
 	itxn_field AssetReceiver
 
-	// contracts/aurally.algo.ts:368
+	// contracts/aurally.algo.ts:373
 	// xferAsset: asset
 	frame_dig -2 // asset: asset
 	itxn_field XferAsset
 
-	// contracts/aurally.algo.ts:369
+	// contracts/aurally.algo.ts:374
 	// assetAmount: 0
 	int 0
 	itxn_field AssetAmount
@@ -2408,7 +2408,7 @@ optInToAsset:
 	// Submit inner transaction
 	itxn_submit
 
-	// contracts/aurally.algo.ts:371
+	// contracts/aurally.algo.ts:376
 	// return true;
 	int 1
 	byte 0x00
