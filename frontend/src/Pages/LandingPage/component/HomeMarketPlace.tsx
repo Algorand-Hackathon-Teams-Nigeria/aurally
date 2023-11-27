@@ -6,6 +6,7 @@ import MusicCard from '../../../components/MusicCard'
 import { Carousel } from '@mantine/carousel'
 import carouselClasses from '../../../styles/carousel.module.css'
 import { Link } from 'react-router-dom'
+import classes from '../landing.module.css'
 
 const TYPES = ['All', 'Music', 'Art']
 
@@ -57,6 +58,9 @@ const HomeMarketPlace = () => {
           </Carousel.Slide>
         ))}
       </Carousel>
+      <Link to="/dapp/marketplace" className={`${classes.getBtn} flex w-max mx-auto mt-20`}>
+        Explore Marketplace
+      </Link>
     </div>
   )
 }

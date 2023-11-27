@@ -130,5 +130,5 @@ body[dapp-page='false']:after {
 
 body[dapp-page='true']:after {
   content: '';
-  @apply z-0 inset-0 fixed bg-none;
+  @apply z-[-1] inset-0 fixed bg-transparent;
 }
