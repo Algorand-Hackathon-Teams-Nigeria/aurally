@@ -112,3 +112,23 @@ section {
   border-bottom: 5px solid transparent;
   border-right: 10px solid #8a2be2;
 }
+
+body {
+  background: none !important;
+  @apply bg-none;
+}
+
+body:before {
+  content: '';
+  @apply bg-[#111] inset-0 fixed z-[-2];
+}
+
+body[dapp-page='false']:after {
+  content: '';
+  @apply bg-pageGrad inset-0 fixed z-[-1];
+}
+
+body[dapp-page='true']:after {
+  content: '';
+  @apply z-0 inset-0 fixed bg-none;
+}

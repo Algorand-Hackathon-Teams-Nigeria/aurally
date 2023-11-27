@@ -13,7 +13,7 @@ module.exports = {
       backgroundImage: {
         'shadow-gradient': 'linear-gradient(0deg, #111 0%, rgba(17, 17, 17, 0.10) 98.63%)',
         'shadow-gradient2': 'linear-gradient(0deg, #111 41.55%, rgba(17, 17, 17, 0.00) 98.63%)',
-        pageGrad: 'linear-gradient(180deg, rgba(138, 43, 226, 0.30) 0%, #111 60%)'
+        pageGrad: 'linear-gradient(180deg, rgba(138, 43, 226, 0.40) 0%, #111 70%)',
       },
       fontFamily: {
         space: ['var(--font-space)'],

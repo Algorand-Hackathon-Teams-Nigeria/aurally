@@ -5,6 +5,7 @@ import { nftListAtom } from '../../../store/atoms'
 import MusicCard from '../../../components/MusicCard'
 import { Carousel } from '@mantine/carousel'
 import carouselClasses from '../../../styles/carousel.module.css'
+import { Link } from 'react-router-dom'
 
 const TYPES = ['All', 'Music', 'Art']
 
@@ -23,6 +24,9 @@ const HomeMarketPlace = () => {
     <div>
       <div className="flex justify-between items-center">
         <div className="text-3xl md:text-4xl font-bold mb-6 mt-6">Marketplace</div>
+        <Link to={'/dapp/marketplace'} className="text-[#8A2BE2]">
+          see all
+        </Link>
       </div>
       <div className="flex gap-4 mb-4 w-full h-[42px] overflow-x-scroll remove-scroll">
         {TYPES.map((item) => (

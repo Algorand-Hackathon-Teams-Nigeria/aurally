@@ -18,6 +18,7 @@
 
 .landing {
   scroll-behavior: smooth;
+  @apply relative;
 }
 
 .svgList::after {

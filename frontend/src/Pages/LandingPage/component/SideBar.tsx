@@ -39,7 +39,7 @@ const SideBar = () => {
           <a href="/" onClick={onClick} className=" pointer-events-auto">
             Home
           </a>
-          <a href="features" onClick={onClick} className=" pointer-events-auto">
+          <a href="#features" onClick={onClick} className=" pointer-events-auto">
             Features
           </a>
           <a href="#works" onClick={onClick} className=" pointer-events-auto">

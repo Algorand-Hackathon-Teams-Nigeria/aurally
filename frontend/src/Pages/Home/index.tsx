@@ -19,7 +19,7 @@ const NftShowCase = () => {
 
   return (
     <>
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between items-center mt-8 mb-4">
         <div className="flex gap-4 flex-1 h-[42px] overflow-x-scroll remove-scroll">
           {TYPES.map((item) => (
             <Button onClick={() => setType(item)} key={item} variant={item === type ? 'filled' : 'outline'} radius="xl">
@@ -27,7 +27,7 @@ const NftShowCase = () => {
             </Button>
           ))}
         </div>
-        <Link to={'/dapp/marketplace'} className="text-[#8A2BE2] opacity-50">
+        <Link to={'/dapp/marketplace'} className="text-[#8A2BE2] mb-1">
           see all
         </Link>
       </div>

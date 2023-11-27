@@ -82,11 +82,11 @@ const roadmaps = [
 
 export default function Home() {
   return (
-    <main className={`${classes.landing} max-h-screen font-space overflow-y-scroll bg-pageGrad px-[4.5%]`}>
+    <main className={`${classes.landing} max-h-screen font-space overflow-y-scroll px-[4.5%]`}>
       <div className="max-w-6xl mx-auto">
         {/* NavBar */}
         <nav className="pt-6 pb-3 flex justify-between items-center">
-          <BigLogo to="/" className="scale-75 lg:scale-100" />
+          <BigLogo to="/" className="w-28 lg:w-max" />
           <div className="hidden lg:flex gap-14">
             <Link to="/">Home</Link>
             <a href="#features">Features</a>
@@ -99,9 +99,9 @@ export default function Home() {
           </Link>
         </nav>
         {/* Hero Section */}
-        <div className="flex flex-col md:flex-row items-center justify-between mt-24 gap-14">
+        <div className="flex flex-col md:flex-row items-center justify-between mt-20 sm:mt-24 gap-14">
           <div className="max-w-[568px] flex-[1.5] lg:flex-[1.2]">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-[4rem] font-bold">
+            <h1 className="text-4xl lg:text-5xl xl:text-[4rem] font-bold">
               Discover, <span className={classes.txt_grd}>Stream</span> and collect the <span className={classes.txt_grd}>Rarest Nfts</span>
             </h1>
             <div className="text-sm min-[420px]:text-base md:text-lg xl:text-xl mt-7">
