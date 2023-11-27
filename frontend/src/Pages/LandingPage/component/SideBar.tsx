@@ -39,14 +39,14 @@ const SideBar = () => {
           <a href="/" onClick={onClick} className=" pointer-events-auto">
             Home
           </a>
+          <a href="features" onClick={onClick} className=" pointer-events-auto">
+            Features
+          </a>
           <a href="#works" onClick={onClick} className=" pointer-events-auto">
             How it works
           </a>
           <a href="#road" onClick={onClick} className=" pointer-events-auto">
             Roadmap
-          </a>
-          <a href="#partners" onClick={onClick} className=" pointer-events-auto">
-            Partners
           </a>
         </div>
       </Drawer>

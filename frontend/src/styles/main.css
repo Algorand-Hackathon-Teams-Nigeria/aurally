@@ -112,8 +112,3 @@ section {
   border-bottom: 5px solid transparent;
   border-right: 10px solid #8a2be2;
 }
-
-
-html {
-  scroll-behavior: smooth;
-}
