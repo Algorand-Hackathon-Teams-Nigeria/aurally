@@ -1,49 +1,100 @@
 import { Button } from '@mantine/core'
-import { atom, useAtom, useAtomValue } from 'jotai'
+import { useAtomValue } from 'jotai'
 import MusicCard from '../../components/MusicCard'
 import MusicPlayerCarousel from './component/MusicPlayerCarousel'
 import { nftListAtom } from '../../store/atoms'
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { Carousel } from '@mantine/carousel'
+import carouselClasses from '../../styles/carousel.module.css'
 
-const musicTypeAtom = atom('On Sale')
-const TYPES = ['On Sale', 'Top', 'Recently Added']
+const TYPES = ['All', 'Music', 'Art']
 
-const MusicType = () => {
-  const [type, setType] = useAtom(musicTypeAtom)
+const NftShowCase = () => {
+  const [type, setType] = useState(TYPES[0])
+  const nftList = useAtomValue(nftListAtom)
+
+  const artList = nftList.filter((item) => item.type === 'art')
+  const soundList = nftList.filter((item) => item.type === 'sound')
 
   return (
-    <div className="flex gap-4 mb-4 w-full h-[42px] overflow-x-scroll remove-scroll">
-      {TYPES.map((item) => (
-        <Button onClick={() => setType(item)} key={item} variant={item === type ? 'filled' : 'outline'} radius="xl">
-          {item}
-        </Button>
-      ))}
-    </div>
+    <>
+      <div className="flex justify-between items-center mb-4">
+        <div className="flex gap-4 flex-1 h-[42px] overflow-x-scroll remove-scroll">
+          {TYPES.map((item) => (
+            <Button onClick={() => setType(item)} key={item} variant={item === type ? 'filled' : 'outline'} radius="xl">
+              {item}
+            </Button>
+          ))}
+        </div>
+        <Link to={'/dapp/marketplace'} className="text-[#8A2BE2] opacity-50">
+          see all
+        </Link>
+      </div>
+      {type !== 'Music' && (
+        <div className="w-full mb-14">
+          <div className="text-[2rem] font-bold mb-6 mt-6">Trending Art</div>
+          <Carousel
+            classNames={carouselClasses}
+            containScroll="trimSnaps"
+            slideSize={{ base: '250px', sm: '300px' }}
+            slideGap={20}
+            slidesToScroll={'auto'}
+            align="end"
+          >
+            {artList.map((item) => (
+              <Carousel.Slide key={item.id}>
+                <MusicCard
+                  img={item.imgUrl}
+                  title={item.title}
+                  title2="Bid"
+                  title3={item.type === 'art' ? item.creator : item.artist}
+                  title4={`${Number(item.price)} ALGO`}
+                  buttonLabel={item.type === 'sound' ? 'Stream and Buy' : 'Buy'}
+                  link={`/dapp/marketplace/${item.type === 'sound' ? 'music' : 'art'}/${item.id}`}
+                />
+              </Carousel.Slide>
+            ))}
+          </Carousel>
+        </div>
+      )}
+      {type !== 'Art' && (
+        <div className="w-full">
+          <div className="text-[2rem] font-bold mb-6 mt-6">Trending Sound</div>
+          <Carousel
+            classNames={carouselClasses}
+            containScroll="trimSnaps"
+            slideSize={{ base: '250px', sm: '300px' }}
+            slideGap={20}
+            slidesToScroll={'auto'}
+            align="end"
+          >
+            {soundList.map((item) => (
+              <Carousel.Slide key={item.id}>
+                <MusicCard
+                  img={item.imgUrl}
+                  title={item.title}
+                  title2="Bid"
+                  title3={item.type === 'art' ? item.creator : item.artist}
+                  title4={`${Number(item.price)} ALGO`}
+                  buttonLabel={item.type === 'sound' ? 'Stream and Buy' : 'Buy'}
+                  link={`/dapp/marketplace/${item.type === 'sound' ? 'music' : 'art'}/${item.id}`}
+                />
+              </Carousel.Slide>
+            ))}
+          </Carousel>
+        </div>
+      )}
+    </>
   )
 }
 
 const Home = () => {
-  const nftList = useAtomValue(nftListAtom)
-
   return (
     <div>
       <MusicPlayerCarousel />
       <section className="routePage mb-32">
-        <div className="text-[2rem] font-bold mb-6 mt-6">Trending Auras</div>
-        <MusicType />
-        <div className="w-full grid grid-cols-music-card gap-[18px]">
-          {nftList.map((item) => (
-            <MusicCard
-              img={item.imgUrl}
-              title={item.title}
-              title2="Bid"
-              title3={item.type === 'art' ? item.creator : item.artist}
-              title4={`${Number(item.price)} ALGO`}
-              key={item.id}
-              buttonLabel={item.type === 'sound' ? 'Stream and Buy' : 'Buy'}
-              link={`/dapp/marketplace/${item.type === 'sound' ? 'music' : 'art'}/${item.id}`}
-            />
-          ))}
-        </div>
+        <NftShowCase />
       </section>
     </div>
   )

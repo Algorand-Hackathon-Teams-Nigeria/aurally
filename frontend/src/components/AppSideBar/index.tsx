@@ -8,9 +8,10 @@ import classes from './sidebar.module.css'
 
 const data = [
   { link: '/dapp', label: 'Home', icon: 'solar:home-2-broken' },
-  { link: '/dapp/marketplace', label: 'Marketplace', icon: 'solar:shop-broken' },
-  { link: '/dapp/dao', label: 'DAO', icon: 'tabler:ticket' },
-  { link: '/dapp/streams', label: 'My Streams', icon: 'solar:play-broken' },
+  { link: '/dapp/marketplace', label: 'Marketplace', icon: 'solar:global-outline' },
+  { link: '/dapp/dao', label: 'DAO', icon: 'material-symbols-light:chess-outline' },
+  { link: '/dapp/events', label: 'Events', icon: 'tabler:ticket' },
+  { link: '/dapp/streams', label: 'My Arts', icon: 'solar:play-broken' },
   { link: '/dapp/profile', label: 'Profile', icon: 'line-md:account' },
 ]
 
