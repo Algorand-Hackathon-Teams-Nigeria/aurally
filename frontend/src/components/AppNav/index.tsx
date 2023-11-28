@@ -20,6 +20,28 @@ const SearchBar = () => {
   )
 }
 
+{
+  /* <Popover width="target" position="bottom-start" radius={16} shadow="md" opened={opened} onChange={close}>
+      <Popover.Target>
+        <TextInput
+          value={search}
+          onChange={(e) => setSearch(e.currentTarget.value)}
+          onInput={handleInput}
+          onFocus={handleFocus}
+          // onKeyDown={handleKeyUp}
+          classNames={{ input: classes.searchbar }}
+          placeholder="Search music, artists, playlist"
+        />
+      </Popover.Target>
+      <Popover.Dropdown maw={500} bg="var(--mantine-color-body)" className="overflow-hidden">
+        <LoadingOverlay visible={search !== item} zIndex={1} overlayProps={{ radius: 'lg', blur: 2, bg: '#ffffff10' }} />
+        <div className="w-full h-[200px] rounded-xl">
+          <span>{item}</span>
+        </div>
+      </Popover.Dropdown>
+    </Popover> */
+}
+
 const SearchAndFilter = () => {
   return (
     <div className="w-full flex md:hidden items-center gap-4 mt-4">

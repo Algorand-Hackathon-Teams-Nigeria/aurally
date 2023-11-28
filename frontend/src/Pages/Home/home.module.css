@@ -12,29 +12,6 @@
   @apply bg-[#8a2be2] w-12 h-12 sm:w-16 sm:h-16 flex justify-center items-center relative z-[1] shrink-0;
 }
 
-.widget {
-  width: 100%;
-  height: max-content;
-  padding-bottom: 100px;
-}
-
-@media (min-width: 1024px) {
-  .widget {
-    display: block;
-    margin-top: -2px;
-    width: 280px;
-    position: sticky;
-    top: 20px;
-  }
-}
-
-@media (min-width: 1280px) {
-  .widget {
-    width: 310px;
-    flex-shrink: 0;
-  }
-}
-
 .indicator {
   width: 12px;
   height: 4px;

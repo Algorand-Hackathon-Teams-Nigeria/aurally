@@ -6,7 +6,6 @@ import MusicDetails from './Pages/MusicDetails'
 import Profile from './Pages/Profile'
 import AppNav from './components/AppNav'
 import AppSideBar from './components/AppSideBar'
-import MyStreams from './Pages/MyStreams'
 import AlgoProvider from './components/AlgoProvider'
 import MessageModal from './components/Modals/MessageModal'
 import BuyModal from './components/Modals/BuyModal'
@@ -19,6 +18,11 @@ import ArtDetails from './Pages/ArtDetails'
 import ErrorBoundary from './components/ErrorBoundary'
 import LandingPage from './Pages/LandingPage'
 import CreateProposal from './Pages/CreateProposal'
+import { Communities, CommunitiesIndex } from './Pages/Communities'
+import Events from './Pages/Events'
+import MyNfts from './Pages/MyNfts'
+import Community from './Pages/Community'
+import CreateEvent from './Pages/CreateEvent'
 
 export default function App() {
   return (
@@ -31,9 +35,15 @@ export default function App() {
         <Route path="marketplace/art/:artId" Component={ArtDetails} />
         <Route path="dao" Component={DAO} />
         <Route path="dao/create" Component={CreateProposal} />
-        <Route path="streams" Component={MyStreams} />
+        <Route path="nfts" Component={MyNfts} />
         <Route path="create/art" Component={CreateArtNft} />
         <Route path="create/sound" Component={CreateSoundNFt} />
+        <Route path="communities" Component={Communities}>
+          <Route index Component={CommunitiesIndex} />
+          <Route path=":forumId" Component={Community} />
+        </Route>
+        <Route path="events" Component={Events} />
+        <Route path="events/create" Component={CreateEvent} />
         <Route path="profile" Component={Profile} />
       </Route>
     </Routes>

@@ -1,0 +1,16 @@
+.input_root {
+  @apply flex-1;
+}
+
+.input {
+  @apply bg-[#111] px-2 sm:px-4 md:px-6 rounded-lg max-h-full;
+}
+
+.send {
+  @apply w-9 h-9 rounded-lg mt-[2.5px];
+}
+
+.arrowBack {
+  background: var(--Transparent-black, rgba(30, 30, 30, 0.3));
+  @apply w-10 h-10 rounded-full lg:hidden;
+}

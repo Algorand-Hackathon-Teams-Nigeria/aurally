@@ -12,18 +12,6 @@
   --Grey-04: #ebebeb;
 }
 
-/* ::-webkit-scrollbar {
-  display: none;
-  width: 5px;
-}
-
-div,
-main,
-section {
-  scrollbar-width: 0;
-  -ms-overflow-style: none;
-} */
-
 .remove-scroll::-webkit-scrollbar {
   display: none;
   width: 0;
@@ -36,6 +24,10 @@ section {
 
 .routePage {
   @apply px-[4.5%] min-[375px]:px-5 lg:px-8 pt-6;
+}
+
+.routePageNoTop {
+  @apply px-[4.5%] min-[375px]:px-5 lg:px-8;
 }
 
 .routePageNoRight {
@@ -64,7 +56,7 @@ section {
 .gcard-with-bg {
   border: 1px solid var(--Border-colour, #444);
   background: var(--Sub-Background, #1e1e1e);
-  @apply p-4 space-y-2 rounded-lg min-w-[200px];
+  @apply px-4 py-2 sm:py-4 space-y-2 rounded-lg;
 }
 
 .detailsTitle {

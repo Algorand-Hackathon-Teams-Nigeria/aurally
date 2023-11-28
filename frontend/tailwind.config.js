@@ -6,6 +6,8 @@ module.exports = {
       gridTemplateColumns: {
         'music-card': 'repeat(auto-fill, minmax(238px, auto))',
         'dao-card': 'repeat(auto-fill, minmax(220px, auto))',
+        'profile-card-sm': 'repeat(auto-fill, minmax(130px, auto))',
+        'profile-card': 'repeat(auto-fill, minmax(200px, auto))',
 
         roadmap: '1fr 4px 1fr',
         'roadmap-sm': '4px 1fr',

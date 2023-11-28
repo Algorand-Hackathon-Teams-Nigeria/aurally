@@ -119,6 +119,11 @@ const myStreamAtom = atom((get) => {
   return list.filter((nft) => nft.type === 'sound') as SoundNftType[]
 })
 
+const myArtAtom = atom((get) => {
+  const list = get(collectedNftsAtom)
+  return list.filter((nft) => nft.type === 'art') as ArtNftType[]
+})
+
 const createdNftsAtom = atomWithStorage<(SoundNftType | ArtNftType)[]>('createdNfts', template)
 
 export {
@@ -133,4 +138,5 @@ export {
   collectedNftsAtom,
   createdNftsAtom,
   myStreamAtom,
+  myArtAtom,
 }

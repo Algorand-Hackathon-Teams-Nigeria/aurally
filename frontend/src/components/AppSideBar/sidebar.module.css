@@ -86,7 +86,9 @@
 [data-path=''] .link[data-path='/dapp'],
 [data-path='marketplace'] .link[data-path='/dapp/marketplace'],
 [data-path='dao'] .link[data-path='/dapp/dao'],
-[data-path='streams'] .link[data-path='/dapp/streams'],
+[data-path='nfts'] .link[data-path='/dapp/nfts'],
+[data-path='communities'] .link[data-path='/dapp/communities'],
+[data-path='events'] .link[data-path='/dapp/events'],
 [data-path='profile'] .link[data-path='/dapp/profile'] {
   &,
   &:hover {
