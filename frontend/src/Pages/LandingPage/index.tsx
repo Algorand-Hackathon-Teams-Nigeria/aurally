@@ -82,7 +82,7 @@ const roadmaps = [
 
 export default function Home() {
   return (
-    <main className={`${classes.landing} max-h-screen font-space overflow-y-scroll px-[4.5%]`}>
+    <main className={`${classes.landing} max-h-screen font-space overflow-y-scroll px-[4.5%] bg-pageGrad`}>
       <div className="max-w-6xl mx-auto">
         {/* NavBar */}
         <nav className="pt-6 pb-3 flex justify-between items-center">
