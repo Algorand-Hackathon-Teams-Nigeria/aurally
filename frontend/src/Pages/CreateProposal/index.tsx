@@ -8,6 +8,7 @@ import { useWallet } from '@txnlab/use-wallet'
 import { algodClient } from '../../utils/contract-config'
 import algosdk from 'algosdk'
 import { useForm } from '@mantine/form'
+import { DateInput } from '@mantine/dates'
 
 const TYPES = ['sound', 'art']
 
@@ -20,12 +21,14 @@ const CreateProposal = () => {
       type: '',
       item: '',
       price: 0,
+      date: null as Date | null,
     },
     validate: {
       proposal: (value) => (!value ? 'Proposal is required' : null),
       type: (value) => (!TYPES.includes(value) ? "Type must be 'sound' or 'art'" : null),
       item: (value) => (!value ? 'description is required' : null),
       price: (value) => (value <= 0 ? 'price is required' : null),
+      date: (value) => (!value ? 'date is required' : null),
     },
   })
 
@@ -111,6 +114,7 @@ const CreateProposal = () => {
           </div>
           <Select {...form.getInputProps('item')} placeholder="Choose Item" data={items} classNames={classes} />
         </div>
+        <DateInput label="Closing Date" {...form.getInputProps('date')} classNames={classes} placeholder="Date input" required />
         <NumberInput {...form.getInputProps('price')} classNames={classes} required label="Dao Price" placeholder="0.0 ALGO" />
       </div>
       <Button fullWidth size="lg" loading={isPending && !isError} onClick={create} radius={'md'} mt={32}>

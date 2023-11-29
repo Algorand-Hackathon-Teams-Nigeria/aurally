@@ -6,6 +6,7 @@
   transition: opacity 150ms ease;
   opacity: 0;
 }
+
 .control {
   @apply bg-[#444444] text-white opacity-100 w-9 h-9 border-none shadow-2xl;
   &[data-inactive] {
