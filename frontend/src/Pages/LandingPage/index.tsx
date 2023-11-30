@@ -105,7 +105,7 @@ export default function Home() {
               Discover, <span className={classes.txt_grd}>Stream</span> and collect the <span className={classes.txt_grd}>Rarest Nfts</span>
             </h1>
             <div className="text-sm min-[420px]:text-base md:text-lg xl:text-xl mt-7">
-              The Larges NFT Marketplace. Automatic and truly unique digital creation. Signed and issued by the creator, made possible by
+              The Largest NFTs Marketplace. Automatic and truly unique digital creation. Signed and issued by the creator, made possible by
               Algorand blockchain technology
             </div>
             <Link to="/dapp" className={`${classes.getBtn} flex max-w-[163px] mt-12`}>
