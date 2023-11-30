@@ -82,7 +82,7 @@ const roadmaps = [
 
 export default function Home() {
   return (
-    <main className={`${classes.landing} max-h-screen font-space overflow-y-scroll px-[4.5%] bg-pageGrad`}>
+    <main className={`${classes.landing} max-h-screen font-space overflow-y-auto px-[4.5%] bg-pageGrad`}>
       <div className="max-w-6xl mx-auto">
         {/* NavBar */}
         <nav className="pt-6 pb-3 flex justify-between items-center">
@@ -117,7 +117,7 @@ export default function Home() {
           </div>
         </div>
         {/* Partner */}
-        <div className="overflow-x-scroll mt-32 mb-40" id="partners">
+        <div className="overflow-x-auto mt-32 mb-40" id="partners">
           <div className="mx-auto w-max flex justify-center gap-16">
             <div className="flex items-center gap-4">
               <Image src={algorand} alt="partner" />

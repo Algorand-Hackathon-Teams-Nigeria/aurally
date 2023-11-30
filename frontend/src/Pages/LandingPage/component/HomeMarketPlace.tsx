@@ -29,7 +29,7 @@ const HomeMarketPlace = () => {
           see all
         </Link>
       </div>
-      <div className="flex gap-4 mb-4 w-full h-[42px] overflow-x-scroll remove-scroll">
+      <div className="flex gap-4 mb-4 w-full h-[42px] overflow-x-auto">
         {TYPES.map((item) => (
           <Button onClick={() => setType(item)} key={item} variant={item === type ? 'filled' : 'outline'} radius="xl">
             {item}

@@ -12,16 +12,6 @@
   --Grey-04: #ebebeb;
 }
 
-.remove-scroll::-webkit-scrollbar {
-  display: none;
-  width: 0;
-}
-
-.remove-scroll {
-  scrollbar-width: 0;
-  -ms-overflow-style: none;
-}
-
 .routePage {
   @apply px-[4.5%] min-[375px]:px-5 lg:px-8 pt-6;
 }

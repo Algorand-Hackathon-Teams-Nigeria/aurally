@@ -20,7 +20,7 @@ const DetailsTab = () => {
 
   return (
     <div className="gboard mt-6 mb-[90px] min-h-[434px]">
-      <div className="flex overflow-x-scroll remove-scroll pb-0.5">
+      <div className="flex overflow-x-auto  pb-0.5">
         <Button size="lg" onClick={() => setType(0)} classNames={{ root: classes.greyButton }} bg={bg(0)}>
           Overview
         </Button>
