@@ -15,7 +15,7 @@ const ProfileTab = () => {
   const nftList = useAtomValue(createdNftsAtom)
 
   return (
-    <div className="gboard-no-bg mt-6 mb-[90px]">
+    <div className="gboard bg-[#1e1e1e] mt-6 mb-[90px]">
       <div className="w-full">
         <Tabs classNames={{ tab: tabClass.tab, list: tabClass.list, panel: tabClass.panel }} defaultValue={TYPES[0]}>
           <Tabs.List className="mb-8">

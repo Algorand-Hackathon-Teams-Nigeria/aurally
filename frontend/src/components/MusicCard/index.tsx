@@ -42,7 +42,7 @@ const MusicCard = ({ img, link, title, title2, title3, title4, buttonLabel, desc
         </div>
       )}
 
-      {desc && <div className="mb-3.5 font-sans text-[#AFAFAF] text-xs tracking-[0.5px]">{desc}</div>}
+      {desc && <div className="mb-3.5 font-sans text-[#AFAFAF] text-[11px] tracking-[0.5px]">{desc}</div>}
 
       {link ? (
         <Link to={link}>

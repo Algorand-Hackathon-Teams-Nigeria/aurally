@@ -35,10 +35,10 @@ const NftShowCase = () => {
         <div className="w-full mb-14">
           <div className="text-[2rem] font-bold mb-6 mt-6">Trending Art</div>
           <Carousel
-            classNames={carouselClasses}
+            classNames={{ ...carouselClasses, slide: 'max-w-[calc(100%-20px)]' }}
             containScroll="trimSnaps"
-            slideSize={{ base: '250px', sm: '300px' }}
-            slideGap={20}
+            slideSize="300px"
+            slideGap={{ base: 16, sm: 20 }}
             slidesToScroll={'auto'}
             align="end"
           >
@@ -62,10 +62,10 @@ const NftShowCase = () => {
         <div className="w-full">
           <div className="text-[2rem] font-bold mb-6 mt-6">Trending Sound</div>
           <Carousel
-            classNames={carouselClasses}
+            classNames={{ ...carouselClasses, slide: 'max-w-[calc(100%-20px)]' }}
             containScroll="trimSnaps"
-            slideSize={{ base: '250px', sm: '300px' }}
-            slideGap={20}
+            slideSize="300px"
+            slideGap={{ base: 16, sm: 20 }}
             slidesToScroll={'auto'}
             align="end"
           >

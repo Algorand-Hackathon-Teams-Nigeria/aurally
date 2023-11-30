@@ -37,10 +37,10 @@ const HomeMarketPlace = () => {
         ))}
       </div>
       <Carousel
-        classNames={carouselClasses}
+        classNames={{ ...carouselClasses, slide: 'max-w-[calc(100%-20px)]' }}
         containScroll="trimSnaps"
-        slideSize={{ base: '250px', sm: '300px' }}
-        slideGap={20}
+        slideSize="300px"
+        slideGap={{ base: 16, sm: 20 }}
         slidesToScroll={'auto'}
         align="end"
       >

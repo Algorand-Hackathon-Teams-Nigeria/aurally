@@ -99,7 +99,6 @@ const AudioPlayer = ({
       <div className={classes.innerroot}>
         <div id="waveform" ref={waveContainerRef} className="min-h-full flex-1" />
       </div>
-      <div className="hidden sm:inline-block">00:30</div>
       <ActionIcon className={classes.otherIcon}>
         <Icon icon="icon-park-outline:like" width={24} />
       </ActionIcon>

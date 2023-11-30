@@ -55,16 +55,13 @@ const DaoGrid = ({ title, data }: Prop) => {
 }
 
 const DAO = () => {
-  const create = () => {}
   return (
     <div className="routePage space-y-12 pb-32">
       <div className="flex items-center justify-between mb-14">
         <div className="routeName">DAO</div>
-        <Link to="create">
-          <Button size="md" radius={'md'} onClick={create}>
-            Create Proposal
-          </Button>
-        </Link>
+        <Button component={Link} to={'create'} size="md" radius={'md'}>
+          Create Proposal
+        </Button>
       </div>
       <DaoGrid data={data()} title="Trending Proposals" />
       <DaoGrid data={data(true)} title="Open Proposals" />

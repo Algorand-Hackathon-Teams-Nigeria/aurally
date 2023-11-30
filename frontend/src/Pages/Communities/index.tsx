@@ -27,10 +27,10 @@ export const CommunitiesIndex = () => {
         </div>
       ) : (
         <Carousel
-          classNames={carouselClasses}
+          classNames={{ ...carouselClasses, slide: 'max-w-[calc(100%-20px)]' }}
           containScroll="trimSnaps"
-          slideSize={{ base: '250px', sm: '300px' }}
-          slideGap={20}
+          slideSize="300px"
+          slideGap={{ base: 16, sm: 20 }}
           slidesToScroll={'auto'}
           align="end"
         >
@@ -58,7 +58,7 @@ export const Communities = () => {
       <div className="flex-1 lg:pb-32 h-max pt-6">
         <div className="routeName mb-6">Your Communities</div>
         <div className="grid gap-3 max-w-[750px]">
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
             <SummaryBox
               img="https://gateway.pinata.cloud/ipfs/QmTaf7kEg9hNi3msa8GryvMLBHZVDCv34KMzmhN7sP99qu"
               name="Alte All Through"
