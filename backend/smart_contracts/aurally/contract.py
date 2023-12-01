@@ -44,7 +44,7 @@ def create_sound_nft(
     *,
     output: SoundNFT,
 ):
-    from .subroutines import ensure_registered_creative
+    from .subroutines import ensure_registered_creative, increment_creator_nft_count
 
     return P.Seq(
         (creative_type := P.abi.String()).set("music"),
@@ -68,6 +68,8 @@ def create_sound_nft(
             for_sale,
         ),
         app.state.sound_nfts[asset_key.get()].set(sound_nft),
+        (sender := P.abi.Address()).set(txn.get().sender()),
+        increment_creator_nft_count(sender),
         output.decode(app.state.sound_nfts[asset_key.get()].get()),
     )
 
