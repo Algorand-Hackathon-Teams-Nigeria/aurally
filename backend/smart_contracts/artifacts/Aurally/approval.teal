@@ -1,0 +1,597 @@
+#pragma version 8
+intcblock 0 65536 1 3
+bytecblock 0x 0x151f7c75 0x00056d75736963
+txn NumAppArgs
+intc_0 // 0
+==
+bnz main_l8
+txna ApplicationArgs 0
+pushbytes 0xe0cfa63e // "register_creator(acfg,string,string)(string,uint64,string,string,uint64)"
+==
+bnz main_l7
+txna ApplicationArgs 0
+pushbytes 0x15b3b4c8 // "create_sound_nft(acfg,string,string,string,string,string,string,uint64,string,string,string,uint64,bool)(uint64,uint64,string,string,string,string,string,uint64,string,string,string,address,bool)"
+==
+bnz main_l6
+txna ApplicationArgs 0
+pushbytes 0x02bece11 // "hello(string)string"
+==
+bnz main_l5
+err
+main_l5:
+txn OnCompletion
+intc_0 // NoOp
+==
+txn ApplicationID
+intc_0 // 0
+!=
+&&
+assert
+callsub hellocaster_8
+intc_2 // 1
+return
+main_l6:
+txn OnCompletion
+intc_0 // NoOp
+==
+txn ApplicationID
+intc_0 // 0
+!=
+&&
+assert
+callsub createsoundnftcaster_7
+intc_2 // 1
+return
+main_l7:
+txn OnCompletion
+intc_0 // NoOp
+==
+txn ApplicationID
+intc_0 // 0
+!=
+&&
+assert
+callsub registercreatorcaster_6
+intc_2 // 1
+return
+main_l8:
+txn OnCompletion
+intc_0 // NoOp
+==
+bnz main_l10
+err
+main_l10:
+txn ApplicationID
+intc_0 // 0
+==
+assert
+callsub create_0
+intc_2 // 1
+return
+
+// create
+create_0:
+proto 0 0
+intc_2 // 1
+return
+
+// register_creator
+registercreator_1:
+proto 3 1
+bytec_0 // ""
+frame_dig -3
+gtxns Sender
+box_len
+store 1
+store 0
+load 1
+!
+bz registercreator_1_l2
+frame_dig -3
+frame_dig -2
+frame_dig -1
+callsub createnftowner_4
+registercreator_1_l2:
+frame_dig -3
+gtxns Sender
+box_get
+store 3
+store 2
+load 3
+assert
+load 2
+frame_bury 0
+retsub
+
+// create_sound_nft
+createsoundnft_2:
+proto 13 1
+bytec_0 // ""
+dup
+intc_0 // 0
+bytec_0 // ""
+dup
+intc_0 // 0
+dup
+bytec_0 // ""
+dup
+bytec_2 // 0x00056d75736963
+frame_bury 1
+frame_dig -13
+frame_dig 1
+callsub ensureregisteredcreative_5
+frame_dig -12
+extract 2 0
+box_len
+store 5
+store 4
+load 5
+!
+assert
+frame_dig -13
+gtxns CreatedAssetID
+frame_bury 2
+frame_dig -13
+gtxns Sender
+frame_bury 3
+frame_dig 3
+len
+pushint 32 // 32
+==
+assert
+frame_dig 2
+itob
+frame_dig -2
+itob
+concat
+frame_dig -11
+frame_bury 8
+frame_dig 8
+frame_bury 7
+pushint 73 // 73
+frame_bury 5
+frame_dig 5
+frame_dig 8
+len
++
+frame_bury 6
+frame_dig 6
+intc_1 // 65536
+<
+assert
+frame_dig 5
+itob
+extract 6 0
+concat
+frame_dig -10
+frame_bury 8
+frame_dig 7
+frame_dig 8
+concat
+frame_bury 7
+frame_dig 6
+frame_bury 5
+frame_dig 5
+frame_dig 8
+len
++
+frame_bury 6
+frame_dig 6
+intc_1 // 65536
+<
+assert
+frame_dig 5
+itob
+extract 6 0
+concat
+frame_dig -9
+frame_bury 8
+frame_dig 7
+frame_dig 8
+concat
+frame_bury 7
+frame_dig 6
+frame_bury 5
+frame_dig 5
+frame_dig 8
+len
++
+frame_bury 6
+frame_dig 6
+intc_1 // 65536
+<
+assert
+frame_dig 5
+itob
+extract 6 0
+concat
+frame_dig -8
+frame_bury 8
+frame_dig 7
+frame_dig 8
+concat
+frame_bury 7
+frame_dig 6
+frame_bury 5
+frame_dig 5
+frame_dig 8
+len
++
+frame_bury 6
+frame_dig 6
+intc_1 // 65536
+<
+assert
+frame_dig 5
+itob
+extract 6 0
+concat
+frame_dig -7
+frame_bury 8
+frame_dig 7
+frame_dig 8
+concat
+frame_bury 7
+frame_dig 6
+frame_bury 5
+frame_dig 5
+frame_dig 8
+len
++
+frame_bury 6
+frame_dig 6
+intc_1 // 65536
+<
+assert
+frame_dig 5
+itob
+extract 6 0
+concat
+frame_dig -6
+itob
+concat
+frame_dig -5
+frame_bury 8
+frame_dig 7
+frame_dig 8
+concat
+frame_bury 7
+frame_dig 6
+frame_bury 5
+frame_dig 5
+frame_dig 8
+len
++
+frame_bury 6
+frame_dig 6
+intc_1 // 65536
+<
+assert
+frame_dig 5
+itob
+extract 6 0
+concat
+frame_dig -4
+frame_bury 8
+frame_dig 7
+frame_dig 8
+concat
+frame_bury 7
+frame_dig 6
+frame_bury 5
+frame_dig 5
+frame_dig 8
+len
++
+frame_bury 6
+frame_dig 6
+intc_1 // 65536
+<
+assert
+frame_dig 5
+itob
+extract 6 0
+concat
+frame_dig -3
+frame_bury 8
+frame_dig 7
+frame_dig 8
+concat
+frame_bury 7
+frame_dig 6
+frame_bury 5
+frame_dig 5
+itob
+extract 6 0
+concat
+frame_dig 3
+concat
+pushbytes 0x00 // 0x00
+intc_0 // 0
+frame_dig -1
+setbit
+concat
+frame_dig 7
+concat
+frame_bury 4
+frame_dig -12
+extract 2 0
+box_del
+pop
+frame_dig -12
+extract 2 0
+frame_dig 4
+box_put
+frame_dig -12
+extract 2 0
+box_get
+store 7
+store 6
+load 7
+assert
+load 6
+frame_bury 0
+retsub
+
+// hello
+hello_3:
+proto 1 1
+bytec_0 // ""
+pushbytes 0x48656c6c6f2c20 // "Hello, "
+frame_dig -1
+extract 2 0
+concat
+frame_bury 0
+frame_dig 0
+len
+itob
+extract 6 0
+frame_dig 0
+concat
+frame_bury 0
+retsub
+
+// create_nft_owner
+createnftowner_4:
+proto 3 0
+bytec_0 // ""
+intc_0 // 0
+dup
+bytec_0 // ""
+intc_0 // 0
+dup
+bytec_0 // ""
+dup
+bytec_2 // 0x00056d75736963
+frame_bury 0
+intc_0 // 0
+frame_bury 1
+frame_dig -3
+gtxns ConfigAsset
+frame_bury 2
+frame_dig 0
+frame_bury 7
+frame_dig 7
+frame_bury 6
+pushint 22 // 22
+frame_bury 4
+frame_dig 4
+frame_dig 7
+len
++
+frame_bury 5
+frame_dig 5
+intc_1 // 65536
+<
+assert
+frame_dig 4
+itob
+extract 6 0
+frame_dig 1
+itob
+concat
+frame_dig -2
+frame_bury 7
+frame_dig 6
+frame_dig 7
+concat
+frame_bury 6
+frame_dig 5
+frame_bury 4
+frame_dig 4
+frame_dig 7
+len
++
+frame_bury 5
+frame_dig 5
+intc_1 // 65536
+<
+assert
+frame_dig 4
+itob
+extract 6 0
+concat
+frame_dig -1
+frame_bury 7
+frame_dig 6
+frame_dig 7
+concat
+frame_bury 6
+frame_dig 5
+frame_bury 4
+frame_dig 4
+itob
+extract 6 0
+concat
+frame_dig 2
+itob
+concat
+frame_dig 6
+concat
+frame_bury 3
+frame_dig -3
+gtxns Sender
+box_del
+pop
+frame_dig -3
+gtxns Sender
+frame_dig 3
+box_put
+retsub
+
+// ensure_registered_creative
+ensureregisteredcreative_5:
+proto 2 0
+bytec_0 // ""
+dup
+frame_dig -2
+gtxns Sender
+box_len
+store 9
+store 8
+load 9
+assert
+frame_dig -2
+gtxns Sender
+box_get
+store 11
+store 10
+load 11
+assert
+load 10
+frame_bury 0
+frame_dig 0
+frame_dig 0
+intc_0 // 0
+extract_uint16
+frame_dig 0
+pushint 10 // 10
+extract_uint16
+substring3
+frame_bury 1
+frame_dig 1
+extract 2 0
+frame_dig -1
+extract 2 0
+==
+assert
+retsub
+
+// register_creator_caster
+registercreatorcaster_6:
+proto 0 0
+bytec_0 // ""
+intc_0 // 0
+bytec_0 // ""
+dup
+txna ApplicationArgs 1
+frame_bury 2
+txna ApplicationArgs 2
+frame_bury 3
+txn GroupIndex
+intc_2 // 1
+-
+frame_bury 1
+frame_dig 1
+gtxns TypeEnum
+intc_3 // acfg
+==
+assert
+frame_dig 1
+frame_dig 2
+frame_dig 3
+callsub registercreator_1
+frame_bury 0
+bytec_1 // 0x151f7c75
+frame_dig 0
+concat
+log
+retsub
+
+// create_sound_nft_caster
+createsoundnftcaster_7:
+proto 0 0
+bytec_0 // ""
+intc_0 // 0
+bytec_0 // ""
+dupn 5
+intc_0 // 0
+bytec_0 // ""
+dupn 2
+intc_0 // 0
+dup
+txna ApplicationArgs 1
+frame_bury 2
+txna ApplicationArgs 2
+frame_bury 3
+txna ApplicationArgs 3
+frame_bury 4
+txna ApplicationArgs 4
+frame_bury 5
+txna ApplicationArgs 5
+frame_bury 6
+txna ApplicationArgs 6
+frame_bury 7
+txna ApplicationArgs 7
+btoi
+frame_bury 8
+txna ApplicationArgs 8
+frame_bury 9
+txna ApplicationArgs 9
+frame_bury 10
+txna ApplicationArgs 10
+frame_bury 11
+txna ApplicationArgs 11
+btoi
+frame_bury 12
+txna ApplicationArgs 12
+intc_0 // 0
+pushint 8 // 8
+*
+getbit
+frame_bury 13
+txn GroupIndex
+intc_2 // 1
+-
+frame_bury 1
+frame_dig 1
+gtxns TypeEnum
+intc_3 // acfg
+==
+assert
+frame_dig 1
+frame_dig 2
+frame_dig 3
+frame_dig 4
+frame_dig 5
+frame_dig 6
+frame_dig 7
+frame_dig 8
+frame_dig 9
+frame_dig 10
+frame_dig 11
+frame_dig 12
+frame_dig 13
+callsub createsoundnft_2
+frame_bury 0
+bytec_1 // 0x151f7c75
+frame_dig 0
+concat
+log
+retsub
+
+// hello_caster
+hellocaster_8:
+proto 0 0
+bytec_0 // ""
+dup
+txna ApplicationArgs 1
+frame_bury 1
+frame_dig 1
+callsub hello_3
+frame_bury 0
+bytec_1 // 0x151f7c75
+frame_dig 0
+concat
+log
+retsub
