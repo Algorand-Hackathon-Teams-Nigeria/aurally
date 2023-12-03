@@ -154,7 +154,7 @@
             }
         },
         {
-            "name": "bid_on_auction",
+            "name": "bid_on_art_auction",
             "args": [
                 {
                     "type": "txn",
@@ -171,6 +171,22 @@
             ],
             "returns": {
                 "type": "(address,string,string,uint64,uint64,uint64,uint64,address)"
+            }
+        },
+        {
+            "name": "complete_art_auction",
+            "args": [
+                {
+                    "type": "txn",
+                    "name": "txn"
+                },
+                {
+                    "type": "string",
+                    "name": "auction_key"
+                }
+            ],
+            "returns": {
+                "type": "(uint64,string,string,uint64,string,string,uint64,uint64,address,bool)"
             }
         },
         {

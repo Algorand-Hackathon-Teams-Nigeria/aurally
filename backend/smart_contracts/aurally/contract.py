@@ -1,7 +1,12 @@
 import beaker as B
 import pyteal as P
 
-from smart_contracts.aurally.boxes import ArtNFT, AuctionItem, AurallyCreative, SoundNFT
+from smart_contracts.aurally.boxes import (
+    ArtNFT,
+    ArtAuctionItem,
+    AurallyCreative,
+    SoundNFT,
+)
 from .states import AppState
 
 app = B.Application("Aurally", state=AppState()).apply(B.unconditional_create_approval)
@@ -122,7 +127,7 @@ def create_art_auction(
     starts_at: P.abi.Uint64,
     ends_at: P.abi.Uint64,
     *,
-    output: AuctionItem,
+    output: ArtAuctionItem,
 ):
     from .subroutines import create_art_auction
 
@@ -137,24 +142,43 @@ def create_art_auction(
         create_art_auction(
             txn, auction_key, ipfs_location, nft_name, min_bid, starts_at, ends_at
         ),
-        output.decode(app.state.auctions[auction_key.get()].get()),
+        output.decode(app.state.art_auctions[auction_key.get()].get()),
     )
 
 
 @app.external
-def bid_on_auction(
+def bid_on_art_auction(
     txn: P.abi.Transaction,
     auction_key: P.abi.String,
     bid_ammount: P.abi.Uint64,
     *,
-    output: AuctionItem,
+    output: ArtAuctionItem,
 ):
     from .subroutines import perform_auction_bid
 
     return P.Seq(
-        P.Assert(app.state.auctions[auction_key.get()].exists()),
+        P.Assert(app.state.art_auctions[auction_key.get()].exists()),
         perform_auction_bid(txn, auction_key, bid_ammount),
-        output.decode(app.state.auctions[auction_key.get()].get()),
+        output.decode(app.state.art_auctions[auction_key.get()].get()),
+    )
+
+
+@app.external
+def complete_art_auction(
+    txn: P.abi.Transaction, auction_key: P.abi.String, *, output: ArtNFT
+):
+    from .subroutines import transfer_art_auction_item_to_highest_bidder
+
+    return P.Seq(
+        P.Assert(app.state.art_auctions[auction_key.get()].exists()),
+        (auction_item := ArtAuctionItem()).decode(
+            app.state.art_auctions[auction_key.get()].get()
+        ),
+        (nft_key := P.abi.String()).set(auction_item.item_id),
+        (auctioneer := P.abi.Address()).set(auction_item.auctioneer),
+        P.Assert(auctioneer.get() == txn.get().sender()),
+        transfer_art_auction_item_to_highest_bidder(auction_key),
+        output.decode(app.state.art_nfts[nft_key.get()].get()),
     )
 
 

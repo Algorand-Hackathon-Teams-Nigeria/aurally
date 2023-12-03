@@ -1,6 +1,6 @@
 import pyteal as P
 
-from smart_contracts.aurally.boxes import AuctionItem, AurallyCreative
+from smart_contracts.aurally.boxes import ArtAuctionItem, ArtNFT, AurallyCreative
 from .contract import app
 
 
@@ -78,11 +78,11 @@ def create_art_auction(
     ends_at: P.abi.Uint64,
 ):
     return P.Seq(
-        (P.Assert(P.Not(app.state.auctions[auction_key.get()].exists()))),
+        (P.Assert(P.Not(app.state.art_auctions[auction_key.get()].exists()))),
         (auctionier := P.abi.Address()).set(txn.get().sender()),
         (highest_bid := P.abi.Uint64()).set(0),
         (highest_bidder := P.abi.Address()).set(P.Global.current_application_address()),
-        (art_auction := AuctionItem()).set(
+        (art_auction := ArtAuctionItem()).set(
             auctionier,
             ipfs_location,
             name,
@@ -92,7 +92,7 @@ def create_art_auction(
             highest_bid,
             highest_bidder,
         ),
-        app.state.auctions[auction_key.get()].set(art_auction),
+        app.state.art_auctions[auction_key.get()].set(art_auction),
     )
 
 
@@ -101,8 +101,8 @@ def perform_auction_bid(
     txn: P.abi.Transaction, auction_key: P.abi.String, bid_ammount: P.abi.Uint64
 ):
     return P.Seq(
-        (auction_item := AuctionItem()).decode(
-            app.state.auctions[auction_key.get()].get()
+        (auction_item := ArtAuctionItem()).decode(
+            app.state.art_auctions[auction_key.get()].get()
         ),
         (highest_bid := P.abi.Uint64()).set(auction_item.highest_bid),
         (min_bid := P.abi.Uint64()).set(auction_item.min_bid),
@@ -126,5 +126,39 @@ def perform_auction_bid(
             bid_ammount,
             highest_bidder,
         ),
-        app.state.auctions[auction_key.get()].set(auction_item),
+        app.state.art_auctions[auction_key.get()].set(auction_item),
+    )
+
+
+def transfer_art_auction_item_to_highest_bidder(auction_key: P.abi.String):
+    return P.Seq(
+        (auction_item := ArtAuctionItem()).decode(
+            app.state.art_auctions[auction_key.get()].get()
+        ),
+        (highest_bidder := P.abi.Address()).set(auction_item.highest_bidder),
+        (nft_key := P.abi.String()).set(auction_item.item_id),
+        # Update the art_nft owner
+        (art_nft := ArtNFT()).decode(app.state.art_nfts[nft_key.get()].get()),
+        (asset_id := P.abi.Uint64()).set(art_nft.asset_id),
+        (title := P.abi.String()).set(art_nft.title),
+        (name := P.abi.String()).set(art_nft.name),
+        (supply := P.abi.Uint64()).set(art_nft.supply),
+        (description := P.abi.String()).set(art_nft.description),
+        (ipfs_location := P.abi.String()).set(art_nft.ipfs_location),
+        (price := P.abi.Uint64()).set(art_nft.price),
+        (sold_price := P.abi.Uint64()).set(art_nft.sold_price),
+        (for_sale := P.abi.Bool()).set(art_nft.for_sale),
+        art_nft.set(
+            asset_id,
+            title,
+            name,
+            supply,
+            description,
+            ipfs_location,
+            price,
+            sold_price,
+            highest_bidder,
+            for_sale,
+        ),
+        app.state.art_nfts[nft_key.get()].set(art_nft),
     )
