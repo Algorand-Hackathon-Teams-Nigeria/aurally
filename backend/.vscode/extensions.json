@@ -1,5 +1,9 @@
 {
-    "recommendations": [
-        "dbaeumer.vscode-eslint",
-    ]
-  }
+  "recommendations": [
+    "ms-python.python",
+    "charliermarsh.ruff",
+    "matangover.mypy",
+    "bungcip.better-toml",
+    "editorconfig.editorconfig"
+  ]
+}
