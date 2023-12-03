@@ -1,4 +1,5 @@
 from datetime import datetime
+import os
 from pathlib import Path
 from typing import List
 from algosdk import atomic_transaction_composer, encoding, transaction
@@ -23,9 +24,12 @@ def aurally_client(test_accounts: List[LocalAccount]) -> ApplicationClient:
     artifacts_dir = (
         Path(__file__)
         .resolve()
-        .parent.joinpath("smart_contracts")
+        .parent.parent.joinpath("smart_contracts")
         .joinpath("artifacts")
+        .joinpath("Aurally")
     )
+    if not artifacts_dir.is_dir():
+        os.makedirs(artifacts_dir, exist_ok=True)
     aurally_contract.app.build().export(artifacts_dir)
 
     app_account = test_accounts[0]
@@ -76,7 +80,7 @@ def test_register_creator(
         username="Dev2700",
         boxes=[(aurally_client.app_id, encoding.decode_address(txn.txn.sender))],
     )
-    assert list(result.return_value)[2] == "Dev Ready"
+    assert list(result.return_value)[3] == "Dev Ready"
 
 
 def test_create_sound_nft(
@@ -125,6 +129,52 @@ def test_create_sound_nft(
         ],
     )
     assert list(result.return_value)[2] == "Dev Tokens"
+
+
+def test_create_art_nft(
+    algod_client: AlgodClient,
+    aurally_client: ApplicationClient,
+    test_account: LocalAccount,
+):
+    supply = 20
+    nft_name = "Sun God Nika"
+    sp = algod_client.suggested_params()
+    url = "https://ipfs.io/ipfs/" + nft_name
+
+    raw_txn = transaction.AssetCreateTxn(
+        sp=sp,
+        decimals=2,
+        total=supply,
+        unit_name="DST",
+        asset_name=nft_name,
+        default_frozen=False,
+        metadata_hash=generate_hash(nft_name),
+        sender=test_account.address,
+        url=url,
+    )
+
+    txn = atomic_transaction_composer.TransactionWithSigner(
+        txn=raw_txn, signer=test_account.signer
+    )
+
+    result = aurally_client.call(
+        aurally_contract.create_art_nft,
+        txn=txn,
+        title=nft_name,
+        name=nft_name,
+        supply=supply,
+        description="Gear 5 Luffy",
+        ipfs_location=url,
+        price=2000,
+        for_sale=True,
+        boxes=[
+            (aurally_client.app_id, url.encode()),
+            (aurally_client.app_id, encoding.decode_address(txn.txn.sender)),
+        ],
+    )
+
+    assert list(result.return_value)[1] == nft_name
+
 
 def generate_hash(input_str: str) -> bytes:
     input_bytes = input_str.encode("utf-8")

@@ -6,7 +6,8 @@ class AurallyCreative(P.abi.NamedTuple):
     Represents a registered account
     """
 
-    creative_type: P.abi.Field[P.abi.String]
+    is_music_creative: P.abi.Field[P.abi.Bool]
+    is_art_creative: P.abi.Field[P.abi.Bool]
     minted: P.abi.Field[P.abi.Uint64]
     fullname: P.abi.Field[P.abi.String]
     username: P.abi.Field[P.abi.String]
@@ -25,5 +26,18 @@ class SoundNFT(P.abi.NamedTuple):
     cover_image_ipfs: P.abi.Field[P.abi.String]
     audio_sample_ipfs: P.abi.Field[P.abi.String]
     full_track_ipfs: P.abi.Field[P.abi.String]
+    owner: P.abi.Field[P.abi.Address]
+    for_sale: P.abi.Field[P.abi.Bool]
+
+
+class ArtNFT(P.abi.NamedTuple):
+    asset_id: P.abi.Field[P.abi.Uint64]
+    title: P.abi.Field[P.abi.String]
+    name: P.abi.Field[P.abi.String]
+    supply: P.abi.Field[P.abi.Uint64]
+    description: P.abi.Field[P.abi.String]
+    ipfs_location: P.abi.Field[P.abi.String]
+    price: P.abi.Field[P.abi.Uint64]
+    sold_price: P.abi.Field[P.abi.Uint64]
     owner: P.abi.Field[P.abi.Address]
     for_sale: P.abi.Field[P.abi.Bool]
