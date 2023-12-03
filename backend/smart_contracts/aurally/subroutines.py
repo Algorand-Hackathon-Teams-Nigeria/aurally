@@ -1,6 +1,6 @@
 import pyteal as P
 
-from smart_contracts.aurally.boxes import AurallyCreative
+from smart_contracts.aurally.boxes import AuctionItem, AurallyCreative
 from .contract import app
 
 
@@ -64,4 +64,33 @@ def increment_creator_nft_count(creator: P.abi.Address):
             is_music_creative, is_art_creative, minted, fullname, username, d_nft_id
         ),
         app.state.aurally_nft_owners[creator.get()].set(creative),
+    )
+
+
+@P.Subroutine(P.TealType.none)
+def create_art_auction(
+    txn: P.abi.Transaction,
+    auction_key: P.abi.String,
+    ipfs_location: P.abi.String,
+    name: P.abi.String,
+    min_bid: P.abi.Uint64,
+    starts_at: P.abi.Uint64,
+    ends_at: P.abi.Uint64,
+):
+    return P.Seq(
+        (P.Assert(P.Not(app.state.auctions[auction_key.get()].exists()))),
+        (auctionier := P.abi.Address()).set(txn.get().sender()),
+        (highest_bid := P.abi.Uint64()).set(0),
+        (highest_bidder := P.abi.Address()).set(P.Global.current_application_address()),
+        (art_auction := AuctionItem()).set(
+            auctionier,
+            ipfs_location,
+            name,
+            min_bid,
+            starts_at,
+            ends_at,
+            highest_bid,
+            highest_bidder,
+        ),
+        app.state.auctions[auction_key.get()].set(art_auction),
     )

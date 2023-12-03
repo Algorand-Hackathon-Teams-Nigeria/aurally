@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
 from pathlib import Path
 from typing import List
@@ -174,6 +174,43 @@ def test_create_art_nft(
     )
 
     assert list(result.return_value)[1] == nft_name
+
+
+def test_create_art_auction(
+    algod_client: AlgodClient,
+    aurally_client: ApplicationClient,
+    test_account: LocalAccount,
+):
+    nft_name = "Sun God Nika"
+    sp = algod_client.suggested_params()
+    url = "https://ipfs.io/ipfs/" + nft_name
+    raw_txn = transaction.PaymentTxn(
+        sender=test_account.address, sp=sp, receiver=test_account.address, amt=0
+    )
+    txn = atomic_transaction_composer.TransactionWithSigner(
+        txn=raw_txn, signer=test_account.signer
+    )
+
+    auction_key = f"The Auction _ {datetime.utcnow()}"
+    starts_at = datetime.now() + timedelta(days=1)
+    ends_at = starts_at + timedelta(days=1)
+
+    result = aurally_client.call(
+        aurally_contract.create_art_auction,
+        txn=txn,
+        auction_key=auction_key,
+        ipfs_location=url,
+        min_bid=10000,
+        starts_at=int(starts_at.timestamp()),
+        ends_at=int(ends_at.timestamp()),
+        boxes=[
+            (aurally_client.app_id, url.encode()),
+            (aurally_client.app_id, auction_key.encode()),
+            (aurally_client.app_id, encoding.decode_address(txn.txn.sender)),
+        ],
+    )
+
+    assert list(result.return_value)[1] == url
 
 
 def generate_hash(input_str: str) -> bytes:

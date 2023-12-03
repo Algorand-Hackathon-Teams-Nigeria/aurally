@@ -41,3 +41,14 @@ class ArtNFT(P.abi.NamedTuple):
     sold_price: P.abi.Field[P.abi.Uint64]
     owner: P.abi.Field[P.abi.Address]
     for_sale: P.abi.Field[P.abi.Bool]
+
+
+class AuctionItem(P.abi.NamedTuple):
+    auctioneer: P.abi.Field[P.abi.Address]
+    item_id: P.abi.Field[P.abi.String]
+    item_name: P.abi.Field[P.abi.String]
+    min_bid: P.abi.Field[P.abi.Uint64]
+    starts_at: P.abi.Field[P.abi.Uint64]
+    ends_at: P.abi.Field[P.abi.Uint64]
+    highest_bid: P.abi.Field[P.abi.Uint64]
+    highest_bidder: P.abi.Field[P.abi.Address]

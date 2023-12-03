@@ -122,6 +122,38 @@
             }
         },
         {
+            "name": "create_art_auction",
+            "args": [
+                {
+                    "type": "txn",
+                    "name": "txn"
+                },
+                {
+                    "type": "string",
+                    "name": "auction_key"
+                },
+                {
+                    "type": "string",
+                    "name": "ipfs_location"
+                },
+                {
+                    "type": "uint64",
+                    "name": "min_bid"
+                },
+                {
+                    "type": "uint64",
+                    "name": "starts_at"
+                },
+                {
+                    "type": "uint64",
+                    "name": "ends_at"
+                }
+            ],
+            "returns": {
+                "type": "(address,string,string,uint64,uint64,uint64,uint64,address)"
+            }
+        },
+        {
             "name": "hello",
             "args": [
                 {
