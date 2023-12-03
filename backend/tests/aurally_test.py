@@ -325,8 +325,70 @@ def test_transfer_nft(
         to=test_accounts[1].address,
         asset_key=sample_asset_key,
         nft_type="sound",
-        boxes=[(aurally_client.app_id, sample_asset_key.encode())]
+        boxes=[(aurally_client.app_id, sample_asset_key.encode())],
     )
+
+
+def test_create_proposal(
+    algod_client: AlgodClient,
+    aurally_client: ApplicationClient,
+    test_account: LocalAccount,
+):
+    sp = algod_client.suggested_params()
+    raw_txn = transaction.PaymentTxn(
+        sender=test_account.address, receiver=test_account.address, sp=sp, amt=0
+    )
+    txn = atomic_transaction_composer.TransactionWithSigner(
+        txn=raw_txn, signer=test_account.signer
+    )
+
+    proposal_key = "Proposal to bring Gojo back"
+    proposal_detail = """
+            Gojo is the GOAT, and deserves to be brought back.
+            But I also like Sukuna, so I have mixed feeligs
+        """
+
+    result = aurally_client.call(
+        aurally_contract.create_proposal,
+        txn=txn,
+        proposal_key=proposal_key,
+        proposal_detail=proposal_detail,
+        boxes=[
+            (aurally_client.app_id, proposal_key.encode()),
+            (aurally_client.app_id, encoding.decode_address(test_account.address)),
+        ],
+    )
+
+    assert list(result.return_value)[0] == proposal_key
+
+
+def test_vote_on_proposal(
+    algod_client: AlgodClient,
+    aurally_client: ApplicationClient,
+    test_account: LocalAccount,
+):
+    sp = algod_client.suggested_params()
+    raw_txn = transaction.PaymentTxn(
+        sender=test_account.address, receiver=test_account.address, sp=sp, amt=0
+    )
+    txn = atomic_transaction_composer.TransactionWithSigner(
+        txn=raw_txn, signer=test_account.signer
+    )
+
+    proposal_key = "Proposal to bring Gojo back"
+
+    result = aurally_client.call(
+        aurally_contract.vote_on_proposal,
+        txn=txn,
+        vote_for=True,
+        proposal_key=proposal_key,
+        boxes=[
+            (aurally_client.app_id, encoding.decode_address(test_account.address)),
+            (aurally_client.app_id, proposal_key.encode()),
+        ],
+    )
+
+    assert list(result.return_value)[1] > 0
 
 
 def generate_hash(input_str: str) -> bytes:

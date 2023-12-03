@@ -5,6 +5,7 @@ from smart_contracts.aurally.boxes import (
     ArtNFT,
     ArtAuctionItem,
     AurallyCreative,
+    Proposal,
     SoundNFT,
 )
 from .states import AppState
@@ -225,6 +226,56 @@ def transfer_nft(
             validate_and_update_sound_nft_owner(txn, asset_key, to),
             validate_and_update_art_nft_owner(txn, asset_key, to),
         ),
+    )
+
+
+@app.external
+def create_proposal(
+    txn: P.abi.Transaction,
+    proposal_key: P.abi.String,
+    proposal_detail: P.abi.String,
+    *,
+    output: Proposal,
+):
+    return P.Seq(
+        P.Assert(txn.get().amount() == P.Int(0)),
+        P.Assert(app.state.aurally_nft_owners[txn.get().sender()].exists()),
+        (yes_votes := P.abi.Uint64()).set(0),
+        (no_votes := P.abi.Uint64()).set(0),
+        (proposal := Proposal()).set(
+            proposal_key, yes_votes, no_votes, proposal_detail
+        ),
+        app.state.dao_proposals[proposal_key.get()].set(proposal),
+        output.decode(app.state.dao_proposals[proposal_key.get()].get()),
+    )
+
+
+@app.external
+def vote_on_proposal(
+    txn: P.abi.PaymentTransaction,
+    vote_for: P.abi.Bool,
+    proposal_key: P.abi.String,
+    *,
+    output: Proposal,
+):
+    return P.Seq(
+        P.Assert(app.state.aurally_nft_owners[txn.get().sender()].exists()),
+        P.Assert(app.state.dao_proposals[proposal_key.get()].exists()),
+        (proposal := Proposal()).decode(
+            app.state.dao_proposals[proposal_key.get()].get()
+        ),
+        (proposal_id := P.abi.String()).set(proposal.proposal_id),
+        (yes_votes := P.abi.Uint64()).set(proposal.yes_votes),
+        (no_votes := P.abi.Uint64()).set(proposal.no_votes),
+        (details := P.abi.String()).set(proposal.details),
+        P.If(
+            vote_for.get(),
+            yes_votes.set(yes_votes.get() + P.Int(1)),
+            no_votes.set(no_votes.get() + P.Int(1)),
+        ),
+        proposal.set(proposal_id, yes_votes, no_votes, details),
+        app.state.dao_proposals[proposal_key.get()].set(proposal),
+        output.decode(app.state.dao_proposals[proposal_key.get()].get()),
     )
 
 

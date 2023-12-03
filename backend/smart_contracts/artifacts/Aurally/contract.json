@@ -234,6 +234,46 @@
             }
         },
         {
+            "name": "create_proposal",
+            "args": [
+                {
+                    "type": "txn",
+                    "name": "txn"
+                },
+                {
+                    "type": "string",
+                    "name": "proposal_key"
+                },
+                {
+                    "type": "string",
+                    "name": "proposal_detail"
+                }
+            ],
+            "returns": {
+                "type": "(string,uint64,uint64,string)"
+            }
+        },
+        {
+            "name": "vote_on_proposal",
+            "args": [
+                {
+                    "type": "pay",
+                    "name": "txn"
+                },
+                {
+                    "type": "bool",
+                    "name": "vote_for"
+                },
+                {
+                    "type": "string",
+                    "name": "proposal_key"
+                }
+            ],
+            "returns": {
+                "type": "(string,uint64,uint64,string)"
+            }
+        },
+        {
             "name": "hello",
             "args": [
                 {
