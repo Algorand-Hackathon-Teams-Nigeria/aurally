@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom'
 
-const BigLogo = ({ className }: { className?: string }) => {
+const BigLogo = ({ className, to = '/dapp' }: { className?: string; to?: string }) => {
   return (
-    <Link to="/">
+    <Link to={to}>
       <svg className={className} width="167" height="55" viewBox="0 0 167 55" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g id="logo">
           <path

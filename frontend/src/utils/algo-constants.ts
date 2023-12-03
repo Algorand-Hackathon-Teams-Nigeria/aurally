@@ -1,4 +1,4 @@
-import { AlgoViteClientConfig, AlgoViteKMDConfig } from '../../interfaces/network'
+import { AlgoViteClientConfig, AlgoViteKMDConfig } from '../interfaces/network'
 
 export function getAlgodConfigFromViteEnvironment(): AlgoViteClientConfig {
   if (!import.meta.env.VITE_ALGOD_SERVER) {
@@ -39,3 +39,8 @@ export function getKmdConfigFromViteEnvironment(): AlgoViteKMDConfig {
     password: import.meta.env.VITE_KMD_PASSWORD,
   }
 }
+
+export const deployParams = {
+  onSchemaBreak: 'append',
+  onUpdate: 'append',
+} as const

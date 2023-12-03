@@ -1,6 +1,7 @@
 import { Icon } from '@iconify/react'
 import { Button } from '@mantine/core'
 import { ContextModalProps } from '@mantine/modals'
+import { useNavigate } from 'react-router-dom'
 
 const icons = {
   success: 'ph:check-circle-thin',
@@ -19,9 +20,14 @@ const MessageModal = ({
   desc: string
   btnLabel: string
   btnAction?: () => void
+  link?: string
 }>) => {
+  const navigate = useNavigate()
   const fireAction = () => {
     context.closeModal(id)
+    if (innerProps.link) {
+      navigate(innerProps.link)
+    }
     if (innerProps.btnAction) {
       innerProps.btnAction()
     }

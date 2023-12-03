@@ -5,9 +5,41 @@ import ConnectButton from '../General/ConnectButton'
 import SideDrawer from '../SideDrawer'
 import classes from './appnav.module.css'
 import NotifcationDrawer from '../NotifcationDrawer'
+import { useAtom } from 'jotai'
+import { searchAtom } from '../../store/atoms'
 
 const SearchBar = () => {
-  return <TextInput classNames={{ input: classes.searchbar }} placeholder="Search music, artists, playlist" />
+  const [search, setSearch] = useAtom(searchAtom)
+  return (
+    <TextInput
+      value={search}
+      onChange={(e) => setSearch(e.currentTarget.value)}
+      classNames={{ input: classes.searchbar }}
+      placeholder="Search music, artists, playlist"
+    />
+  )
+}
+
+{
+  /* <Popover width="target" position="bottom-start" radius={16} shadow="md" opened={opened} onChange={close}>
+      <Popover.Target>
+        <TextInput
+          value={search}
+          onChange={(e) => setSearch(e.currentTarget.value)}
+          onInput={handleInput}
+          onFocus={handleFocus}
+          // onKeyDown={handleKeyUp}
+          classNames={{ input: classes.searchbar }}
+          placeholder="Search music, artists, playlist"
+        />
+      </Popover.Target>
+      <Popover.Dropdown maw={500} bg="var(--mantine-color-body)" className="overflow-hidden">
+        <LoadingOverlay visible={search !== item} zIndex={1} overlayProps={{ radius: 'lg', blur: 2, bg: '#ffffff10' }} />
+        <div className="w-full h-[200px] rounded-xl">
+          <span>{item}</span>
+        </div>
+      </Popover.Dropdown>
+    </Popover> */
 }
 
 const SearchAndFilter = () => {

@@ -3,9 +3,9 @@ import { TransactionSignerAccount } from '@algorandfoundation/algokit-utils/type
 import { AppDetails } from '@algorandfoundation/algokit-utils/types/app-client'
 import { useWallet } from '@txnlab/use-wallet'
 import { useState } from 'react'
-import { HelloWorldClient } from '../contracts/hello_world'
-import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
 import toast from 'react-hot-toast'
+import { HelloWorldClient } from '../contracts/hello_world'
+import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from '../utils/algo-constants'
 
 interface AppCallsInterface {
   openModal: boolean
@@ -52,14 +52,14 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
     const deployParams = {
       onSchemaBreak: 'append',
       onUpdate: 'append',
-    }
-    await appClient.deploy(deployParams).catch((e: Error) => {
+    } as const
+    await appClient.deploy(deployParams).catch(() => {
       toast.success(`Error deploying the contract`)
       setLoading(false)
       return
     })
 
-    const response = await appClient.hello({ name: contractInput }).catch((e: Error) => {
+    const response = await appClient.hello({ name: contractInput }).catch(() => {
       toast.success(`Error calling the contract`)
       setLoading(false)
       return

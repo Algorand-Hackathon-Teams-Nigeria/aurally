@@ -10,7 +10,7 @@
   flex-direction: column;
   gap: 16px;
   align-items: center;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .link {
@@ -83,11 +83,13 @@
   }
 }
 
-[data-path=''] .link[data-path=''],
-[data-path='marketplace'] .link[data-path='/marketplace'],
-[data-path='dao'] .link[data-path='/dao'],
-[data-path='streams'] .link[data-path='/streams'],
-[data-path='profile'] .link[data-path='/profile'] {
+[data-path=''] .link[data-path='/dapp'],
+[data-path='marketplace'] .link[data-path='/dapp/marketplace'],
+[data-path='dao'] .link[data-path='/dapp/dao'],
+[data-path='nfts'] .link[data-path='/dapp/nfts'],
+[data-path='communities'] .link[data-path='/dapp/communities'],
+[data-path='events'] .link[data-path='/dapp/events'],
+[data-path='profile'] .link[data-path='/dapp/profile'] {
   &,
   &:hover {
     box-shadow: var(--mantine-shadow-sm);

@@ -8,6 +8,7 @@
   border-radius: 8px;
   border: 0.5px solid var(--Border-colour, #444);
   overflow: hidden;
+  flex: 1;
 }
 
 .title {

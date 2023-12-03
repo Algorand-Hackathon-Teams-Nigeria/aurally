@@ -4,12 +4,25 @@ module.exports = {
   theme: {
     extend: {
       gridTemplateColumns: {
-        'music-card': 'repeat(auto-fit, minmax(238px, 1fr))',
-        'dao-card': 'repeat(auto-fit, minmax(220px, 1fr))',
+        'music-card': 'repeat(auto-fill, minmax(238px, auto))',
+        'dao-card': 'repeat(auto-fill, minmax(220px, auto))',
+        'profile-card-sm': 'repeat(auto-fill, minmax(130px, auto))',
+        'profile-card': 'repeat(auto-fill, minmax(200px, auto))',
+
+        roadmap: '1fr 4px 1fr',
+        'roadmap-sm': '4px 1fr',
       },
       backgroundImage: {
         'shadow-gradient': 'linear-gradient(0deg, #111 0%, rgba(17, 17, 17, 0.10) 98.63%)',
         'shadow-gradient2': 'linear-gradient(0deg, #111 41.55%, rgba(17, 17, 17, 0.00) 98.63%)',
+        pageGrad: 'linear-gradient(180deg, rgba(138, 43, 226, 0.40) 0%, #111 70%)',
+      },
+      fontFamily: {
+        space: ['var(--font-space)'],
+      },
+      colors: {
+        primary: '#8A2BE2',
+        borderColor: '#444444',
       },
     },
   },

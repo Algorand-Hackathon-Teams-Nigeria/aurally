@@ -26,3 +26,7 @@
 .option:hover {
   background: rgba(0, 0, 0, 0.3);
 }
+
+.checkbox_input {
+  @apply bg-transparent checked:bg-[var(--mantine-color-purple-filled)];
+}

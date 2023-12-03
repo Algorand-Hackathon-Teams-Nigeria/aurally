@@ -1,17 +1,20 @@
 import { Icon } from '@iconify/react'
 import { ActionIcon, Button, Menu, Tooltip } from '@mantine/core'
 import { memo } from 'react'
-import { Link, NavLink, useLocation } from 'react-router-dom'
+import { Link, NavLink, useLocation, useParams } from 'react-router-dom'
 import BigLogo from '../General/BigLogo'
 import Logo from '../General/Logo'
 import classes from './sidebar.module.css'
+import { useMediaQuery } from '@mantine/hooks'
 
 const data = [
-  { link: '', label: 'Home', icon: 'solar:home-2-broken' },
-  { link: '/marketplace', label: 'Marketplace', icon: 'solar:shop-broken' },
-  { link: '/dao', label: 'DAO', icon: 'tabler:ticket' },
-  { link: '/streams', label: 'My Streams', icon: 'solar:play-broken' },
-  { link: '/profile', label: 'Profile', icon: 'line-md:account' },
+  { link: '/dapp', label: 'Home', icon: 'solar:home-2-broken' },
+  { link: '/dapp/marketplace', label: 'Marketplace', icon: 'solar:global-outline' },
+  { link: '/dapp/dao', label: 'DAO', icon: 'material-symbols-light:chess-outline' },
+  { link: '/dapp/events', label: 'Events', icon: 'tabler:ticket' },
+  { link: '/dapp/nfts', label: 'My Nfts', icon: 'solar:play-broken' },
+  { link: '/dapp/communities', label: 'Communities', icon: 'fluent:people-community-16-regular' },
+  { link: '/dapp/profile', label: 'Profile', icon: 'line-md:account' },
 ]
 
 export const Links = memo(({ isMobile }: { isMobile?: boolean }) => {
@@ -34,12 +37,16 @@ export const Links = memo(({ isMobile }: { isMobile?: boolean }) => {
 
 const AppSideBar = () => {
   const { pathname } = useLocation()
+  const { forumId } = useParams()
+  const matched = useMediaQuery('(min-width: 1024px)')
   const sliced = pathname.split('/')
 
   const icon = <Icon icon="octicon:plus-16" stroke="2" width={20} />
 
+  const hideNav = sliced[3] === 'music' || (sliced[2] === 'communities' && !!forumId && !matched)
+
   return (
-    <nav data-path={sliced[1]} className={`${classes.navbar} transition-all`} data-sub-bg={sliced[2] === 'music'}>
+    <nav data-path={sliced[2] || ''} className={`${classes.navbar} transition-all`} data-sub-bg={hideNav}>
       <Logo className={classes.svg1} /> <BigLogo className={classes.svg2} />
       <div className={classes.navbarMain}>
         <Links />
@@ -60,11 +67,14 @@ const AppSideBar = () => {
               </div>
             </Menu.Target>
             <Menu.Dropdown>
-              <Menu.Item to="/create/sound" component={Link} leftSection={<Icon icon="mdi:music" />}>
+              <Menu.Item to="/dapp/create/sound" component={Link} leftSection={<Icon icon="mdi:music" />}>
                 Sound NFT
               </Menu.Item>
-              <Menu.Item to="/create/art" component={Link} leftSection={<Icon icon="mdi:art" />}>
+              <Menu.Item to="/dapp/create/art" component={Link} leftSection={<Icon icon="mdi:art" />}>
                 Art NFT
+              </Menu.Item>
+              <Menu.Item to="/dapp/events/create" component={Link} leftSection={<Icon icon="tabler:ticket" />}>
+                Create Event
               </Menu.Item>
             </Menu.Dropdown>
           </Menu>
