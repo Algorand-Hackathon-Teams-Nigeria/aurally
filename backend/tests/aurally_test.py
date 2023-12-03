@@ -50,6 +50,11 @@ def test_account() -> LocalAccount:
     return localnet.get_accounts().pop()
 
 
+@pytest.fixture(scope="session")
+def auction_key() -> str:
+    return f"The Auction _ {datetime.utcnow()}"
+
+
 def test_says_hello(aurally_client: ApplicationClient) -> None:
     result = aurally_client.call(aurally_contract.hello, name="World")
 
@@ -180,6 +185,7 @@ def test_create_art_auction(
     algod_client: AlgodClient,
     aurally_client: ApplicationClient,
     test_account: LocalAccount,
+    auction_key: str,
 ):
     nft_name = "Sun God Nika"
     sp = algod_client.suggested_params()
@@ -191,9 +197,8 @@ def test_create_art_auction(
         txn=raw_txn, signer=test_account.signer
     )
 
-    auction_key = f"The Auction _ {datetime.utcnow()}"
-    starts_at = datetime.now() + timedelta(days=1)
-    ends_at = starts_at + timedelta(days=1)
+    starts_at = datetime.now() - timedelta(weeks=2)
+    ends_at = datetime.now() + timedelta(days=2)
 
     result = aurally_client.call(
         aurally_contract.create_art_auction,
@@ -211,6 +216,31 @@ def test_create_art_auction(
     )
 
     assert list(result.return_value)[1] == url
+
+
+def test_bid_on_auction(
+    algod_client: AlgodClient,
+    aurally_client: ApplicationClient,
+    test_account: LocalAccount,
+    auction_key: str,
+):
+    sp = algod_client.suggested_params()
+    raw_txn = transaction.PaymentTxn(
+        sender=test_account.address, sp=sp, receiver=test_account.address, amt=0
+    )
+    txn = atomic_transaction_composer.TransactionWithSigner(
+        txn=raw_txn, signer=test_account.signer
+    )
+
+    result = aurally_client.call(
+        aurally_contract.bid_on_auction,
+        txn=txn,
+        auction_key=auction_key,
+        bid_ammount=20000,
+        boxes=[(aurally_client.app_id, auction_key.encode())]
+    )
+
+    assert list(result.return_value)[6] == 20000
 
 
 def generate_hash(input_str: str) -> bytes:

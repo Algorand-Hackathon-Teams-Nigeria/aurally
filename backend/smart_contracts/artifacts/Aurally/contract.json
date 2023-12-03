@@ -154,6 +154,26 @@
             }
         },
         {
+            "name": "bid_on_auction",
+            "args": [
+                {
+                    "type": "txn",
+                    "name": "txn"
+                },
+                {
+                    "type": "string",
+                    "name": "auction_key"
+                },
+                {
+                    "type": "uint64",
+                    "name": "bid_ammount"
+                }
+            ],
+            "returns": {
+                "type": "(address,string,string,uint64,uint64,uint64,uint64,address)"
+            }
+        },
+        {
             "name": "hello",
             "args": [
                 {

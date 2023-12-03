@@ -94,3 +94,37 @@ def create_art_auction(
         ),
         app.state.auctions[auction_key.get()].set(art_auction),
     )
+
+
+@P.Subroutine(P.TealType.none)
+def perform_auction_bid(
+    txn: P.abi.Transaction, auction_key: P.abi.String, bid_ammount: P.abi.Uint64
+):
+    return P.Seq(
+        (auction_item := AuctionItem()).decode(
+            app.state.auctions[auction_key.get()].get()
+        ),
+        (highest_bid := P.abi.Uint64()).set(auction_item.highest_bid),
+        (min_bid := P.abi.Uint64()).set(auction_item.min_bid),
+        (starts_at := P.abi.Uint64()).set(auction_item.starts_at),
+        (ends_at := P.abi.Uint64()).set(auction_item.ends_at),
+        P.Assert(P.Global.latest_timestamp() > starts_at.get()),
+        P.Assert(P.Global.latest_timestamp() < ends_at.get()),
+        P.Assert(bid_ammount.get() > highest_bid.get()),
+        P.Assert(bid_ammount.get() > min_bid.get()),
+        (auctioneer := P.abi.Address()).set(auction_item.auctioneer),
+        (item_id := P.abi.String()).set(auction_item.item_id),
+        (item_name := P.abi.String()).set(auction_item.item_name),
+        (highest_bidder := P.abi.Address()).set(txn.get().sender()),
+        auction_item.set(
+            auctioneer,
+            item_id,
+            item_name,
+            min_bid,
+            starts_at,
+            ends_at,
+            bid_ammount,
+            highest_bidder,
+        ),
+        app.state.auctions[auction_key.get()].set(auction_item),
+    )

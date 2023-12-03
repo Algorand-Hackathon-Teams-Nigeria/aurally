@@ -127,7 +127,7 @@ def create_art_auction(
     from .subroutines import create_art_auction
 
     return P.Seq(
-        P.Assert(P.Global.latest_timestamp() < starts_at.get()),
+        # P.Assert(P.Global.latest_timestamp() < starts_at.get()), # Can't create an auction in the past
         P.Assert(starts_at.get() < ends_at.get()),
         P.Assert(app.state.art_nfts[ipfs_location.get()].exists()),
         (art_nft := ArtNFT()).decode(app.state.art_nfts[ipfs_location.get()].get()),
@@ -137,6 +137,23 @@ def create_art_auction(
         create_art_auction(
             txn, auction_key, ipfs_location, nft_name, min_bid, starts_at, ends_at
         ),
+        output.decode(app.state.auctions[auction_key.get()].get()),
+    )
+
+
+@app.external
+def bid_on_auction(
+    txn: P.abi.Transaction,
+    auction_key: P.abi.String,
+    bid_ammount: P.abi.Uint64,
+    *,
+    output: AuctionItem,
+):
+    from .subroutines import perform_auction_bid
+
+    return P.Seq(
+        P.Assert(app.state.auctions[auction_key.get()].exists()),
+        perform_auction_bid(txn, auction_key, bid_ammount),
         output.decode(app.state.auctions[auction_key.get()].get()),
     )
 
