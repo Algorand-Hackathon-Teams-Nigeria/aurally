@@ -1,7 +1,7 @@
 import beaker as B
 import pyteal as P
 
-from smart_contracts.aurally.boxes import ArtNFT, AurallyCreative, SoundNFT
+from smart_contracts.aurally.boxes import ArtNFT, AuctionItem, AurallyCreative, SoundNFT
 from .states import AppState
 
 app = B.Application("Aurally", state=AppState()).apply(B.unconditional_create_approval)
@@ -110,6 +110,34 @@ def create_art_nft(
         app.state.art_nfts[ipfs_location.get()].set(art_nft),
         increment_creator_nft_count(owner),
         output.decode(app.state.art_nfts[ipfs_location.get()].get()),
+    )
+
+
+@app.external
+def create_art_auction(
+    txn: P.abi.Transaction,
+    auction_key: P.abi.String,
+    ipfs_location: P.abi.String,
+    min_bid: P.abi.Uint64,
+    starts_at: P.abi.Uint64,
+    ends_at: P.abi.Uint64,
+    *,
+    output: AuctionItem,
+):
+    from .subroutines import create_art_auction
+
+    return P.Seq(
+        P.Assert(P.Global.latest_timestamp() < starts_at.get()),
+        P.Assert(starts_at.get() < ends_at.get()),
+        P.Assert(app.state.art_nfts[ipfs_location.get()].exists()),
+        (art_nft := ArtNFT()).decode(app.state.art_nfts[ipfs_location.get()].get()),
+        (art_nft_owner := P.abi.Address()).set(art_nft.owner),
+        (nft_name := P.abi.String()).set(art_nft.name),
+        P.Assert(art_nft_owner.get() == txn.get().sender()),
+        create_art_auction(
+            txn, auction_key, ipfs_location, nft_name, min_bid, starts_at, ends_at
+        ),
+        output.decode(app.state.auctions[auction_key.get()].get()),
     )
 
 
