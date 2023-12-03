@@ -1,0 +1,98 @@
+{
+    "name": "Aurally",
+    "methods": [
+        {
+            "name": "register_creator",
+            "args": [
+                {
+                    "type": "acfg",
+                    "name": "txn"
+                },
+                {
+                    "type": "string",
+                    "name": "fullname"
+                },
+                {
+                    "type": "string",
+                    "name": "username"
+                }
+            ],
+            "returns": {
+                "type": "(string,uint64,string,string,uint64)"
+            }
+        },
+        {
+            "name": "create_sound_nft",
+            "args": [
+                {
+                    "type": "acfg",
+                    "name": "txn"
+                },
+                {
+                    "type": "string",
+                    "name": "asset_key"
+                },
+                {
+                    "type": "string",
+                    "name": "title"
+                },
+                {
+                    "type": "string",
+                    "name": "label"
+                },
+                {
+                    "type": "string",
+                    "name": "artist"
+                },
+                {
+                    "type": "string",
+                    "name": "release_date"
+                },
+                {
+                    "type": "string",
+                    "name": "genre"
+                },
+                {
+                    "type": "uint64",
+                    "name": "price"
+                },
+                {
+                    "type": "string",
+                    "name": "cover_image_ipfs"
+                },
+                {
+                    "type": "string",
+                    "name": "audio_sample_ipfs"
+                },
+                {
+                    "type": "string",
+                    "name": "full_track_ipfs"
+                },
+                {
+                    "type": "uint64",
+                    "name": "supply"
+                },
+                {
+                    "type": "bool",
+                    "name": "for_sale"
+                }
+            ],
+            "returns": {
+                "type": "(uint64,uint64,string,string,string,string,string,uint64,string,string,string,address,bool)"
+            }
+        },
+        {
+            "name": "hello",
+            "args": [
+                {
+                    "type": "string",
+                    "name": "name"
+                }
+            ],
+            "returns": {
+                "type": "string"
+            }
+        }
+    ],
+    "networks": {}
+}
