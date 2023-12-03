@@ -318,6 +318,20 @@ class Aurally extends Contract {
     return true;
   }
 
+  createProposal(creator: Account, proposalDetails: string, id: uint64): boolean {
+    // Logic to ensure only registered users can create a proposal
+    assert(this.aurallyNFTOwner(creator.authAddr).exists);
+
+    // Create a new proposal and add it to the DAO proposals
+    this.aurallyDaoProposals(id).value = {
+      proposalHash: id + 1,
+      yesVotes: 0,
+      noVotes: 0,
+      details: proposalDetails, // Optionally store proposal details
+    };
+    return true;
+  }
+
   // // Voting logic
   voteOnProposal(voter: Account, vote: boolean, propID: uint64): boolean {
     // Use the 'vote' parameter in the function body
@@ -332,20 +346,6 @@ class Aurally extends Contract {
       this.aurallyDaoProposals(propID).value.yesVotes = b + 1;
     }
 
-    return true;
-  }
-
-  createProposal(creator: Account, proposalDetails: string, id: uint64): boolean {
-    // Logic to ensure only registered users can create a proposal
-    assert(this.aurallyNFTOwner(creator.authAddr).exists);
-
-    // Create a new proposal and add it to the DAO proposals
-    this.aurallyDaoProposals(id).value = {
-      proposalHash: id + 1,
-      yesVotes: 0,
-      noVotes: 0,
-      details: proposalDetails, // Optionally store proposal details
-    };
     return true;
   }
 

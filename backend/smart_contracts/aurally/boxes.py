@@ -52,3 +52,10 @@ class ArtAuctionItem(P.abi.NamedTuple):
     ends_at: P.abi.Field[P.abi.Uint64]
     highest_bid: P.abi.Field[P.abi.Uint64]
     highest_bidder: P.abi.Field[P.abi.Address]
+
+
+class Proposal(P.abi.NamedTuple):
+    proposal_id: P.abi.Field[P.abi.String]
+    yes_votes: P.abi.Field[P.abi.Uint64]
+    no_votes: P.abi.Field[P.abi.Uint64]
+    details: P.abi.Field[P.abi.String]
