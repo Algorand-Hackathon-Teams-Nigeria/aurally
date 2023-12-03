@@ -1,6 +1,11 @@
 import pyteal as P
 
-from smart_contracts.aurally.boxes import ArtAuctionItem, ArtNFT, AurallyCreative
+from smart_contracts.aurally.boxes import (
+    ArtAuctionItem,
+    ArtNFT,
+    AurallyCreative,
+    SoundNFT,
+)
 from .contract import app
 
 
@@ -130,6 +135,7 @@ def perform_auction_bid(
     )
 
 
+@P.Subroutine(P.TealType.none)
 def transfer_art_auction_item_to_highest_bidder(auction_key: P.abi.String):
     return P.Seq(
         (auction_item := ArtAuctionItem()).decode(
@@ -137,8 +143,14 @@ def transfer_art_auction_item_to_highest_bidder(auction_key: P.abi.String):
         ),
         (highest_bidder := P.abi.Address()).set(auction_item.highest_bidder),
         (nft_key := P.abi.String()).set(auction_item.item_id),
-        # Update the art_nft owner
-        (art_nft := ArtNFT()).decode(app.state.art_nfts[nft_key.get()].get()),
+        update_art_nft_owner(nft_key, highest_bidder),
+    )
+
+
+@P.Subroutine(P.TealType.none)
+def update_art_nft_owner(asset_key: P.abi.String, new_owner: P.abi.Address):
+    return P.Seq(
+        (art_nft := ArtNFT()).decode(app.state.art_nfts[asset_key.get()].get()),
         (asset_id := P.abi.Uint64()).set(art_nft.asset_id),
         (title := P.abi.String()).set(art_nft.title),
         (name := P.abi.String()).set(art_nft.name),
@@ -157,8 +169,98 @@ def transfer_art_auction_item_to_highest_bidder(auction_key: P.abi.String):
             ipfs_location,
             price,
             sold_price,
-            highest_bidder,
+            new_owner,
             for_sale,
         ),
-        app.state.art_nfts[nft_key.get()].set(art_nft),
+        app.state.art_nfts[asset_key.get()].set(art_nft),
+    )
+
+
+@P.Subroutine(P.TealType.none)
+def update_sound_nft_owner(asset_key: P.abi.String, new_owner: P.abi.Address):
+    return P.Seq(
+        (sound_nft := SoundNFT()).decode(app.state.sound_nfts[asset_key.get()].get()),
+        (asset_id := P.abi.Uint64()).set(sound_nft.asset_id),
+        (supply := P.abi.Uint64()).set(sound_nft.supply),
+        (title := P.abi.String()).set(sound_nft.title),
+        (label := P.abi.String()).set(sound_nft.label),
+        (artist := P.abi.String()).set(sound_nft.artist),
+        (release_date := P.abi.String()).set(sound_nft.release_date),
+        (genre := P.abi.String()).set(sound_nft.genre),
+        (price := P.abi.Uint64()).set(sound_nft.price),
+        (cover_image_ipfs := P.abi.String()).set(sound_nft.cover_image_ipfs),
+        (audio_sample_ipfs := P.abi.String()).set(sound_nft.audio_sample_ipfs),
+        (full_track_ipfs := P.abi.String()).set(sound_nft.full_track_ipfs),
+        (for_sale := P.abi.Bool()).set(sound_nft.for_sale),
+        sound_nft.set(
+            asset_id,
+            supply,
+            title,
+            label,
+            artist,
+            release_date,
+            genre,
+            price,
+            cover_image_ipfs,
+            audio_sample_ipfs,
+            full_track_ipfs,
+            new_owner,
+            for_sale,
+        ),
+    )
+
+
+@P.Subroutine(P.TealType.none)
+def transfer_sound_nft(txn: P.abi.PaymentTransaction, asset_key: P.abi.String):
+    return P.Seq(
+        (asset_item := SoundNFT()).decode(app.state.sound_nfts[asset_key.get()].get()),
+        (price := P.abi.Uint64()).set(asset_item.price),
+        (owner := P.abi.Address()).set(asset_item.owner),
+        P.Assert(txn.get().amount() == price.get()),
+        P.Assert(txn.get().receiver() == owner.get()),
+        (new_owner := P.abi.Address()).set(txn.get().sender()),
+        update_sound_nft_owner(asset_key, new_owner),
+        P.Approve(),
+    )
+
+
+@P.Subroutine(P.TealType.none)
+def transfer_art_nft(txn: P.abi.PaymentTransaction, asset_key: P.abi.String):
+    return P.Seq(
+        (asset_item := ArtNFT()).decode(app.state.art_nfts[asset_key.get()].get()),
+        (price := P.abi.Uint64()).set(asset_item.price),
+        (owner := P.abi.Address()).set(asset_item.owner),
+        P.Assert(txn.get().amount() == price.get()),
+        P.Assert(txn.get().receiver() == owner.get()),
+        (new_owner := P.abi.Address()).set(txn.get().sender()),
+        update_art_nft_owner(asset_key, new_owner),
+        P.Approve(),
+    )
+
+
+@P.Subroutine(P.TealType.none)
+def validate_and_update_sound_nft_owner(
+    txn: P.abi.Transaction, asset_key: P.abi.String, to: P.abi.Address
+):
+    return P.Seq(
+        P.Assert(app.state.sound_nfts[asset_key.get()].exists()),
+        (sound_nft := SoundNFT()).decode(app.state.sound_nfts[asset_key.get()].get()),
+        (owner := P.abi.Address()).set(sound_nft.owner),
+        P.Assert(owner.get() == txn.get().sender()),
+        update_sound_nft_owner(asset_key, to),
+        P.Approve(),
+    )
+
+
+@P.Subroutine(P.TealType.none)
+def validate_and_update_art_nft_owner(
+    txn: P.abi.Transaction, asset_key: P.abi.String, to: P.abi.Address
+):
+    return P.Seq(
+        P.Assert(app.state.art_nfts[asset_key.get()].exists()),
+        (art_nft := ArtNFT()).decode(app.state.art_nfts[asset_key.get()].get()),
+        (owner := P.abi.Address()).set(art_nft.owner),
+        P.Assert(owner.get() == txn.get().sender()),
+        update_art_nft_owner(asset_key, to),
+        P.Approve(),
     )

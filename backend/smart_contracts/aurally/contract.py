@@ -133,6 +133,7 @@ def create_art_auction(
 
     return P.Seq(
         # P.Assert(P.Global.latest_timestamp() < starts_at.get()), # Can't create an auction in the past
+        P.Assert(txn.get().amount() == P.Int(0)),
         P.Assert(starts_at.get() < ends_at.get()),
         P.Assert(app.state.art_nfts[ipfs_location.get()].exists()),
         (art_nft := ArtNFT()).decode(app.state.art_nfts[ipfs_location.get()].get()),
@@ -157,6 +158,7 @@ def bid_on_art_auction(
     from .subroutines import perform_auction_bid
 
     return P.Seq(
+        P.Assert(txn.get().amount() == P.Int(0)),
         P.Assert(app.state.art_auctions[auction_key.get()].exists()),
         perform_auction_bid(txn, auction_key, bid_ammount),
         output.decode(app.state.art_auctions[auction_key.get()].get()),
@@ -170,6 +172,7 @@ def complete_art_auction(
     from .subroutines import transfer_art_auction_item_to_highest_bidder
 
     return P.Seq(
+        P.Assert(txn.get().amount() == P.Int(0)),
         P.Assert(app.state.art_auctions[auction_key.get()].exists()),
         (auction_item := ArtAuctionItem()).decode(
             app.state.art_auctions[auction_key.get()].get()
@@ -179,6 +182,49 @@ def complete_art_auction(
         P.Assert(auctioneer.get() == txn.get().sender()),
         transfer_art_auction_item_to_highest_bidder(auction_key),
         output.decode(app.state.art_nfts[nft_key.get()].get()),
+    )
+
+
+@app.external
+def purchase_nft(
+    txn: P.abi.PaymentTransaction, asset_key: P.abi.String, nft_type: P.abi.String
+):
+    from .subroutines import transfer_sound_nft, transfer_art_nft
+
+    return P.Seq(
+        P.Assert(
+            P.Or(nft_type.get() == P.Bytes("sound"), nft_type.get() == P.Bytes("art"))
+        ),
+        P.If(
+            nft_type.get() == P.Bytes("sound"),
+            transfer_sound_nft(txn, asset_key),
+            transfer_art_nft(txn, asset_key),
+        ),
+    )
+
+
+@app.external
+def transfer_nft(
+    txn: P.abi.PaymentTransaction,
+    to: P.abi.Address,
+    asset_key: P.abi.String,
+    nft_type: P.abi.String,
+):
+    from .subroutines import (
+        validate_and_update_art_nft_owner,
+        validate_and_update_sound_nft_owner,
+    )
+
+    return P.Seq(
+        P.Assert(txn.get().amount() == P.Int(0)),
+        P.Assert(
+            P.Or(nft_type.get() == P.Bytes("sound"), nft_type.get() == P.Bytes("art"))
+        ),
+        P.If(
+            nft_type.get() == P.Bytes("sound"),
+            validate_and_update_sound_nft_owner(txn, asset_key, to),
+            validate_and_update_art_nft_owner(txn, asset_key, to),
+        ),
     )
 
 
