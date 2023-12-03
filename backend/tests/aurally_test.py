@@ -46,8 +46,18 @@ def aurally_client(test_accounts: List[LocalAccount]) -> ApplicationClient:
 
 
 @pytest.fixture(scope="session")
-def test_account() -> LocalAccount:
-    return localnet.get_accounts().pop()
+def test_account(test_accounts: List[LocalAccount]) -> LocalAccount:
+    return test_accounts.pop()
+
+
+@pytest.fixture(scope="session")
+def auction_key() -> str:
+    return f"The Auction _ {datetime.utcnow()}"
+
+
+@pytest.fixture(scope="session")
+def sample_asset_key() -> str:
+    return f"Dev Stockins_{datetime.utcnow()}"
 
 
 def test_says_hello(aurally_client: ApplicationClient) -> None:
@@ -87,6 +97,7 @@ def test_create_sound_nft(
     algod_client: AlgodClient,
     aurally_client: ApplicationClient,
     test_account: LocalAccount,
+    sample_asset_key: str,
 ):
     supply = 20
     nft_name = "Dev Stockins"
@@ -106,12 +117,10 @@ def test_create_sound_nft(
         txn=raw_txn, signer=test_account.signer
     )
 
-    asset_key = f"{nft_name}_{datetime.utcnow()}"
-
     result = aurally_client.call(
         aurally_contract.create_sound_nft,
         txn=txn,
-        asset_key=asset_key,
+        asset_key=sample_asset_key,
         title="Dev Tokens",
         label="Dev Reccords",
         artist="GigaChad",
@@ -124,7 +133,7 @@ def test_create_sound_nft(
         supply=20,
         for_sale=False,
         boxes=[
-            (aurally_client.app_id, asset_key.encode()),
+            (aurally_client.app_id, sample_asset_key.encode()),
             (aurally_client.app_id, encoding.decode_address(txn.txn.sender)),
         ],
     )
@@ -180,6 +189,7 @@ def test_create_art_auction(
     algod_client: AlgodClient,
     aurally_client: ApplicationClient,
     test_account: LocalAccount,
+    auction_key: str,
 ):
     nft_name = "Sun God Nika"
     sp = algod_client.suggested_params()
@@ -191,9 +201,8 @@ def test_create_art_auction(
         txn=raw_txn, signer=test_account.signer
     )
 
-    auction_key = f"The Auction _ {datetime.utcnow()}"
-    starts_at = datetime.now() + timedelta(days=1)
-    ends_at = starts_at + timedelta(days=1)
+    starts_at = datetime.now() - timedelta(weeks=2)
+    ends_at = datetime.now() + timedelta(days=2)
 
     result = aurally_client.call(
         aurally_contract.create_art_auction,
@@ -211,6 +220,113 @@ def test_create_art_auction(
     )
 
     assert list(result.return_value)[1] == url
+
+
+def test_bid_on_auction(
+    algod_client: AlgodClient,
+    aurally_client: ApplicationClient,
+    test_account: LocalAccount,
+    auction_key: str,
+):
+    sp = algod_client.suggested_params()
+    raw_txn = transaction.PaymentTxn(
+        sender=test_account.address, sp=sp, receiver=test_account.address, amt=0
+    )
+    txn = atomic_transaction_composer.TransactionWithSigner(
+        txn=raw_txn, signer=test_account.signer
+    )
+
+    result = aurally_client.call(
+        aurally_contract.bid_on_art_auction,
+        txn=txn,
+        auction_key=auction_key,
+        bid_ammount=20000,
+        boxes=[(aurally_client.app_id, auction_key.encode())],
+    )
+
+    assert list(result.return_value)[6] == 20000
+
+
+def test_complete_art_auction(
+    algod_client: AlgodClient,
+    aurally_client: ApplicationClient,
+    test_account: LocalAccount,
+    auction_key: str,
+):
+    nft_name = "Sun God Nika"
+    sp = algod_client.suggested_params()
+    url = "https://ipfs.io/ipfs/" + nft_name
+    raw_txn = transaction.PaymentTxn(
+        sender=test_account.address, receiver=test_account.address, amt=0, sp=sp
+    )
+
+    txn = atomic_transaction_composer.TransactionWithSigner(
+        txn=raw_txn, signer=test_account.signer
+    )
+
+    result = aurally_client.call(
+        aurally_contract.complete_art_auction,
+        txn=txn,
+        auction_key=auction_key,
+        boxes=[
+            (aurally_client.app_id, url.encode()),
+            (aurally_client.app_id, auction_key.encode()),
+        ],
+    )
+
+    assert list(result.return_value)[1] == nft_name
+
+
+def test_purchase_nft(
+    algod_client: AlgodClient,
+    aurally_client: ApplicationClient,
+    test_account: LocalAccount,
+    test_accounts: List[LocalAccount],
+):
+    buyer_account = test_accounts[1]
+    nft_name = "Sun God Nika"
+    sp = algod_client.suggested_params()
+    url = "https://ipfs.io/ipfs/" + nft_name
+
+    raw_txn = transaction.PaymentTxn(
+        sender=buyer_account.address, receiver=test_account.address, amt=2000, sp=sp
+    )
+    txn = atomic_transaction_composer.TransactionWithSigner(
+        txn=raw_txn, signer=buyer_account.signer
+    )
+
+    aurally_client.call(
+        aurally_contract.purchase_nft,
+        txn=txn,
+        asset_key=url,
+        nft_type="art",
+        boxes=[(aurally_client.app_id, url.encode())],
+    )
+
+
+def test_transfer_nft(
+    algod_client: AlgodClient,
+    aurally_client: ApplicationClient,
+    test_accounts: List[LocalAccount],
+    test_account: LocalAccount,
+    sample_asset_key: str,
+):
+    sp = algod_client.suggested_params()
+    raw_txn = transaction.PaymentTxn(
+        sender=test_account.address, receiver=test_account.address, sp=sp, amt=0
+    )
+    txn = atomic_transaction_composer.TransactionWithSigner(
+        txn=raw_txn, signer=test_account.signer
+    )
+
+    aurally_client.call(
+        aurally_contract.transfer_nft,
+        txn=txn,
+        to=test_accounts[1].address,
+        asset_key=sample_asset_key,
+        nft_type="sound",
+        boxes=[(aurally_client.app_id, sample_asset_key.encode())]
+    )
 
 
 def generate_hash(input_str: str) -> bytes:

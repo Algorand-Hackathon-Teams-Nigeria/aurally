@@ -154,6 +154,86 @@
             }
         },
         {
+            "name": "bid_on_art_auction",
+            "args": [
+                {
+                    "type": "txn",
+                    "name": "txn"
+                },
+                {
+                    "type": "string",
+                    "name": "auction_key"
+                },
+                {
+                    "type": "uint64",
+                    "name": "bid_ammount"
+                }
+            ],
+            "returns": {
+                "type": "(address,string,string,uint64,uint64,uint64,uint64,address)"
+            }
+        },
+        {
+            "name": "complete_art_auction",
+            "args": [
+                {
+                    "type": "txn",
+                    "name": "txn"
+                },
+                {
+                    "type": "string",
+                    "name": "auction_key"
+                }
+            ],
+            "returns": {
+                "type": "(uint64,string,string,uint64,string,string,uint64,uint64,address,bool)"
+            }
+        },
+        {
+            "name": "purchase_nft",
+            "args": [
+                {
+                    "type": "pay",
+                    "name": "txn"
+                },
+                {
+                    "type": "string",
+                    "name": "asset_key"
+                },
+                {
+                    "type": "string",
+                    "name": "nft_type"
+                }
+            ],
+            "returns": {
+                "type": "void"
+            }
+        },
+        {
+            "name": "transfer_nft",
+            "args": [
+                {
+                    "type": "pay",
+                    "name": "txn"
+                },
+                {
+                    "type": "address",
+                    "name": "to"
+                },
+                {
+                    "type": "string",
+                    "name": "asset_key"
+                },
+                {
+                    "type": "string",
+                    "name": "nft_type"
+                }
+            ],
+            "returns": {
+                "type": "void"
+            }
+        },
+        {
             "name": "hello",
             "args": [
                 {

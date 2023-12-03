@@ -1,79 +1,47 @@
 #pragma version 8
-intcblock 0 1 65536 32
-bytecblock 0x 0x00 0x151f7c75
+intcblock 0 1 65536 32 576
+bytecblock 0x 0x00 0x151f7c75 0x736f756e64 0x617274
 txn NumAppArgs
 intc_0 // 0
 ==
-bnz main_l12
+bnz main_l20
 txna ApplicationArgs 0
 pushbytes 0xe623f08a // "register_creator(acfg,string,string)(bool,bool,uint64,string,string,uint64)"
 ==
-bnz main_l11
+bnz main_l19
 txna ApplicationArgs 0
 pushbytes 0x15b3b4c8 // "create_sound_nft(acfg,string,string,string,string,string,string,uint64,string,string,string,uint64,bool)(uint64,uint64,string,string,string,string,string,uint64,string,string,string,address,bool)"
 ==
-bnz main_l10
+bnz main_l18
 txna ApplicationArgs 0
 pushbytes 0x858ea6db // "create_art_nft(acfg,string,string,uint64,string,string,uint64,bool)(uint64,string,string,uint64,string,string,uint64,uint64,address,bool)"
 ==
-bnz main_l9
+bnz main_l17
 txna ApplicationArgs 0
 pushbytes 0x2baeb6f1 // "create_art_auction(txn,string,string,uint64,uint64,uint64)(address,string,string,uint64,uint64,uint64,uint64,address)"
 ==
-bnz main_l8
+bnz main_l16
+txna ApplicationArgs 0
+pushbytes 0x0c1283d5 // "bid_on_art_auction(txn,string,uint64)(address,string,string,uint64,uint64,uint64,uint64,address)"
+==
+bnz main_l15
+txna ApplicationArgs 0
+pushbytes 0x6418b1b6 // "complete_art_auction(txn,string)(uint64,string,string,uint64,string,string,uint64,uint64,address,bool)"
+==
+bnz main_l14
+txna ApplicationArgs 0
+pushbytes 0x5ac709bf // "purchase_nft(pay,string,string)void"
+==
+bnz main_l13
+txna ApplicationArgs 0
+pushbytes 0x07536ce3 // "transfer_nft(pay,address,string,string)void"
+==
+bnz main_l12
 txna ApplicationArgs 0
 pushbytes 0x02bece11 // "hello(string)string"
 ==
-bnz main_l7
+bnz main_l11
 err
-main_l7:
-txn OnCompletion
-intc_0 // NoOp
-==
-txn ApplicationID
-intc_0 // 0
-!=
-&&
-assert
-callsub hellocaster_14
-intc_1 // 1
-return
-main_l8:
-txn OnCompletion
-intc_0 // NoOp
-==
-txn ApplicationID
-intc_0 // 0
-!=
-&&
-assert
-callsub createartauctioncaster_13
-intc_1 // 1
-return
-main_l9:
-txn OnCompletion
-intc_0 // NoOp
-==
-txn ApplicationID
-intc_0 // 0
-!=
-&&
-assert
-callsub createartnftcaster_12
-intc_1 // 1
-return
-main_l10:
-txn OnCompletion
-intc_0 // NoOp
-==
-txn ApplicationID
-intc_0 // 0
-!=
-&&
-assert
-callsub createsoundnftcaster_11
-intc_1 // 1
-return
 main_l11:
 txn OnCompletion
 intc_0 // NoOp
@@ -83,16 +51,112 @@ intc_0 // 0
 !=
 &&
 assert
-callsub registercreatorcaster_10
+callsub hellocaster_30
 intc_1 // 1
 return
 main_l12:
 txn OnCompletion
 intc_0 // NoOp
 ==
-bnz main_l14
-err
+txn ApplicationID
+intc_0 // 0
+!=
+&&
+assert
+callsub transfernftcaster_29
+intc_1 // 1
+return
+main_l13:
+txn OnCompletion
+intc_0 // NoOp
+==
+txn ApplicationID
+intc_0 // 0
+!=
+&&
+assert
+callsub purchasenftcaster_28
+intc_1 // 1
+return
 main_l14:
+txn OnCompletion
+intc_0 // NoOp
+==
+txn ApplicationID
+intc_0 // 0
+!=
+&&
+assert
+callsub completeartauctioncaster_27
+intc_1 // 1
+return
+main_l15:
+txn OnCompletion
+intc_0 // NoOp
+==
+txn ApplicationID
+intc_0 // 0
+!=
+&&
+assert
+callsub bidonartauctioncaster_26
+intc_1 // 1
+return
+main_l16:
+txn OnCompletion
+intc_0 // NoOp
+==
+txn ApplicationID
+intc_0 // 0
+!=
+&&
+assert
+callsub createartauctioncaster_25
+intc_1 // 1
+return
+main_l17:
+txn OnCompletion
+intc_0 // NoOp
+==
+txn ApplicationID
+intc_0 // 0
+!=
+&&
+assert
+callsub createartnftcaster_24
+intc_1 // 1
+return
+main_l18:
+txn OnCompletion
+intc_0 // NoOp
+==
+txn ApplicationID
+intc_0 // 0
+!=
+&&
+assert
+callsub createsoundnftcaster_23
+intc_1 // 1
+return
+main_l19:
+txn OnCompletion
+intc_0 // NoOp
+==
+txn ApplicationID
+intc_0 // 0
+!=
+&&
+assert
+callsub registercreatorcaster_22
+intc_1 // 1
+return
+main_l20:
+txn OnCompletion
+intc_0 // NoOp
+==
+bnz main_l22
+err
+main_l22:
 txn ApplicationID
 intc_0 // 0
 ==
@@ -122,7 +186,7 @@ bz registercreator_1_l2
 frame_dig -3
 frame_dig -2
 frame_dig -1
-callsub createnftowner_6
+callsub createnftowner_10
 registercreator_1_l2:
 frame_dig -3
 gtxns Sender
@@ -151,7 +215,7 @@ pushbytes 0x00056d75736963 // 0x00056d75736963
 frame_bury 1
 frame_dig -13
 frame_dig 1
-callsub ensureregisteredcreative_7
+callsub ensureregisteredcreative_11
 frame_dig -12
 extract 2 0
 box_len
@@ -355,7 +419,7 @@ extract 2 0
 frame_dig 4
 box_put
 frame_dig 3
-callsub incrementcreatornftcount_8
+callsub incrementcreatornftcount_12
 frame_dig -12
 extract 2 0
 box_get
@@ -392,7 +456,7 @@ pushbytes 0x0003617274 // 0x0003617274
 frame_bury 1
 frame_dig -8
 frame_dig 1
-callsub ensureregisteredcreative_7
+callsub ensureregisteredcreative_11
 frame_dig -8
 gtxns CreatedAssetID
 frame_bury 2
@@ -509,7 +573,7 @@ extract 2 0
 frame_dig 5
 box_put
 frame_dig 3
-callsub incrementcreatornftcount_8
+callsub incrementcreatornftcount_12
 frame_dig -3
 extract 2 0
 box_get
@@ -526,9 +590,10 @@ createartauction_4:
 proto 6 1
 bytec_0 // ""
 dupn 3
-global LatestTimestamp
-frame_dig -2
-<
+frame_dig -6
+gtxns Amount
+intc_0 // 0
+==
 assert
 frame_dig -2
 frame_dig -1
@@ -574,7 +639,7 @@ frame_dig 3
 frame_dig -3
 frame_dig -2
 frame_dig -1
-callsub createartauction_9
+callsub createartauction_13
 frame_dig -5
 extract 2 0
 box_get
@@ -586,8 +651,160 @@ load 22
 frame_bury 0
 retsub
 
+// bid_on_art_auction
+bidonartauction_5:
+proto 3 1
+bytec_0 // ""
+frame_dig -3
+gtxns Amount
+intc_0 // 0
+==
+assert
+frame_dig -2
+extract 2 0
+box_len
+store 27
+store 26
+load 27
+assert
+frame_dig -3
+frame_dig -2
+frame_dig -1
+callsub performauctionbid_14
+frame_dig -2
+extract 2 0
+box_get
+store 29
+store 28
+load 29
+assert
+load 28
+frame_bury 0
+retsub
+
+// complete_art_auction
+completeartauction_6:
+proto 2 1
+bytec_0 // ""
+dupn 3
+frame_dig -2
+gtxns Amount
+intc_0 // 0
+==
+assert
+frame_dig -1
+extract 2 0
+box_len
+store 33
+store 32
+load 33
+assert
+frame_dig -1
+extract 2 0
+box_get
+store 35
+store 34
+load 35
+assert
+load 34
+frame_bury 1
+frame_dig 1
+frame_dig 1
+intc_3 // 32
+extract_uint16
+frame_dig 1
+pushint 34 // 34
+extract_uint16
+substring3
+frame_bury 2
+frame_dig 1
+extract 0 32
+frame_bury 3
+frame_dig 3
+frame_dig -2
+gtxns Sender
+==
+assert
+frame_dig -1
+callsub transferartauctionitemtohighestbidder_15
+frame_dig 2
+extract 2 0
+box_get
+store 37
+store 36
+load 37
+assert
+load 36
+frame_bury 0
+retsub
+
+// purchase_nft
+purchasenft_7:
+proto 3 0
+frame_dig -1
+extract 2 0
+bytec_3 // "sound"
+==
+frame_dig -1
+extract 2 0
+bytec 4 // "art"
+==
+||
+assert
+frame_dig -1
+extract 2 0
+bytec_3 // "sound"
+==
+bnz purchasenft_7_l2
+frame_dig -3
+frame_dig -2
+callsub transferartnft_19
+b purchasenft_7_l3
+purchasenft_7_l2:
+frame_dig -3
+frame_dig -2
+callsub transfersoundnft_18
+purchasenft_7_l3:
+retsub
+
+// transfer_nft
+transfernft_8:
+proto 4 0
+frame_dig -4
+gtxns Amount
+intc_0 // 0
+==
+assert
+frame_dig -1
+extract 2 0
+bytec_3 // "sound"
+==
+frame_dig -1
+extract 2 0
+bytec 4 // "art"
+==
+||
+assert
+frame_dig -1
+extract 2 0
+bytec_3 // "sound"
+==
+bnz transfernft_8_l2
+frame_dig -4
+frame_dig -2
+frame_dig -3
+callsub validateandupdateartnftowner_21
+b transfernft_8_l3
+transfernft_8_l2:
+frame_dig -4
+frame_dig -2
+frame_dig -3
+callsub validateandupdatesoundnftowner_20
+transfernft_8_l3:
+retsub
+
 // hello
-hello_5:
+hello_9:
 proto 1 1
 bytec_0 // ""
 pushbytes 0x48656c6c6f2c20 // "Hello, "
@@ -605,7 +822,7 @@ frame_bury 0
 retsub
 
 // create_nft_owner
-createnftowner_6:
+createnftowner_10:
 proto 3 0
 intc_0 // 0
 dupn 3
@@ -681,7 +898,7 @@ box_put
 retsub
 
 // ensure_registered_creative
-ensureregisteredcreative_7:
+ensureregisteredcreative_11:
 proto 2 0
 bytec_0 // ""
 intc_0 // 0
@@ -745,21 +962,21 @@ frame_dig -1
 extract 2 0
 pushbytes 0x6d75736963 // "music"
 ==
-bnz ensureregisteredcreative_7_l3
-ensureregisteredcreative_7_l1:
+bnz ensureregisteredcreative_11_l3
+ensureregisteredcreative_11_l1:
 frame_dig -1
 extract 2 0
-pushbytes 0x617274 // "art"
+bytec 4 // "art"
 ==
-bz ensureregisteredcreative_7_l4
+bz ensureregisteredcreative_11_l4
 intc_1 // 1
 frame_bury 1
-b ensureregisteredcreative_7_l4
-ensureregisteredcreative_7_l3:
+b ensureregisteredcreative_11_l4
+ensureregisteredcreative_11_l3:
 intc_1 // 1
 frame_bury 1
-b ensureregisteredcreative_7_l1
-ensureregisteredcreative_7_l4:
+b ensureregisteredcreative_11_l1
+ensureregisteredcreative_11_l4:
 bytec_1 // 0x00
 intc_0 // 0
 frame_dig 1
@@ -818,7 +1035,7 @@ box_put
 retsub
 
 // increment_creator_nft_count
-incrementcreatornftcount_8:
+incrementcreatornftcount_12:
 proto 1 0
 bytec_0 // ""
 intc_0 // 0
@@ -930,7 +1147,7 @@ box_put
 retsub
 
 // create_art_auction
-createartauction_9:
+createartauction_13:
 proto 7 0
 bytec_0 // ""
 intc_0 // 0
@@ -1024,8 +1241,813 @@ frame_dig 3
 box_put
 retsub
 
+// perform_auction_bid
+performauctionbid_14:
+proto 3 0
+bytec_0 // ""
+intc_0 // 0
+dupn 3
+bytec_0 // ""
+dupn 3
+intc_0 // 0
+dup
+bytec_0 // ""
+dup
+frame_dig -2
+extract 2 0
+box_get
+store 31
+store 30
+load 31
+assert
+load 30
+frame_bury 0
+frame_dig 0
+pushint 60 // 60
+extract_uint64
+frame_bury 1
+frame_dig 0
+pushint 36 // 36
+extract_uint64
+frame_bury 2
+frame_dig 0
+pushint 44 // 44
+extract_uint64
+frame_bury 3
+frame_dig 0
+pushint 52 // 52
+extract_uint64
+frame_bury 4
+global LatestTimestamp
+frame_dig 3
+>
+assert
+global LatestTimestamp
+frame_dig 4
+<
+assert
+frame_dig -1
+frame_dig 1
+>
+assert
+frame_dig -1
+frame_dig 2
+>
+assert
+frame_dig 0
+extract 0 32
+frame_bury 5
+frame_dig 0
+frame_dig 0
+intc_3 // 32
+extract_uint16
+frame_dig 0
+pushint 34 // 34
+extract_uint16
+substring3
+frame_bury 6
+frame_dig 0
+frame_dig 0
+pushint 34 // 34
+extract_uint16
+dig 1
+len
+substring3
+frame_bury 7
+frame_dig -3
+gtxns Sender
+frame_bury 8
+frame_dig 8
+len
+intc_3 // 32
+==
+assert
+frame_dig 5
+frame_dig 6
+frame_bury 12
+frame_dig 12
+frame_bury 11
+pushint 100 // 100
+frame_bury 9
+frame_dig 9
+frame_dig 12
+len
++
+frame_bury 10
+frame_dig 10
+intc_2 // 65536
+<
+assert
+frame_dig 9
+itob
+extract 6 0
+concat
+frame_dig 7
+frame_bury 12
+frame_dig 11
+frame_dig 12
+concat
+frame_bury 11
+frame_dig 10
+frame_bury 9
+frame_dig 9
+itob
+extract 6 0
+concat
+frame_dig 2
+itob
+concat
+frame_dig 3
+itob
+concat
+frame_dig 4
+itob
+concat
+frame_dig -1
+itob
+concat
+frame_dig 8
+concat
+frame_dig 11
+concat
+frame_bury 0
+frame_dig -2
+extract 2 0
+box_del
+pop
+frame_dig -2
+extract 2 0
+frame_dig 0
+box_put
+retsub
+
+// transfer_art_auction_item_to_highest_bidder
+transferartauctionitemtohighestbidder_15:
+proto 1 0
+bytec_0 // ""
+dupn 2
+frame_dig -1
+extract 2 0
+box_get
+store 39
+store 38
+load 39
+assert
+load 38
+frame_bury 0
+frame_dig 0
+extract 68 32
+frame_bury 1
+frame_dig 0
+frame_dig 0
+intc_3 // 32
+extract_uint16
+frame_dig 0
+pushint 34 // 34
+extract_uint16
+substring3
+frame_bury 2
+frame_dig 2
+frame_dig 1
+callsub updateartnftowner_16
+retsub
+
+// update_art_nft_owner
+updateartnftowner_16:
+proto 2 0
+bytec_0 // ""
+intc_0 // 0
+bytec_0 // ""
+dup
+intc_0 // 0
+bytec_0 // ""
+dup
+intc_0 // 0
+dupn 4
+bytec_0 // ""
+dup
+frame_dig -2
+extract 2 0
+box_get
+store 41
+store 40
+load 41
+assert
+load 40
+frame_bury 0
+frame_dig 0
+intc_0 // 0
+extract_uint64
+frame_bury 1
+frame_dig 0
+frame_dig 0
+pushint 8 // 8
+extract_uint16
+frame_dig 0
+pushint 10 // 10
+extract_uint16
+substring3
+frame_bury 2
+frame_dig 0
+frame_dig 0
+pushint 10 // 10
+extract_uint16
+frame_dig 0
+pushint 20 // 20
+extract_uint16
+substring3
+frame_bury 3
+frame_dig 0
+pushint 12 // 12
+extract_uint64
+frame_bury 4
+frame_dig 0
+frame_dig 0
+pushint 20 // 20
+extract_uint16
+frame_dig 0
+pushint 22 // 22
+extract_uint16
+substring3
+frame_bury 5
+frame_dig 0
+frame_dig 0
+pushint 22 // 22
+extract_uint16
+dig 1
+len
+substring3
+frame_bury 6
+frame_dig 0
+pushint 24 // 24
+extract_uint64
+frame_bury 7
+frame_dig 0
+intc_3 // 32
+extract_uint64
+frame_bury 8
+frame_dig 0
+intc 4 // 576
+getbit
+frame_bury 9
+frame_dig 1
+itob
+frame_dig 2
+frame_bury 13
+frame_dig 13
+frame_bury 12
+pushint 73 // 73
+frame_bury 10
+frame_dig 10
+frame_dig 13
+len
++
+frame_bury 11
+frame_dig 11
+intc_2 // 65536
+<
+assert
+frame_dig 10
+itob
+extract 6 0
+concat
+frame_dig 3
+frame_bury 13
+frame_dig 12
+frame_dig 13
+concat
+frame_bury 12
+frame_dig 11
+frame_bury 10
+frame_dig 10
+frame_dig 13
+len
++
+frame_bury 11
+frame_dig 11
+intc_2 // 65536
+<
+assert
+frame_dig 10
+itob
+extract 6 0
+concat
+frame_dig 4
+itob
+concat
+frame_dig 5
+frame_bury 13
+frame_dig 12
+frame_dig 13
+concat
+frame_bury 12
+frame_dig 11
+frame_bury 10
+frame_dig 10
+frame_dig 13
+len
++
+frame_bury 11
+frame_dig 11
+intc_2 // 65536
+<
+assert
+frame_dig 10
+itob
+extract 6 0
+concat
+frame_dig 6
+frame_bury 13
+frame_dig 12
+frame_dig 13
+concat
+frame_bury 12
+frame_dig 11
+frame_bury 10
+frame_dig 10
+itob
+extract 6 0
+concat
+frame_dig 7
+itob
+concat
+frame_dig 8
+itob
+concat
+frame_dig -1
+concat
+bytec_1 // 0x00
+intc_0 // 0
+frame_dig 9
+setbit
+concat
+frame_dig 12
+concat
+frame_bury 0
+frame_dig -2
+extract 2 0
+box_del
+pop
+frame_dig -2
+extract 2 0
+frame_dig 0
+box_put
+retsub
+
+// update_sound_nft_owner
+updatesoundnftowner_17:
+proto 2 0
+bytec_0 // ""
+intc_0 // 0
+dup
+bytec_0 // ""
+dupn 4
+intc_0 // 0
+bytec_0 // ""
+dupn 2
+intc_0 // 0
+dupn 2
+bytec_0 // ""
+dup
+frame_dig -2
+extract 2 0
+box_get
+store 45
+store 44
+load 45
+assert
+load 44
+frame_bury 0
+frame_dig 0
+intc_0 // 0
+extract_uint64
+frame_bury 1
+frame_dig 0
+pushint 8 // 8
+extract_uint64
+frame_bury 2
+frame_dig 0
+frame_dig 0
+pushint 16 // 16
+extract_uint16
+frame_dig 0
+pushint 18 // 18
+extract_uint16
+substring3
+frame_bury 3
+frame_dig 0
+frame_dig 0
+pushint 18 // 18
+extract_uint16
+frame_dig 0
+pushint 20 // 20
+extract_uint16
+substring3
+frame_bury 4
+frame_dig 0
+frame_dig 0
+pushint 20 // 20
+extract_uint16
+frame_dig 0
+pushint 22 // 22
+extract_uint16
+substring3
+frame_bury 5
+frame_dig 0
+frame_dig 0
+pushint 22 // 22
+extract_uint16
+frame_dig 0
+pushint 24 // 24
+extract_uint16
+substring3
+frame_bury 6
+frame_dig 0
+frame_dig 0
+pushint 24 // 24
+extract_uint16
+frame_dig 0
+pushint 34 // 34
+extract_uint16
+substring3
+frame_bury 7
+frame_dig 0
+pushint 26 // 26
+extract_uint64
+frame_bury 8
+frame_dig 0
+frame_dig 0
+pushint 34 // 34
+extract_uint16
+frame_dig 0
+pushint 36 // 36
+extract_uint16
+substring3
+frame_bury 9
+frame_dig 0
+frame_dig 0
+pushint 36 // 36
+extract_uint16
+frame_dig 0
+pushint 38 // 38
+extract_uint16
+substring3
+frame_bury 10
+frame_dig 0
+frame_dig 0
+pushint 38 // 38
+extract_uint16
+dig 1
+len
+substring3
+frame_bury 11
+frame_dig 0
+intc 4 // 576
+getbit
+frame_bury 12
+frame_dig 1
+itob
+frame_dig 2
+itob
+concat
+frame_dig 3
+frame_bury 16
+frame_dig 16
+frame_bury 15
+pushint 73 // 73
+frame_bury 13
+frame_dig 13
+frame_dig 16
+len
++
+frame_bury 14
+frame_dig 14
+intc_2 // 65536
+<
+assert
+frame_dig 13
+itob
+extract 6 0
+concat
+frame_dig 4
+frame_bury 16
+frame_dig 15
+frame_dig 16
+concat
+frame_bury 15
+frame_dig 14
+frame_bury 13
+frame_dig 13
+frame_dig 16
+len
++
+frame_bury 14
+frame_dig 14
+intc_2 // 65536
+<
+assert
+frame_dig 13
+itob
+extract 6 0
+concat
+frame_dig 5
+frame_bury 16
+frame_dig 15
+frame_dig 16
+concat
+frame_bury 15
+frame_dig 14
+frame_bury 13
+frame_dig 13
+frame_dig 16
+len
++
+frame_bury 14
+frame_dig 14
+intc_2 // 65536
+<
+assert
+frame_dig 13
+itob
+extract 6 0
+concat
+frame_dig 6
+frame_bury 16
+frame_dig 15
+frame_dig 16
+concat
+frame_bury 15
+frame_dig 14
+frame_bury 13
+frame_dig 13
+frame_dig 16
+len
++
+frame_bury 14
+frame_dig 14
+intc_2 // 65536
+<
+assert
+frame_dig 13
+itob
+extract 6 0
+concat
+frame_dig 7
+frame_bury 16
+frame_dig 15
+frame_dig 16
+concat
+frame_bury 15
+frame_dig 14
+frame_bury 13
+frame_dig 13
+frame_dig 16
+len
++
+frame_bury 14
+frame_dig 14
+intc_2 // 65536
+<
+assert
+frame_dig 13
+itob
+extract 6 0
+concat
+frame_dig 8
+itob
+concat
+frame_dig 9
+frame_bury 16
+frame_dig 15
+frame_dig 16
+concat
+frame_bury 15
+frame_dig 14
+frame_bury 13
+frame_dig 13
+frame_dig 16
+len
++
+frame_bury 14
+frame_dig 14
+intc_2 // 65536
+<
+assert
+frame_dig 13
+itob
+extract 6 0
+concat
+frame_dig 10
+frame_bury 16
+frame_dig 15
+frame_dig 16
+concat
+frame_bury 15
+frame_dig 14
+frame_bury 13
+frame_dig 13
+frame_dig 16
+len
++
+frame_bury 14
+frame_dig 14
+intc_2 // 65536
+<
+assert
+frame_dig 13
+itob
+extract 6 0
+concat
+frame_dig 11
+frame_bury 16
+frame_dig 15
+frame_dig 16
+concat
+frame_bury 15
+frame_dig 14
+frame_bury 13
+frame_dig 13
+itob
+extract 6 0
+concat
+frame_dig -1
+concat
+bytec_1 // 0x00
+intc_0 // 0
+frame_dig 12
+setbit
+concat
+frame_dig 15
+concat
+frame_bury 0
+retsub
+
+// transfer_sound_nft
+transfersoundnft_18:
+proto 2 0
+bytec_0 // ""
+intc_0 // 0
+bytec_0 // ""
+dup
+frame_dig -1
+extract 2 0
+box_get
+store 43
+store 42
+load 43
+assert
+load 42
+frame_bury 0
+frame_dig 0
+pushint 26 // 26
+extract_uint64
+frame_bury 1
+frame_dig 0
+extract 40 32
+frame_bury 2
+frame_dig -2
+gtxns Amount
+frame_dig 1
+==
+assert
+frame_dig -2
+gtxns Receiver
+frame_dig 2
+==
+assert
+frame_dig -2
+gtxns Sender
+frame_bury 3
+frame_dig 3
+len
+intc_3 // 32
+==
+assert
+frame_dig -1
+frame_dig 3
+callsub updatesoundnftowner_17
+intc_1 // 1
+return
+
+// transfer_art_nft
+transferartnft_19:
+proto 2 0
+bytec_0 // ""
+intc_0 // 0
+bytec_0 // ""
+dup
+frame_dig -1
+extract 2 0
+box_get
+store 47
+store 46
+load 47
+assert
+load 46
+frame_bury 0
+frame_dig 0
+pushint 24 // 24
+extract_uint64
+frame_bury 1
+frame_dig 0
+extract 40 32
+frame_bury 2
+frame_dig -2
+gtxns Amount
+frame_dig 1
+==
+assert
+frame_dig -2
+gtxns Receiver
+frame_dig 2
+==
+assert
+frame_dig -2
+gtxns Sender
+frame_bury 3
+frame_dig 3
+len
+intc_3 // 32
+==
+assert
+frame_dig -1
+frame_dig 3
+callsub updateartnftowner_16
+intc_1 // 1
+return
+
+// validate_and_update_sound_nft_owner
+validateandupdatesoundnftowner_20:
+proto 3 0
+bytec_0 // ""
+dup
+frame_dig -2
+extract 2 0
+box_len
+store 49
+store 48
+load 49
+assert
+frame_dig -2
+extract 2 0
+box_get
+store 51
+store 50
+load 51
+assert
+load 50
+frame_bury 0
+frame_dig 0
+extract 40 32
+frame_bury 1
+frame_dig 1
+frame_dig -3
+gtxns Sender
+==
+assert
+frame_dig -2
+frame_dig -1
+callsub updatesoundnftowner_17
+intc_1 // 1
+return
+
+// validate_and_update_art_nft_owner
+validateandupdateartnftowner_21:
+proto 3 0
+bytec_0 // ""
+dup
+frame_dig -2
+extract 2 0
+box_len
+store 53
+store 52
+load 53
+assert
+frame_dig -2
+extract 2 0
+box_get
+store 55
+store 54
+load 55
+assert
+load 54
+frame_bury 0
+frame_dig 0
+extract 40 32
+frame_bury 1
+frame_dig 1
+frame_dig -3
+gtxns Sender
+==
+assert
+frame_dig -2
+frame_dig -1
+callsub updateartnftowner_16
+intc_1 // 1
+return
+
 // register_creator_caster
-registercreatorcaster_10:
+registercreatorcaster_22:
 proto 0 0
 bytec_0 // ""
 intc_0 // 0
@@ -1056,7 +2078,7 @@ log
 retsub
 
 // create_sound_nft_caster
-createsoundnftcaster_11:
+createsoundnftcaster_23:
 proto 0 0
 bytec_0 // ""
 intc_0 // 0
@@ -1128,7 +2150,7 @@ log
 retsub
 
 // create_art_nft_caster
-createartnftcaster_12:
+createartnftcaster_24:
 proto 0 0
 bytec_0 // ""
 intc_0 // 0
@@ -1185,7 +2207,7 @@ log
 retsub
 
 // create_art_auction_caster
-createartauctioncaster_13:
+createartauctioncaster_25:
 proto 0 0
 bytec_0 // ""
 intc_0 // 0
@@ -1224,15 +2246,117 @@ concat
 log
 retsub
 
+// bid_on_art_auction_caster
+bidonartauctioncaster_26:
+proto 0 0
+bytec_0 // ""
+intc_0 // 0
+bytec_0 // ""
+intc_0 // 0
+txna ApplicationArgs 1
+frame_bury 2
+txna ApplicationArgs 2
+btoi
+frame_bury 3
+txn GroupIndex
+intc_1 // 1
+-
+frame_bury 1
+frame_dig 1
+frame_dig 2
+frame_dig 3
+callsub bidonartauction_5
+frame_bury 0
+bytec_2 // 0x151f7c75
+frame_dig 0
+concat
+log
+retsub
+
+// complete_art_auction_caster
+completeartauctioncaster_27:
+proto 0 0
+bytec_0 // ""
+intc_0 // 0
+bytec_0 // ""
+txna ApplicationArgs 1
+frame_bury 2
+txn GroupIndex
+intc_1 // 1
+-
+frame_bury 1
+frame_dig 1
+frame_dig 2
+callsub completeartauction_6
+frame_bury 0
+bytec_2 // 0x151f7c75
+frame_dig 0
+concat
+log
+retsub
+
+// purchase_nft_caster
+purchasenftcaster_28:
+proto 0 0
+intc_0 // 0
+bytec_0 // ""
+dup
+txna ApplicationArgs 1
+frame_bury 1
+txna ApplicationArgs 2
+frame_bury 2
+txn GroupIndex
+intc_1 // 1
+-
+frame_bury 0
+frame_dig 0
+gtxns TypeEnum
+intc_1 // pay
+==
+assert
+frame_dig 0
+frame_dig 1
+frame_dig 2
+callsub purchasenft_7
+retsub
+
+// transfer_nft_caster
+transfernftcaster_29:
+proto 0 0
+intc_0 // 0
+bytec_0 // ""
+dupn 2
+txna ApplicationArgs 1
+frame_bury 1
+txna ApplicationArgs 2
+frame_bury 2
+txna ApplicationArgs 3
+frame_bury 3
+txn GroupIndex
+intc_1 // 1
+-
+frame_bury 0
+frame_dig 0
+gtxns TypeEnum
+intc_1 // pay
+==
+assert
+frame_dig 0
+frame_dig 1
+frame_dig 2
+frame_dig 3
+callsub transfernft_8
+retsub
+
 // hello_caster
-hellocaster_14:
+hellocaster_30:
 proto 0 0
 bytec_0 // ""
 dup
 txna ApplicationArgs 1
 frame_bury 1
 frame_dig 1
-callsub hello_5
+callsub hello_9
 frame_bury 0
 bytec_2 // 0x151f7c75
 frame_dig 0

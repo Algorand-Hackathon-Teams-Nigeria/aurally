@@ -43,7 +43,7 @@ class ArtNFT(P.abi.NamedTuple):
     for_sale: P.abi.Field[P.abi.Bool]
 
 
-class AuctionItem(P.abi.NamedTuple):
+class ArtAuctionItem(P.abi.NamedTuple):
     auctioneer: P.abi.Field[P.abi.Address]
     item_id: P.abi.Field[P.abi.String]
     item_name: P.abi.Field[P.abi.String]
