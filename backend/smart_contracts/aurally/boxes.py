@@ -59,3 +59,9 @@ class Proposal(P.abi.NamedTuple):
     yes_votes: P.abi.Field[P.abi.Uint64]
     no_votes: P.abi.Field[P.abi.Uint64]
     details: P.abi.Field[P.abi.String]
+
+
+class AurallyToken(P.abi.NamedTuple):
+    asset_id: P.abi.Field[P.abi.Uint64]
+    asset_key: P.abi.Field[P.abi.String]
+    asset_total: P.abi.Field[P.abi.Uint64]

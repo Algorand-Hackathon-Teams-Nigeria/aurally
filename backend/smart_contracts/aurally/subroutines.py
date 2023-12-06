@@ -4,6 +4,7 @@ from smart_contracts.aurally.boxes import (
     ArtAuctionItem,
     ArtNFT,
     AurallyCreative,
+    AurallyToken,
     SoundNFT,
 )
 from .contract import app
@@ -11,15 +12,23 @@ from .contract import app
 
 @P.Subroutine(P.TealType.none)
 def create_nft_owner(
-    txn: P.abi.AssetConfigTransaction,
+    txn: P.abi.Transaction,
     fullname: P.abi.String,
     username: P.abi.String,
 ):
     return P.Seq(
+        P.InnerTxnBuilder.Execute(
+            {
+                P.TxnField.type_enum: P.TxnType.AssetConfig,
+                P.TxnField.config_asset_name: txn.get().sender(),
+                P.TxnField.config_asset_manager: P.Global.current_application_address(),
+                P.TxnField.config_asset_total: P.Int(1),
+            }
+        ),
+        (dnft_id := P.abi.Uint64()).set(P.InnerTxn.created_asset_id()),
         (is_music_creative := P.abi.Bool()).set(False),
         (is_art_creative := P.abi.Bool()).set(False),
         (minted := P.abi.Uint64()).set(0),
-        (dnft_id := P.abi.Uint64()).set(txn.get().config_asset()),
         (creative := AurallyCreative()).set(
             is_music_creative, is_art_creative, minted, fullname, username, dnft_id
         ),
@@ -264,3 +273,56 @@ def validate_and_update_art_nft_owner(
         update_art_nft_owner(asset_key, to),
         P.Approve(),
     )
+
+
+@P.Subroutine(P.TealType.none)
+def bootstrap_token(asset_key: P.abi.String, total: P.abi.Uint64):
+    return P.Seq(
+        P.Assert(P.Not(app.state.registered_asa[asset_key.get()].exists())),
+        P.InnerTxnBuilder.Execute(
+            {
+                P.TxnField.type_enum: P.TxnType.AssetConfig,
+                P.TxnField.config_asset_total: total.get(),
+                P.TxnField.config_asset_name: asset_key.get(),
+                P.TxnField.config_asset_freeze: P.Global.current_application_address(),
+                P.TxnField.config_asset_manager: P.Global.current_application_address(),
+                P.TxnField.config_asset_reserve: P.Global.current_application_address(),
+                P.TxnField.config_asset_clawback: P.Global.current_application_address(),
+            }
+        ),
+        (asset_id := P.abi.Uint64()).set(P.InnerTxn.created_asset_id()),
+        (P.Log(P.Itob(asset_id.get()))),
+        (proposal_token := AurallyToken()).set(asset_id, asset_key, total),
+        app.state.registered_asa[asset_key.get()].set(proposal_token),
+    )
+
+
+@P.Subroutine(P.TealType.none)
+def send_aura_token(receiver: P.abi.Address, amt: P.abi.Uint64):
+    return P.Seq(
+        (aura_asset_key := P.abi.String()).set("aura"),
+        P.Assert(app.state.registered_asa[aura_asset_key.get()].exists()),
+
+        (aura_asset := AurallyToken()).decode(
+            app.state.registered_asa[aura_asset_key.get()].get()
+        ),
+        (aura_asset_id := P.abi.Uint64()).set(aura_asset.asset_id),
+        (aura_asset_total := P.abi.Uint64()).set(aura_asset.asset_total),
+        P.Assert(aura_asset_total.get() > P.Int(1)),
+
+        # Perform Asset Transfer
+        P.InnerTxnBuilder.Execute(
+            {
+                P.TxnField.type_enum: P.TxnType.AssetTransfer,
+                P.TxnField.xfer_asset: aura_asset_id.get(),
+                P.TxnField.asset_receiver: receiver.get(),
+                P.TxnField.asset_amount: amt.get(),
+            }
+        ),
+        # Update Asset Total
+        aura_asset_total.set(aura_asset_total.get() - P.Int(1)),
+        aura_asset.set(aura_asset_id, aura_asset_key, aura_asset_total),
+        app.state.registered_asa[aura_asset_key.get()].set(aura_asset)
+    )
+
+

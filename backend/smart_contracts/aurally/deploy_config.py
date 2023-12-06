@@ -14,7 +14,7 @@ def deploy(
     app_spec: algokit_utils.ApplicationSpecification,
     deployer: algokit_utils.Account,
 ) -> None:
-    from smart_contracts.artifacts.aurally.client import (
+    from smart_contracts.artifacts.Aurally.client import (
         AurallyClient,
     )
 
