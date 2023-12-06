@@ -224,11 +224,10 @@ def transfer_sound_nft(txn: P.abi.PaymentTransaction, asset_key: P.abi.String):
     return P.Seq(
         (asset_item := SoundNFT()).decode(app.state.sound_nfts[asset_key.get()].get()),
         (price := P.abi.Uint64()).set(asset_item.price),
-        (owner := P.abi.Address()).set(asset_item.owner),
-        P.Assert(txn.get().amount() == price.get()),
-        P.Assert(txn.get().receiver() == owner.get()),
-        (new_owner := P.abi.Address()).set(txn.get().sender()),
-        update_sound_nft_owner(asset_key, new_owner),
+        (nft_owner := P.abi.Address()).set(asset_item.owner),
+        (buyer := P.abi.Address()).set(txn.get().sender()),
+        pay_95_percent(txn, price, nft_owner),
+        update_sound_nft_owner(asset_key, buyer),
         P.Approve(),
     )
 
@@ -238,12 +237,32 @@ def transfer_art_nft(txn: P.abi.PaymentTransaction, asset_key: P.abi.String):
     return P.Seq(
         (asset_item := ArtNFT()).decode(app.state.art_nfts[asset_key.get()].get()),
         (price := P.abi.Uint64()).set(asset_item.price),
-        (owner := P.abi.Address()).set(asset_item.owner),
-        P.Assert(txn.get().amount() == price.get()),
-        P.Assert(txn.get().receiver() == owner.get()),
-        (new_owner := P.abi.Address()).set(txn.get().sender()),
-        update_art_nft_owner(asset_key, new_owner),
+        (nft_owner := P.abi.Address()).set(asset_item.owner),
+        (buyer := P.abi.Address()).set(txn.get().sender()),
+        pay_95_percent(txn, price, nft_owner),
+        update_art_nft_owner(asset_key, buyer),
         P.Approve(),
+    )
+
+
+@P.Subroutine(P.TealType.none)
+def pay_95_percent(
+    txn: P.abi.PaymentTransaction, price: P.abi.Uint64, receiver: P.abi.Address
+):
+    return P.Seq(
+        P.Assert(txn.get().amount() == price.get()),
+        P.Assert(txn.get().receiver() == P.Global.current_application_address()),
+        (nity_five_percent := P.abi.Uint64()).set(
+            P.Div(price.get() * P.Int(5), P.Int(100))
+        ),
+        P.InnerTxnBuilder.Execute(
+            {
+                P.TxnField.type_enum: P.TxnType.Payment,
+                P.TxnField.amount: nity_five_percent.get(),
+                P.TxnField.sender: P.Global.current_application_address(),
+                P.TxnField.receiver: receiver.get(),
+            }
+        ),
     )
 
 
@@ -302,14 +321,12 @@ def send_aura_token(receiver: P.abi.Address, amt: P.abi.Uint64):
     return P.Seq(
         (aura_asset_key := P.abi.String()).set("aura"),
         P.Assert(app.state.registered_asa[aura_asset_key.get()].exists()),
-
         (aura_asset := AurallyToken()).decode(
             app.state.registered_asa[aura_asset_key.get()].get()
         ),
         (aura_asset_id := P.abi.Uint64()).set(aura_asset.asset_id),
         (aura_asset_total := P.abi.Uint64()).set(aura_asset.asset_total),
         P.Assert(aura_asset_total.get() > P.Int(1)),
-
         # Perform Asset Transfer
         P.InnerTxnBuilder.Execute(
             {
@@ -322,7 +339,5 @@ def send_aura_token(receiver: P.abi.Address, amt: P.abi.Uint64):
         # Update Asset Total
         aura_asset_total.set(aura_asset_total.get() - P.Int(1)),
         aura_asset.set(aura_asset_id, aura_asset_key, aura_asset_total),
-        app.state.registered_asa[aura_asset_key.get()].set(aura_asset)
+        app.state.registered_asa[aura_asset_key.get()].set(aura_asset),
     )
-
-

@@ -221,12 +221,28 @@
                     "name": "txn"
                 },
                 {
+                    "type": "axfer",
+                    "name": "optin_txn"
+                },
+                {
                     "type": "string",
                     "name": "asset_key"
                 },
                 {
                     "type": "string",
                     "name": "nft_type"
+                },
+                {
+                    "type": "account",
+                    "name": "seller"
+                },
+                {
+                    "type": "asset",
+                    "name": "sound_nft_id"
+                },
+                {
+                    "type": "account",
+                    "name": "buyer"
                 }
             ],
             "returns": {

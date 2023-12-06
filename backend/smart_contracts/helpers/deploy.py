@@ -34,7 +34,7 @@ def deploy(
     app_spec = ApplicationSpecification.from_json(app_spec_path.read_text())
 
     # get deployer account by name
-    deployer = get_account(algod_client, "DEPLOYER", fund_with_algos=0)
+    deployer = get_account(algod_client, "DEPLOYER", fund_with_algos=3)
 
     minimum_funds_micro_algos = algos_to_microalgos(deployer_initial_funds)
     ensure_funded(

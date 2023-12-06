@@ -114,7 +114,11 @@ def create_art_nft(
     *,
     output: ArtNFT,
 ):
-    from .subroutines import ensure_registered_creative, increment_creator_nft_count, send_aura_token
+    from .subroutines import (
+        ensure_registered_creative,
+        increment_creator_nft_count,
+        send_aura_token,
+    )
 
     return P.Seq(
         P.Assert(P.Not(app.state.art_nfts[ipfs_location.get()].exists())),
@@ -221,7 +225,13 @@ def complete_art_auction(
 
 @app.external
 def purchase_nft(
-    txn: P.abi.PaymentTransaction, asset_key: P.abi.String, nft_type: P.abi.String
+    txn: P.abi.PaymentTransaction,
+    optin_txn: P.abi.AssetTransferTransaction,
+    asset_key: P.abi.String,
+    nft_type: P.abi.String,
+    seller: P.abi.Account,
+    sound_nft_id: P.abi.Asset,
+    buyer: P.abi.Account
 ):
     from .subroutines import transfer_sound_nft, transfer_art_nft
 
@@ -318,15 +328,14 @@ def vote_on_proposal(
 @app.external
 def create_aura_tokens(*, output: AurallyToken):
     from .subroutines import bootstrap_token
+
     return P.Seq(
         (token_key := P.abi.String()).set("aura"),
         P.Assert(P.Not(app.state.registered_asa[token_key.get()].exists())),
-
         (total := P.abi.Uint64()).set(1000000000000),
         bootstrap_token(token_key, total),
-
         P.Assert(app.state.registered_asa[token_key.get()].exists()),
-        output.decode(app.state.registered_asa[token_key.get()].get())
+        output.decode(app.state.registered_asa[token_key.get()].get()),
     )
 
 
