@@ -1,6 +1,13 @@
 import pyteal as P
 from beaker.lib.storage import BoxMapping
-from .boxes import ArtNFT, ArtAuctionItem, AurallyCreative, Proposal, SoundNFT
+from .boxes import (
+    ArtNFT,
+    ArtAuctionItem,
+    AurallyCreative,
+    Proposal,
+    AurallyToken,
+    SoundNFT,
+)
 
 
 class AppState:
@@ -9,3 +16,4 @@ class AppState:
     art_nfts = BoxMapping(P.abi.String, ArtNFT)
     art_auctions = BoxMapping(P.abi.String, ArtAuctionItem)
     dao_proposals = BoxMapping(P.abi.String, Proposal)
+    registered_asa = BoxMapping(P.abi.String, AurallyToken)

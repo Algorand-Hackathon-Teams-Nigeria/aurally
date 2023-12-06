@@ -5,6 +5,7 @@ from smart_contracts.aurally.boxes import (
     ArtNFT,
     ArtAuctionItem,
     AurallyCreative,
+    AurallyToken,
     Proposal,
     SoundNFT,
 )
@@ -15,7 +16,7 @@ app = B.Application("Aurally", state=AppState()).apply(B.unconditional_create_ap
 
 @app.external
 def register_creator(
-    txn: P.abi.AssetConfigTransaction,
+    txn: P.abi.Transaction,
     fullname: P.abi.String,
     username: P.abi.String,
     *,
@@ -34,7 +35,8 @@ def register_creator(
 
 @app.external
 def create_sound_nft(
-    txn: P.abi.AssetConfigTransaction,
+    txn: P.abi.Transaction,
+    nft_name: P.abi.String,
     asset_key: P.abi.String,
     title: P.abi.String,
     label: P.abi.String,
@@ -47,16 +49,31 @@ def create_sound_nft(
     full_track_ipfs: P.abi.String,
     supply: P.abi.Uint64,
     for_sale: P.abi.Bool,
+    aura_asset: P.abi.Asset,
+    creator: P.abi.Account,
     *,
     output: SoundNFT,
 ):
-    from .subroutines import ensure_registered_creative, increment_creator_nft_count
+    from .subroutines import (
+        ensure_registered_creative,
+        increment_creator_nft_count,
+        send_aura_token,
+    )
 
     return P.Seq(
         (creative_type := P.abi.String()).set("music"),
         ensure_registered_creative(txn, creative_type),
         P.Assert(P.Not(app.state.sound_nfts[asset_key.get()].exists())),
-        (asset_id := P.abi.Uint64()).set(txn.get().created_asset_id()),
+        P.InnerTxnBuilder.Execute(
+            {
+                P.TxnField.type_enum: P.TxnType.AssetConfig,
+                P.TxnField.config_asset_name: nft_name.get(),
+                P.TxnField.config_asset_total: supply.get(),
+                P.TxnField.config_asset_url: full_track_ipfs.get(),
+                P.TxnField.config_asset_manager: txn.get().sender(),
+            }
+        ),
+        (asset_id := P.abi.Uint64()).set(P.InnerTxn.created_asset_id()),
         (owner := P.abi.Address()).set(txn.get().sender()),
         (sound_nft := SoundNFT()).set(
             asset_id,
@@ -75,13 +92,16 @@ def create_sound_nft(
         ),
         app.state.sound_nfts[asset_key.get()].set(sound_nft),
         increment_creator_nft_count(owner),
+        (aura_amt := P.abi.Uint64()).set(1),
+        send_aura_token(owner, aura_amt),
         output.decode(app.state.sound_nfts[asset_key.get()].get()),
     )
 
 
 @app.external
 def create_art_nft(
-    txn: P.abi.AssetConfigTransaction,
+    txn: P.abi.Transaction,
+    nft_name: P.abi.String,
     title: P.abi.String,
     name: P.abi.String,
     supply: P.abi.Uint64,
@@ -89,16 +109,27 @@ def create_art_nft(
     ipfs_location: P.abi.String,
     price: P.abi.Uint64,
     for_sale: P.abi.Bool,
+    aura_asset: P.abi.Asset,
+    creator: P.abi.Account,
     *,
     output: ArtNFT,
 ):
-    from .subroutines import ensure_registered_creative, increment_creator_nft_count
+    from .subroutines import ensure_registered_creative, increment_creator_nft_count, send_aura_token
 
     return P.Seq(
         P.Assert(P.Not(app.state.art_nfts[ipfs_location.get()].exists())),
         (creative_type := P.abi.String()).set("art"),
         ensure_registered_creative(txn, creative_type),
-        (asset_id := P.abi.Uint64()).set(txn.get().created_asset_id()),
+        P.InnerTxnBuilder.Execute(
+            {
+                P.TxnField.type_enum: P.TxnType.AssetConfig,
+                P.TxnField.config_asset_name: nft_name.get(),
+                P.TxnField.config_asset_total: supply.get(),
+                P.TxnField.config_asset_url: ipfs_location.get(),
+                P.TxnField.config_asset_manager: txn.get().sender(),
+            }
+        ),
+        (asset_id := P.abi.Uint64()).set(P.InnerTxn.created_asset_id()),
         (owner := P.abi.Address()).set(txn.get().sender()),
         (sold_price := P.abi.Uint64()).set(0),
         (art_nft := ArtNFT()).set(
@@ -115,6 +146,8 @@ def create_art_nft(
         ),
         app.state.art_nfts[ipfs_location.get()].set(art_nft),
         increment_creator_nft_count(owner),
+        (aura_amt := P.abi.Uint64()).set(1),
+        send_aura_token(owner, aura_amt),
         output.decode(app.state.art_nfts[ipfs_location.get()].get()),
     )
 
@@ -201,6 +234,7 @@ def purchase_nft(
             transfer_sound_nft(txn, asset_key),
             transfer_art_nft(txn, asset_key),
         ),
+        # Todo: Award the account an Aura Token when they buy NFT
     )
 
 
@@ -259,6 +293,8 @@ def vote_on_proposal(
     output: Proposal,
 ):
     return P.Seq(
+        # Todo: For a person to vote they require an Aura token
+        # Todo: An account can vote once -> Freeze their asset
         P.Assert(app.state.aurally_nft_owners[txn.get().sender()].exists()),
         P.Assert(app.state.dao_proposals[proposal_key.get()].exists()),
         (proposal := Proposal()).decode(
@@ -280,5 +316,20 @@ def vote_on_proposal(
 
 
 @app.external
+def create_aura_tokens(*, output: AurallyToken):
+    from .subroutines import bootstrap_token
+    return P.Seq(
+        (token_key := P.abi.String()).set("aura"),
+        P.Assert(P.Not(app.state.registered_asa[token_key.get()].exists())),
+
+        (total := P.abi.Uint64()).set(1000000000000),
+        bootstrap_token(token_key, total),
+
+        P.Assert(app.state.registered_asa[token_key.get()].exists()),
+        output.decode(app.state.registered_asa[token_key.get()].get())
+    )
+
+
+@app.external
 def hello(name: P.abi.String, *, output: P.abi.String) -> P.Expr:
-    return output.set(P.Concat(P.Bytes("Hello, "), name.get()))
+    return output.set(P.Concat(name.get(), P.Bytes(" World")))

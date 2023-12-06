@@ -5,7 +5,7 @@
             "name": "register_creator",
             "args": [
                 {
-                    "type": "acfg",
+                    "type": "txn",
                     "name": "txn"
                 },
                 {
@@ -25,8 +25,12 @@
             "name": "create_sound_nft",
             "args": [
                 {
-                    "type": "acfg",
+                    "type": "txn",
                     "name": "txn"
+                },
+                {
+                    "type": "string",
+                    "name": "nft_name"
                 },
                 {
                     "type": "string",
@@ -75,6 +79,14 @@
                 {
                     "type": "bool",
                     "name": "for_sale"
+                },
+                {
+                    "type": "asset",
+                    "name": "aura_asset"
+                },
+                {
+                    "type": "account",
+                    "name": "creator"
                 }
             ],
             "returns": {
@@ -85,8 +97,12 @@
             "name": "create_art_nft",
             "args": [
                 {
-                    "type": "acfg",
+                    "type": "txn",
                     "name": "txn"
+                },
+                {
+                    "type": "string",
+                    "name": "nft_name"
                 },
                 {
                     "type": "string",
@@ -115,6 +131,14 @@
                 {
                     "type": "bool",
                     "name": "for_sale"
+                },
+                {
+                    "type": "asset",
+                    "name": "aura_asset"
+                },
+                {
+                    "type": "account",
+                    "name": "creator"
                 }
             ],
             "returns": {
@@ -271,6 +295,13 @@
             ],
             "returns": {
                 "type": "(string,uint64,uint64,string)"
+            }
+        },
+        {
+            "name": "create_aura_tokens",
+            "args": [],
+            "returns": {
+                "type": "(uint64,string,uint64)"
             }
         },
         {

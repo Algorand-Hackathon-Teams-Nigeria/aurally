@@ -8,7 +8,6 @@ from beaker.client import ApplicationClient
 from beaker.consts import algo
 from beaker.localnet.kmd import LocalAccount
 import pytest
-import hashlib
 from algosdk.v2client.algod import AlgodClient
 
 from smart_contracts.aurally import contract as aurally_contract
@@ -60,66 +59,69 @@ def sample_asset_key() -> str:
     return f"Dev Stockins_{datetime.utcnow()}"
 
 
-def test_says_hello(aurally_client: ApplicationClient) -> None:
-    result = aurally_client.call(aurally_contract.hello, name="World")
+@pytest.fixture(scope="session")
+def aura_token(aurally_client: ApplicationClient) -> int:
+    result = aurally_client.call(
+        aurally_contract.create_aura_tokens,
+        boxes=[(aurally_client.app_id, "aura".encode())],
+    )
+    assert list(result.return_value)[1] == "aura"
+    return list(result.return_value)[0]
 
-    assert result.return_value == "Hello, World"
+
+def test_says_hello(aurally_client: ApplicationClient) -> None:
+    result = aurally_client.call(aurally_contract.hello, name="Hello")
+    assert result.return_value == "Hello World"
 
 
 def test_register_creator(
     aurally_client: ApplicationClient,
     test_account: LocalAccount,
     algod_client: AlgodClient,
+    aura_token: int,
 ) -> None:
     sp = algod_client.suggested_params()
-    txn = transaction.AssetConfigTxn(
-        sp=sp,
-        total=1,
-        sender=test_account.address,
-        strict_empty_address_check=False,
-        manager=aurally_client.app_addr,
-        asset_name=test_account.address[:7],
-    )
+
+    opt_txn = transaction.AssetOptInTxn(sp=sp, sender=test_account.address, index=aura_token)
+
     txn = atomic_transaction_composer.TransactionWithSigner(
-        txn=txn, signer=test_account.signer
+        txn=opt_txn, signer=test_account.signer
     )
     result = aurally_client.call(
         aurally_contract.register_creator,
         txn=txn,
         fullname="Dev Ready",
         username="Dev2700",
-        boxes=[(aurally_client.app_id, encoding.decode_address(txn.txn.sender))],
+        boxes=[
+            (aurally_client.app_id, encoding.decode_address(txn.txn.sender)),
+            (aurally_client.app_id, "aura".encode()),
+        ],
     )
     assert list(result.return_value)[3] == "Dev Ready"
 
 
+# @pytest.mark.skip
 def test_create_sound_nft(
     algod_client: AlgodClient,
     aurally_client: ApplicationClient,
     test_account: LocalAccount,
     sample_asset_key: str,
+    aura_token: int,
 ):
-    supply = 20
     nft_name = "Dev Stockins"
     sp = algod_client.suggested_params()
-    raw_txn = transaction.AssetCreateTxn(
-        sp=sp,
-        decimals=2,
-        total=supply,
-        unit_name="DST",
-        asset_name=nft_name,
-        default_frozen=False,
-        metadata_hash=generate_hash(nft_name),
-        sender=test_account.address,
-        url="https://ipfs.io/ipfs/" + nft_name,
+    raw_txn = transaction.PaymentTxn(
+        sender=test_account.address, receiver=test_account.address, amt=0, sp=sp
     )
     txn = atomic_transaction_composer.TransactionWithSigner(
         txn=raw_txn, signer=test_account.signer
     )
+    print(aurally_client.app_addr, test_account.address)
 
     result = aurally_client.call(
         aurally_contract.create_sound_nft,
         txn=txn,
+        nft_name=nft_name,
         asset_key=sample_asset_key,
         title="Dev Tokens",
         label="Dev Reccords",
@@ -130,36 +132,33 @@ def test_create_sound_nft(
         cover_image_ipfs="some_id",
         audio_sample_ipfs="some_other_id",
         full_track_ipfs="yet_another_id",
+        aura_asset=aura_token,
+        creator=test_account.address,
         supply=20,
         for_sale=False,
         boxes=[
             (aurally_client.app_id, sample_asset_key.encode()),
+            (aurally_client.app_id, "aura".encode()),
             (aurally_client.app_id, encoding.decode_address(txn.txn.sender)),
         ],
     )
     assert list(result.return_value)[2] == "Dev Tokens"
 
 
+# @pytest.mark.skip
 def test_create_art_nft(
     algod_client: AlgodClient,
     aurally_client: ApplicationClient,
     test_account: LocalAccount,
+    aura_token: int,
 ):
     supply = 20
     nft_name = "Sun God Nika"
     sp = algod_client.suggested_params()
     url = "https://ipfs.io/ipfs/" + nft_name
 
-    raw_txn = transaction.AssetCreateTxn(
-        sp=sp,
-        decimals=2,
-        total=supply,
-        unit_name="DST",
-        asset_name=nft_name,
-        default_frozen=False,
-        metadata_hash=generate_hash(nft_name),
-        sender=test_account.address,
-        url=url,
+    raw_txn = transaction.PaymentTxn(
+        sender=test_account.address, receiver=test_account.address, amt=0, sp=sp
     )
 
     txn = atomic_transaction_composer.TransactionWithSigner(
@@ -170,14 +169,18 @@ def test_create_art_nft(
         aurally_contract.create_art_nft,
         txn=txn,
         title=nft_name,
+        nft_name=nft_name,
         name=nft_name,
         supply=supply,
         description="Gear 5 Luffy",
         ipfs_location=url,
         price=2000,
         for_sale=True,
+        aura_asset=aura_token,
+        creator=test_account.address,
         boxes=[
             (aurally_client.app_id, url.encode()),
+            (aurally_client.app_id, "aura".encode()),
             (aurally_client.app_id, encoding.decode_address(txn.txn.sender)),
         ],
     )
@@ -185,6 +188,7 @@ def test_create_art_nft(
     assert list(result.return_value)[1] == nft_name
 
 
+# @pytest.mark.skip
 def test_create_art_auction(
     algod_client: AlgodClient,
     aurally_client: ApplicationClient,
@@ -222,6 +226,7 @@ def test_create_art_auction(
     assert list(result.return_value)[1] == url
 
 
+# @pytest.mark.skip
 def test_bid_on_auction(
     algod_client: AlgodClient,
     aurally_client: ApplicationClient,
@@ -247,6 +252,7 @@ def test_bid_on_auction(
     assert list(result.return_value)[6] == 20000
 
 
+# @pytest.mark.skip
 def test_complete_art_auction(
     algod_client: AlgodClient,
     aurally_client: ApplicationClient,
@@ -277,6 +283,7 @@ def test_complete_art_auction(
     assert list(result.return_value)[1] == nft_name
 
 
+# @pytest.mark.skip
 def test_purchase_nft(
     algod_client: AlgodClient,
     aurally_client: ApplicationClient,
@@ -304,6 +311,7 @@ def test_purchase_nft(
     )
 
 
+# @pytest.mark.skip
 def test_transfer_nft(
     algod_client: AlgodClient,
     aurally_client: ApplicationClient,
@@ -329,6 +337,7 @@ def test_transfer_nft(
     )
 
 
+# @pytest.mark.skip
 def test_create_proposal(
     algod_client: AlgodClient,
     aurally_client: ApplicationClient,
@@ -362,6 +371,7 @@ def test_create_proposal(
     assert list(result.return_value)[0] == proposal_key
 
 
+# @pytest.mark.skip
 def test_vote_on_proposal(
     algod_client: AlgodClient,
     aurally_client: ApplicationClient,
@@ -390,10 +400,3 @@ def test_vote_on_proposal(
 
     assert list(result.return_value)[1] > 0
 
-
-def generate_hash(input_str: str) -> bytes:
-    input_bytes = input_str.encode("utf-8")
-    sha256_hash = hashlib.sha256()
-    sha256_hash.update(input_bytes)
-    hash_bytes = bytes.fromhex(sha256_hash.hexdigest())
-    return hash_bytes[:32]
