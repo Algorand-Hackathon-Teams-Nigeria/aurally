@@ -3,7 +3,7 @@ import { useWallet } from '@txnlab/use-wallet'
 import algosdk from 'algosdk'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
-import { getAlgodConfigFromViteEnvironment } from '../utils/algo-constants'
+import { getAlgodConfigFromViteEnvironment } from '../utils/network/algo-constants'
 
 interface TransactInterface {
   openModal: boolean

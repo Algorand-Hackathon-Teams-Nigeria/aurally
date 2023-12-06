@@ -1,0 +1,7 @@
+.root {
+  @apply flex-1;
+}
+
+.input {
+  @apply bg-transparent border-[#444] focus:border-[#8A2BE2] placeholder:text-[#444] h-10 px-3.5 rounded-[32px];
+}

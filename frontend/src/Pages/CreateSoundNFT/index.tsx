@@ -1,20 +1,20 @@
-import { useRef } from 'react'
-import { Button, TextInput, Text, Select, FileInput, NumberInput, Textarea } from '@mantine/core'
+import { Icon } from '@iconify/react'
+import { Button, FileInput, NumberInput, Select, Text, TextInput, Textarea } from '@mantine/core'
+import '@mantine/dates/styles.css'
 import { Dropzone, FileRejection, FileWithPath, IMAGE_MIME_TYPE } from '@mantine/dropzone'
 import '@mantine/dropzone/styles.css'
-import classes from '../../styles/textinput.module.css'
-import { Icon } from '@iconify/react'
-import { modals } from '@mantine/modals'
-import '@mantine/dates/styles.css'
-import { useMutation } from '@tanstack/react-query'
-import { nftListAtom } from '../../store/atoms'
-import { useAtom } from 'jotai'
-import { useWallet } from '@txnlab/use-wallet'
-import { algodClient } from '../../utils/contract-config'
-import algosdk from 'algosdk'
-import toast from 'react-hot-toast'
-import { uploadToIpfs } from '../../utils/ipfs-calls'
 import { useForm } from '@mantine/form'
+import { modals } from '@mantine/modals'
+import { useMutation } from '@tanstack/react-query'
+import { useWallet } from '@txnlab/use-wallet'
+import algosdk from 'algosdk'
+import { useAtom } from 'jotai'
+import { useRef } from 'react'
+import toast from 'react-hot-toast'
+import { nftListAtom } from '../../store/atoms'
+import classes from '../../styles/textinput.module.css'
+import { uploadToIpfs } from '../../utils/ipfs-calls'
+import { getAlgodClient } from '../../utils/network/contract-config'
 
 const GENRES = ['Pop', 'Electronic', 'R&B', 'Alte', 'Reggae', 'Afrobeat', 'Rock', 'Amapiano']
 
@@ -61,7 +61,7 @@ const CreateSoundNFt = () => {
       }
       amount = amount * 1000000
 
-      const suggestedParams = await algodClient.getTransactionParams().do()
+      const suggestedParams = await getAlgodClient().getTransactionParams().do()
 
       const transaction = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
         from,

@@ -1,41 +1,17 @@
-.section {
-  background-color: var(--mantine-color-body);
-  @apply px-[4.5%] py-[13px] min-[375px]:px-5 lg:px-8 md:pt-8 md:pb-7;
-  width: 100%;
-}
-
 .appNav {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  @apply w-full h-16 md:h-28 flex items-center justify-between px-[4.5%] min-[375px]:px-5 lg:px-8 bg-[#111] transition-colors shrink-0;
 }
 
-[data-sub-bg='true'] ~ div > .section {
+[data-sub-bg='true'] ~ div > .appNav {
   /* background-color: rgba(16, 25, 40, 0.7);
   backdrop-filter: blur(10px); */
   display: none;
 }
 
 .searchbar {
-  height: 40px;
-  font-size: 1rem;
-  padding: 0 1rem;
-  display: flex;
-  align-items: center;
-  border-radius: 32px;
-  background: var(--Sub-Background, #1e1e1e);
+  @apply h-12 flex items-center rounded-[32px] px-5 bg-transparent;
 }
 
-.filterIcon {
-  flex-shrink: 0;
-}
-
-@media (min-width: 375px) {
-  .searchbar {
-    height: 50px;
-  }
-  .filterIcon {
-    margin: 8px;
-  }
+.searchbutton {
+  @apply w-14 h-12 flex items-center justify-center rounded-r-[32px] rounded-l-none bg-[#1e1e1e] border-l-0;
 }

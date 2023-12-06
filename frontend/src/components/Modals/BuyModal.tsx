@@ -1,10 +1,10 @@
 import { Button } from '@mantine/core'
 import { ContextModalProps, modals } from '@mantine/modals'
-import { useWallet } from '@txnlab/use-wallet'
-import { algodClient } from '../../utils/contract-config'
-import algosdk from 'algosdk'
 import { useMutation } from '@tanstack/react-query'
+import { useWallet } from '@txnlab/use-wallet'
+import algosdk from 'algosdk'
 import toast from 'react-hot-toast'
+import { getAlgodClient } from '../../utils/network/contract-config'
 
 const BuyModal = ({
   context,
@@ -27,7 +27,7 @@ const BuyModal = ({
       }
       amount = amount * 1000000
 
-      const suggestedParams = await algodClient.getTransactionParams().do()
+      const suggestedParams = await getAlgodClient().getTransactionParams().do()
 
       const transaction = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
         from,

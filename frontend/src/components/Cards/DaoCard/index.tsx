@@ -29,7 +29,7 @@ const DaoCard = ({ title1, title2, price, creator, desc, date, isClosed, totalVo
   return (
     <div className="bg-[#1E1E1E] text-[#AFAFAF] border border-[#444444] rounded-lg p-4">
       <div className="flex justify-between items-center gap-4">
-        <div className="text-white">{title1}</div>
+        <div className="text-white">#{title1}</div>
         <div className="text-[11px]">{title2}</div>
       </div>
       <div className="flex justify-between gap-4 mt-1.5">

@@ -9,7 +9,7 @@ import WaveSurfer from 'wavesurfer.js'
 import { modals } from '@mantine/modals'
 import Stat1 from '../../components/General/Stat1'
 import { useAtomValue } from 'jotai'
-import { SoundNftType, nftListAtom } from '../../store/atoms'
+import { nftListAtom } from '../../store/atoms'
 
 const DetailsTab = () => {
   const { musicId } = useParams()

@@ -2,12 +2,12 @@ import { Avatar, Tabs } from '@mantine/core'
 import { useWallet } from '@txnlab/use-wallet'
 import profile from '../../assets/profile.jpg'
 import CopyButton from '../../components/General/CopyButton'
-import MusicCard from '../../components/MusicCard'
 import { ellipseAddress } from '../../utils/ellipseAddress'
 import noActiviy from '../../assets/no-activity.svg'
 import { useAtomValue } from 'jotai'
 import { createdNftsAtom } from '../../store/atoms'
 import tabClass from '../../styles/tab.module.css'
+import NftCard from '../../components/Cards/NftCard'
 
 const TYPES = ['Created', 'Purchased', 'Sold', 'Minted', 'Activity']
 
@@ -29,64 +29,28 @@ const ProfileTab = () => {
           <Tabs.Panel value={TYPES[0]}>
             <div className="w-full grid grid-cols-music-card gap-5">
               {nftList.map((item) => (
-                <MusicCard
-                  img={item.imgUrl}
-                  title={item.title}
-                  title2="Bid"
-                  title3={item.type === 'art' ? item.creator : item.artist}
-                  title4={`${Number(item.price)} ALGO`}
-                  key={item.id}
-                  buttonLabel="View Details"
-                  link={`/dapp/marketplace/${item.type === 'sound' ? 'music' : 'art'}/${item.id}`}
-                />
+                <NftCard data={item} key={item.id} />
               ))}
             </div>
           </Tabs.Panel>
           <Tabs.Panel value={TYPES[1]}>
             <div className="w-full grid grid-cols-music-card gap-5">
               {nftList.map((item) => (
-                <MusicCard
-                  img={item.imgUrl}
-                  title={item.title}
-                  title2="Bid"
-                  title3={item.type === 'art' ? item.creator : item.artist}
-                  title4={`${Number(item.price)} ALGO`}
-                  key={item.id}
-                  buttonLabel="View Details"
-                  link={`/dapp/marketplace/${item.type === 'sound' ? 'music' : 'art'}/${item.id}`}
-                />
+                <NftCard data={item} key={item.id} />
               ))}
             </div>
           </Tabs.Panel>
           <Tabs.Panel value={TYPES[2]}>
             <div className="w-full grid grid-cols-music-card gap-5">
               {nftList.map((item) => (
-                <MusicCard
-                  img={item.imgUrl}
-                  title={item.title}
-                  title2="Bid"
-                  title3={item.type === 'art' ? item.creator : item.artist}
-                  title4={`${Number(item.price)} ALGO`}
-                  key={item.id}
-                  buttonLabel="View Details"
-                  link={`/dapp/marketplace/${item.type === 'sound' ? 'music' : 'art'}/${item.id}`}
-                />
+                <NftCard data={item} key={item.id} />
               ))}
             </div>
           </Tabs.Panel>
           <Tabs.Panel value={TYPES[3]}>
             <div className="w-full grid grid-cols-music-card gap-5">
               {nftList.map((item) => (
-                <MusicCard
-                  img={item.imgUrl}
-                  title={item.title}
-                  title2="Bid"
-                  title3={item.type === 'art' ? item.creator : item.artist}
-                  title4={`${Number(item.price)} ALGO`}
-                  key={item.id}
-                  buttonLabel="View Details"
-                  link={`/dapp/marketplace/${item.type === 'sound' ? 'music' : 'art'}/${item.id}`}
-                />
+                <NftCard data={item} key={item.id} />
               ))}
             </div>
           </Tabs.Panel>

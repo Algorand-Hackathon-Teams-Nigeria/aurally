@@ -13,10 +13,17 @@
 }
 
 .menudropdown {
-  background: var(--Sub-Background, #1e1e1e);
+  background: #111;
   @apply rounded-xl p-2 space-y-2;
 }
 
 .menulabel {
-  @apply hover:bg-[#111]/75;
+  @apply hover:bg-[#1e1e1e];
+}
+
+.btn_root {
+  &[data-variant='primary-full-sm'] {
+    width: 100%;
+    border-radius: 8px;
+  }
 }

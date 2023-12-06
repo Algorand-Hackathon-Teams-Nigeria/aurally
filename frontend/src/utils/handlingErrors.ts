@@ -1,5 +1,5 @@
 import toast from 'react-hot-toast'
-import { CustomError } from './contract-config'
+import { CustomError } from './network/contract-config'
 
 export const handleContractError = (error: Error, message: string) => {
   if (error instanceof CustomError) {

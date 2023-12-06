@@ -1,5 +1,5 @@
 import algosdk from 'algosdk'
-import { algodClient } from './contract-config'
+import { getAlgodClient } from './network/contract-config'
 
 export async function getBalance(address?: string) {
   if (!address) {
@@ -10,7 +10,7 @@ export async function getBalance(address?: string) {
     }
   }
 
-  const accountInfo = await algodClient.accountInformation(address).do()
+  const accountInfo = await getAlgodClient().accountInformation(address).do()
   console.log(accountInfo)
   const balance = algosdk.microalgosToAlgos(accountInfo.amount)
   const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=algorand&vs_currencies=usd')
