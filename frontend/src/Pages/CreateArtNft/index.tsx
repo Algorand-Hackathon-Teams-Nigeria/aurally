@@ -96,7 +96,7 @@ const CreateArtNft = () => {
         supply: form.values.supply,
         desc: form.values.desc,
         price: form.values.price,
-        creator: '@user23456',
+        artist: '@user23456',
         imgUrl: url,
         type: 'art',
       },
