@@ -1,5 +1,5 @@
 import { Button } from '@mantine/core'
-import DaoCard from '../../components/DaoCard'
+import DaoCard from '../../components/Cards/DaoCard'
 import { Link } from 'react-router-dom'
 import carouselClasses from '../../styles/carousel.module.css'
 import { Carousel } from '@mantine/carousel'
@@ -40,7 +40,7 @@ const DaoGrid = ({ title, data }: Prop) => {
         classNames={{ ...carouselClasses, slide: 'max-w-[calc(100%-20px)]' }}
         containScroll="trimSnaps"
         slideSize="330px"
-        slideGap={{ base: 16, sm: 20 }}
+        slideGap={{ base: 12, sm: 16 }}
         slidesToScroll={'auto'}
         align="end"
       >

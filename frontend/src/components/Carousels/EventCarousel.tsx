@@ -1,6 +1,6 @@
 import carouselClasses from '../../styles/carousel.module.css'
 import { Carousel } from '@mantine/carousel'
-import NftCard, { NftCardLoader } from '../Cards/NftCard'
+import EventCard, { EventCardLoader } from '../Cards/EventCard'
 
 const CarouselLoader = () => {
   return (
@@ -8,7 +8,7 @@ const CarouselLoader = () => {
       <div className="w-max flex gap-3 sm:gap-4">
         {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
           <div key={item} className="max-w-[calc(100%-20px)] w-[270px]">
-            <NftCardLoader />
+            <EventCardLoader />
           </div>
         ))}
       </div>
@@ -16,7 +16,7 @@ const CarouselLoader = () => {
   )
 }
 
-export const NftCarousel = ({ data = [], isLoading }: { isLoading?: boolean; data?: (ArtNftType | SoundNftType)[] }) => {
+export const EventCarousel = ({ data = [], isLoading }: { isLoading?: boolean; data?: EventCardType[] }) => {
   return isLoading ? (
     <CarouselLoader />
   ) : (
@@ -28,9 +28,9 @@ export const NftCarousel = ({ data = [], isLoading }: { isLoading?: boolean; dat
       slidesToScroll={'auto'}
       align="end"
     >
-      {data.map((item) => (
+      {data?.map((item) => (
         <Carousel.Slide key={item.id}>
-          <NftCard data={item} />
+          <EventCard {...item} key={item.id} />
         </Carousel.Slide>
       ))}
     </Carousel>

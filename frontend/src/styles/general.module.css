@@ -20,3 +20,10 @@
 .menulabel {
   @apply hover:bg-[#1e1e1e];
 }
+
+.btn_root {
+  &[data-variant='primary-full-sm'] {
+    width: 100%;
+    border-radius: 8px;
+  }
+}

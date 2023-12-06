@@ -1,4 +1,4 @@
-import { CSSVariablesResolver, DEFAULT_THEME, MantineColorsTuple, Modal, createTheme, mergeMantineTheme, Menu } from '@mantine/core'
+import { CSSVariablesResolver, DEFAULT_THEME, MantineColorsTuple, Modal, createTheme, mergeMantineTheme, Menu, Button } from '@mantine/core'
 import general from './styles/general.module.css'
 
 const purple: MantineColorsTuple = [
@@ -40,6 +40,11 @@ const themeOverride = createTheme({
         },
       },
     }),
+    Button: Button.extend({
+      classNames: {
+        root: general.btn_root,
+      },
+    }),
   },
 })
 
@@ -61,7 +66,7 @@ export const toastTheme = {
     background: '#1e1e1e',
     borderRadius: '100px',
     fontFamily: 'system-ui',
-    fontSize: '14px'
+    fontSize: '14px',
   },
   success: {
     iconTheme: {

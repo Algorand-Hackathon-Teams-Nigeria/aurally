@@ -1,12 +1,20 @@
-import { Avatar, Button, Image } from '@mantine/core'
+import { Button, Image } from '@mantine/core'
 import { useState } from 'react'
-import profile from '../../assets/profile.jpg'
 import classes from '../MusicDetails/musicdetail.module.css'
 import Stat1 from '../../components/General/Stat1'
 import { Icon } from '@iconify/react'
 import { useParams } from 'react-router-dom'
 import { useAtomValue } from 'jotai'
 import { nftListAtom } from '../../store/atoms'
+
+const activity = Array.from({ length: 2 }, (_, i) => ({
+  id: i,
+  from: '0x1153...8dc01',
+  to: ' 0x11534...8dc01',
+  price: 0.5,
+  type: 'transferred',
+  date: '3 months ago',
+}))
 
 const ArtDetails = () => {
   const { artId } = useParams()
@@ -31,15 +39,12 @@ const ArtDetails = () => {
         </div>
       </div>
       <h1 className="detailsTitle mt-8 mb-3">{filteredArt.title}</h1>
-      <div className="flex gap-5 items-center">
-        <Avatar src={profile} size="lg" radius="md" classNames={{ image: 'border-2 sm:border-[3px] rounded-lg' }} />
-        <div>
-          <div className="flex items-center gap-2 mb-2">
-            <span className="sm:text-[22px] font-bold text-white">Tyler Faye</span>
-            <Icon icon="codicon:verified-filled" width={20} color="#0075FF" />
-          </div>
-          <div className="font-bold text-xs sm:text-sm text-[#afafaf]">@tylerfaye.NFT</div>
+      <div>
+        <div className="flex items-center gap-2 mb-2">
+          <span className="sm:text-[22px] font-bold text-white">Tyler Faye</span>
+          <Icon icon="codicon:verified-filled" width={20} color="#0075FF" />
         </div>
+        <div className="font-bold text-xs sm:text-sm text-[#afafaf]">creator</div>
       </div>
       <div className="gboard mt-6 mb-[90px] min-h-[434px]">
         <div className="flex overflow-x-auto pb-0.5">
@@ -57,7 +62,26 @@ const ArtDetails = () => {
               <Stat1 title="GENRES" title2="RnB" />
               <Stat1 title="Date Created" title2="Sept 2022" />
               <Stat1 title="Total Voume" title2="Unlimited" />
+              <Stat1 title="Current Owner" title2="0xfd1...2e155" />
             </div>
+          </div>
+        ) : activity.length > 0 ? (
+          <div className="w-full space-y-6 mt-6">
+            {activity.map((item) => (
+              <div key={item.id} className="flex items-center gap-4 border-b sm:border border-borderColor sm:rounded-xl pb-3 sm:p-4">
+                <div className="w-14 h-14 sm:w-20 sm:h-20 rounded-lg overflow-hidden shrink-0">
+                  <Image src={filteredArt.imgUrl} className="object-top object-cover h-full" />
+                </div>
+                <div className="text-[11px] sm:text-xs space-y-1">
+                  <div className="font-bold text-sm sm:text-base">{filteredArt.title}</div>
+                  <div>
+                    <span className="text-[#afafaf] mr-[0.25em]">Tranferred from</span> {item.from}{' '}
+                    <span className="text-[#afafaf] mx-[0.25em]">to</span> {item.to}
+                  </div>
+                  <div>{item.date}</div>
+                </div>
+              </div>
+            ))}
           </div>
         ) : (
           <div className="w-full text-center mt-24">No Activity</div>

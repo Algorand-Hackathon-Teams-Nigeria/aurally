@@ -1,4 +1,3 @@
-import MusicCard from '../../components/MusicCard'
 import { Button, Tabs } from '@mantine/core'
 import { Link } from 'react-router-dom'
 import { useEffect, useRef } from 'react'
@@ -8,6 +7,7 @@ import { modals } from '@mantine/modals'
 import { useAtomValue } from 'jotai'
 import { myArtAtom, myStreamAtom } from '../../store/atoms'
 import tabClass from '../../styles/tab.module.css'
+import NftCard from '../../components/Cards/NftCard'
 
 const TYPES = ['Streams', 'Arts']
 
@@ -51,16 +51,7 @@ const MyNfts = () => {
           {soundList.length > 0 ? (
             <div className="grid grid-cols-music-card gap-4 sm:gap-5">
               {soundList.map((item) => (
-                <MusicCard
-                  img={item.imgUrl}
-                  title={item.title}
-                  title2="Bid"
-                  title3={item.artist}
-                  title4={`${Number(item.price)} ALGO`}
-                  key={item.id}
-                  buttonLabel="Play"
-                  // link={`/dapp/marketplace/music/${item.id}`}
-                />
+                <NftCard key={item.id} data={item} buttonLabel="Play" buttonAction={() => {}} />
               ))}
             </div>
           ) : (
@@ -78,16 +69,7 @@ const MyNfts = () => {
           {artList.length > 0 ? (
             <div className="grid grid-cols-music-card gap-4 sm:gap-5">
               {artList.map((item) => (
-                <MusicCard
-                  img={item.imgUrl}
-                  title={item.title}
-                  title2="Bid"
-                  title3={item.creator}
-                  title4={`${Number(item.price)} ALGO`}
-                  key={item.id}
-                  buttonLabel="Play"
-                  // link={`/dapp/marketplace/music/${item.id}`}
-                />
+                <NftCard key={item.id} data={item} buttonLabel="View Details" />
               ))}
             </div>
           ) : (

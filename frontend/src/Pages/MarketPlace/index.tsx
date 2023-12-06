@@ -1,4 +1,3 @@
-import MusicCard, { MusicCardLoader } from '../../components/MusicCard'
 import { useAtomValue } from 'jotai'
 import { nftListAtom } from '../../store/atoms'
 import { useQuery } from '@tanstack/react-query'
@@ -7,6 +6,7 @@ import { Button, Checkbox, Group, Menu, NumberInput } from '@mantine/core'
 import { Icon } from '@iconify/react'
 import inputClasses from '../../styles/textinput.module.css'
 import { useState } from 'react'
+import NftCard, { NftCardLoader } from '../../components/Cards/NftCard'
 
 const MarketPlace = () => {
   const nftList = useAtomValue(nftListAtom)
@@ -88,21 +88,10 @@ const MarketPlace = () => {
             </Menu.Dropdown>
           </Menu>
         </div>
-        <div className="grid grid-cols-music-card gap-3">
+        <div className="grid grid-cols-music-card gap-3 sm:gap-4">
           {isLoading
-            ? [1, 2, 3, 4].map((item) => <MusicCardLoader key={item} />)
-            : data?.map((item) => (
-                <MusicCard
-                  img={item.imgUrl}
-                  title={item.title}
-                  title2="Bid"
-                  title3={item.type === 'art' ? item.creator : item.artist}
-                  title4={`${Number(item.price)} ALGO`}
-                  key={item.id}
-                  buttonLabel={item.type === 'sound' ? 'Stream and Buy' : 'Buy'}
-                  link={`/dapp/marketplace/${item.type === 'sound' ? 'music' : 'art'}/${item.id}`}
-                />
-              ))}
+            ? [1, 2, 3, 4].map((item) => <NftCardLoader key={item} />)
+            : data?.map((item) => <NftCard key={item.id} data={item} />)}
         </div>
         {nftList.length === 0 && (
           <div className="w-full py-28  flex justify-center items-center text-center text-[#8A2BE2] font-bold">No NFTs found</div>

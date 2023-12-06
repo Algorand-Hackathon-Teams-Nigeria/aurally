@@ -1,52 +1,31 @@
 import { Outlet } from 'react-router-dom'
 import TitleHeader from '../../components/General/TitleHeader'
 import SummaryBox from '../../components/SummaryBox'
-import MusicCard from '../../components/MusicCard'
-import { Carousel } from '@mantine/carousel'
 import { useMediaQuery } from '@mantine/hooks'
-import carouselClasses from '../../styles/carousel.module.css'
+import CommunityCard from '../../components/Cards/CommunityCard'
+import { CommunitiesCarousel } from '../../components/Carousels/CommunitiesCarousel'
+
+export const CommunitiesData = Array.from({ length: 5 }).map((_, index) => ({
+  imgUrl: 'https://gateway.pinata.cloud/ipfs/QmbexdpyP8CHgNzmzAyPfBa6FW44EGDhuNapktfLVfobV9',
+  name: 'TF-Nation',
+  id: index + 1,
+  creator: 'Tyler Faye',
+  members: 1000,
+}))
 
 export const CommunitiesIndex = () => {
   const matched = useMediaQuery('(min-width: 1024px)', window.innerWidth >= 1024)
   return (
     <section className="h-max pb-32 mt-14 lg:mt-0 lg:w-[310px] xl:flex-shrink-0">
-      <TitleHeader className="" title="Explore Communities" />
+      <TitleHeader className="" title="Explore" />
       {matched ? (
         <div className="w-full grid grid-cols-music-card lg:grid-cols-1 gap-3">
-          {[1, 2, 3, 4].map((item) => (
-            <MusicCard
-              img="https://gateway.pinata.cloud/ipfs/QmTaf7kEg9hNi3msa8GryvMLBHZVDCv34KMzmhN7sP99qu"
-              title="TF-Nation"
-              title2="Members"
-              title3="Tyler Faye"
-              title4="1k+"
-              key={item}
-              buttonLabel="Join"
-            />
+          {CommunitiesData.map((item) => (
+            <CommunityCard {...item} key={item.id} />
           ))}
         </div>
       ) : (
-        <Carousel
-          classNames={{ ...carouselClasses, slide: 'max-w-[calc(100%-20px)] min-[320px]:max-w-[285px]' }}
-          containScroll="trimSnaps"
-          slideSize="285px"
-          slideGap={{ base: 16, sm: 20 }}
-          slidesToScroll={'auto'}
-          align="end"
-        >
-          {[1, 2, 3, 4].map((item) => (
-            <Carousel.Slide key={item}>
-              <MusicCard
-                img="https://gateway.pinata.cloud/ipfs/QmTaf7kEg9hNi3msa8GryvMLBHZVDCv34KMzmhN7sP99qu"
-                title="TF-Nation"
-                title2="Members"
-                title3="Tyler Faye"
-                title4="1k+"
-                buttonLabel="Join"
-              />
-            </Carousel.Slide>
-          ))}
-        </Carousel>
+        <CommunitiesCarousel isLoading={false} data={CommunitiesData} />
       )}
     </section>
   )

@@ -9,33 +9,6 @@ type DaoType = {
   nftId: number
 }
 
-export type SoundNftType = {
-  id: number
-  title: string
-  label: string
-  artist: string
-  supply: number
-  desc: string
-  price: number
-  audio: string
-  sample: string
-  streams: number
-  genre: string
-  imgUrl: string
-  type: 'sound'
-}
-
-export type ArtNftType = {
-  id: number
-  title: string
-  creator: string
-  supply: number
-  desc: string
-  price: number
-  imgUrl: string
-  type: 'art'
-}
-
 const template = [
   {
     desc: 'It is the first art for testing.',
@@ -44,7 +17,7 @@ const template = [
     price: 0.1,
     supply: 10,
     title: 'Art 001',
-    creator: 'user23456',
+    artist: 'user23456',
     type: 'art',
   },
   {
@@ -54,7 +27,7 @@ const template = [
     price: 0.1,
     supply: 10,
     title: 'Art 002',
-    creator: 'user23456',
+    artist: 'user23456',
     type: 'art',
   },
   {
