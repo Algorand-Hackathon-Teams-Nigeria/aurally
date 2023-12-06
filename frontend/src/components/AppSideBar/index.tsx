@@ -38,7 +38,7 @@ export const Links = memo(({ isMobile }: { isMobile?: boolean }) => {
 const AppSideBar = () => {
   const { pathname } = useLocation()
   const { forumId } = useParams()
-  const matched = useMediaQuery('(min-width: 1024px)')
+  const matched = useMediaQuery('(min-width: 1024px)',window.innerWidth >= 1024)
   const sliced = pathname.split('/')
 
   const icon = <Icon icon="octicon:plus-16" stroke="2" width={20} />

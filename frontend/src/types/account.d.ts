@@ -1,4 +1,4 @@
-export interface Account {
+type WalletAccountType = {
   address: string
   amount: number
   assets: {

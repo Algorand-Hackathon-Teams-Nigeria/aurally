@@ -5,7 +5,7 @@ import { useWallet } from '@txnlab/use-wallet'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { HelloWorldClient } from '../contracts/hello_world'
-import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from '../utils/algo-constants'
+import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from '../utils/network/algo-constants'
 
 interface AppCallsInterface {
   openModal: boolean

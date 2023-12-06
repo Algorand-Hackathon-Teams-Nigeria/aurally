@@ -12,10 +12,11 @@
 }
 
 .title {
-  font-size: 16px;
+  font-size: 14.5px;
   font-weight: 700;
   line-height: 24px;
   letter-spacing: 0.15px;
+  @apply truncate;
 }
 
 .title2 {
@@ -29,6 +30,7 @@
   font-size: 14px;
   line-height: 20px; /* 142.857% */
   letter-spacing: 0.1px;
+   @apply shrink-0;
 }
 
 .title2,

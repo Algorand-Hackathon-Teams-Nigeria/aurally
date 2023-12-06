@@ -1,6 +1,6 @@
 import { Aurally } from '../contracts/AurallyClient'
-import { deployParams } from './algo-constants'
-import { AppClientProps, getAppClient } from './contract-config'
+import { deployParams } from './network/algo-constants'
+import { AppClientProps, createAppClient as getAppClient } from './network/contract-config'
 
 export const deployCall = async (props: AppClientProps) => {
   const appClient = getAppClient(props)

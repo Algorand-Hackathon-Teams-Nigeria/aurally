@@ -23,6 +23,8 @@ import Events from './Pages/Events'
 import MyNfts from './Pages/MyNfts'
 import Community from './Pages/Community'
 import CreateEvent from './Pages/CreateEvent'
+import SearchModal from './components/Modals/SearchModal'
+import { ContractDataProvider } from './providers/ContractDataProvider'
 
 export default function App() {
   return (
@@ -58,9 +60,11 @@ const AppWrapper = () => {
         <AppNav />
         <ErrorBoundary>
           <AlgoProvider>
-            <ModalsProvider modals={{ message: MessageModal, buy: BuyModal, wallet: WalletModal, dao: DaoModal }}>
-              <Outlet />
-            </ModalsProvider>
+            <ContractDataProvider>
+              <ModalsProvider modals={{ message: MessageModal, buy: BuyModal, wallet: WalletModal, dao: DaoModal, search: SearchModal }}>
+                <Outlet />
+              </ModalsProvider>
+            </ContractDataProvider>
           </AlgoProvider>
         </ErrorBoundary>
       </div>

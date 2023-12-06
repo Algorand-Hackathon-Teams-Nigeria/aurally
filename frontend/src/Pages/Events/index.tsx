@@ -31,9 +31,9 @@ const data = (isFree = false) =>
 const EventCarousel = ({ data }: Prop) => {
   return (
     <Carousel
-      classNames={{ ...carouselClasses, slide: 'max-w-[calc(100%-20px)]' }}
+      classNames={{ ...carouselClasses, slide: 'max-w-[calc(100%-20px)] min-[320px]:max-w-[285px]' }}
       containScroll="trimSnaps"
-      slideSize="300px"
+      slideSize="285px"
       slideGap={{ base: 16, sm: 20 }}
       slidesToScroll={'auto'}
       align="end"

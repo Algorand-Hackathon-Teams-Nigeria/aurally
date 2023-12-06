@@ -31,7 +31,7 @@ const SideDrawer = () => {
   return (
     <>
       <Burger opened={opened} onClick={toggle} aria-label="Toggle Side Bar" />
-      <Drawer.Root classNames={{ root: classes2.root }} opened={opened} onClose={close} data-path={sliced[2] || ''}>
+      <Drawer.Root position="right" classNames={{ root: classes2.root }} opened={opened} onClose={close} data-path={sliced[2] || ''}>
         <Drawer.Overlay />
         <Drawer.Content classNames={{ content: classes2.content }}>
           <Drawer.Header classNames={{ header: classes2.header }}>

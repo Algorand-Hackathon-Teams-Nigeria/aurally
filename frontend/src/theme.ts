@@ -61,7 +61,7 @@ export const toastTheme = {
     background: '#1e1e1e',
     borderRadius: '100px',
     fontFamily: 'system-ui',
-    fontSize: '14px',
+    fontSize: '14px'
   },
   success: {
     iconTheme: {

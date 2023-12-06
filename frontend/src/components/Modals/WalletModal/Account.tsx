@@ -1,8 +1,8 @@
 import { Icon } from '@iconify/react'
 import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
-import { getAlgodConfigFromViteEnvironment } from '../../../utils/algo-constants'
 import { ellipseAddress } from '../../../utils/ellipseAddress'
+import { getAlgodConfigFromViteEnvironment } from '../../../utils/network/algo-constants'
 import { getBalance } from '../../../utils/walletcalls'
 import CopyButton from '../../General/CopyButton'
 

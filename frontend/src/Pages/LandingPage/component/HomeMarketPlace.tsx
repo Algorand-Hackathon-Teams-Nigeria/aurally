@@ -2,11 +2,10 @@ import { Button } from '@mantine/core'
 import { useState } from 'react'
 import { useAtomValue } from 'jotai'
 import { nftListAtom } from '../../../store/atoms'
-import MusicCard from '../../../components/MusicCard'
-import { Carousel } from '@mantine/carousel'
-import carouselClasses from '../../../styles/carousel.module.css'
 import { Link } from 'react-router-dom'
 import classes from '../landing.module.css'
+import { NftCarousel } from '../../../components/Carousels/NftCarousel'
+import { useQuery } from '@tanstack/react-query'
 
 const TYPES = ['All', 'Music', 'Art']
 
@@ -14,7 +13,24 @@ const HomeMarketPlace = () => {
   const [type, setType] = useState(TYPES[0])
   const nftList = useAtomValue(nftListAtom)
 
-  const filterList = nftList.filter((item) => {
+  const getNftData = async (): Promise<typeof nftList> => {
+    return await new Promise((resolve, reject) => {
+      setTimeout(() => {
+        try {
+          resolve(nftList)
+        } catch (error) {
+          reject(error)
+        }
+      }, 2000)
+    })
+  }
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['trending-nft'],
+    queryFn: getNftData,
+  })
+
+  const filterList = data?.filter((item) => {
     if (type === 'All') return true
     if (type === 'Music') return item.type === 'sound'
     if (type === 'Art') return item.type === 'art'
@@ -36,28 +52,7 @@ const HomeMarketPlace = () => {
           </Button>
         ))}
       </div>
-      <Carousel
-        classNames={{ ...carouselClasses, slide: 'max-w-[calc(100%-20px)]' }}
-        containScroll="trimSnaps"
-        slideSize="300px"
-        slideGap={{ base: 16, sm: 20 }}
-        slidesToScroll={'auto'}
-        align="end"
-      >
-        {filterList.map((item) => (
-          <Carousel.Slide key={item.id}>
-            <MusicCard
-              img={item.imgUrl}
-              title={item.title}
-              title2="Bid"
-              title3={item.type === 'art' ? item.creator : item.artist}
-              title4={`${Number(item.price)} ALGO`}
-              buttonLabel={item.type === 'sound' ? 'Stream and Buy' : 'Buy'}
-              link={`/dapp/marketplace/${item.type === 'sound' ? 'music' : 'art'}/${item.id}`}
-            />
-          </Carousel.Slide>
-        ))}
-      </Carousel>
+      <NftCarousel isLoading={isLoading} data={filterList} />
       <Link to="/dapp/marketplace" className={`${classes.getBtn} flex w-max mx-auto mt-20`}>
         Explore Marketplace
       </Link>

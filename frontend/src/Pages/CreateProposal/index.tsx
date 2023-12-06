@@ -1,14 +1,14 @@
 import { Button, NumberInput, Select, TextInput } from '@mantine/core'
-import classes from '../../styles/textinput.module.css'
-import { useMutation } from '@tanstack/react-query'
-import toast from 'react-hot-toast'
-import { useAtom } from 'jotai'
-import { createdNftsAtom, daoListAtom } from '../../store/atoms'
-import { useWallet } from '@txnlab/use-wallet'
-import { algodClient } from '../../utils/contract-config'
-import algosdk from 'algosdk'
-import { useForm } from '@mantine/form'
 import { DateInput } from '@mantine/dates'
+import { useForm } from '@mantine/form'
+import { useMutation } from '@tanstack/react-query'
+import { useWallet } from '@txnlab/use-wallet'
+import algosdk from 'algosdk'
+import { useAtom } from 'jotai'
+import toast from 'react-hot-toast'
+import { createdNftsAtom, daoListAtom } from '../../store/atoms'
+import classes from '../../styles/textinput.module.css'
+import { getAlgodClient } from '../../utils/network/contract-config'
 
 const TYPES = ['sound', 'art']
 
@@ -42,7 +42,7 @@ const CreateProposal = () => {
         throw new Error('Missing transaction params.')
       }
       amount = amount * 1000000
-      const suggestedParams = await algodClient.getTransactionParams().do()
+      const suggestedParams = await getAlgodClient().getTransactionParams().do()
 
       const transaction = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
         from,

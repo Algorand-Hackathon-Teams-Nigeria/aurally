@@ -59,24 +59,20 @@ const works = [
 
 const roadmaps = [
   {
-    title: 'At Each 1000 Mints Nov 2023',
-    desc: 'Willy Wang sweeps the floor on NFTworld to clear any NFTs below minting price (this is to make sure your NFT retains its value throughout the minting process)',
+    title: '2023 Q4: Full Launch at MI Music Festival',
+    desc: ['Official platform launch with complete functionalities on December 31st 2023.'],
   },
   {
-    title: 'At Each 1000 Mints Nov 2023',
-    desc: 'Willy Wang sweeps the floor on NFTworld to clear any NFTs below minting price (this is to make sure your NFT retains its value throughout the minting process)',
+    title: '2024: Q1: Rewards System Implementation',
+    desc: ['Develop and integrate a crypto-token based rewards system.', 'Incorporate user feedback to refine the rewards mechanism.'],
   },
   {
-    title: 'At Each 1000 Mints Nov 2023',
-    desc: 'Willy Wang sweeps the floor on NFTworld to clear any NFTs below minting price (this is to make sure your NFT retains its value throughout the minting process)',
-  },
-  {
-    title: 'At Each 1000 Mints Nov 2023',
-    desc: 'Willy Wang sweeps the floor on NFTworld to clear any NFTs below minting price (this is to make sure your NFT retains its value throughout the minting process)',
-  },
-  {
-    title: 'At Each 1000 Mints Nov 2023',
-    desc: 'Willy Wang sweeps the floor on NFTworld to clear any NFTs below minting price (this is to make sure your NFT retains its value throughout the minting process)',
+    title: '2024: Q2-Q4: Expansion and Feature Enhancement',
+    desc: [
+      'Expand platform capabilities and add new features based on user feedback.',
+      'Enhance user interface for a more engaging experience.',
+      'Explore partnerships for market reach and cross-chain functionalities.',
+    ],
   },
 ]
 
@@ -196,7 +192,11 @@ export default function Home() {
                       )}
                       <div className="border border-borderColor p-4 rounded-[10px] max-w-[420px]">
                         <div className="font-bold mb-4">{title}</div>
-                        <div>{desc}</div>
+                        <ul className="text-[13px] font-medium space-y-3 purple-disc list-disc marker:text-primary">
+                          {desc.map((item, index) => (
+                            <li key={index}>{item}</li>
+                          ))}
+                        </ul>
                       </div>
                       {index % 2 !== 0 && (
                         <div className="bg-primary w-10 h-10 lg:w-12 lg:h-12 rounded-r-full grid place-items-center shrink-0">
@@ -230,7 +230,11 @@ export default function Home() {
                   </div>
                   <div className="border border-borderColor p-4 rounded-[10px] max-w-[420px]">
                     <div className="font-bold mb-4">{title}</div>
-                    <div>{desc}</div>
+                    <ul className="text-xs font-medium space-y-2">
+                      {desc.map((item, index) => (
+                        <li key={index}>{item}</li>
+                      ))}
+                    </ul>
                   </div>
                 </div>
               ))}

@@ -7,7 +7,7 @@ import { useMediaQuery } from '@mantine/hooks'
 import carouselClasses from '../../styles/carousel.module.css'
 
 export const CommunitiesIndex = () => {
-  const matched = useMediaQuery('(min-width: 1024px)')
+  const matched = useMediaQuery('(min-width: 1024px)', window.innerWidth >= 1024)
   return (
     <section className="h-max pb-32 mt-14 lg:mt-0 lg:w-[310px] xl:flex-shrink-0">
       <TitleHeader className="" title="Explore Communities" />
@@ -27,9 +27,9 @@ export const CommunitiesIndex = () => {
         </div>
       ) : (
         <Carousel
-          classNames={{ ...carouselClasses, slide: 'max-w-[calc(100%-20px)]' }}
+          classNames={{ ...carouselClasses, slide: 'max-w-[calc(100%-20px)] min-[320px]:max-w-[285px]' }}
           containScroll="trimSnaps"
-          slideSize="300px"
+          slideSize="285px"
           slideGap={{ base: 16, sm: 20 }}
           slidesToScroll={'auto'}
           align="end"
@@ -54,7 +54,7 @@ export const CommunitiesIndex = () => {
 
 export const Communities = () => {
   return (
-    <div className="px-[4.5%] min-[375px]:px-5 lg:px-8 h-max lg:h-[calc(100lvh-110px)] flex flex-col lg:flex-row gap-6 lg:overflow-y-auto">
+    <div className="px-[4.5%] min-[375px]:px-5 lg:px-8 h-max lg:h-[calc(100lvh-112px)] flex flex-col lg:flex-row gap-6 lg:overflow-y-auto">
       <div className="flex-1 lg:pb-32 h-max pt-6">
         <div className="routeName mb-6">Your Communities</div>
         <div className="grid gap-3 max-w-[750px]">

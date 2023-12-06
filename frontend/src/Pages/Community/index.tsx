@@ -41,7 +41,7 @@ const Bottom = () => {
         maxRows={5}
         size="md"
         placeholder="Say Something..."
-        classNames={{ root: classes.input_root, input: classes.input }}
+        classNames={{ root: `${classes.input_root} scroll-hide`, input: `${classes.input} scroll-hide` }}
       />
       <ActionIcon classNames={{ root: classes.send }}>
         <Icon icon="ant-design:send-outlined" />
