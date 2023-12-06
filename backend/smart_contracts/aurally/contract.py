@@ -11,7 +11,7 @@ from smart_contracts.aurally.boxes import (
 )
 from .states import AppState
 
-app = B.Application("Aurally", state=AppState()).apply(B.unconditional_create_approval)
+app = B.Application("Aurally", state=AppState())
 
 
 @app.external
