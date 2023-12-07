@@ -79,7 +79,7 @@ intc_0 // 0
 !=
 &&
 assert
-callsub hellocaster_56
+callsub hellocaster_58
 intc_1 // 1
 return
 main_l19:
@@ -91,7 +91,7 @@ intc_0 // 0
 !=
 &&
 assert
-callsub createauratokenscaster_55
+callsub createauratokenscaster_57
 intc_1 // 1
 return
 main_l20:
@@ -103,7 +103,7 @@ intc_0 // 0
 !=
 &&
 assert
-callsub unfreezeaurascaster_54
+callsub unfreezeaurascaster_56
 intc_1 // 1
 return
 main_l21:
@@ -115,7 +115,7 @@ intc_0 // 0
 !=
 &&
 assert
-callsub endproposalvotingcaster_53
+callsub endproposalvotingcaster_55
 intc_1 // 1
 return
 main_l22:
@@ -127,7 +127,7 @@ intc_0 // 0
 !=
 &&
 assert
-callsub voteonproposalcaster_52
+callsub voteonproposalcaster_54
 intc_1 // 1
 return
 main_l23:
@@ -139,7 +139,7 @@ intc_0 // 0
 !=
 &&
 assert
-callsub createproposalcaster_51
+callsub createproposalcaster_53
 intc_1 // 1
 return
 main_l24:
@@ -151,7 +151,7 @@ intc_0 // 0
 !=
 &&
 assert
-callsub transfernftcaster_50
+callsub transfernftcaster_52
 intc_1 // 1
 return
 main_l25:
@@ -163,7 +163,7 @@ intc_0 // 0
 !=
 &&
 assert
-callsub purchasenftcaster_49
+callsub purchasenftcaster_51
 intc_1 // 1
 return
 main_l26:
@@ -175,7 +175,7 @@ intc_0 // 0
 !=
 &&
 assert
-callsub completeartauctioncaster_48
+callsub completeartauctioncaster_50
 intc_1 // 1
 return
 main_l27:
@@ -187,7 +187,7 @@ intc_0 // 0
 !=
 &&
 assert
-callsub bidonartauctioncaster_47
+callsub bidonartauctioncaster_49
 intc_1 // 1
 return
 main_l28:
@@ -199,7 +199,7 @@ intc_0 // 0
 !=
 &&
 assert
-callsub createartauctioncaster_46
+callsub createartauctioncaster_48
 intc_1 // 1
 return
 main_l29:
@@ -211,7 +211,7 @@ intc_0 // 0
 !=
 &&
 assert
-callsub createartnftcaster_45
+callsub createartnftcaster_47
 intc_1 // 1
 return
 main_l30:
@@ -223,7 +223,7 @@ intc_0 // 0
 !=
 &&
 assert
-callsub createsoundnftcaster_44
+callsub createsoundnftcaster_46
 intc_1 // 1
 return
 main_l31:
@@ -235,7 +235,7 @@ intc_0 // 0
 !=
 &&
 assert
-callsub registercreatorcaster_43
+callsub registercreatorcaster_45
 intc_1 // 1
 return
 main_l32:
@@ -247,7 +247,7 @@ intc_0 // 0
 !=
 &&
 assert
-callsub demotefromadmincaster_42
+callsub demotefromadmincaster_44
 intc_1 // 1
 return
 main_l33:
@@ -259,16 +259,40 @@ intc_0 // 0
 !=
 &&
 assert
-callsub promotetoadmincaster_41
+callsub promotetoadmincaster_43
 intc_1 // 1
 return
 main_l34:
 txn OnCompletion
 intc_0 // NoOp
 ==
-bnz main_l36
+bnz main_l40
+txn OnCompletion
+pushint 4 // UpdateApplication
+==
+bnz main_l39
+txn OnCompletion
+pushint 5 // DeleteApplication
+==
+bnz main_l38
 err
-main_l36:
+main_l38:
+txn ApplicationID
+intc_0 // 0
+!=
+assert
+callsub delete_2
+intc_1 // 1
+return
+main_l39:
+txn ApplicationID
+intc_0 // 0
+!=
+assert
+callsub update_1
+intc_1 // 1
+return
+main_l40:
 txn ApplicationID
 intc_0 // 0
 ==
@@ -285,15 +309,37 @@ bytec 4 // "None"
 app_global_put
 retsub
 
+// update
+update_1:
+proto 0 0
+txn Sender
+global CreatorAddress
+==
+// unauthorized
+assert
+intc_1 // 1
+return
+
+// delete
+delete_2:
+proto 0 0
+txn Sender
+global CreatorAddress
+==
+// unauthorized
+assert
+intc_1 // 1
+return
+
 // promote_to_admin
-promotetoadmin_1:
+promotetoadmin_3:
 proto 2 1
 bytec_0 // ""
 dup
 frame_dig -2
-callsub ensurezeropayment_19
+callsub ensurezeropayment_21
 frame_dig -2
-callsub ensuresenderiscreator_21
+callsub ensuresenderiscreator_23
 frame_dig -1
 txnas Accounts
 box_len
@@ -324,14 +370,14 @@ frame_bury 0
 retsub
 
 // demote_from_admin
-demotefromadmin_2:
+demotefromadmin_4:
 proto 2 1
 bytec_0 // ""
 dup
 frame_dig -2
-callsub ensurezeropayment_19
+callsub ensurezeropayment_21
 frame_dig -2
-callsub ensuresenderiscreator_21
+callsub ensuresenderiscreator_23
 frame_dig -1
 txnas Accounts
 box_len
@@ -361,7 +407,7 @@ frame_bury 0
 retsub
 
 // register_creator
-registercreator_3:
+registercreator_5:
 proto 3 1
 bytec_0 // ""
 frame_dig -3
@@ -371,12 +417,12 @@ store 9
 store 8
 load 9
 !
-bz registercreator_3_l2
+bz registercreator_5_l2
 frame_dig -3
 frame_dig -2
 frame_dig -1
-callsub createnftowner_23
-registercreator_3_l2:
+callsub createnftowner_25
+registercreator_5_l2:
 frame_dig -3
 gtxns Sender
 box_get
@@ -389,7 +435,7 @@ frame_bury 0
 retsub
 
 // create_sound_nft
-createsoundnft_4:
+createsoundnft_6:
 proto 16 1
 bytec_0 // ""
 dup
@@ -405,7 +451,7 @@ pushbytes 0x00056d75736963 // 0x00056d75736963
 frame_bury 1
 frame_dig -16
 frame_dig 1
-callsub ensureregisteredcreative_24
+callsub ensureregisteredcreative_26
 frame_dig -14
 extract 2 0
 box_len
@@ -623,12 +669,12 @@ extract 2 0
 frame_dig 4
 box_put
 frame_dig 3
-callsub incrementcreatornftcount_25
+callsub incrementcreatornftcount_27
 intc_1 // 1
 frame_bury 9
 frame_dig 3
 frame_dig 9
-callsub sendauratoken_37
+callsub sendauratoken_39
 frame_dig -14
 extract 2 0
 box_get
@@ -641,7 +687,7 @@ frame_bury 0
 retsub
 
 // create_art_nft
-createartnft_5:
+createartnft_7:
 proto 11 1
 bytec_0 // ""
 dup
@@ -666,7 +712,7 @@ pushbytes 0x0003617274 // 0x0003617274
 frame_bury 1
 frame_dig -11
 frame_dig 1
-callsub ensureregisteredcreative_24
+callsub ensureregisteredcreative_26
 itxn_begin
 pushint 3 // acfg
 itxn_field TypeEnum
@@ -797,12 +843,12 @@ extract 2 0
 frame_dig 5
 box_put
 frame_dig 3
-callsub incrementcreatornftcount_25
+callsub incrementcreatornftcount_27
 intc_1 // 1
 frame_bury 10
 frame_dig 3
 frame_dig 10
-callsub sendauratoken_37
+callsub sendauratoken_39
 frame_dig -5
 extract 2 0
 box_get
@@ -815,12 +861,12 @@ frame_bury 0
 retsub
 
 // create_art_auction
-createartauction_6:
+createartauction_8:
 proto 6 1
 bytec_0 // ""
 dupn 3
 frame_dig -6
-callsub ensurezeropayment_19
+callsub ensurezeropayment_21
 frame_dig -2
 frame_dig -1
 <
@@ -865,7 +911,7 @@ frame_dig 3
 frame_dig -3
 frame_dig -2
 frame_dig -1
-callsub createartauction_26
+callsub createartauction_28
 frame_dig -5
 extract 2 0
 box_get
@@ -878,11 +924,11 @@ frame_bury 0
 retsub
 
 // bid_on_art_auction
-bidonartauction_7:
+bidonartauction_9:
 proto 3 1
 bytec_0 // ""
 frame_dig -3
-callsub ensurezeropayment_19
+callsub ensurezeropayment_21
 frame_dig -2
 extract 2 0
 box_len
@@ -893,7 +939,7 @@ assert
 frame_dig -3
 frame_dig -2
 frame_dig -1
-callsub performauctionbid_27
+callsub performauctionbid_29
 frame_dig -2
 extract 2 0
 box_get
@@ -906,12 +952,12 @@ frame_bury 0
 retsub
 
 // complete_art_auction
-completeartauction_8:
+completeartauction_10:
 proto 2 1
 bytec_0 // ""
 dupn 3
 frame_dig -2
-callsub ensurezeropayment_19
+callsub ensurezeropayment_21
 frame_dig -1
 extract 2 0
 box_len
@@ -946,7 +992,7 @@ gtxns Sender
 ==
 assert
 frame_dig -1
-callsub transferartauctionitemtohighestbidder_28
+callsub transferartauctionitemtohighestbidder_30
 frame_dig 2
 extract 2 0
 box_get
@@ -959,7 +1005,7 @@ frame_bury 0
 retsub
 
 // purchase_nft
-purchasenft_9:
+purchasenft_11:
 proto 9 0
 frame_dig -6
 extract 2 0
@@ -975,20 +1021,20 @@ frame_dig -6
 extract 2 0
 bytec 5 // "sound"
 ==
-bnz purchasenft_9_l2
+bnz purchasenft_11_l2
 frame_dig -9
 frame_dig -7
-callsub transferartnft_32
-b purchasenft_9_l3
-purchasenft_9_l2:
+callsub transferartnft_34
+b purchasenft_11_l3
+purchasenft_11_l2:
 frame_dig -9
 frame_dig -7
-callsub transfersoundnft_31
-purchasenft_9_l3:
+callsub transfersoundnft_33
+purchasenft_11_l3:
 retsub
 
 // transfer_nft
-transfernft_10:
+transfernft_12:
 proto 4 0
 frame_dig -4
 gtxns Amount
@@ -1009,22 +1055,22 @@ frame_dig -1
 extract 2 0
 bytec 5 // "sound"
 ==
-bnz transfernft_10_l2
+bnz transfernft_12_l2
 frame_dig -4
 frame_dig -2
 frame_dig -3
-callsub validateandupdateartnftowner_35
-b transfernft_10_l3
-transfernft_10_l2:
+callsub validateandupdateartnftowner_37
+b transfernft_12_l3
+transfernft_12_l2:
 frame_dig -4
 frame_dig -2
 frame_dig -3
-callsub validateandupdatesoundnftowner_34
-transfernft_10_l3:
+callsub validateandupdatesoundnftowner_36
+transfernft_12_l3:
 retsub
 
 // create_proposal
-createproposal_11:
+createproposal_13:
 proto 3 1
 bytec_0 // ""
 dup
@@ -1044,11 +1090,11 @@ intc_3 // 32
 ==
 assert
 frame_dig 1
-callsub ensureisadminorappcreator_22
+callsub ensureisadminorappcreator_24
 frame_dig -3
-callsub ensurezeropayment_19
+callsub ensurezeropayment_21
 frame_dig -3
-callsub ensurenftownerexistsfromtxn_18
+callsub ensurenftownerexistsfromtxn_20
 bytec_2 // "active_proposal"
 app_global_get
 bytec 4 // "None"
@@ -1131,7 +1177,7 @@ frame_bury 0
 retsub
 
 // vote_on_proposal
-voteonproposal_12:
+voteonproposal_14:
 proto 5 1
 bytec_0 // ""
 intc_0 // 0
@@ -1145,11 +1191,11 @@ dup
 bytec_0 // ""
 dup
 frame_dig -5
-callsub ensurenftownerexistsfromtxn_18
+callsub ensurenftownerexistsfromtxn_20
 frame_dig -5
-callsub ensurezeropayment_19
+callsub ensurezeropayment_21
 frame_dig -1
-callsub ensureproposalexists_20
+callsub ensureproposalexists_22
 frame_dig -1
 extract 2 0
 bytec_2 // "active_proposal"
@@ -1158,12 +1204,12 @@ app_global_get
 // This proposal is currenlty not active
 assert
 frame_dig -5
-callsub ensurehasauras_38
+callsub ensurehasauras_40
 intc_0 // 0
 frame_bury 1
 frame_dig -5
 frame_dig 1
-callsub ensureaurasfrozenstatus_39
+callsub ensureaurasfrozenstatus_41
 frame_dig -1
 extract 2 0
 box_get
@@ -1199,18 +1245,18 @@ len
 substring3
 frame_bury 6
 frame_dig -4
-bnz voteonproposal_12_l2
+bnz voteonproposal_14_l2
 frame_dig 5
 intc_1 // 1
 +
 frame_bury 5
-b voteonproposal_12_l3
-voteonproposal_12_l2:
+b voteonproposal_14_l3
+voteonproposal_14_l2:
 frame_dig 4
 intc_1 // 1
 +
 frame_bury 4
-voteonproposal_12_l3:
+voteonproposal_14_l3:
 frame_dig 3
 frame_bury 10
 frame_dig 10
@@ -1262,10 +1308,10 @@ intc_1 // 1
 frame_bury 1
 frame_dig -5
 frame_dig 1
-callsub setauratokensfrozen_40
+callsub setauratokensfrozen_42
 frame_dig -5
 frame_dig 1
-callsub ensureaurasfrozenstatus_39
+callsub ensureaurasfrozenstatus_41
 frame_dig -1
 extract 2 0
 box_get
@@ -1278,12 +1324,12 @@ frame_bury 0
 retsub
 
 // end_proposal_voting
-endproposalvoting_13:
+endproposalvoting_15:
 proto 2 1
 bytec_0 // ""
 dup
 frame_dig -2
-callsub ensurezeropayment_19
+callsub ensurezeropayment_21
 frame_dig -2
 gtxns Sender
 frame_bury 1
@@ -1293,9 +1339,9 @@ intc_3 // 32
 ==
 assert
 frame_dig 1
-callsub ensureisadminorappcreator_22
+callsub ensureisadminorappcreator_24
 frame_dig -1
-callsub ensureproposalexists_20
+callsub ensureproposalexists_22
 bytec_2 // "active_proposal"
 app_global_get
 frame_dig -1
@@ -1317,11 +1363,11 @@ frame_bury 0
 retsub
 
 // unfreeze_auras
-unfreezeauras_14:
+unfreezeauras_16:
 proto 3 0
 intc_0 // 0
 frame_dig -3
-callsub ensurezeropayment_19
+callsub ensurezeropayment_21
 bytec_2 // "active_proposal"
 app_global_get
 bytec 4 // "None"
@@ -1332,14 +1378,14 @@ intc_0 // 0
 frame_bury 0
 frame_dig -3
 frame_dig 0
-callsub setauratokensfrozen_40
+callsub setauratokensfrozen_42
 frame_dig -3
 frame_dig 0
-callsub ensureaurasfrozenstatus_39
+callsub ensureaurasfrozenstatus_41
 retsub
 
 // create_aura_tokens
-createauratokens_15:
+createauratokens_17:
 proto 0 1
 bytec_0 // ""
 dup
@@ -1358,7 +1404,7 @@ pushint 1000000000000 // 1000000000000
 frame_bury 2
 frame_dig 1
 frame_dig 2
-callsub bootstraptoken_36
+callsub bootstraptoken_38
 frame_dig 1
 extract 2 0
 box_len
@@ -1378,7 +1424,7 @@ frame_bury 0
 retsub
 
 // hello
-hello_16:
+hello_18:
 proto 1 1
 bytec_0 // ""
 frame_dig -1
@@ -1396,7 +1442,7 @@ frame_bury 0
 retsub
 
 // ensure_auras_exist
-ensureaurasexist_17:
+ensureaurasexist_19:
 proto 0 0
 bytec 6 // "aura"
 box_len
@@ -1408,7 +1454,7 @@ assert
 retsub
 
 // ensure_nft_owner_exists_from_txn
-ensurenftownerexistsfromtxn_18:
+ensurenftownerexistsfromtxn_20:
 proto 1 0
 frame_dig -1
 gtxns Sender
@@ -1421,7 +1467,7 @@ assert
 retsub
 
 // ensure_zero_payment
-ensurezeropayment_19:
+ensurezeropayment_21:
 proto 1 0
 frame_dig -1
 gtxns Amount
@@ -1432,7 +1478,7 @@ assert
 retsub
 
 // ensure_proposal_exists
-ensureproposalexists_20:
+ensureproposalexists_22:
 proto 1 0
 frame_dig -1
 extract 2 0
@@ -1445,7 +1491,7 @@ assert
 retsub
 
 // ensure_sender_is_creator
-ensuresenderiscreator_21:
+ensuresenderiscreator_23:
 proto 1 0
 frame_dig -1
 gtxns Sender
@@ -1456,7 +1502,7 @@ assert
 retsub
 
 // ensure_is_admin_or_app_creator
-ensureisadminorappcreator_22:
+ensureisadminorappcreator_24:
 proto 1 0
 frame_dig -1
 global CreatorAddress
@@ -1472,7 +1518,7 @@ assert
 retsub
 
 // create_nft_owner
-createnftowner_23:
+createnftowner_25:
 proto 3 0
 intc_0 // 0
 dupn 3
@@ -1558,7 +1604,7 @@ box_put
 retsub
 
 // ensure_registered_creative
-ensureregisteredcreative_24:
+ensureregisteredcreative_26:
 proto 2 0
 bytec_0 // ""
 intc_0 // 0
@@ -1622,21 +1668,21 @@ frame_dig -1
 extract 2 0
 pushbytes 0x6d75736963 // "music"
 ==
-bnz ensureregisteredcreative_24_l3
-ensureregisteredcreative_24_l1:
+bnz ensureregisteredcreative_26_l3
+ensureregisteredcreative_26_l1:
 frame_dig -1
 extract 2 0
 bytec 7 // "art"
 ==
-bz ensureregisteredcreative_24_l4
+bz ensureregisteredcreative_26_l4
 intc_1 // 1
 frame_bury 1
-b ensureregisteredcreative_24_l4
-ensureregisteredcreative_24_l3:
+b ensureregisteredcreative_26_l4
+ensureregisteredcreative_26_l3:
 intc_1 // 1
 frame_bury 1
-b ensureregisteredcreative_24_l1
-ensureregisteredcreative_24_l4:
+b ensureregisteredcreative_26_l1
+ensureregisteredcreative_26_l4:
 bytec_3 // 0x00
 intc_0 // 0
 frame_dig 1
@@ -1695,7 +1741,7 @@ box_put
 retsub
 
 // increment_creator_nft_count
-incrementcreatornftcount_25:
+incrementcreatornftcount_27:
 proto 1 0
 bytec_0 // ""
 intc_0 // 0
@@ -1807,7 +1853,7 @@ box_put
 retsub
 
 // create_art_auction
-createartauction_26:
+createartauction_28:
 proto 7 0
 bytec_0 // ""
 intc_0 // 0
@@ -1902,7 +1948,7 @@ box_put
 retsub
 
 // perform_auction_bid
-performauctionbid_27:
+performauctionbid_29:
 proto 3 0
 bytec_0 // ""
 intc_0 // 0
@@ -2042,7 +2088,7 @@ box_put
 retsub
 
 // transfer_art_auction_item_to_highest_bidder
-transferartauctionitemtohighestbidder_28:
+transferartauctionitemtohighestbidder_30:
 proto 1 0
 bytec_0 // ""
 dupn 2
@@ -2069,11 +2115,11 @@ substring3
 frame_bury 2
 frame_dig 2
 frame_dig 1
-callsub updateartnftowner_29
+callsub updateartnftowner_31
 retsub
 
 // update_art_nft_owner
-updateartnftowner_29:
+updateartnftowner_31:
 proto 2 0
 bytec_0 // ""
 intc_0 // 0
@@ -2255,7 +2301,7 @@ box_put
 retsub
 
 // update_sound_nft_owner
-updatesoundnftowner_30:
+updatesoundnftowner_32:
 proto 2 0
 bytec_0 // ""
 intc_0 // 0
@@ -2543,7 +2589,7 @@ frame_bury 0
 retsub
 
 // transfer_sound_nft
-transfersoundnft_31:
+transfersoundnft_33:
 proto 2 0
 bytec_0 // ""
 intc_0 // 0
@@ -2577,20 +2623,20 @@ assert
 frame_dig -2
 frame_dig 1
 frame_dig 2
-callsub pay95percent_33
+callsub pay95percent_35
 frame_dig -1
 frame_dig 3
-callsub updatesoundnftowner_30
+callsub updatesoundnftowner_32
 intc_1 // 1
 frame_bury 4
 frame_dig 3
 frame_dig 4
-callsub sendauratoken_37
+callsub sendauratoken_39
 intc_1 // 1
 return
 
 // transfer_art_nft
-transferartnft_32:
+transferartnft_34:
 proto 2 0
 bytec_0 // ""
 intc_0 // 0
@@ -2624,20 +2670,20 @@ assert
 frame_dig -2
 frame_dig 1
 frame_dig 2
-callsub pay95percent_33
+callsub pay95percent_35
 frame_dig -1
 frame_dig 3
-callsub updateartnftowner_29
+callsub updateartnftowner_31
 intc_1 // 1
 frame_bury 4
 frame_dig 3
 frame_dig 4
-callsub sendauratoken_37
+callsub sendauratoken_39
 intc_1 // 1
 return
 
 // pay_95_percent
-pay95percent_33:
+pay95percent_35:
 proto 3 0
 intc_0 // 0
 frame_dig -3
@@ -2669,7 +2715,7 @@ itxn_submit
 retsub
 
 // validate_and_update_sound_nft_owner
-validateandupdatesoundnftowner_34:
+validateandupdatesoundnftowner_36:
 proto 3 0
 bytec_0 // ""
 dup
@@ -2699,12 +2745,12 @@ gtxns Sender
 assert
 frame_dig -2
 frame_dig -1
-callsub updatesoundnftowner_30
+callsub updatesoundnftowner_32
 intc_1 // 1
 return
 
 // validate_and_update_art_nft_owner
-validateandupdateartnftowner_35:
+validateandupdateartnftowner_37:
 proto 3 0
 bytec_0 // ""
 dup
@@ -2734,12 +2780,12 @@ gtxns Sender
 assert
 frame_dig -2
 frame_dig -1
-callsub updateartnftowner_29
+callsub updateartnftowner_31
 intc_1 // 1
 return
 
 // bootstrap_token
-bootstraptoken_36:
+bootstraptoken_38:
 proto 2 0
 intc_0 // 0
 bytec_0 // ""
@@ -2806,7 +2852,7 @@ box_put
 retsub
 
 // send_aura_token
-sendauratoken_37:
+sendauratoken_39:
 proto 2 0
 bytec_0 // ""
 dup
@@ -2814,7 +2860,7 @@ intc_0 // 0
 dupn 3
 bytec_0 // ""
 dup
-callsub ensureaurasexist_17
+callsub ensureaurasexist_19
 bytec 8 // 0x000461757261
 frame_bury 0
 frame_dig 0
@@ -2881,11 +2927,11 @@ box_put
 retsub
 
 // ensure_has_auras
-ensurehasauras_38:
+ensurehasauras_40:
 proto 1 0
 bytec_0 // ""
 intc_0 // 0
-callsub ensureaurasexist_17
+callsub ensureaurasexist_19
 bytec 6 // "aura"
 box_get
 store 83
@@ -2909,11 +2955,11 @@ assert
 retsub
 
 // ensure_auras_frozen_status
-ensureaurasfrozenstatus_39:
+ensureaurasfrozenstatus_41:
 proto 2 0
 bytec_0 // ""
 intc_0 // 0
-callsub ensureaurasexist_17
+callsub ensureaurasexist_19
 bytec 6 // "aura"
 box_get
 store 86
@@ -2933,25 +2979,25 @@ asset_holding_get AssetFrozen
 store 88
 store 87
 frame_dig -1
-bnz ensureaurasfrozenstatus_39_l2
+bnz ensureaurasfrozenstatus_41_l2
 load 87
 !
 // auras should not be frozen
 assert
-b ensureaurasfrozenstatus_39_l3
-ensureaurasfrozenstatus_39_l2:
+b ensureaurasfrozenstatus_41_l3
+ensureaurasfrozenstatus_41_l2:
 load 87
 // auras should be frozen
 assert
-ensureaurasfrozenstatus_39_l3:
+ensureaurasfrozenstatus_41_l3:
 retsub
 
 // set_aura_tokens_frozen
-setauratokensfrozen_40:
+setauratokensfrozen_42:
 proto 2 0
 bytec_0 // ""
 intc_0 // 0
-callsub ensureaurasexist_17
+callsub ensureaurasexist_19
 bytec 6 // "aura"
 box_get
 store 90
@@ -2978,7 +3024,7 @@ itxn_submit
 retsub
 
 // promote_to_admin_caster
-promotetoadmincaster_41:
+promotetoadmincaster_43:
 proto 0 0
 bytec_0 // ""
 intc_0 // 0
@@ -2998,7 +3044,7 @@ intc_1 // pay
 assert
 frame_dig 1
 frame_dig 2
-callsub promotetoadmin_1
+callsub promotetoadmin_3
 frame_bury 0
 bytec_1 // 0x151f7c75
 frame_dig 0
@@ -3007,7 +3053,7 @@ log
 retsub
 
 // demote_from_admin_caster
-demotefromadmincaster_42:
+demotefromadmincaster_44:
 proto 0 0
 bytec_0 // ""
 intc_0 // 0
@@ -3027,7 +3073,7 @@ intc_1 // pay
 assert
 frame_dig 1
 frame_dig 2
-callsub demotefromadmin_2
+callsub demotefromadmin_4
 frame_bury 0
 bytec_1 // 0x151f7c75
 frame_dig 0
@@ -3036,7 +3082,7 @@ log
 retsub
 
 // register_creator_caster
-registercreatorcaster_43:
+registercreatorcaster_45:
 proto 0 0
 bytec_0 // ""
 intc_0 // 0
@@ -3053,7 +3099,7 @@ frame_bury 1
 frame_dig 1
 frame_dig 2
 frame_dig 3
-callsub registercreator_3
+callsub registercreator_5
 frame_bury 0
 bytec_1 // 0x151f7c75
 frame_dig 0
@@ -3062,7 +3108,7 @@ log
 retsub
 
 // create_sound_nft_caster
-createsoundnftcaster_44:
+createsoundnftcaster_46:
 proto 0 0
 bytec_0 // ""
 intc_0 // 0
@@ -3133,7 +3179,7 @@ frame_dig 13
 frame_dig 14
 frame_dig 15
 frame_dig 16
-callsub createsoundnft_4
+callsub createsoundnft_6
 frame_bury 0
 bytec_1 // 0x151f7c75
 frame_dig 0
@@ -3142,7 +3188,7 @@ log
 retsub
 
 // create_art_nft_caster
-createartnftcaster_45:
+createartnftcaster_47:
 proto 0 0
 bytec_0 // ""
 intc_0 // 0
@@ -3198,7 +3244,7 @@ frame_dig 8
 frame_dig 9
 frame_dig 10
 frame_dig 11
-callsub createartnft_5
+callsub createartnft_7
 frame_bury 0
 bytec_1 // 0x151f7c75
 frame_dig 0
@@ -3207,7 +3253,7 @@ log
 retsub
 
 // create_art_auction_caster
-createartauctioncaster_46:
+createartauctioncaster_48:
 proto 0 0
 bytec_0 // ""
 intc_0 // 0
@@ -3243,7 +3289,7 @@ frame_dig 3
 frame_dig 4
 frame_dig 5
 frame_dig 6
-callsub createartauction_6
+callsub createartauction_8
 frame_bury 0
 bytec_1 // 0x151f7c75
 frame_dig 0
@@ -3252,7 +3298,7 @@ log
 retsub
 
 // bid_on_art_auction_caster
-bidonartauctioncaster_47:
+bidonartauctioncaster_49:
 proto 0 0
 bytec_0 // ""
 intc_0 // 0
@@ -3275,7 +3321,7 @@ assert
 frame_dig 1
 frame_dig 2
 frame_dig 3
-callsub bidonartauction_7
+callsub bidonartauction_9
 frame_bury 0
 bytec_1 // 0x151f7c75
 frame_dig 0
@@ -3284,7 +3330,7 @@ log
 retsub
 
 // complete_art_auction_caster
-completeartauctioncaster_48:
+completeartauctioncaster_50:
 proto 0 0
 bytec_0 // ""
 intc_0 // 0
@@ -3302,7 +3348,7 @@ intc_1 // pay
 assert
 frame_dig 1
 frame_dig 2
-callsub completeartauction_8
+callsub completeartauction_10
 frame_bury 0
 bytec_1 // 0x151f7c75
 frame_dig 0
@@ -3311,7 +3357,7 @@ log
 retsub
 
 // purchase_nft_caster
-purchasenftcaster_49:
+purchasenftcaster_51:
 proto 0 0
 intc_0 // 0
 dup
@@ -3375,11 +3421,11 @@ frame_dig 5
 frame_dig 6
 frame_dig 7
 frame_dig 8
-callsub purchasenft_9
+callsub purchasenft_11
 retsub
 
 // transfer_nft_caster
-transfernftcaster_50:
+transfernftcaster_52:
 proto 0 0
 intc_0 // 0
 bytec_0 // ""
@@ -3403,11 +3449,11 @@ frame_dig 0
 frame_dig 1
 frame_dig 2
 frame_dig 3
-callsub transfernft_10
+callsub transfernft_12
 retsub
 
 // create_proposal_caster
-createproposalcaster_51:
+createproposalcaster_53:
 proto 0 0
 bytec_0 // ""
 intc_0 // 0
@@ -3429,7 +3475,7 @@ assert
 frame_dig 1
 frame_dig 2
 frame_dig 3
-callsub createproposal_11
+callsub createproposal_13
 frame_bury 0
 bytec_1 // 0x151f7c75
 frame_dig 0
@@ -3438,7 +3484,7 @@ log
 retsub
 
 // vote_on_proposal_caster
-voteonproposalcaster_52:
+voteonproposalcaster_54:
 proto 0 0
 bytec_0 // ""
 intc_0 // 0
@@ -3474,7 +3520,7 @@ frame_dig 2
 frame_dig 3
 frame_dig 4
 frame_dig 5
-callsub voteonproposal_12
+callsub voteonproposal_14
 frame_bury 0
 bytec_1 // 0x151f7c75
 frame_dig 0
@@ -3483,7 +3529,7 @@ log
 retsub
 
 // end_proposal_voting_caster
-endproposalvotingcaster_53:
+endproposalvotingcaster_55:
 proto 0 0
 bytec_0 // ""
 intc_0 // 0
@@ -3501,7 +3547,7 @@ intc_1 // pay
 assert
 frame_dig 1
 frame_dig 2
-callsub endproposalvoting_13
+callsub endproposalvoting_15
 frame_bury 0
 bytec_1 // 0x151f7c75
 frame_dig 0
@@ -3510,7 +3556,7 @@ log
 retsub
 
 // unfreeze_auras_caster
-unfreezeaurascaster_54:
+unfreezeaurascaster_56:
 proto 0 0
 intc_0 // 0
 dupn 2
@@ -3534,14 +3580,14 @@ assert
 frame_dig 0
 frame_dig 1
 frame_dig 2
-callsub unfreezeauras_14
+callsub unfreezeauras_16
 retsub
 
 // create_aura_tokens_caster
-createauratokenscaster_55:
+createauratokenscaster_57:
 proto 0 0
 bytec_0 // ""
-callsub createauratokens_15
+callsub createauratokens_17
 frame_bury 0
 bytec_1 // 0x151f7c75
 frame_dig 0
@@ -3550,14 +3596,14 @@ log
 retsub
 
 // hello_caster
-hellocaster_56:
+hellocaster_58:
 proto 0 0
 bytec_0 // ""
 dup
 txna ApplicationArgs 1
 frame_bury 1
 frame_dig 1
-callsub hello_16
+callsub hello_18
 frame_bury 0
 bytec_1 // 0x151f7c75
 frame_dig 0

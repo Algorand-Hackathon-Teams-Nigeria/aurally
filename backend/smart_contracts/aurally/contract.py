@@ -1,4 +1,3 @@
-from algokit_utils import DELETABLE_TEMPLATE_NAME, UPDATABLE_TEMPLATE_NAME
 import beaker as B
 import pyteal as P
 
@@ -15,6 +14,16 @@ from .states import AppState
 app = B.Application("Aurally", state=AppState()).apply(
     B.unconditional_create_approval, initialize_global_state=True
 )
+
+
+@app.update(authorize=B.Authorize.only_creator(), bare=True)
+def update() -> P.Expr:
+    return P.Approve()
+
+
+@app.delete(authorize=B.Authorize.only_creator(), bare=True)
+def delete() -> P.Expr:
+    return P.Approve()
 
 
 @app.external
