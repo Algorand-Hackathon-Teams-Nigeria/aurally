@@ -11,6 +11,56 @@ from .contract import app
 
 
 @P.Subroutine(P.TealType.none)
+def ensure_auras_exist():
+    return P.Seq(
+        P.Assert(
+            app.state.registered_asa[P.Bytes("aura")].exists(),
+            comment="aura tokens have not been created yet",
+        ),
+    )
+
+
+@P.Subroutine(P.TealType.none)
+def ensure_nft_owner_exists_from_txn(txn: P.abi.Transaction):
+    return P.Assert(
+        app.state.aurally_nft_owners[txn.get().sender()].exists(),
+        comment="User is not an NFT owner",
+    )
+
+
+@P.Subroutine(P.TealType.none)
+def ensure_zero_payment(txn: P.abi.PaymentTransaction):
+    return P.Assert(txn.get().amount() == P.Int(0), comment="Payment amount must be 0")
+
+
+@P.Subroutine(P.TealType.none)
+def ensure_proposal_exists(proposal_key: P.abi.String):
+    return P.Assert(
+        app.state.dao_proposals[proposal_key.get()].exists(),
+        comment="Proposal with specified key was not found",
+    )
+
+
+@P.Subroutine(P.TealType.none)
+def ensure_sender_is_creator(txn: P.abi.Transaction):
+    return P.Assert(
+        txn.get().sender() == P.Global.creator_address(),
+        comment="Not app creator: You are not authorised to perform this action",
+    )
+
+
+@P.Subroutine(P.TealType.none)
+def ensure_is_admin_or_app_creator(addr: P.abi.Address):
+    return P.Assert(
+        P.Or(
+            addr.get() == P.Global.creator_address(),
+            app.state.aurally_admins[addr.get()].exists(),
+        ),
+        comment="Not admin: You are not authorised to perform this action",
+    )
+
+
+@P.Subroutine(P.TealType.none)
 def create_nft_owner(
     txn: P.abi.Transaction,
     fullname: P.abi.String,
@@ -228,6 +278,8 @@ def transfer_sound_nft(txn: P.abi.PaymentTransaction, asset_key: P.abi.String):
         (buyer := P.abi.Address()).set(txn.get().sender()),
         pay_95_percent(txn, price, nft_owner),
         update_sound_nft_owner(asset_key, buyer),
+        (aura_amt := P.abi.Uint64()).set(1),
+        send_aura_token(buyer, aura_amt),
         P.Approve(),
     )
 
@@ -241,6 +293,8 @@ def transfer_art_nft(txn: P.abi.PaymentTransaction, asset_key: P.abi.String):
         (buyer := P.abi.Address()).set(txn.get().sender()),
         pay_95_percent(txn, price, nft_owner),
         update_art_nft_owner(asset_key, buyer),
+        (aura_amt := P.abi.Uint64()).set(1),
+        send_aura_token(buyer, aura_amt),
         P.Approve(),
     )
 
@@ -319,8 +373,8 @@ def bootstrap_token(asset_key: P.abi.String, total: P.abi.Uint64):
 @P.Subroutine(P.TealType.none)
 def send_aura_token(receiver: P.abi.Address, amt: P.abi.Uint64):
     return P.Seq(
+        ensure_auras_exist(),
         (aura_asset_key := P.abi.String()).set("aura"),
-        P.Assert(app.state.registered_asa[aura_asset_key.get()].exists()),
         (aura_asset := AurallyToken()).decode(
             app.state.registered_asa[aura_asset_key.get()].get()
         ),
@@ -340,4 +394,53 @@ def send_aura_token(receiver: P.abi.Address, amt: P.abi.Uint64):
         aura_asset_total.set(aura_asset_total.get() - P.Int(1)),
         aura_asset.set(aura_asset_id, aura_asset_key, aura_asset_total),
         app.state.registered_asa[aura_asset_key.get()].set(aura_asset),
+    )
+
+
+@P.Subroutine(P.TealType.none)
+def ensure_has_auras(txn: P.abi.Transaction):
+    return P.Seq(
+        ensure_auras_exist(),
+        (aura_token := AurallyToken()).decode(
+            app.state.registered_asa[P.Bytes("aura")].get()
+        ),
+        (aura_id := P.abi.Uint64()).set(aura_token.asset_id),
+        (asset_bal := P.AssetHolding.balance(txn.get().sender(), aura_id.get())),
+        P.Assert(asset_bal.value() > P.Int(0)),
+    )
+
+
+@P.Subroutine(P.TealType.none)
+def ensure_auras_frozen_status(txn: P.abi.Transaction, status: P.abi.Bool):
+    return P.Seq(
+        ensure_auras_exist(),
+        (aura_token := AurallyToken()).decode(
+            app.state.registered_asa[P.Bytes("aura")].get()
+        ),
+        (aura_id := P.abi.Uint64()).set(aura_token.asset_id),
+        (asset_frozen := P.AssetHolding.frozen(txn.get().sender(), aura_id.get())),
+        P.If(
+            status.get(),
+            P.Assert(asset_frozen.value(), comment="auras should be frozen"),
+            P.Assert(P.Not(asset_frozen.value()), comment="auras should not be frozen"),
+        ),
+    )
+
+
+@P.Subroutine(P.TealType.none)
+def set_aura_tokens_frozen(txn: P.abi.Transaction, state: P.abi.Bool):
+    return P.Seq(
+        ensure_auras_exist(),
+        (aura_token := AurallyToken()).decode(
+            app.state.registered_asa[P.Bytes("aura")].get()
+        ),
+        (aura_id := P.abi.Uint64()).set(aura_token.asset_id),
+        P.InnerTxnBuilder.Execute(
+            {
+                P.TxnField.type_enum: P.TxnType.AssetFreeze,
+                P.TxnField.freeze_asset: aura_id.get(),
+                P.TxnField.freeze_asset_account: txn.get().sender(),
+                P.TxnField.freeze_asset_frozen: state.get(),
+            }
+        ),
     )

@@ -1,3 +1,4 @@
+from beaker import GlobalStateValue
 import pyteal as P
 from beaker.lib.storage import BoxMapping
 from .boxes import (
@@ -17,3 +18,7 @@ class AppState:
     art_auctions = BoxMapping(P.abi.String, ArtAuctionItem)
     dao_proposals = BoxMapping(P.abi.String, Proposal)
     registered_asa = BoxMapping(P.abi.String, AurallyToken)
+    aurally_admins = BoxMapping(P.abi.Address, P.abi.String)
+    active_proposal = GlobalStateValue(
+        stack_type=P.TealType.bytes, default=P.Bytes("None")
+    )

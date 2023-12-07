@@ -33,8 +33,8 @@ def deploy(
         on_update=algokit_utils.OnUpdate.AppendApp
         if is_mainnet
         else algokit_utils.OnUpdate.UpdateApp,
-        allow_delete=not is_mainnet,
-        allow_update=not is_mainnet,
+        # allow_delete=not is_mainnet,
+        # allow_update=not is_mainnet,
     )
 
     name = "world"

@@ -2,7 +2,7 @@
 name = "backend"
 version = "0.1.0"
 description = "Algorand smart contracts"
-authors = ["Aurally Team <>"]
+authors = ["Aurally Team <codeepoch@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]

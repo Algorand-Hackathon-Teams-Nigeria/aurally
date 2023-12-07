@@ -1,3 +1,4 @@
+from algokit_utils import DELETABLE_TEMPLATE_NAME, UPDATABLE_TEMPLATE_NAME
 import beaker as B
 import pyteal as P
 
@@ -11,7 +12,41 @@ from smart_contracts.aurally.boxes import (
 )
 from .states import AppState
 
-app = B.Application("Aurally", state=AppState())
+app = B.Application("Aurally", state=AppState()).apply(
+    B.unconditional_create_approval, initialize_global_state=True
+)
+
+
+@app.external
+def promote_to_admin(
+    txn: P.abi.PaymentTransaction, acc: P.abi.Account, *, output: P.abi.String
+):
+    from .subroutines import ensure_sender_is_creator, ensure_zero_payment
+
+    return P.Seq(
+        ensure_zero_payment(txn),
+        ensure_sender_is_creator(txn),
+        P.Assert(P.Not(app.state.aurally_admins[acc.address()].exists())),
+        (is_admin := P.abi.String()).set("True"),
+        app.state.aurally_admins[acc.address()].set(is_admin),
+        output.decode(app.state.aurally_admins[acc.address()].get()),
+    )
+
+
+@app.external
+def demote_from_admin(
+    txn: P.abi.PaymentTransaction, acc: P.abi.Account, *, output: P.abi.String
+):
+    from .subroutines import ensure_sender_is_creator, ensure_zero_payment
+
+    return P.Seq(
+        ensure_zero_payment(txn),
+        ensure_sender_is_creator(txn),
+        P.Assert(app.state.aurally_admins[acc.address()].exists()),
+        (is_admin := P.abi.String()).set("False"),
+        app.state.aurally_admins[acc.address()].set(is_admin),
+        output.decode(app.state.aurally_admins[acc.address()].get()),
+    )
 
 
 @app.external
@@ -158,7 +193,7 @@ def create_art_nft(
 
 @app.external
 def create_art_auction(
-    txn: P.abi.Transaction,
+    txn: P.abi.PaymentTransaction,
     auction_key: P.abi.String,
     ipfs_location: P.abi.String,
     min_bid: P.abi.Uint64,
@@ -167,11 +202,11 @@ def create_art_auction(
     *,
     output: ArtAuctionItem,
 ):
-    from .subroutines import create_art_auction
+    from .subroutines import create_art_auction, ensure_zero_payment
 
     return P.Seq(
         # P.Assert(P.Global.latest_timestamp() < starts_at.get()), # Can't create an auction in the past
-        P.Assert(txn.get().amount() == P.Int(0)),
+        ensure_zero_payment(txn),
         P.Assert(starts_at.get() < ends_at.get()),
         P.Assert(app.state.art_nfts[ipfs_location.get()].exists()),
         (art_nft := ArtNFT()).decode(app.state.art_nfts[ipfs_location.get()].get()),
@@ -187,16 +222,16 @@ def create_art_auction(
 
 @app.external
 def bid_on_art_auction(
-    txn: P.abi.Transaction,
+    txn: P.abi.PaymentTransaction,
     auction_key: P.abi.String,
     bid_ammount: P.abi.Uint64,
     *,
     output: ArtAuctionItem,
 ):
-    from .subroutines import perform_auction_bid
+    from .subroutines import perform_auction_bid, ensure_zero_payment
 
     return P.Seq(
-        P.Assert(txn.get().amount() == P.Int(0)),
+        ensure_zero_payment(txn),
         P.Assert(app.state.art_auctions[auction_key.get()].exists()),
         perform_auction_bid(txn, auction_key, bid_ammount),
         output.decode(app.state.art_auctions[auction_key.get()].get()),
@@ -205,12 +240,15 @@ def bid_on_art_auction(
 
 @app.external
 def complete_art_auction(
-    txn: P.abi.Transaction, auction_key: P.abi.String, *, output: ArtNFT
+    txn: P.abi.PaymentTransaction, auction_key: P.abi.String, *, output: ArtNFT
 ):
-    from .subroutines import transfer_art_auction_item_to_highest_bidder
+    from .subroutines import (
+        transfer_art_auction_item_to_highest_bidder,
+        ensure_zero_payment,
+    )
 
     return P.Seq(
-        P.Assert(txn.get().amount() == P.Int(0)),
+        ensure_zero_payment(txn),
         P.Assert(app.state.art_auctions[auction_key.get()].exists()),
         (auction_item := ArtAuctionItem()).decode(
             app.state.art_auctions[auction_key.get()].get()
@@ -231,7 +269,9 @@ def purchase_nft(
     nft_type: P.abi.String,
     seller: P.abi.Account,
     sound_nft_id: P.abi.Asset,
-    buyer: P.abi.Account
+    aura_id: P.abi.Asset,
+    aura_optin_txn: P.abi.AssetTransferTransaction,
+    buyer: P.abi.Account,
 ):
     from .subroutines import transfer_sound_nft, transfer_art_nft
 
@@ -244,7 +284,6 @@ def purchase_nft(
             transfer_sound_nft(txn, asset_key),
             transfer_art_nft(txn, asset_key),
         ),
-        # Todo: Award the account an Aura Token when they buy NFT
     )
 
 
@@ -275,21 +314,38 @@ def transfer_nft(
 
 @app.external
 def create_proposal(
-    txn: P.abi.Transaction,
+    txn: P.abi.PaymentTransaction,
     proposal_key: P.abi.String,
     proposal_detail: P.abi.String,
     *,
     output: Proposal,
 ):
+    from .subroutines import (
+        ensure_zero_payment,
+        ensure_nft_owner_exists_from_txn,
+        ensure_is_admin_or_app_creator,
+    )
+
     return P.Seq(
-        P.Assert(txn.get().amount() == P.Int(0)),
-        P.Assert(app.state.aurally_nft_owners[txn.get().sender()].exists()),
+        (proposal_creator := P.abi.Address()).set(txn.get().sender()),
+        ensure_is_admin_or_app_creator(proposal_creator),
+        ensure_zero_payment(txn),
+        ensure_nft_owner_exists_from_txn(txn),
+        P.Assert(
+            app.state.active_proposal.get() == P.Bytes("None"),
+            comment="There's already an active proposal",
+        ),
+        P.Assert(
+            P.Not(app.state.dao_proposals[proposal_key.get()].exists()),
+            comment="Proposal with this key already exists",
+        ),
         (yes_votes := P.abi.Uint64()).set(0),
         (no_votes := P.abi.Uint64()).set(0),
         (proposal := Proposal()).set(
             proposal_key, yes_votes, no_votes, proposal_detail
         ),
         app.state.dao_proposals[proposal_key.get()].set(proposal),
+        app.state.active_proposal.set(proposal_key.get()),
         output.decode(app.state.dao_proposals[proposal_key.get()].get()),
     )
 
@@ -298,15 +354,32 @@ def create_proposal(
 def vote_on_proposal(
     txn: P.abi.PaymentTransaction,
     vote_for: P.abi.Bool,
+    aura_id: P.abi.Asset,
+    voter: P.abi.Account,
     proposal_key: P.abi.String,
     *,
     output: Proposal,
 ):
+    from .subroutines import (
+        ensure_has_auras,
+        ensure_zero_payment,
+        set_aura_tokens_frozen,
+        ensure_auras_frozen_status,
+        ensure_proposal_exists,
+        ensure_nft_owner_exists_from_txn,
+    )
+
     return P.Seq(
-        # Todo: For a person to vote they require an Aura token
-        # Todo: An account can vote once -> Freeze their asset
-        P.Assert(app.state.aurally_nft_owners[txn.get().sender()].exists()),
-        P.Assert(app.state.dao_proposals[proposal_key.get()].exists()),
+        ensure_nft_owner_exists_from_txn(txn),
+        ensure_zero_payment(txn),
+        ensure_proposal_exists(proposal_key),
+        P.Assert(
+            proposal_key.get() == app.state.active_proposal.get(),
+            comment="This proposal is currenlty not active",
+        ),
+        ensure_has_auras(txn),
+        (auras_frozen_status := P.abi.Bool()).set(False),
+        ensure_auras_frozen_status(txn, auras_frozen_status),
         (proposal := Proposal()).decode(
             app.state.dao_proposals[proposal_key.get()].get()
         ),
@@ -321,7 +394,53 @@ def vote_on_proposal(
         ),
         proposal.set(proposal_id, yes_votes, no_votes, details),
         app.state.dao_proposals[proposal_key.get()].set(proposal),
+        auras_frozen_status.set(True),
+        set_aura_tokens_frozen(txn, auras_frozen_status),
+        ensure_auras_frozen_status(txn, auras_frozen_status),
         output.decode(app.state.dao_proposals[proposal_key.get()].get()),
+    )
+
+
+@app.external
+def end_proposal_voting(
+    txn: P.abi.PaymentTransaction, proposal_key: P.abi.String, *, output: Proposal
+):
+    from .subroutines import (
+        ensure_is_admin_or_app_creator,
+        ensure_proposal_exists,
+        ensure_zero_payment,
+    )
+
+    return P.Seq(
+        ensure_zero_payment(txn),
+        (proposal_creator := P.abi.Address()).set(txn.get().sender()),
+        ensure_is_admin_or_app_creator(proposal_creator),
+        ensure_proposal_exists(proposal_key),
+        P.Assert(app.state.active_proposal.get() == proposal_key.get()),
+        app.state.active_proposal.set(P.Bytes("None")),
+        output.decode(app.state.dao_proposals[proposal_key.get()].get()),
+    )
+
+
+@app.external
+def unfreeze_auras(
+    txn: P.abi.PaymentTransaction, aura: P.abi.Asset, acc: P.abi.Account
+):
+    from .subroutines import (
+        set_aura_tokens_frozen,
+        ensure_auras_frozen_status,
+        ensure_zero_payment,
+    )
+
+    return P.Seq(
+        ensure_zero_payment(txn),
+        P.Assert(
+            app.state.active_proposal.get() == P.Bytes("None"),
+            comment="Cannot unfreeze while a proposal is still active",
+        ),
+        (auras_frozen_status := P.abi.Bool()).set(False),
+        set_aura_tokens_frozen(txn, auras_frozen_status),
+        ensure_auras_frozen_status(txn, auras_frozen_status),
     )
 
 
