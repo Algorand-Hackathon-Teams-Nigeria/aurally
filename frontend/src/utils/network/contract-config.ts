@@ -38,7 +38,8 @@ export const createAppClient = (props: AppClientProps) => {
     throw new CustomError('Connect your wallet')
   }
   const appDetails = {
-    resolveBy: 'creatorAndName',
+    resolveBy: 'id',
+    id: 494102763,
     sender: { signer: props.signer, addr: props.address },
     creatorAddress: props.address,
     findExistingUsing: getIndexer(),

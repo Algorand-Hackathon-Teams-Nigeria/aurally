@@ -65,6 +65,7 @@ const SearchBar = () => {
       }, 1000)
     } else {
       setIsLoading(false)
+      setIsCancel(false)
     }
   }
 

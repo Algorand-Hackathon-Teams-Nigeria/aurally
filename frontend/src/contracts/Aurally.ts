@@ -281,7 +281,7 @@ export type OnCompleteUpdApp =  { onCompleteAction: 'update_application' | OnApp
  */
 export type IntegerState = {
   /**
-   * Gets the state value as a BigInt
+   * Gets the state value as a BigInt 
    */
   asBigInt(): bigint
   /**
@@ -663,7 +663,7 @@ export class AurallyClient {
       },
       createSoundNft(args: MethodArgs<'create_sound_nft(acfg,string,string,string,string,string,string,uint64,string,string,string,uint64,bool)(uint64,uint64,string,string,string,string,string,uint64,string,string,string,address,bool)'>, params?: AppClientCallCoreParams & CoreAppCallArgs) {
         promiseChain = promiseChain.then(() => client.createSoundNft(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
-        resultMappers.push(SoundNft)
+        resultMappers.push(SoundNFT)
         return this
       },
       hello(args: MethodArgs<'hello(string)string'>, params?: AppClientCallCoreParams & CoreAppCallArgs) {
