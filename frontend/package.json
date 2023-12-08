@@ -62,9 +62,9 @@
     "wavesurfer.js": "^7.4.4"
   },
   "scripts": {
-    "generate:app-clients": "algokit generate client -o src/contracts/{contract_name}.ts ../backend",
+    "generate:app-clients": "algokit generate client ../backend/smart_contracts/artifacts/Aurally/application.json --output ./src/contracts/Aurally.ts",
     "dev2": "vite --host",
-    "dev": "npm run generate:app-clients && vite --host",
+    "dev": "npm run generate:app-clients && vite",
     "build": "npm run generate:app-clients && tsc && vite build",
     "build2": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",

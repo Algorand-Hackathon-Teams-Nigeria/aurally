@@ -1,4 +1,20 @@
 import { AlgoViteClientConfig, AlgoViteKMDConfig } from '../../interfaces/network'
+import type { AppRefrence } from "../../interfaces/application"
+
+export function getAppRefrenceFromViteEnvironment(): AppRefrence {
+  if (!import.meta.env.VITE_APPLICATION_ID) {
+    throw new Error("Attempt to get application id failed: VITE_APPLICATION_ID env variable not set")
+  }
+  if (!import.meta.env.VITE_APPLICATION_ADDRESS) {
+    throw new Error("Attempt to get application address failed: VITE_APPLICATION_ADDRESS env variable not set")
+  }
+
+  return {
+    appId: import.meta.env.VITE_APPLICATION_ID,
+    appAddress: import.meta.env.VITE_APPLICATION_ADDRESS,
+    creatorAddress: import.meta.env.VITE_CREATOR_ADDRESS
+  }
+}
 
 export function getAlgodConfigFromViteEnvironment(): AlgoViteClientConfig {
   if (!import.meta.env.VITE_ALGOD_SERVER) {

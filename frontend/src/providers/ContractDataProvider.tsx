@@ -1,42 +1,39 @@
 import React from 'react'
-// import { useAtom } from 'jotai'
-// import { appClientAtom, appRefAtom, userAccountAtom } from '../store/contractAtom'
-// import { useWallet } from '@txnlab/use-wallet'
-// import { createAppClient, getAlgodClient } from '../utils/network/contract-config'
-// import toast from 'react-hot-toast'
-// import { deployParams } from '../utils/network/algo-constants'
+import { useAtom } from 'jotai'
+import { appClientAtom, appRefAtom, userAccountAtom } from '../store/contractAtom'
+import { useWallet } from '@txnlab/use-wallet'
+import { createAppClient, getAlgodClient } from '../utils/network/contract-config'
+import algosdk from 'algosdk'
+import { auraAtom } from '../store/auraAtoms'
 
 interface AppDataProviderProps {
   children: React.ReactNode
 }
 
 export const ContractDataProvider = ({ children }: AppDataProviderProps) => {
-  // const [, setAppRef] = useAtom(appRefAtom)
-  // const [, setAppClient] = useAtom(appClientAtom)
-  // const [, setUserAccount] = useAtom(userAccountAtom)
-  // const { signer, activeAddress, activeAccount } = useWallet()
+  const [, setAppRef] = useAtom(appRefAtom)
+  const [, setAppClient] = useAtom(appClientAtom)
+  const [, setUserAccount] = useAtom(userAccountAtom)
+  const [, setAuraTokens] = useAtom(auraAtom)
+  const { activeAddress, activeAccount, signer } = useWallet()
 
-  // React.useEffect(() => {
-  //   const getGlobalAppState = async () => {
-  //     const algodClient = getAlgodClient()
-  //     if (activeAddress && activeAccount) {
-  //       const newAppClient = createAppClient({ address: activeAddress, signer })
-  //       const newAppRef = await newAppClient.appClient.getAppReference()
-  //       const account = await algodClient.accountInformation(activeAccount.address).do()
+  React.useEffect(() => {
+    const getGlobalAppState = async () => {
+      const algodClient = getAlgodClient()
+      if (activeAddress && activeAccount) {
+        const newAppClient = createAppClient({ addr: activeAddress, signer })
+        const account = await algodClient.accountInformation(activeAccount.address).do()
+        const newAppRef = await newAppClient.appClient.getAppReference();
 
-  //       try {
-  //         const result = await newAppClient.deploy(deployParams)
-  //         setAppClient(newAppClient)
-  //         setAppRef(newAppRef)
-  //         setUserAccount(account as WalletAccountType)
-  //         console.log(result, newAppClient)
-  //       } catch (err) {
-  //         // console.log(err)
-  //         toast.error(`Deploy Error: ${err}`)
-  //       }
-  //     }
-  //   }
-  //   getGlobalAppState()
-  // }, [activeAddress])
+        setAppClient(newAppClient)
+        setAppRef(newAppRef)
+        setUserAccount(account as WalletAccountType)
+        const auras_result = await newAppClient.createAuraTokens({}, { boxes: [{ appId: newAppRef.appId, name: new Uint8Array(new TextEncoder().encode("aura")) }] })
+        const auras = auras_result.return
+        setAuraTokens(auras)
+      }
+    }
+    getGlobalAppState()
+  }, [activeAddress])
   return <React.Fragment>{children}</React.Fragment>
 }

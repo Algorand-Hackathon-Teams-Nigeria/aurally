@@ -9,12 +9,13 @@ import { useMutation } from '@tanstack/react-query'
 import { useWallet } from '@txnlab/use-wallet'
 import algosdk from 'algosdk'
 import { useAtom } from 'jotai'
-import { useRef } from 'react'
+import React, { useRef } from 'react'
 import toast from 'react-hot-toast'
 import { nftListAtom } from '../../store/atoms'
 import classes from '../../styles/textinput.module.css'
 import { uploadToIpfs } from '../../utils/ipfs-calls'
 import { getAlgodClient } from '../../utils/network/contract-config'
+import { appClientAtom } from '../../store/contractAtom'
 
 const GENRES = ['Pop', 'Electronic', 'R&B', 'Alte', 'Reggae', 'Afrobeat', 'Rock', 'Amapiano']
 
@@ -23,6 +24,7 @@ const SButton = () => <Button radius="md">Upload File</Button>
 const CreateSoundNFt = () => {
   const { activeAddress, signTransactions, sendTransactions } = useWallet()
   const [nftList, setNftList] = useAtom(nftListAtom)
+  const [appClient, ] = useAtom(appClientAtom)
   const openRef = useRef<() => void>(null)
   const form = useForm({
     initialValues: {
@@ -143,12 +145,14 @@ const CreateSoundNFt = () => {
     },
   })
 
-  const create = async () => {
+  const create = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    appClient?.createSoundNft({ audio_sample_ipfs})
     await mutateAsync()
   }
 
   return (
-    <div className="routePage mb-32 max-w-[850px]">
+    <form onSubmit={create} className="routePage mb-32 max-w-[850px]">
       <div className="routeName mb-10">Upload</div>
       <div className="space-y-5">
         <div>
@@ -231,11 +235,11 @@ const CreateSoundNFt = () => {
           classNames={classes}
           placeholder="Description about your music"
         />
-        <Button fullWidth size="lg" radius={'md'} mt={32} loading={isPending && !isError} onClick={create}>
+        <Button type='submit' fullWidth size="lg" radius={'md'} mt={32} loading={isPending && !isError}>
           Create
         </Button>
       </div>
-    </div>
+    </form>
   )
 }
 

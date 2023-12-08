@@ -8,16 +8,22 @@ import { useMutation } from '@tanstack/react-query'
 import { useWallet } from '@txnlab/use-wallet'
 import algosdk from 'algosdk'
 import { useAtom } from 'jotai'
-import { useRef } from 'react'
+import React, { useRef } from 'react'
 import toast from 'react-hot-toast'
 import { nftListAtom } from '../../store/atoms'
 import classes from '../../styles/textinput.module.css'
 import { uploadToIpfs } from '../../utils/ipfs-calls'
 import { getAlgodClient } from '../../utils/network/contract-config'
+import { appClientAtom, appRefAtom } from '../../store/contractAtom'
+import { auraAtom } from '../../store/auraAtoms'
+import encodeText from '../../utils/encoding'
 
 const CreateArtNft = () => {
   const { activeAddress, signTransactions, sendTransactions } = useWallet()
   const openRef = useRef<() => void>(null)
+  const [appClient,] = useAtom(appClientAtom)
+  const [auraToken,] = useAtom(auraAtom)
+  const [appRef,] = useAtom(appRefAtom)
   const [nftList, setNftList] = useAtom(nftListAtom)
   const form = useForm({
     initialValues: {
@@ -31,7 +37,7 @@ const CreateArtNft = () => {
     },
     validate: {
       title: (value) => (!value ? 'title is required' : null),
-      artist: (value) => (!value ? 'artist is required' : null),
+      // artist: (value) => (!value ? 'artist is required' : null),
       desc: (value) => (!value ? 'description is required' : null),
       price: (value) => (value <= 0 ? 'price is required' : null),
       supply: (value) => (value <= 0 ? 'supply is required' : null),
@@ -122,12 +128,40 @@ const CreateArtNft = () => {
     },
   })
 
-  const create = async () => {
+  const create = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const assetKey = `${form.values.title} ${new Date().toLocaleString()}`
+    const url = await uploadToIpfs(imageFile)
+    const sp = await getAlgodClient().getTransactionParams().do()
+    const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({ from: activeAddress ?? "", to: activeAddress ?? "", amount: 0, suggestedParams: sp })
+    appClient?.createArtNft(
+      {
+        nft_name: form.values.title,
+        name: form.values.title,
+        price: form.values.price,
+        supply: form.values.supply,
+        creator: activeAddress ?? "",
+        for_sale: true,
+        asset_key: assetKey,
+        description: form.values.desc,
+        title: form.values.title,
+        ipfs_location: url,
+        txn: txn,
+        aura_asset: auraToken?.asset_id ?? 0
+      },
+      {
+        boxes: [
+          { appId: appRef?.appId ?? 0, name: encodeText(url)},
+          { appId: appRef?.appId ?? 0, name: encodeText("aura")},
+          { appId: appRef?.appId ?? 0, name: algosdk.decodeAddress(activeAddress ?? "").publicKey}
+        ]
+      }
+    )
     await mutateAsync()
   }
 
   return (
-    <div className="routePage mb-32 max-w-[850px]">
+    <form onSubmit={create} className="routePage mb-32 max-w-[850px]">
       <div className="routeName mb-10">Create NFT</div>
       <div className="space-y-5">
         <div>
@@ -173,10 +207,10 @@ const CreateArtNft = () => {
         <NumberInput {...form.getInputProps('price')} classNames={classes} required label="Bid Price" placeholder="0.0 ALGO" />
         <Textarea {...form.getInputProps('desc')} classNames={classes} required label="Description" placeholder="Enter a description" />
       </div>
-      <Button fullWidth size="lg" radius={'md'} mt={32} loading={isPending && !isError} onClick={create}>
+      <Button type="submit" fullWidth size="lg" radius={'md'} mt={32} loading={isPending && !isError}>
         Create
       </Button>
-    </div>
+    </form>
   )
 }
 

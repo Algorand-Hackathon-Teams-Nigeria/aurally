@@ -470,7 +470,10 @@ def validate_and_update_art_nft_owner(
 @P.Subroutine(P.TealType.none)
 def bootstrap_token(asset_key: P.abi.String, total: P.abi.Uint64):
     return P.Seq(
-        P.Assert(P.Not(app.state.registered_asa[asset_key.get()].exists())),
+        P.Assert(
+            P.Not(app.state.registered_asa[asset_key.get()].exists()),
+            comment="Aura tokens already exist",
+        ),
         P.InnerTxnBuilder.Execute(
             {
                 P.TxnField.type_enum: P.TxnType.AssetConfig,

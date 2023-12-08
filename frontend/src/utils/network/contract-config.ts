@@ -1,8 +1,8 @@
 import * as algokit from '@algorandfoundation/algokit-utils'
 import { TransactionSignerAccount } from '@algorandfoundation/algokit-utils/types/account'
 import { AppDetails } from '@algorandfoundation/algokit-utils/types/app-client'
-import { AurallyClient } from '../../contracts/AurallyClient'
-import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from './algo-constants'
+import { AurallyClient } from '../../contracts/Aurally'
+import { getAlgodConfigFromViteEnvironment, getAppRefrenceFromViteEnvironment, getIndexerConfigFromViteEnvironment } from './algo-constants'
 
 export const getAlgodClient = () => {
   const algodConfig = getAlgodConfigFromViteEnvironment()
@@ -47,10 +47,12 @@ export type AppClientProps = { address?: string; signer: TransactionSignerAccoun
 //   return new AurallyClient(appDetails, getAlgodClient())
 // }
 
-export const createAppClient = () => {
-  const appDetails = {
+export const createAppClient = (sender: TransactionSignerAccount) => {
+  const appRef = getAppRefrenceFromViteEnvironment();
+  const appDetails: AppDetails = {
     resolveBy: 'id',
-    id: 494102763,
-  } as AppDetails
+    id: Number(appRef.appId),
+    sender
+  }
   return new AurallyClient(appDetails, getAlgodClient())
 }

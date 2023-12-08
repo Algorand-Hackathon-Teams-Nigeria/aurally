@@ -28,11 +28,11 @@ def deploy(
         on_schema_break=(
             algokit_utils.OnSchemaBreak.AppendApp
             if is_mainnet
-            else algokit_utils.OnSchemaBreak.ReplaceApp
+            else algokit_utils.OnSchemaBreak.AppendApp
         ),
         on_update=algokit_utils.OnUpdate.AppendApp
         if is_mainnet
-        else algokit_utils.OnUpdate.UpdateApp,
+        else algokit_utils.OnUpdate.ReplaceApp,
         # allow_delete=not is_mainnet,
         # allow_update=not is_mainnet,
     )

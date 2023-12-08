@@ -474,10 +474,14 @@ def create_aura_tokens(*, output: AurallyToken):
 
     return P.Seq(
         (token_key := P.abi.String()).set("aura"),
-        P.Assert(P.Not(app.state.registered_asa[token_key.get()].exists())),
-        (total := P.abi.Uint64()).set(1000000000000),
-        bootstrap_token(token_key, total),
-        P.Assert(app.state.registered_asa[token_key.get()].exists()),
+        P.If(
+            P.Not(app.state.registered_asa[token_key.get()].exists()),
+            P.Seq(
+                (total := P.abi.Uint64()).set(1000000000000),
+                bootstrap_token(token_key, total),
+                P.Assert(app.state.registered_asa[token_key.get()].exists()),
+            ),
+        ),
         output.decode(app.state.registered_asa[token_key.get()].get()),
     )
 
