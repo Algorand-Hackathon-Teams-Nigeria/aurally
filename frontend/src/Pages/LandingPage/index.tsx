@@ -48,12 +48,12 @@ const works = [
   {
     title: 'Purchase Art/Music',
     icon: 'ph:wallet-thin',
-    desc: "Once you've found the perfect NFT, collecting is a breeze. Make it yours with a simple click. . Immerse yourself in the world of digital creativity like never before.",
+    desc: "Once you've found the perfect NFT, collecting it is a breeze. Make it yours with a simple click. . Immerse yourself in the world of digital creativity like never before.",
   },
   {
     title: 'Start streaming',
     icon: 'ph:play-thin',
-    desc: 'But we go beyond just ownership - our platform allows you to seamlessly stream digital content associated with your NFTs',
+    desc: 'But we go beyond just ownership - our platform allows you to seamlessly stream digital contents associated with your NFTs',
   },
 ]
 
@@ -150,7 +150,7 @@ export default function Home() {
         <div className="flex flex-col items-center my-36" id="works">
           <h2 className="text-center text-3xl md:text-4xl lg:text-5xl xl:text-[4rem] font-bold">How it works</h2>
           <div className="text-center sm:text-lg md:text-xl max-w-[934px] mt-6 mb-14">
-            Immerse yourself in the world of digital creativity like never before. Here is a step our how our platform works
+            Immerse yourself in the world of digital creativity like never before. Here is a step on how our platform works
           </div>
           <div className="grid md:grid-cols-2 mt-8 gap-12 lg:gap-16">
             {works.map(({ title, icon, desc }, index) => (

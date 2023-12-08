@@ -33,15 +33,24 @@ export class CustomError extends Error {
 
 export type AppClientProps = { address?: string; signer: TransactionSignerAccount['signer'] }
 
-export const createAppClient = (props: AppClientProps) => {
-  if (!props.signer || !props.address) {
-    throw new CustomError('Connect your wallet')
-  }
+// export const createAppClient = (props: AppClientProps) => {
+//   if (!props.signer || !props.address) {
+//     throw new CustomError('Connect your wallet')
+//   }
+//   const appDetails = {
+//     resolveBy: 'id',
+//     id: 494102763,
+//     // sender: { signer: props.signer, addr: props.address },
+//     // creatorAddress: props.address,
+//     // findExistingUsing: getIndexer(),
+//   } as AppDetails
+//   return new AurallyClient(appDetails, getAlgodClient())
+// }
+
+export const createAppClient = () => {
   const appDetails = {
-    resolveBy: 'creatorAndName',
-    sender: { signer: props.signer, addr: props.address },
-    creatorAddress: props.address,
-    findExistingUsing: getIndexer(),
+    resolveBy: 'id',
+    id: 494102763,
   } as AppDetails
   return new AurallyClient(appDetails, getAlgodClient())
 }
