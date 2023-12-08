@@ -6,6 +6,8 @@ from smart_contracts.aurally.boxes import (
     ArtAuctionItem,
     AurallyCreative,
     AurallyToken,
+    Event,
+    EventTicket,
     Proposal,
     SoundNFT,
 )
@@ -121,6 +123,7 @@ def create_sound_nft(
         (owner := P.abi.Address()).set(txn.get().sender()),
         (sound_nft := SoundNFT()).set(
             asset_id,
+            asset_key,
             supply,
             title,
             label,
@@ -145,6 +148,7 @@ def create_sound_nft(
 @app.external
 def create_art_nft(
     txn: P.abi.Transaction,
+    asset_key: P.abi.String,
     nft_name: P.abi.String,
     title: P.abi.String,
     name: P.abi.String,
@@ -165,7 +169,7 @@ def create_art_nft(
     )
 
     return P.Seq(
-        P.Assert(P.Not(app.state.art_nfts[ipfs_location.get()].exists())),
+        P.Assert(P.Not(app.state.art_nfts[asset_key.get()].exists())),
         (creative_type := P.abi.String()).set("art"),
         ensure_registered_creative(txn, creative_type),
         P.InnerTxnBuilder.Execute(
@@ -182,6 +186,7 @@ def create_art_nft(
         (sold_price := P.abi.Uint64()).set(0),
         (art_nft := ArtNFT()).set(
             asset_id,
+            asset_key,
             title,
             name,
             supply,
@@ -192,11 +197,11 @@ def create_art_nft(
             owner,
             for_sale,
         ),
-        app.state.art_nfts[ipfs_location.get()].set(art_nft),
+        app.state.art_nfts[asset_key.get()].set(art_nft),
         increment_creator_nft_count(owner),
         (aura_amt := P.abi.Uint64()).set(1),
         send_aura_token(owner, aura_amt),
-        output.decode(app.state.art_nfts[ipfs_location.get()].get()),
+        output.decode(app.state.art_nfts[asset_key.get()].get()),
     )
 
 
@@ -204,7 +209,7 @@ def create_art_nft(
 def create_art_auction(
     txn: P.abi.PaymentTransaction,
     auction_key: P.abi.String,
-    ipfs_location: P.abi.String,
+    asset_key: P.abi.String,
     min_bid: P.abi.Uint64,
     starts_at: P.abi.Uint64,
     ends_at: P.abi.Uint64,
@@ -214,16 +219,28 @@ def create_art_auction(
     from .subroutines import create_art_auction, ensure_zero_payment
 
     return P.Seq(
-        # P.Assert(P.Global.latest_timestamp() < starts_at.get()), # Can't create an auction in the past
+        P.Assert(
+            P.Not(app.state.art_auctions[auction_key.get()].exists()),
+            comment="An auction with this key already exists",
+        ),
         ensure_zero_payment(txn),
-        P.Assert(starts_at.get() < ends_at.get()),
-        P.Assert(app.state.art_nfts[ipfs_location.get()].exists()),
-        (art_nft := ArtNFT()).decode(app.state.art_nfts[ipfs_location.get()].get()),
+        P.Assert(
+            starts_at.get() < ends_at.get(),
+            comment="End date must be greater that start date",
+        ),
+        P.Assert(
+            app.state.art_nfts[asset_key.get()].exists(),
+            comment="Art NFT with this key was not found",
+        ),
+        (art_nft := ArtNFT()).decode(app.state.art_nfts[asset_key.get()].get()),
         (art_nft_owner := P.abi.Address()).set(art_nft.owner),
         (nft_name := P.abi.String()).set(art_nft.name),
-        P.Assert(art_nft_owner.get() == txn.get().sender()),
+        P.Assert(
+            art_nft_owner.get() == txn.get().sender(),
+            comment="Only the owner of this NFT can auction it",
+        ),
         create_art_auction(
-            txn, auction_key, ipfs_location, nft_name, min_bid, starts_at, ends_at
+            txn, auction_key, asset_key, nft_name, min_bid, starts_at, ends_at
         ),
         output.decode(app.state.art_auctions[auction_key.get()].get()),
     )
@@ -277,7 +294,7 @@ def purchase_nft(
     asset_key: P.abi.String,
     nft_type: P.abi.String,
     seller: P.abi.Account,
-    sound_nft_id: P.abi.Asset,
+    nft_id: P.abi.Asset,
     aura_id: P.abi.Asset,
     aura_optin_txn: P.abi.AssetTransferTransaction,
     buyer: P.abi.Account,
@@ -305,17 +322,15 @@ def transfer_nft(
 ):
     from .subroutines import (
         validate_and_update_art_nft_owner,
-        validate_and_update_sound_nft_owner,
     )
 
     return P.Seq(
         P.Assert(txn.get().amount() == P.Int(0)),
         P.Assert(
-            P.Or(nft_type.get() == P.Bytes("sound"), nft_type.get() == P.Bytes("art"))
+            P.Or(nft_type.get() == P.Bytes("ticket"), nft_type.get() == P.Bytes("art"))
         ),
         P.If(
-            nft_type.get() == P.Bytes("sound"),
-            validate_and_update_sound_nft_owner(txn, asset_key, to),
+            nft_type.get() == P.Bytes("art"),
             validate_and_update_art_nft_owner(txn, asset_key, to),
         ),
     )
@@ -464,6 +479,93 @@ def create_aura_tokens(*, output: AurallyToken):
         bootstrap_token(token_key, total),
         P.Assert(app.state.registered_asa[token_key.get()].exists()),
         output.decode(app.state.registered_asa[token_key.get()].get()),
+    )
+
+
+@app.external
+def create_event(
+    txn: P.abi.PaymentTransaction,
+    key: P.abi.String,
+    name: P.abi.String,
+    start_date: P.abi.Uint64,
+    end_date: P.abi.Uint64,
+    cover_image_ipfs: P.abi.String,
+    ticket_price: P.abi.Uint64,
+    *,
+    output: Event,
+):
+    from .subroutines import ensure_zero_payment
+
+    return P.Seq(
+        ensure_zero_payment(txn),
+        P.Assert(P.Not(app.state.events[key.get()].exists())),
+        P.InnerTxnBuilder.Execute(
+            {
+                P.TxnField.type_enum: P.TxnType.AssetConfig,
+                P.TxnField.config_asset_name: name.get(),
+                P.TxnField.config_asset_total: P.Int(1),
+                P.TxnField.config_asset_url: cover_image_ipfs.get(),
+                P.TxnField.config_asset_manager: txn.get().sender(),
+            }
+        ),
+        (asset_id := P.abi.Uint64()).set(P.InnerTxn.created_asset_id()),
+        (owner := P.abi.Address()).set(txn.get().sender()),
+        (event := Event()).set(
+            asset_id,
+            key,
+            name,
+            start_date,
+            end_date,
+            cover_image_ipfs,
+            ticket_price,
+            owner,
+        ),
+        app.state.events[key.get()].set(event),
+        output.decode(app.state.events[key.get()].get()),
+    )
+
+
+@app.external
+def purchase_event_ticket(
+    txn: P.abi.PaymentTransaction,
+    event_key: P.abi.String,
+    ticket_key: P.abi.String,
+    event_owner: P.abi.Account,
+    *,
+    output: EventTicket,
+):
+    from .subroutines import ensure_event_exists, pay_95_percent
+
+    return P.Seq(
+        P.Assert(
+            P.Not(app.state.event_tickets[ticket_key.get()].exists()),
+            comment="A ticket with this key already exists",
+        ),
+        ensure_event_exists(event_key),
+        (event := Event()).decode(app.state.events[event_key.get()].get()),
+        (event_owner_address := P.abi.Address()).set(event.owner),
+        (ticket_price := P.abi.Uint64()).set(event.ticket_price),
+        (event_name := P.abi.String()).set(event.name),
+        (event_image_url := P.abi.String()).set(event.cover_image_ipfs),
+        pay_95_percent(txn, ticket_price, event_owner_address),
+        P.InnerTxnBuilder.Execute(
+            {
+                P.TxnField.type_enum: P.TxnType.AssetConfig,
+                P.TxnField.config_asset_name: P.Concat(
+                    event_name.get(), P.Bytes(" Ticket")
+                ),
+                P.TxnField.config_asset_total: P.Int(1),
+                P.TxnField.config_asset_url: event_image_url.get(),
+                P.TxnField.config_asset_manager: txn.get().sender(),
+            }
+        ),
+        (ticket_id := P.abi.Uint64()).set(P.InnerTxn.created_asset_id()),
+        (ticket_buyer := P.abi.Address()).set(txn.get().sender()),
+        (ticket := EventTicket()).set(
+            ticket_id, ticket_key, event_key, ticket_price, ticket_buyer
+        ),
+        app.state.event_tickets[ticket_key.get()].set(ticket),
+        output.decode(app.state.event_tickets[ticket_key.get()].get()),
     )
 
 

@@ -139,17 +139,17 @@ def test_create_sound_nft(
             (aurally_client.app_id, encoding.decode_address(txn.txn.sender)),
         ],
     )
-    assert list(result.return_value)[2] == "Dev Tokens"
+    assert list(result.return_value)[3] == "Dev Tokens"
     return (asset_key, result.return_value[0])
 
 
-# @pytest.mark.skip
+@pytest.fixture(scope="session")
 def test_create_art_nft(
     algod_client: AlgodClient,
     aurally_client: ApplicationClient,
     test_account: LocalAccount,
     aura_token: int,
-):
+) -> Tuple[str, int]:
     supply = 20
     nft_name = "Sun God Nika"
     sp = algod_client.suggested_params()
@@ -168,11 +168,12 @@ def test_create_art_nft(
         txn=txn,
         title=nft_name,
         nft_name=nft_name,
+        asset_key=url,
         name=nft_name,
         supply=supply,
         description="Gear 5 Luffy",
         ipfs_location=url,
-        price=2000,
+        price=20000,
         for_sale=True,
         aura_asset=aura_token,
         creator=test_account.address,
@@ -183,7 +184,8 @@ def test_create_art_nft(
         ],
     )
 
-    assert list(result.return_value)[1] == nft_name
+    assert list(result.return_value)[2] == nft_name
+    return (url, list(result.return_value)[0])
 
 
 # @pytest.mark.skip
@@ -191,11 +193,10 @@ def test_create_art_auction(
     algod_client: AlgodClient,
     aurally_client: ApplicationClient,
     test_account: LocalAccount,
+    test_create_art_nft: Tuple[str, int],
     auction_key: str,
 ):
-    nft_name = "Sun God Nika"
     sp = algod_client.suggested_params()
-    url = "https://ipfs.io/ipfs/" + nft_name
     raw_txn = transaction.PaymentTxn(
         sender=test_account.address, sp=sp, receiver=test_account.address, amt=0
     )
@@ -206,22 +207,23 @@ def test_create_art_auction(
     starts_at = datetime.now() - timedelta(weeks=2)
     ends_at = datetime.now() + timedelta(days=2)
 
+    print(test_create_art_nft)
     result = aurally_client.call(
         aurally_contract.create_art_auction,
         txn=txn,
+        asset_key=test_create_art_nft[0],
         auction_key=auction_key,
-        ipfs_location=url,
         min_bid=10000,
         starts_at=int(starts_at.timestamp()),
         ends_at=int(ends_at.timestamp()),
         boxes=[
-            (aurally_client.app_id, url.encode()),
             (aurally_client.app_id, auction_key.encode()),
+            (aurally_client.app_id, test_create_art_nft[0].encode()),
             (aurally_client.app_id, encoding.decode_address(txn.txn.sender)),
         ],
     )
 
-    assert list(result.return_value)[1] == url
+    assert list(result.return_value)[1] == test_create_art_nft[0]
 
 
 # @pytest.mark.skip
@@ -278,7 +280,7 @@ def test_complete_art_auction(
         ],
     )
 
-    assert list(result.return_value)[1] == nft_name
+    assert list(result.return_value)[2] == nft_name
 
 
 # @pytest.mark.skip
@@ -322,7 +324,7 @@ def test_purchase_nft(
         optin_txn=optin_txn,
         buyer=buyer_account.address,
         aura_optin_txn=aura_optin_txn,
-        sound_nft_id=test_create_sound_nft[1],
+        nft_id=test_create_sound_nft[1],
         aura_id=aura_token,
         boxes=[
             (aurally_client.app_id, "aura".encode()),
@@ -337,7 +339,7 @@ def test_transfer_nft(
     aurally_client: ApplicationClient,
     test_accounts: List[LocalAccount],
     test_account: LocalAccount,
-    test_create_sound_nft: Tuple[str, int],
+    test_create_art_nft: Tuple[str, int],
 ):
     sp = algod_client.suggested_params()
     raw_txn = transaction.PaymentTxn(
@@ -351,9 +353,9 @@ def test_transfer_nft(
         aurally_contract.transfer_nft,
         txn=txn,
         to=test_accounts[1].address,
-        asset_key=test_create_sound_nft[0],
-        nft_type="sound",
-        boxes=[(aurally_client.app_id, test_create_sound_nft[0].encode())],
+        asset_key=test_create_art_nft[0],
+        nft_type="art",
+        boxes=[(aurally_client.app_id, test_create_art_nft[0].encode())],
     )
 
 
@@ -524,3 +526,63 @@ def test_demote_from_admin(
     is_admin = result.return_value
 
     assert is_admin == "False"
+
+
+def test_create_event(
+    aurally_client: ApplicationClient,
+    algod_client: AlgodClient,
+    test_account: LocalAccount,
+):
+    sp = algod_client.suggested_params()
+    txn = transaction.PaymentTxn(
+        amt=0, sender=test_account.address, receiver=test_account.address, sp=sp
+    )
+    txn = atomic_transaction_composer.TransactionWithSigner(
+        txn=txn, signer=test_account.signer
+    )
+
+    start_date = int(datetime.utcnow().timestamp())
+    end_date = int(datetime.utcnow().timestamp())
+
+    result = aurally_client.call(
+        aurally_contract.create_event,
+        txn=txn,
+        key="Test Event",
+        name="Test Event",
+        start_date=start_date,
+        end_date=end_date,
+        cover_image_ipfs="image.url",
+        ticket_price=20000,
+        boxes=[(aurally_client.app_id, "Test Event".encode())],
+    )
+    assert list(result.return_value)[1] == "Test Event"
+
+
+def test_purchase_event_ticket(
+    aurally_client: ApplicationClient,
+    algod_client: AlgodClient,
+    test_account: LocalAccount,
+    test_accounts: List[LocalAccount],
+):
+    buyer_account = test_accounts[0]
+
+    sp = algod_client.suggested_params()
+    txn = transaction.PaymentTxn(
+        sender=buyer_account.address, receiver=aurally_client.app_addr, amt=20000, sp=sp
+    )
+    txn = atomic_transaction_composer.TransactionWithSigner(
+        txn=txn, signer=buyer_account.signer
+    )
+
+    result = aurally_client.call(
+        aurally_contract.purchase_event_ticket,
+        txn=txn,
+        event_key="Test Event",
+        ticket_key="Test Event Key",
+        event_owner=test_account.address,
+        boxes=[
+            (aurally_client.app_id, "Test Event".encode()),
+            (aurally_client.app_id, "Test Event Key".encode()),
+        ],
+    )
+    assert list(result.return_value)[1] == "Test Event Key"

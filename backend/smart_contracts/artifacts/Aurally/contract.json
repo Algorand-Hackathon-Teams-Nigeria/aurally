@@ -122,7 +122,7 @@
                 }
             ],
             "returns": {
-                "type": "(uint64,uint64,string,string,string,string,string,uint64,string,string,string,address,bool)"
+                "type": "(uint64,string,uint64,string,string,string,string,string,uint64,string,string,string,address,bool)"
             }
         },
         {
@@ -131,6 +131,10 @@
                 {
                     "type": "txn",
                     "name": "txn"
+                },
+                {
+                    "type": "string",
+                    "name": "asset_key"
                 },
                 {
                     "type": "string",
@@ -174,7 +178,7 @@
                 }
             ],
             "returns": {
-                "type": "(uint64,string,string,uint64,string,string,uint64,uint64,address,bool)"
+                "type": "(uint64,string,string,string,uint64,string,string,uint64,uint64,address,bool)"
             }
         },
         {
@@ -190,7 +194,7 @@
                 },
                 {
                     "type": "string",
-                    "name": "ipfs_location"
+                    "name": "asset_key"
                 },
                 {
                     "type": "uint64",
@@ -242,7 +246,7 @@
                 }
             ],
             "returns": {
-                "type": "(uint64,string,string,uint64,string,string,uint64,uint64,address,bool)"
+                "type": "(uint64,string,string,string,uint64,string,string,uint64,uint64,address,bool)"
             }
         },
         {
@@ -270,7 +274,7 @@
                 },
                 {
                     "type": "asset",
-                    "name": "sound_nft_id"
+                    "name": "nft_id"
                 },
                 {
                     "type": "asset",
@@ -402,6 +406,66 @@
             "args": [],
             "returns": {
                 "type": "(uint64,string,uint64)"
+            }
+        },
+        {
+            "name": "create_event",
+            "args": [
+                {
+                    "type": "pay",
+                    "name": "txn"
+                },
+                {
+                    "type": "string",
+                    "name": "key"
+                },
+                {
+                    "type": "string",
+                    "name": "name"
+                },
+                {
+                    "type": "uint64",
+                    "name": "start_date"
+                },
+                {
+                    "type": "uint64",
+                    "name": "end_date"
+                },
+                {
+                    "type": "string",
+                    "name": "cover_image_ipfs"
+                },
+                {
+                    "type": "uint64",
+                    "name": "ticket_price"
+                }
+            ],
+            "returns": {
+                "type": "(uint64,string,string,uint64,uint64,string,uint64,address)"
+            }
+        },
+        {
+            "name": "purchase_event_ticket",
+            "args": [
+                {
+                    "type": "pay",
+                    "name": "txn"
+                },
+                {
+                    "type": "string",
+                    "name": "event_key"
+                },
+                {
+                    "type": "string",
+                    "name": "ticket_key"
+                },
+                {
+                    "type": "account",
+                    "name": "event_owner"
+                }
+            ],
+            "returns": {
+                "type": "(uint64,string,string,uint64,address)"
             }
         },
         {

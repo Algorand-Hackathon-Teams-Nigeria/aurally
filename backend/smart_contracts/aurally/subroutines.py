@@ -5,6 +5,7 @@ from smart_contracts.aurally.boxes import (
     ArtNFT,
     AurallyCreative,
     AurallyToken,
+    Event,
     SoundNFT,
 )
 from .contract import app
@@ -61,28 +62,65 @@ def ensure_is_admin_or_app_creator(addr: P.abi.Address):
 
 
 @P.Subroutine(P.TealType.none)
-def create_nft_owner(
-    txn: P.abi.Transaction,
-    fullname: P.abi.String,
-    username: P.abi.String,
-):
+def ensure_event_exists(key: P.abi.String):
+    return P.Assert(
+        app.state.events[key.get()].exists(),
+        comment="Event with specified key does not exist",
+    )
+
+
+@P.Subroutine(P.TealType.none)
+def ensure_sound_nft_exists(key: P.abi.String):
+    return P.Assert(
+        app.state.sound_nfts[key.get()].exists(),
+        comment="SoundNFT with specified key does not exist",
+    )
+
+
+@P.Subroutine(P.TealType.none)
+def ensure_sound_art_exists(key: P.abi.String):
+    return P.Assert(
+        app.state.art_nfts[key.get()].exists(),
+        comment="ArtNFT with specified key does not exist",
+    )
+
+
+@P.Subroutine(P.TealType.none)
+def ensure_sender_is_event_owner(txn: P.abi.Transaction, key: P.abi.String):
     return P.Seq(
-        P.InnerTxnBuilder.Execute(
-            {
-                P.TxnField.type_enum: P.TxnType.AssetConfig,
-                P.TxnField.config_asset_name: txn.get().sender(),
-                P.TxnField.config_asset_manager: P.Global.current_application_address(),
-                P.TxnField.config_asset_total: P.Int(1),
-            }
+        ensure_event_exists(key),
+        (event := Event()).decode(app.state.events[key.get()].get()),
+        (owner := P.abi.Address()).set(event.owner),
+        P.Assert(
+            txn.get().sender() == owner.get(),
+            comment="Not event owner: You are not authorised to perform this action",
         ),
-        (dnft_id := P.abi.Uint64()).set(P.InnerTxn.created_asset_id()),
-        (is_music_creative := P.abi.Bool()).set(False),
-        (is_art_creative := P.abi.Bool()).set(False),
-        (minted := P.abi.Uint64()).set(0),
-        (creative := AurallyCreative()).set(
-            is_music_creative, is_art_creative, minted, fullname, username, dnft_id
+    )
+
+
+@P.Subroutine(P.TealType.none)
+def ensure_sender_is_sound_nft_owner(txn: P.abi.Transaction, key: P.abi.String):
+    return P.Seq(
+        ensure_sound_nft_exists(key),
+        (sound_nft := SoundNFT()).decode(app.state.sound_nfts[key.get()].get()),
+        (owner := P.abi.Address()).set(sound_nft.owner),
+        P.Assert(
+            txn.get().sender() == owner.get(),
+            comment="Not Sound NFT owner: You are not authorised to perform this action",
         ),
-        app.state.aurally_nft_owners[txn.get().sender()].set(creative),
+    )
+
+
+@P.Subroutine(P.TealType.none)
+def ensure_sender_is_art_nft_owner(txn: P.abi.Transaction, key: P.abi.String):
+    return P.Seq(
+        ensure_sound_nft_exists(key),
+        (art_nft := ArtNFT()).decode(app.state.art_nfts[key.get()].get()),
+        (owner := P.abi.Address()).set(art_nft.owner),
+        P.Assert(
+            txn.get().sender() == owner.get(),
+            comment="Not Art NFT owner: You are not authorised to perform this action",
+        ),
     )
 
 
@@ -112,6 +150,64 @@ def ensure_registered_creative(txn: P.abi.Transaction, creative_type: P.abi.Stri
 
 
 @P.Subroutine(P.TealType.none)
+def create_nft_owner(
+    txn: P.abi.Transaction,
+    fullname: P.abi.String,
+    username: P.abi.String,
+):
+    return P.Seq(
+        P.InnerTxnBuilder.Execute(
+            {
+                P.TxnField.type_enum: P.TxnType.AssetConfig,
+                P.TxnField.config_asset_name: txn.get().sender(),
+                P.TxnField.config_asset_manager: P.Global.current_application_address(),
+                P.TxnField.config_asset_total: P.Int(1),
+            }
+        ),
+        (dnft_id := P.abi.Uint64()).set(P.InnerTxn.created_asset_id()),
+        (is_music_creative := P.abi.Bool()).set(False),
+        (is_art_creative := P.abi.Bool()).set(False),
+        (minted := P.abi.Uint64()).set(0),
+        (creative := AurallyCreative()).set(
+            is_music_creative, is_art_creative, minted, fullname, username, dnft_id
+        ),
+        app.state.aurally_nft_owners[txn.get().sender()].set(creative),
+    )
+
+
+@P.Subroutine(P.TealType.none)
+def save_art_nft(
+    asset_id: P.abi.Uint64,
+    asset_key: P.abi.String,
+    title: P.abi.String,
+    name: P.abi.String,
+    supply: P.abi.Uint64,
+    description: P.abi.String,
+    ipfs_location: P.abi.String,
+    price: P.abi.Uint64,
+    sold_price: P.abi.Uint64,
+    owner: P.abi.Address,
+    for_sale: P.abi.Bool,
+):
+    return P.Seq(
+        (art_nft := ArtNFT()).set(
+            asset_id,
+            asset_key,
+            title,
+            name,
+            supply,
+            description,
+            ipfs_location,
+            price,
+            sold_price,
+            owner,
+            for_sale,
+        ),
+        app.state.art_nfts[asset_key.get()].set(art_nft),
+    )
+
+
+@P.Subroutine(P.TealType.none)
 def increment_creator_nft_count(creator: P.abi.Address):
     return P.Seq(
         (creative := AurallyCreative()).decode(
@@ -135,7 +231,7 @@ def increment_creator_nft_count(creator: P.abi.Address):
 def create_art_auction(
     txn: P.abi.Transaction,
     auction_key: P.abi.String,
-    ipfs_location: P.abi.String,
+    asset_key: P.abi.String,
     name: P.abi.String,
     min_bid: P.abi.Uint64,
     starts_at: P.abi.Uint64,
@@ -148,7 +244,7 @@ def create_art_auction(
         (highest_bidder := P.abi.Address()).set(P.Global.current_application_address()),
         (art_auction := ArtAuctionItem()).set(
             auctionier,
-            ipfs_location,
+            asset_key,
             name,
             min_bid,
             starts_at,
@@ -221,6 +317,7 @@ def update_art_nft_owner(asset_key: P.abi.String, new_owner: P.abi.Address):
         (for_sale := P.abi.Bool()).set(art_nft.for_sale),
         art_nft.set(
             asset_id,
+            asset_key,
             title,
             name,
             supply,
@@ -253,6 +350,7 @@ def update_sound_nft_owner(asset_key: P.abi.String, new_owner: P.abi.Address):
         (for_sale := P.abi.Bool()).set(sound_nft.for_sale),
         sound_nft.set(
             asset_id,
+            asset_key,
             supply,
             title,
             label,
@@ -300,12 +398,33 @@ def transfer_art_nft(txn: P.abi.PaymentTransaction, asset_key: P.abi.String):
 
 
 @P.Subroutine(P.TealType.none)
+def buy_event_ticket(txn: P.abi.PaymentTransaction, event_key: P.abi.String):
+    return P.Seq(
+        (asset_item := ArtNFT()).decode(app.state.art_nfts[event_key.get()].get()),
+        (price := P.abi.Uint64()).set(asset_item.price),
+        (nft_owner := P.abi.Address()).set(asset_item.owner),
+        (buyer := P.abi.Address()).set(txn.get().sender()),
+        pay_95_percent(txn, price, nft_owner),
+        update_art_nft_owner(event_key, buyer),
+        (aura_amt := P.abi.Uint64()).set(1),
+        send_aura_token(buyer, aura_amt),
+        P.Approve(),
+    )
+
+
+@P.Subroutine(P.TealType.none)
 def pay_95_percent(
     txn: P.abi.PaymentTransaction, price: P.abi.Uint64, receiver: P.abi.Address
 ):
     return P.Seq(
-        P.Assert(txn.get().amount() == price.get()),
-        P.Assert(txn.get().receiver() == P.Global.current_application_address()),
+        P.Assert(
+            txn.get().amount() == price.get(),
+            comment="Transaction price is not the required amount",
+        ),
+        P.Assert(
+            txn.get().receiver() == P.Global.current_application_address(),
+            comment="Transaction receiver has to be the app Address",
+        ),
         (nity_five_percent := P.abi.Uint64()).set(
             P.Div(price.get() * P.Int(5), P.Int(100))
         ),

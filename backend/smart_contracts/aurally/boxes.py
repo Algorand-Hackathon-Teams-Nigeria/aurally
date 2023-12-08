@@ -16,6 +16,7 @@ class AurallyCreative(P.abi.NamedTuple):
 
 class SoundNFT(P.abi.NamedTuple):
     asset_id: P.abi.Field[P.abi.Uint64]
+    asset_key: P.abi.Field[P.abi.String]
     supply: P.abi.Field[P.abi.Uint64]
     title: P.abi.Field[P.abi.String]
     label: P.abi.Field[P.abi.String]
@@ -32,6 +33,7 @@ class SoundNFT(P.abi.NamedTuple):
 
 class ArtNFT(P.abi.NamedTuple):
     asset_id: P.abi.Field[P.abi.Uint64]
+    asset_key: P.abi.Field[P.abi.String]
     title: P.abi.Field[P.abi.String]
     name: P.abi.Field[P.abi.String]
     supply: P.abi.Field[P.abi.Uint64]
@@ -65,3 +67,22 @@ class AurallyToken(P.abi.NamedTuple):
     asset_id: P.abi.Field[P.abi.Uint64]
     asset_key: P.abi.Field[P.abi.String]
     asset_total: P.abi.Field[P.abi.Uint64]
+
+
+class Event(P.abi.NamedTuple):
+    asset_id: P.abi.Field[P.abi.Uint64]
+    key: P.abi.Field[P.abi.String]
+    name: P.abi.Field[P.abi.String]
+    start_date: P.abi.Field[P.abi.Uint64]
+    end_date: P.abi.Field[P.abi.Uint64]
+    cover_image_ipfs: P.abi.Field[P.abi.String]
+    ticket_price: P.abi.Field[P.abi.Uint64]
+    owner: P.abi.Field[P.abi.Address]
+
+
+class EventTicket(P.abi.NamedTuple):
+    asset_id: P.abi.Field[P.abi.Uint64]
+    ticket_key: P.abi.Field[P.abi.String]
+    event_asset_key: P.abi.Field[P.abi.String]
+    purchase_price: P.abi.Field[P.abi.Uint64]
+    owner: P.abi.Field[P.abi.Address]

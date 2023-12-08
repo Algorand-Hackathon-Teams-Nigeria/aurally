@@ -5,6 +5,8 @@ from .boxes import (
     ArtNFT,
     ArtAuctionItem,
     AurallyCreative,
+    Event,
+    EventTicket,
     Proposal,
     AurallyToken,
     SoundNFT,
@@ -19,6 +21,8 @@ class AppState:
     dao_proposals = BoxMapping(P.abi.String, Proposal)
     registered_asa = BoxMapping(P.abi.String, AurallyToken)
     aurally_admins = BoxMapping(P.abi.Address, P.abi.String)
+    events = BoxMapping(P.abi.String, Event)
+    event_tickets = BoxMapping(P.abi.String, EventTicket)
     active_proposal = GlobalStateValue(
         stack_type=P.TealType.bytes, default=P.Bytes("None")
     )
