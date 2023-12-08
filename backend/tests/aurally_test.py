@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 import os
 from pathlib import Path
-from typing import List
+from typing import List, Tuple
 from algosdk import atomic_transaction_composer, encoding, transaction
 from beaker import localnet
 from beaker.client import ApplicationClient
@@ -55,11 +55,6 @@ def auction_key() -> str:
 
 
 @pytest.fixture(scope="session")
-def sample_asset_key() -> str:
-    return f"Dev Stockins_{datetime.utcnow()}"
-
-
-@pytest.fixture(scope="session")
 def aura_token(aurally_client: ApplicationClient) -> int:
     result = aurally_client.call(
         aurally_contract.create_aura_tokens,
@@ -82,7 +77,9 @@ def test_register_creator(
 ) -> None:
     sp = algod_client.suggested_params()
 
-    opt_txn = transaction.AssetOptInTxn(sp=sp, sender=test_account.address, index=aura_token)
+    opt_txn = transaction.AssetOptInTxn(
+        sp=sp, sender=test_account.address, index=aura_token
+    )
 
     txn = atomic_transaction_composer.TransactionWithSigner(
         txn=opt_txn, signer=test_account.signer
@@ -100,14 +97,15 @@ def test_register_creator(
     assert list(result.return_value)[3] == "Dev Ready"
 
 
-# @pytest.mark.skip
+@pytest.fixture(scope="session")
 def test_create_sound_nft(
     algod_client: AlgodClient,
     aurally_client: ApplicationClient,
     test_account: LocalAccount,
-    sample_asset_key: str,
     aura_token: int,
-):
+) -> Tuple[str, int]:
+    asset_key = f"Dev Stockins_{datetime.utcnow()}"
+
     nft_name = "Dev Stockins"
     sp = algod_client.suggested_params()
     raw_txn = transaction.PaymentTxn(
@@ -116,13 +114,12 @@ def test_create_sound_nft(
     txn = atomic_transaction_composer.TransactionWithSigner(
         txn=raw_txn, signer=test_account.signer
     )
-    print(aurally_client.app_addr, test_account.address)
 
     result = aurally_client.call(
         aurally_contract.create_sound_nft,
         txn=txn,
         nft_name=nft_name,
-        asset_key=sample_asset_key,
+        asset_key=asset_key,
         title="Dev Tokens",
         label="Dev Reccords",
         artist="GigaChad",
@@ -137,12 +134,13 @@ def test_create_sound_nft(
         supply=20,
         for_sale=False,
         boxes=[
-            (aurally_client.app_id, sample_asset_key.encode()),
+            (aurally_client.app_id, asset_key.encode()),
             (aurally_client.app_id, "aura".encode()),
             (aurally_client.app_id, encoding.decode_address(txn.txn.sender)),
         ],
     )
     assert list(result.return_value)[2] == "Dev Tokens"
+    return (asset_key, result.return_value[0])
 
 
 # @pytest.mark.skip
@@ -289,25 +287,47 @@ def test_purchase_nft(
     aurally_client: ApplicationClient,
     test_account: LocalAccount,
     test_accounts: List[LocalAccount],
+    test_create_sound_nft: Tuple[str, int],
+    aura_token: int,
 ):
     buyer_account = test_accounts[1]
-    nft_name = "Sun God Nika"
     sp = algod_client.suggested_params()
-    url = "https://ipfs.io/ipfs/" + nft_name
 
     raw_txn = transaction.PaymentTxn(
-        sender=buyer_account.address, receiver=test_account.address, amt=2000, sp=sp
+        sender=buyer_account.address, receiver=aurally_client.app_addr, amt=20000, sp=sp
     )
     txn = atomic_transaction_composer.TransactionWithSigner(
         txn=raw_txn, signer=buyer_account.signer
     )
 
+    optin_txn = transaction.AssetOptInTxn(
+        sender=buyer_account.address, index=test_create_sound_nft[1], sp=sp
+    )
+    optin_txn = atomic_transaction_composer.TransactionWithSigner(
+        txn=optin_txn, signer=buyer_account.signer
+    )
+    aura_optin_txn = transaction.AssetOptInTxn(
+        sender=buyer_account.address, index=aura_token, sp=sp
+    )
+    aura_optin_txn = atomic_transaction_composer.TransactionWithSigner(
+        txn=aura_optin_txn, signer=buyer_account.signer
+    )
+
     aurally_client.call(
         aurally_contract.purchase_nft,
         txn=txn,
-        asset_key=url,
-        nft_type="art",
-        boxes=[(aurally_client.app_id, url.encode())],
+        asset_key=test_create_sound_nft[0],
+        nft_type="sound",
+        seller=test_account.address,
+        optin_txn=optin_txn,
+        buyer=buyer_account.address,
+        aura_optin_txn=aura_optin_txn,
+        sound_nft_id=test_create_sound_nft[1],
+        aura_id=aura_token,
+        boxes=[
+            (aurally_client.app_id, "aura".encode()),
+            (aurally_client.app_id, test_create_sound_nft[0].encode()),
+        ],
     )
 
 
@@ -317,7 +337,7 @@ def test_transfer_nft(
     aurally_client: ApplicationClient,
     test_accounts: List[LocalAccount],
     test_account: LocalAccount,
-    sample_asset_key: str,
+    test_create_sound_nft: Tuple[str, int],
 ):
     sp = algod_client.suggested_params()
     raw_txn = transaction.PaymentTxn(
@@ -331,9 +351,9 @@ def test_transfer_nft(
         aurally_contract.transfer_nft,
         txn=txn,
         to=test_accounts[1].address,
-        asset_key=sample_asset_key,
+        asset_key=test_create_sound_nft[0],
         nft_type="sound",
-        boxes=[(aurally_client.app_id, sample_asset_key.encode())],
+        boxes=[(aurally_client.app_id, test_create_sound_nft[0].encode())],
     )
 
 
@@ -376,6 +396,7 @@ def test_vote_on_proposal(
     algod_client: AlgodClient,
     aurally_client: ApplicationClient,
     test_account: LocalAccount,
+    aura_token: int,
 ):
     sp = algod_client.suggested_params()
     raw_txn = transaction.PaymentTxn(
@@ -392,11 +413,114 @@ def test_vote_on_proposal(
         txn=txn,
         vote_for=True,
         proposal_key=proposal_key,
+        aura_id=aura_token,
+        voter=test_account.address,
         boxes=[
-            (aurally_client.app_id, encoding.decode_address(test_account.address)),
+            (aurally_client.app_id, "aura".encode()),
             (aurally_client.app_id, proposal_key.encode()),
+            (aurally_client.app_id, encoding.decode_address(test_account.address)),
         ],
     )
 
     assert list(result.return_value)[1] > 0
 
+
+def test_end_proposal_voting(
+    algod_client: AlgodClient,
+    aurally_client: ApplicationClient,
+    test_account: LocalAccount,
+):
+    sp = algod_client.suggested_params()
+    raw_txn = transaction.PaymentTxn(
+        sender=test_account.address, receiver=test_account.address, sp=sp, amt=0
+    )
+    txn = atomic_transaction_composer.TransactionWithSigner(
+        txn=raw_txn, signer=test_account.signer
+    )
+
+    proposal_key = "Proposal to bring Gojo back"
+
+    result = aurally_client.call(
+        aurally_contract.end_proposal_voting,
+        txn=txn,
+        proposal_key=proposal_key,
+        boxes=[
+            (aurally_client.app_id, proposal_key.encode()),
+            (aurally_client.app_id, encoding.decode_address(test_account.address)),
+        ],
+    )
+
+    assert list(result.return_value)[0] == proposal_key
+
+
+def test_unfreeze_auras(
+    algod_client: AlgodClient,
+    aurally_client: ApplicationClient,
+    test_account: LocalAccount,
+    aura_token: int,
+):
+    sp = algod_client.suggested_params()
+    raw_txn = transaction.PaymentTxn(
+        sender=test_account.address, receiver=test_account.address, sp=sp, amt=0
+    )
+    txn = atomic_transaction_composer.TransactionWithSigner(
+        txn=raw_txn, signer=test_account.signer
+    )
+
+    aurally_client.call(
+        aurally_contract.unfreeze_auras,
+        txn=txn,
+        aura=aura_token,
+        acc=test_account.address,
+        boxes=[(aurally_client.app_id, "aura".encode())],
+    )
+
+
+def test_promote_to_admin(
+    algod_client: AlgodClient,
+    aurally_client: ApplicationClient,
+    test_accounts: List[LocalAccount],
+):
+    test_account = test_accounts[0]
+    sp = algod_client.suggested_params()
+    raw_txn = transaction.PaymentTxn(
+        sender=test_account.address, receiver=test_account.address, sp=sp, amt=0
+    )
+    txn = atomic_transaction_composer.TransactionWithSigner(
+        txn=raw_txn, signer=test_account.signer
+    )
+
+    result = aurally_client.call(
+        aurally_contract.promote_to_admin,
+        txn=txn,
+        acc=test_account.address,
+        boxes=[(aurally_client.app_id, encoding.decode_address(test_account.address))],
+    )
+    is_admin = result.return_value
+
+    assert is_admin == "True"
+
+
+def test_demote_from_admin(
+    algod_client: AlgodClient,
+    aurally_client: ApplicationClient,
+    test_accounts: List[LocalAccount],
+):
+    test_account = test_accounts[0]
+    sp = algod_client.suggested_params()
+    raw_txn = transaction.PaymentTxn(
+        sender=test_account.address, receiver=test_account.address, sp=sp, amt=0
+    )
+    txn = atomic_transaction_composer.TransactionWithSigner(
+        txn=raw_txn, signer=test_account.signer
+    )
+
+    result = aurally_client.call(
+        aurally_contract.demote_from_admin,
+        txn=txn,
+        acc=test_account.address,
+        boxes=[(aurally_client.app_id, encoding.decode_address(test_account.address))],
+    )
+    is_admin = result.return_value
+
+    assert is_admin == "False"

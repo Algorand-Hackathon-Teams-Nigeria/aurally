@@ -2,6 +2,38 @@
     "name": "Aurally",
     "methods": [
         {
+            "name": "promote_to_admin",
+            "args": [
+                {
+                    "type": "pay",
+                    "name": "txn"
+                },
+                {
+                    "type": "account",
+                    "name": "acc"
+                }
+            ],
+            "returns": {
+                "type": "string"
+            }
+        },
+        {
+            "name": "demote_from_admin",
+            "args": [
+                {
+                    "type": "pay",
+                    "name": "txn"
+                },
+                {
+                    "type": "account",
+                    "name": "acc"
+                }
+            ],
+            "returns": {
+                "type": "string"
+            }
+        },
+        {
             "name": "register_creator",
             "args": [
                 {
@@ -149,7 +181,7 @@
             "name": "create_art_auction",
             "args": [
                 {
-                    "type": "txn",
+                    "type": "pay",
                     "name": "txn"
                 },
                 {
@@ -181,7 +213,7 @@
             "name": "bid_on_art_auction",
             "args": [
                 {
-                    "type": "txn",
+                    "type": "pay",
                     "name": "txn"
                 },
                 {
@@ -201,7 +233,7 @@
             "name": "complete_art_auction",
             "args": [
                 {
-                    "type": "txn",
+                    "type": "pay",
                     "name": "txn"
                 },
                 {
@@ -221,12 +253,36 @@
                     "name": "txn"
                 },
                 {
+                    "type": "axfer",
+                    "name": "optin_txn"
+                },
+                {
                     "type": "string",
                     "name": "asset_key"
                 },
                 {
                     "type": "string",
                     "name": "nft_type"
+                },
+                {
+                    "type": "account",
+                    "name": "seller"
+                },
+                {
+                    "type": "asset",
+                    "name": "sound_nft_id"
+                },
+                {
+                    "type": "asset",
+                    "name": "aura_id"
+                },
+                {
+                    "type": "axfer",
+                    "name": "aura_optin_txn"
+                },
+                {
+                    "type": "account",
+                    "name": "buyer"
                 }
             ],
             "returns": {
@@ -261,7 +317,7 @@
             "name": "create_proposal",
             "args": [
                 {
-                    "type": "txn",
+                    "type": "pay",
                     "name": "txn"
                 },
                 {
@@ -289,12 +345,56 @@
                     "name": "vote_for"
                 },
                 {
+                    "type": "asset",
+                    "name": "aura_id"
+                },
+                {
+                    "type": "account",
+                    "name": "voter"
+                },
+                {
                     "type": "string",
                     "name": "proposal_key"
                 }
             ],
             "returns": {
                 "type": "(string,uint64,uint64,string)"
+            }
+        },
+        {
+            "name": "end_proposal_voting",
+            "args": [
+                {
+                    "type": "pay",
+                    "name": "txn"
+                },
+                {
+                    "type": "string",
+                    "name": "proposal_key"
+                }
+            ],
+            "returns": {
+                "type": "(string,uint64,uint64,string)"
+            }
+        },
+        {
+            "name": "unfreeze_auras",
+            "args": [
+                {
+                    "type": "pay",
+                    "name": "txn"
+                },
+                {
+                    "type": "asset",
+                    "name": "aura"
+                },
+                {
+                    "type": "account",
+                    "name": "acc"
+                }
+            ],
+            "returns": {
+                "type": "void"
             }
         },
         {
