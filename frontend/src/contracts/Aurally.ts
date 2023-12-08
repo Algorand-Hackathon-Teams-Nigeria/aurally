@@ -27,14 +27,28 @@ import type { TransactionWithSigner } from 'algosdk'
 import { Algodv2, OnApplicationComplete, Transaction, AtomicTransactionComposer } from 'algosdk'
 export const APP_SPEC: AppSpec = {
   "hints": {
-    "register_creator(acfg,string,string)(string,uint64,string,string,uint64)": {
+    "promote_to_admin(pay,account)string": {
+      "call_config": {
+        "no_op": "CALL"
+      }
+    },
+    "demote_from_admin(pay,account)string": {
+      "call_config": {
+        "no_op": "CALL"
+      }
+    },
+    "register_creator(txn,string,string)(bool,bool,uint64,string,string,uint64)": {
       "structs": {
         "output": {
           "name": "AurallyCreative",
           "elements": [
             [
-              "creative_type",
-              "string"
+              "is_music_creative",
+              "bool"
+            ],
+            [
+              "is_art_creative",
+              "bool"
             ],
             [
               "minted",
@@ -59,7 +73,7 @@ export const APP_SPEC: AppSpec = {
         "no_op": "CALL"
       }
     },
-    "create_sound_nft(acfg,string,string,string,string,string,string,uint64,string,string,string,uint64,bool)(uint64,uint64,string,string,string,string,string,uint64,string,string,string,address,bool)": {
+    "create_sound_nft(txn,string,string,string,string,string,string,string,uint64,string,string,string,uint64,bool,asset,account)(uint64,uint64,string,string,string,string,string,uint64,string,string,string,address,bool)": {
       "structs": {
         "output": {
           "name": "SoundNFT",
@@ -123,6 +137,321 @@ export const APP_SPEC: AppSpec = {
         "no_op": "CALL"
       }
     },
+    "create_art_nft(txn,string,string,string,uint64,string,string,uint64,bool,asset,account)(uint64,string,string,uint64,string,string,uint64,uint64,address,bool)": {
+      "structs": {
+        "output": {
+          "name": "ArtNFT",
+          "elements": [
+            [
+              "asset_id",
+              "uint64"
+            ],
+            [
+              "title",
+              "string"
+            ],
+            [
+              "name",
+              "string"
+            ],
+            [
+              "supply",
+              "uint64"
+            ],
+            [
+              "description",
+              "string"
+            ],
+            [
+              "ipfs_location",
+              "string"
+            ],
+            [
+              "price",
+              "uint64"
+            ],
+            [
+              "sold_price",
+              "uint64"
+            ],
+            [
+              "owner",
+              "address"
+            ],
+            [
+              "for_sale",
+              "bool"
+            ]
+          ]
+        }
+      },
+      "call_config": {
+        "no_op": "CALL"
+      }
+    },
+    "create_art_auction(pay,string,string,uint64,uint64,uint64)(address,string,string,uint64,uint64,uint64,uint64,address)": {
+      "structs": {
+        "output": {
+          "name": "ArtAuctionItem",
+          "elements": [
+            [
+              "auctioneer",
+              "address"
+            ],
+            [
+              "item_id",
+              "string"
+            ],
+            [
+              "item_name",
+              "string"
+            ],
+            [
+              "min_bid",
+              "uint64"
+            ],
+            [
+              "starts_at",
+              "uint64"
+            ],
+            [
+              "ends_at",
+              "uint64"
+            ],
+            [
+              "highest_bid",
+              "uint64"
+            ],
+            [
+              "highest_bidder",
+              "address"
+            ]
+          ]
+        }
+      },
+      "call_config": {
+        "no_op": "CALL"
+      }
+    },
+    "bid_on_art_auction(pay,string,uint64)(address,string,string,uint64,uint64,uint64,uint64,address)": {
+      "structs": {
+        "output": {
+          "name": "ArtAuctionItem",
+          "elements": [
+            [
+              "auctioneer",
+              "address"
+            ],
+            [
+              "item_id",
+              "string"
+            ],
+            [
+              "item_name",
+              "string"
+            ],
+            [
+              "min_bid",
+              "uint64"
+            ],
+            [
+              "starts_at",
+              "uint64"
+            ],
+            [
+              "ends_at",
+              "uint64"
+            ],
+            [
+              "highest_bid",
+              "uint64"
+            ],
+            [
+              "highest_bidder",
+              "address"
+            ]
+          ]
+        }
+      },
+      "call_config": {
+        "no_op": "CALL"
+      }
+    },
+    "complete_art_auction(pay,string)(uint64,string,string,uint64,string,string,uint64,uint64,address,bool)": {
+      "structs": {
+        "output": {
+          "name": "ArtNFT",
+          "elements": [
+            [
+              "asset_id",
+              "uint64"
+            ],
+            [
+              "title",
+              "string"
+            ],
+            [
+              "name",
+              "string"
+            ],
+            [
+              "supply",
+              "uint64"
+            ],
+            [
+              "description",
+              "string"
+            ],
+            [
+              "ipfs_location",
+              "string"
+            ],
+            [
+              "price",
+              "uint64"
+            ],
+            [
+              "sold_price",
+              "uint64"
+            ],
+            [
+              "owner",
+              "address"
+            ],
+            [
+              "for_sale",
+              "bool"
+            ]
+          ]
+        }
+      },
+      "call_config": {
+        "no_op": "CALL"
+      }
+    },
+    "purchase_nft(pay,axfer,string,string,account,asset,asset,axfer,account)void": {
+      "call_config": {
+        "no_op": "CALL"
+      }
+    },
+    "transfer_nft(pay,address,string,string)void": {
+      "call_config": {
+        "no_op": "CALL"
+      }
+    },
+    "create_proposal(pay,string,string)(string,uint64,uint64,string)": {
+      "structs": {
+        "output": {
+          "name": "Proposal",
+          "elements": [
+            [
+              "proposal_id",
+              "string"
+            ],
+            [
+              "yes_votes",
+              "uint64"
+            ],
+            [
+              "no_votes",
+              "uint64"
+            ],
+            [
+              "details",
+              "string"
+            ]
+          ]
+        }
+      },
+      "call_config": {
+        "no_op": "CALL"
+      }
+    },
+    "vote_on_proposal(pay,bool,asset,account,string)(string,uint64,uint64,string)": {
+      "structs": {
+        "output": {
+          "name": "Proposal",
+          "elements": [
+            [
+              "proposal_id",
+              "string"
+            ],
+            [
+              "yes_votes",
+              "uint64"
+            ],
+            [
+              "no_votes",
+              "uint64"
+            ],
+            [
+              "details",
+              "string"
+            ]
+          ]
+        }
+      },
+      "call_config": {
+        "no_op": "CALL"
+      }
+    },
+    "end_proposal_voting(pay,string)(string,uint64,uint64,string)": {
+      "structs": {
+        "output": {
+          "name": "Proposal",
+          "elements": [
+            [
+              "proposal_id",
+              "string"
+            ],
+            [
+              "yes_votes",
+              "uint64"
+            ],
+            [
+              "no_votes",
+              "uint64"
+            ],
+            [
+              "details",
+              "string"
+            ]
+          ]
+        }
+      },
+      "call_config": {
+        "no_op": "CALL"
+      }
+    },
+    "unfreeze_auras(pay,asset,account)void": {
+      "call_config": {
+        "no_op": "CALL"
+      }
+    },
+    "create_aura_tokens()(uint64,string,uint64)": {
+      "structs": {
+        "output": {
+          "name": "AurallyToken",
+          "elements": [
+            [
+              "asset_id",
+              "uint64"
+            ],
+            [
+              "asset_key",
+              "string"
+            ],
+            [
+              "asset_total",
+              "uint64"
+            ]
+          ]
+        }
+      },
+      "call_config": {
+        "no_op": "CALL"
+      }
+    },
     "hello(string)string": {
       "call_config": {
         "no_op": "CALL"
@@ -130,12 +459,12 @@ export const APP_SPEC: AppSpec = {
     }
   },
   "source": {
-    "approval": "I3ByYWdtYSB2ZXJzaW9uIDgKaW50Y2Jsb2NrIDAgNjU1MzYgMSAxMApieXRlY2Jsb2NrIDB4IDB4MTUxZjdjNzUgMHgwMDA1NmQ3NTczNjk2Mwp0eG4gTnVtQXBwQXJncwppbnRjXzAgLy8gMAo9PQpibnogbWFpbl9sOAp0eG5hIEFwcGxpY2F0aW9uQXJncyAwCnB1c2hieXRlcyAweGUwY2ZhNjNlIC8vICJyZWdpc3Rlcl9jcmVhdG9yKGFjZmcsc3RyaW5nLHN0cmluZykoc3RyaW5nLHVpbnQ2NCxzdHJpbmcsc3RyaW5nLHVpbnQ2NCkiCj09CmJueiBtYWluX2w3CnR4bmEgQXBwbGljYXRpb25BcmdzIDAKcHVzaGJ5dGVzIDB4MTViM2I0YzggLy8gImNyZWF0ZV9zb3VuZF9uZnQoYWNmZyxzdHJpbmcsc3RyaW5nLHN0cmluZyxzdHJpbmcsc3RyaW5nLHN0cmluZyx1aW50NjQsc3RyaW5nLHN0cmluZyxzdHJpbmcsdWludDY0LGJvb2wpKHVpbnQ2NCx1aW50NjQsc3RyaW5nLHN0cmluZyxzdHJpbmcsc3RyaW5nLHN0cmluZyx1aW50NjQsc3RyaW5nLHN0cmluZyxzdHJpbmcsYWRkcmVzcyxib29sKSIKPT0KYm56IG1haW5fbDYKdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMApwdXNoYnl0ZXMgMHgwMmJlY2UxMSAvLyAiaGVsbG8oc3RyaW5nKXN0cmluZyIKPT0KYm56IG1haW5fbDUKZXJyCm1haW5fbDU6CnR4biBPbkNvbXBsZXRpb24KaW50Y18wIC8vIE5vT3AKPT0KdHhuIEFwcGxpY2F0aW9uSUQKaW50Y18wIC8vIDAKIT0KJiYKYXNzZXJ0CmNhbGxzdWIgaGVsbG9jYXN0ZXJfOQppbnRjXzIgLy8gMQpyZXR1cm4KbWFpbl9sNjoKdHhuIE9uQ29tcGxldGlvbgppbnRjXzAgLy8gTm9PcAo9PQp0eG4gQXBwbGljYXRpb25JRAppbnRjXzAgLy8gMAohPQomJgphc3NlcnQKY2FsbHN1YiBjcmVhdGVzb3VuZG5mdGNhc3Rlcl84CmludGNfMiAvLyAxCnJldHVybgptYWluX2w3Ogp0eG4gT25Db21wbGV0aW9uCmludGNfMCAvLyBOb09wCj09CnR4biBBcHBsaWNhdGlvbklECmludGNfMCAvLyAwCiE9CiYmCmFzc2VydApjYWxsc3ViIHJlZ2lzdGVyY3JlYXRvcmNhc3Rlcl83CmludGNfMiAvLyAxCnJldHVybgptYWluX2w4Ogp0eG4gT25Db21wbGV0aW9uCmludGNfMCAvLyBOb09wCj09CmJueiBtYWluX2wxMAplcnIKbWFpbl9sMTA6CnR4biBBcHBsaWNhdGlvbklECmludGNfMCAvLyAwCj09CmFzc2VydApjYWxsc3ViIGNyZWF0ZV8wCmludGNfMiAvLyAxCnJldHVybgoKLy8gY3JlYXRlCmNyZWF0ZV8wOgpwcm90byAwIDAKaW50Y18yIC8vIDEKcmV0dXJuCgovLyByZWdpc3Rlcl9jcmVhdG9yCnJlZ2lzdGVyY3JlYXRvcl8xOgpwcm90byAzIDEKYnl0ZWNfMCAvLyAiIgpmcmFtZV9kaWcgLTMKZ3R4bnMgU2VuZGVyCmJveF9sZW4Kc3RvcmUgMQpzdG9yZSAwCmxvYWQgMQohCmJ6IHJlZ2lzdGVyY3JlYXRvcl8xX2wyCmZyYW1lX2RpZyAtMwpmcmFtZV9kaWcgLTIKZnJhbWVfZGlnIC0xCmNhbGxzdWIgY3JlYXRlbmZ0b3duZXJfNApyZWdpc3RlcmNyZWF0b3JfMV9sMjoKZnJhbWVfZGlnIC0zCmd0eG5zIFNlbmRlcgpib3hfZ2V0CnN0b3JlIDMKc3RvcmUgMgpsb2FkIDMKYXNzZXJ0CmxvYWQgMgpmcmFtZV9idXJ5IDAKcmV0c3ViCgovLyBjcmVhdGVfc291bmRfbmZ0CmNyZWF0ZXNvdW5kbmZ0XzI6CnByb3RvIDEzIDEKYnl0ZWNfMCAvLyAiIgpkdXAKaW50Y18wIC8vIDAKYnl0ZWNfMCAvLyAiIgpkdXAKaW50Y18wIC8vIDAKZHVwCmJ5dGVjXzAgLy8gIiIKZHVwbiAyCmJ5dGVjXzIgLy8gMHgwMDA1NmQ3NTczNjk2MwpmcmFtZV9idXJ5IDEKZnJhbWVfZGlnIC0xMwpmcmFtZV9kaWcgMQpjYWxsc3ViIGVuc3VyZXJlZ2lzdGVyZWRjcmVhdGl2ZV81CmZyYW1lX2RpZyAtMTIKZXh0cmFjdCAyIDAKYm94X2xlbgpzdG9yZSA1CnN0b3JlIDQKbG9hZCA1CiEKYXNzZXJ0CmZyYW1lX2RpZyAtMTMKZ3R4bnMgQ3JlYXRlZEFzc2V0SUQKZnJhbWVfYnVyeSAyCmZyYW1lX2RpZyAtMTMKZ3R4bnMgU2VuZGVyCmZyYW1lX2J1cnkgMwpmcmFtZV9kaWcgMwpsZW4KcHVzaGludCAzMiAvLyAzMgo9PQphc3NlcnQKZnJhbWVfZGlnIDIKaXRvYgpmcmFtZV9kaWcgLTIKaXRvYgpjb25jYXQKZnJhbWVfZGlnIC0xMQpmcmFtZV9idXJ5IDgKZnJhbWVfZGlnIDgKZnJhbWVfYnVyeSA3CnB1c2hpbnQgNzMgLy8gNzMKZnJhbWVfYnVyeSA1CmZyYW1lX2RpZyA1CmZyYW1lX2RpZyA4CmxlbgorCmZyYW1lX2J1cnkgNgpmcmFtZV9kaWcgNgppbnRjXzEgLy8gNjU1MzYKPAphc3NlcnQKZnJhbWVfZGlnIDUKaXRvYgpleHRyYWN0IDYgMApjb25jYXQKZnJhbWVfZGlnIC0xMApmcmFtZV9idXJ5IDgKZnJhbWVfZGlnIDcKZnJhbWVfZGlnIDgKY29uY2F0CmZyYW1lX2J1cnkgNwpmcmFtZV9kaWcgNgpmcmFtZV9idXJ5IDUKZnJhbWVfZGlnIDUKZnJhbWVfZGlnIDgKbGVuCisKZnJhbWVfYnVyeSA2CmZyYW1lX2RpZyA2CmludGNfMSAvLyA2NTUzNgo8CmFzc2VydApmcmFtZV9kaWcgNQppdG9iCmV4dHJhY3QgNiAwCmNvbmNhdApmcmFtZV9kaWcgLTkKZnJhbWVfYnVyeSA4CmZyYW1lX2RpZyA3CmZyYW1lX2RpZyA4CmNvbmNhdApmcmFtZV9idXJ5IDcKZnJhbWVfZGlnIDYKZnJhbWVfYnVyeSA1CmZyYW1lX2RpZyA1CmZyYW1lX2RpZyA4CmxlbgorCmZyYW1lX2J1cnkgNgpmcmFtZV9kaWcgNgppbnRjXzEgLy8gNjU1MzYKPAphc3NlcnQKZnJhbWVfZGlnIDUKaXRvYgpleHRyYWN0IDYgMApjb25jYXQKZnJhbWVfZGlnIC04CmZyYW1lX2J1cnkgOApmcmFtZV9kaWcgNwpmcmFtZV9kaWcgOApjb25jYXQKZnJhbWVfYnVyeSA3CmZyYW1lX2RpZyA2CmZyYW1lX2J1cnkgNQpmcmFtZV9kaWcgNQpmcmFtZV9kaWcgOApsZW4KKwpmcmFtZV9idXJ5IDYKZnJhbWVfZGlnIDYKaW50Y18xIC8vIDY1NTM2CjwKYXNzZXJ0CmZyYW1lX2RpZyA1Cml0b2IKZXh0cmFjdCA2IDAKY29uY2F0CmZyYW1lX2RpZyAtNwpmcmFtZV9idXJ5IDgKZnJhbWVfZGlnIDcKZnJhbWVfZGlnIDgKY29uY2F0CmZyYW1lX2J1cnkgNwpmcmFtZV9kaWcgNgpmcmFtZV9idXJ5IDUKZnJhbWVfZGlnIDUKZnJhbWVfZGlnIDgKbGVuCisKZnJhbWVfYnVyeSA2CmZyYW1lX2RpZyA2CmludGNfMSAvLyA2NTUzNgo8CmFzc2VydApmcmFtZV9kaWcgNQppdG9iCmV4dHJhY3QgNiAwCmNvbmNhdApmcmFtZV9kaWcgLTYKaXRvYgpjb25jYXQKZnJhbWVfZGlnIC01CmZyYW1lX2J1cnkgOApmcmFtZV9kaWcgNwpmcmFtZV9kaWcgOApjb25jYXQKZnJhbWVfYnVyeSA3CmZyYW1lX2RpZyA2CmZyYW1lX2J1cnkgNQpmcmFtZV9kaWcgNQpmcmFtZV9kaWcgOApsZW4KKwpmcmFtZV9idXJ5IDYKZnJhbWVfZGlnIDYKaW50Y18xIC8vIDY1NTM2CjwKYXNzZXJ0CmZyYW1lX2RpZyA1Cml0b2IKZXh0cmFjdCA2IDAKY29uY2F0CmZyYW1lX2RpZyAtNApmcmFtZV9idXJ5IDgKZnJhbWVfZGlnIDcKZnJhbWVfZGlnIDgKY29uY2F0CmZyYW1lX2J1cnkgNwpmcmFtZV9kaWcgNgpmcmFtZV9idXJ5IDUKZnJhbWVfZGlnIDUKZnJhbWVfZGlnIDgKbGVuCisKZnJhbWVfYnVyeSA2CmZyYW1lX2RpZyA2CmludGNfMSAvLyA2NTUzNgo8CmFzc2VydApmcmFtZV9kaWcgNQppdG9iCmV4dHJhY3QgNiAwCmNvbmNhdApmcmFtZV9kaWcgLTMKZnJhbWVfYnVyeSA4CmZyYW1lX2RpZyA3CmZyYW1lX2RpZyA4CmNvbmNhdApmcmFtZV9idXJ5IDcKZnJhbWVfZGlnIDYKZnJhbWVfYnVyeSA1CmZyYW1lX2RpZyA1Cml0b2IKZXh0cmFjdCA2IDAKY29uY2F0CmZyYW1lX2RpZyAzCmNvbmNhdApwdXNoYnl0ZXMgMHgwMCAvLyAweDAwCmludGNfMCAvLyAwCmZyYW1lX2RpZyAtMQpzZXRiaXQKY29uY2F0CmZyYW1lX2RpZyA3CmNvbmNhdApmcmFtZV9idXJ5IDQKZnJhbWVfZGlnIC0xMgpleHRyYWN0IDIgMApib3hfZGVsCnBvcApmcmFtZV9kaWcgLTEyCmV4dHJhY3QgMiAwCmZyYW1lX2RpZyA0CmJveF9wdXQKZnJhbWVfZGlnIC0xMwpndHhucyBTZW5kZXIKZnJhbWVfYnVyeSA5CmZyYW1lX2RpZyA5CmxlbgpwdXNoaW50IDMyIC8vIDMyCj09CmFzc2VydApmcmFtZV9kaWcgOQpjYWxsc3ViIGluY3JlbWVudGNyZWF0b3JuZnRjb3VudF82CmZyYW1lX2RpZyAtMTIKZXh0cmFjdCAyIDAKYm94X2dldApzdG9yZSA3CnN0b3JlIDYKbG9hZCA3CmFzc2VydApsb2FkIDYKZnJhbWVfYnVyeSAwCnJldHN1YgoKLy8gaGVsbG8KaGVsbG9fMzoKcHJvdG8gMSAxCmJ5dGVjXzAgLy8gIiIKcHVzaGJ5dGVzIDB4NDg2NTZjNmM2ZjJjMjAgLy8gIkhlbGxvLCAiCmZyYW1lX2RpZyAtMQpleHRyYWN0IDIgMApjb25jYXQKZnJhbWVfYnVyeSAwCmZyYW1lX2RpZyAwCmxlbgppdG9iCmV4dHJhY3QgNiAwCmZyYW1lX2RpZyAwCmNvbmNhdApmcmFtZV9idXJ5IDAKcmV0c3ViCgovLyBjcmVhdGVfbmZ0X293bmVyCmNyZWF0ZW5mdG93bmVyXzQ6CnByb3RvIDMgMApieXRlY18wIC8vICIiCmludGNfMCAvLyAwCmR1cApieXRlY18wIC8vICIiCmludGNfMCAvLyAwCmR1cApieXRlY18wIC8vICIiCmR1cApieXRlY18yIC8vIDB4MDAwNTZkNzU3MzY5NjMKZnJhbWVfYnVyeSAwCmludGNfMCAvLyAwCmZyYW1lX2J1cnkgMQpmcmFtZV9kaWcgLTMKZ3R4bnMgQ29uZmlnQXNzZXQKZnJhbWVfYnVyeSAyCmZyYW1lX2RpZyAwCmZyYW1lX2J1cnkgNwpmcmFtZV9kaWcgNwpmcmFtZV9idXJ5IDYKcHVzaGludCAyMiAvLyAyMgpmcmFtZV9idXJ5IDQKZnJhbWVfZGlnIDQKZnJhbWVfZGlnIDcKbGVuCisKZnJhbWVfYnVyeSA1CmZyYW1lX2RpZyA1CmludGNfMSAvLyA2NTUzNgo8CmFzc2VydApmcmFtZV9kaWcgNAppdG9iCmV4dHJhY3QgNiAwCmZyYW1lX2RpZyAxCml0b2IKY29uY2F0CmZyYW1lX2RpZyAtMgpmcmFtZV9idXJ5IDcKZnJhbWVfZGlnIDYKZnJhbWVfZGlnIDcKY29uY2F0CmZyYW1lX2J1cnkgNgpmcmFtZV9kaWcgNQpmcmFtZV9idXJ5IDQKZnJhbWVfZGlnIDQKZnJhbWVfZGlnIDcKbGVuCisKZnJhbWVfYnVyeSA1CmZyYW1lX2RpZyA1CmludGNfMSAvLyA2NTUzNgo8CmFzc2VydApmcmFtZV9kaWcgNAppdG9iCmV4dHJhY3QgNiAwCmNvbmNhdApmcmFtZV9kaWcgLTEKZnJhbWVfYnVyeSA3CmZyYW1lX2RpZyA2CmZyYW1lX2RpZyA3CmNvbmNhdApmcmFtZV9idXJ5IDYKZnJhbWVfZGlnIDUKZnJhbWVfYnVyeSA0CmZyYW1lX2RpZyA0Cml0b2IKZXh0cmFjdCA2IDAKY29uY2F0CmZyYW1lX2RpZyAyCml0b2IKY29uY2F0CmZyYW1lX2RpZyA2CmNvbmNhdApmcmFtZV9idXJ5IDMKZnJhbWVfZGlnIC0zCmd0eG5zIFNlbmRlcgpib3hfZGVsCnBvcApmcmFtZV9kaWcgLTMKZ3R4bnMgU2VuZGVyCmZyYW1lX2RpZyAzCmJveF9wdXQKcmV0c3ViCgovLyBlbnN1cmVfcmVnaXN0ZXJlZF9jcmVhdGl2ZQplbnN1cmVyZWdpc3RlcmVkY3JlYXRpdmVfNToKcHJvdG8gMiAwCmJ5dGVjXzAgLy8gIiIKZHVwCmZyYW1lX2RpZyAtMgpndHhucyBTZW5kZXIKYm94X2xlbgpzdG9yZSA5CnN0b3JlIDgKbG9hZCA5CmFzc2VydApmcmFtZV9kaWcgLTIKZ3R4bnMgU2VuZGVyCmJveF9nZXQKc3RvcmUgMTEKc3RvcmUgMTAKbG9hZCAxMQphc3NlcnQKbG9hZCAxMApmcmFtZV9idXJ5IDAKZnJhbWVfZGlnIDAKZnJhbWVfZGlnIDAKaW50Y18wIC8vIDAKZXh0cmFjdF91aW50MTYKZnJhbWVfZGlnIDAKaW50Y18zIC8vIDEwCmV4dHJhY3RfdWludDE2CnN1YnN0cmluZzMKZnJhbWVfYnVyeSAxCmZyYW1lX2RpZyAxCmV4dHJhY3QgMiAwCmZyYW1lX2RpZyAtMQpleHRyYWN0IDIgMAo9PQphc3NlcnQKcmV0c3ViCgovLyBpbmNyZW1lbnRfY3JlYXRvcl9uZnRfY291bnQKaW5jcmVtZW50Y3JlYXRvcm5mdGNvdW50XzY6CnByb3RvIDEgMApieXRlY18wIC8vICIiCmludGNfMCAvLyAwCmJ5dGVjXzAgLy8gIiIKZHVwbiAyCmludGNfMCAvLyAwCmR1cG4gMgpieXRlY18wIC8vICIiCmR1cApmcmFtZV9kaWcgLTEKYm94X2dldApzdG9yZSAxMwpzdG9yZSAxMgpsb2FkIDEzCmFzc2VydApsb2FkIDEyCmZyYW1lX2J1cnkgMApmcmFtZV9kaWcgMApwdXNoaW50IDIgLy8gMgpleHRyYWN0X3VpbnQ2NApmcmFtZV9idXJ5IDEKZnJhbWVfZGlnIDEKaW50Y18yIC8vIDEKKwpmcmFtZV9idXJ5IDEKZnJhbWVfZGlnIDAKZnJhbWVfZGlnIDAKaW50Y18wIC8vIDAKZXh0cmFjdF91aW50MTYKZnJhbWVfZGlnIDAKaW50Y18zIC8vIDEwCmV4dHJhY3RfdWludDE2CnN1YnN0cmluZzMKZnJhbWVfYnVyeSAyCmZyYW1lX2RpZyAwCmZyYW1lX2RpZyAwCmludGNfMyAvLyAxMApleHRyYWN0X3VpbnQxNgpmcmFtZV9kaWcgMApwdXNoaW50IDEyIC8vIDEyCmV4dHJhY3RfdWludDE2CnN1YnN0cmluZzMKZnJhbWVfYnVyeSAzCmZyYW1lX2RpZyAwCmZyYW1lX2RpZyAwCnB1c2hpbnQgMTIgLy8gMTIKZXh0cmFjdF91aW50MTYKZGlnIDEKbGVuCnN1YnN0cmluZzMKZnJhbWVfYnVyeSA0CmZyYW1lX2RpZyAwCnB1c2hpbnQgMTQgLy8gMTQKZXh0cmFjdF91aW50NjQKZnJhbWVfYnVyeSA1CmZyYW1lX2RpZyAyCmZyYW1lX2J1cnkgOQpmcmFtZV9kaWcgOQpmcmFtZV9idXJ5IDgKcHVzaGludCAyMiAvLyAyMgpmcmFtZV9idXJ5IDYKZnJhbWVfZGlnIDYKZnJhbWVfZGlnIDkKbGVuCisKZnJhbWVfYnVyeSA3CmZyYW1lX2RpZyA3CmludGNfMSAvLyA2NTUzNgo8CmFzc2VydApmcmFtZV9kaWcgNgppdG9iCmV4dHJhY3QgNiAwCmZyYW1lX2RpZyAxCml0b2IKY29uY2F0CmZyYW1lX2RpZyAzCmZyYW1lX2J1cnkgOQpmcmFtZV9kaWcgOApmcmFtZV9kaWcgOQpjb25jYXQKZnJhbWVfYnVyeSA4CmZyYW1lX2RpZyA3CmZyYW1lX2J1cnkgNgpmcmFtZV9kaWcgNgpmcmFtZV9kaWcgOQpsZW4KKwpmcmFtZV9idXJ5IDcKZnJhbWVfZGlnIDcKaW50Y18xIC8vIDY1NTM2CjwKYXNzZXJ0CmZyYW1lX2RpZyA2Cml0b2IKZXh0cmFjdCA2IDAKY29uY2F0CmZyYW1lX2RpZyA0CmZyYW1lX2J1cnkgOQpmcmFtZV9kaWcgOApmcmFtZV9kaWcgOQpjb25jYXQKZnJhbWVfYnVyeSA4CmZyYW1lX2RpZyA3CmZyYW1lX2J1cnkgNgpmcmFtZV9kaWcgNgppdG9iCmV4dHJhY3QgNiAwCmNvbmNhdApmcmFtZV9kaWcgNQppdG9iCmNvbmNhdApmcmFtZV9kaWcgOApjb25jYXQKZnJhbWVfYnVyeSAwCmZyYW1lX2RpZyAtMQpib3hfZGVsCnBvcApmcmFtZV9kaWcgLTEKZnJhbWVfZGlnIDAKYm94X3B1dApyZXRzdWIKCi8vIHJlZ2lzdGVyX2NyZWF0b3JfY2FzdGVyCnJlZ2lzdGVyY3JlYXRvcmNhc3Rlcl83Ogpwcm90byAwIDAKYnl0ZWNfMCAvLyAiIgppbnRjXzAgLy8gMApieXRlY18wIC8vICIiCmR1cAp0eG5hIEFwcGxpY2F0aW9uQXJncyAxCmZyYW1lX2J1cnkgMgp0eG5hIEFwcGxpY2F0aW9uQXJncyAyCmZyYW1lX2J1cnkgMwp0eG4gR3JvdXBJbmRleAppbnRjXzIgLy8gMQotCmZyYW1lX2J1cnkgMQpmcmFtZV9kaWcgMQpndHhucyBUeXBlRW51bQpwdXNoaW50IDMgLy8gYWNmZwo9PQphc3NlcnQKZnJhbWVfZGlnIDEKZnJhbWVfZGlnIDIKZnJhbWVfZGlnIDMKY2FsbHN1YiByZWdpc3RlcmNyZWF0b3JfMQpmcmFtZV9idXJ5IDAKYnl0ZWNfMSAvLyAweDE1MWY3Yzc1CmZyYW1lX2RpZyAwCmNvbmNhdApsb2cKcmV0c3ViCgovLyBjcmVhdGVfc291bmRfbmZ0X2Nhc3RlcgpjcmVhdGVzb3VuZG5mdGNhc3Rlcl84Ogpwcm90byAwIDAKYnl0ZWNfMCAvLyAiIgppbnRjXzAgLy8gMApieXRlY18wIC8vICIiCmR1cG4gNQppbnRjXzAgLy8gMApieXRlY18wIC8vICIiCmR1cG4gMgppbnRjXzAgLy8gMApkdXAKdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMQpmcmFtZV9idXJ5IDIKdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMgpmcmFtZV9idXJ5IDMKdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMwpmcmFtZV9idXJ5IDQKdHhuYSBBcHBsaWNhdGlvbkFyZ3MgNApmcmFtZV9idXJ5IDUKdHhuYSBBcHBsaWNhdGlvbkFyZ3MgNQpmcmFtZV9idXJ5IDYKdHhuYSBBcHBsaWNhdGlvbkFyZ3MgNgpmcmFtZV9idXJ5IDcKdHhuYSBBcHBsaWNhdGlvbkFyZ3MgNwpidG9pCmZyYW1lX2J1cnkgOAp0eG5hIEFwcGxpY2F0aW9uQXJncyA4CmZyYW1lX2J1cnkgOQp0eG5hIEFwcGxpY2F0aW9uQXJncyA5CmZyYW1lX2J1cnkgMTAKdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMTAKZnJhbWVfYnVyeSAxMQp0eG5hIEFwcGxpY2F0aW9uQXJncyAxMQpidG9pCmZyYW1lX2J1cnkgMTIKdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMTIKaW50Y18wIC8vIDAKcHVzaGludCA4IC8vIDgKKgpnZXRiaXQKZnJhbWVfYnVyeSAxMwp0eG4gR3JvdXBJbmRleAppbnRjXzIgLy8gMQotCmZyYW1lX2J1cnkgMQpmcmFtZV9kaWcgMQpndHhucyBUeXBlRW51bQpwdXNoaW50IDMgLy8gYWNmZwo9PQphc3NlcnQKZnJhbWVfZGlnIDEKZnJhbWVfZGlnIDIKZnJhbWVfZGlnIDMKZnJhbWVfZGlnIDQKZnJhbWVfZGlnIDUKZnJhbWVfZGlnIDYKZnJhbWVfZGlnIDcKZnJhbWVfZGlnIDgKZnJhbWVfZGlnIDkKZnJhbWVfZGlnIDEwCmZyYW1lX2RpZyAxMQpmcmFtZV9kaWcgMTIKZnJhbWVfZGlnIDEzCmNhbGxzdWIgY3JlYXRlc291bmRuZnRfMgpmcmFtZV9idXJ5IDAKYnl0ZWNfMSAvLyAweDE1MWY3Yzc1CmZyYW1lX2RpZyAwCmNvbmNhdApsb2cKcmV0c3ViCgovLyBoZWxsb19jYXN0ZXIKaGVsbG9jYXN0ZXJfOToKcHJvdG8gMCAwCmJ5dGVjXzAgLy8gIiIKZHVwCnR4bmEgQXBwbGljYXRpb25BcmdzIDEKZnJhbWVfYnVyeSAxCmZyYW1lX2RpZyAxCmNhbGxzdWIgaGVsbG9fMwpmcmFtZV9idXJ5IDAKYnl0ZWNfMSAvLyAweDE1MWY3Yzc1CmZyYW1lX2RpZyAwCmNvbmNhdApsb2cKcmV0c3Vi",
+    "approval": "I3ByYWdtYSB2ZXJzaW9uIDgKaW50Y2Jsb2NrIDAgMSA2NTUzNiAzMiA1NzYKYnl0ZWNibG9jayAweCAweDE1MWY3Yzc1IDB4NjE2Mzc0Njk3NjY1NWY3MDcyNmY3MDZmNzM2MTZjIDB4MDAgMHg0ZTZmNmU2NSAweDczNmY3NTZlNjQgMHg2MTc1NzI2MSAweDYxNzI3NCAweDAwMDQ2MTc1NzI2MQp0eG4gTnVtQXBwQXJncwppbnRjXzAgLy8gMAo9PQpibnogbWFpbl9sMzQKdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMApwdXNoYnl0ZXMgMHgwODdmZjU1YSAvLyAicHJvbW90ZV90b19hZG1pbihwYXksYWNjb3VudClzdHJpbmciCj09CmJueiBtYWluX2wzMwp0eG5hIEFwcGxpY2F0aW9uQXJncyAwCnB1c2hieXRlcyAweDY0MzNjZTRkIC8vICJkZW1vdGVfZnJvbV9hZG1pbihwYXksYWNjb3VudClzdHJpbmciCj09CmJueiBtYWluX2wzMgp0eG5hIEFwcGxpY2F0aW9uQXJncyAwCnB1c2hieXRlcyAweDJlNGM5ZjQ1IC8vICJyZWdpc3Rlcl9jcmVhdG9yKHR4bixzdHJpbmcsc3RyaW5nKShib29sLGJvb2wsdWludDY0LHN0cmluZyxzdHJpbmcsdWludDY0KSIKPT0KYm56IG1haW5fbDMxCnR4bmEgQXBwbGljYXRpb25BcmdzIDAKcHVzaGJ5dGVzIDB4MTMwMjMzNzAgLy8gImNyZWF0ZV9zb3VuZF9uZnQodHhuLHN0cmluZyxzdHJpbmcsc3RyaW5nLHN0cmluZyxzdHJpbmcsc3RyaW5nLHN0cmluZyx1aW50NjQsc3RyaW5nLHN0cmluZyxzdHJpbmcsdWludDY0LGJvb2wsYXNzZXQsYWNjb3VudCkodWludDY0LHVpbnQ2NCxzdHJpbmcsc3RyaW5nLHN0cmluZyxzdHJpbmcsc3RyaW5nLHVpbnQ2NCxzdHJpbmcsc3RyaW5nLHN0cmluZyxhZGRyZXNzLGJvb2wpIgo9PQpibnogbWFpbl9sMzAKdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMApwdXNoYnl0ZXMgMHgwM2JlYTU4NCAvLyAiY3JlYXRlX2FydF9uZnQodHhuLHN0cmluZyxzdHJpbmcsc3RyaW5nLHVpbnQ2NCxzdHJpbmcsc3RyaW5nLHVpbnQ2NCxib29sLGFzc2V0LGFjY291bnQpKHVpbnQ2NCxzdHJpbmcsc3RyaW5nLHVpbnQ2NCxzdHJpbmcsc3RyaW5nLHVpbnQ2NCx1aW50NjQsYWRkcmVzcyxib29sKSIKPT0KYm56IG1haW5fbDI5CnR4bmEgQXBwbGljYXRpb25BcmdzIDAKcHVzaGJ5dGVzIDB4MmI2ZTI1MWYgLy8gImNyZWF0ZV9hcnRfYXVjdGlvbihwYXksc3RyaW5nLHN0cmluZyx1aW50NjQsdWludDY0LHVpbnQ2NCkoYWRkcmVzcyxzdHJpbmcsc3RyaW5nLHVpbnQ2NCx1aW50NjQsdWludDY0LHVpbnQ2NCxhZGRyZXNzKSIKPT0KYm56IG1haW5fbDI4CnR4bmEgQXBwbGljYXRpb25BcmdzIDAKcHVzaGJ5dGVzIDB4OWFmZjYxNzcgLy8gImJpZF9vbl9hcnRfYXVjdGlvbihwYXksc3RyaW5nLHVpbnQ2NCkoYWRkcmVzcyxzdHJpbmcsc3RyaW5nLHVpbnQ2NCx1aW50NjQsdWludDY0LHVpbnQ2NCxhZGRyZXNzKSIKPT0KYm56IG1haW5fbDI3CnR4bmEgQXBwbGljYXRpb25BcmdzIDAKcHVzaGJ5dGVzIDB4MGY0MjYzMDAgLy8gImNvbXBsZXRlX2FydF9hdWN0aW9uKHBheSxzdHJpbmcpKHVpbnQ2NCxzdHJpbmcsc3RyaW5nLHVpbnQ2NCxzdHJpbmcsc3RyaW5nLHVpbnQ2NCx1aW50NjQsYWRkcmVzcyxib29sKSIKPT0KYm56IG1haW5fbDI2CnR4bmEgQXBwbGljYXRpb25BcmdzIDAKcHVzaGJ5dGVzIDB4Mzk0NzlkNGYgLy8gInB1cmNoYXNlX25mdChwYXksYXhmZXIsc3RyaW5nLHN0cmluZyxhY2NvdW50LGFzc2V0LGFzc2V0LGF4ZmVyLGFjY291bnQpdm9pZCIKPT0KYm56IG1haW5fbDI1CnR4bmEgQXBwbGljYXRpb25BcmdzIDAKcHVzaGJ5dGVzIDB4MDc1MzZjZTMgLy8gInRyYW5zZmVyX25mdChwYXksYWRkcmVzcyxzdHJpbmcsc3RyaW5nKXZvaWQiCj09CmJueiBtYWluX2wyNAp0eG5hIEFwcGxpY2F0aW9uQXJncyAwCnB1c2hieXRlcyAweGY1YzJhYjIzIC8vICJjcmVhdGVfcHJvcG9zYWwocGF5LHN0cmluZyxzdHJpbmcpKHN0cmluZyx1aW50NjQsdWludDY0LHN0cmluZykiCj09CmJueiBtYWluX2wyMwp0eG5hIEFwcGxpY2F0aW9uQXJncyAwCnB1c2hieXRlcyAweGNhNDNhYTlkIC8vICJ2b3RlX29uX3Byb3Bvc2FsKHBheSxib29sLGFzc2V0LGFjY291bnQsc3RyaW5nKShzdHJpbmcsdWludDY0LHVpbnQ2NCxzdHJpbmcpIgo9PQpibnogbWFpbl9sMjIKdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMApwdXNoYnl0ZXMgMHg4MTc3NzgxYSAvLyAiZW5kX3Byb3Bvc2FsX3ZvdGluZyhwYXksc3RyaW5nKShzdHJpbmcsdWludDY0LHVpbnQ2NCxzdHJpbmcpIgo9PQpibnogbWFpbl9sMjEKdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMApwdXNoYnl0ZXMgMHhjZGZmYTdiMyAvLyAidW5mcmVlemVfYXVyYXMocGF5LGFzc2V0LGFjY291bnQpdm9pZCIKPT0KYm56IG1haW5fbDIwCnR4bmEgQXBwbGljYXRpb25BcmdzIDAKcHVzaGJ5dGVzIDB4NWU1M2YyOTcgLy8gImNyZWF0ZV9hdXJhX3Rva2VucygpKHVpbnQ2NCxzdHJpbmcsdWludDY0KSIKPT0KYm56IG1haW5fbDE5CnR4bmEgQXBwbGljYXRpb25BcmdzIDAKcHVzaGJ5dGVzIDB4MDJiZWNlMTEgLy8gImhlbGxvKHN0cmluZylzdHJpbmciCj09CmJueiBtYWluX2wxOAplcnIKbWFpbl9sMTg6CnR4biBPbkNvbXBsZXRpb24KaW50Y18wIC8vIE5vT3AKPT0KdHhuIEFwcGxpY2F0aW9uSUQKaW50Y18wIC8vIDAKIT0KJiYKYXNzZXJ0CmNhbGxzdWIgaGVsbG9jYXN0ZXJfNTgKaW50Y18xIC8vIDEKcmV0dXJuCm1haW5fbDE5Ogp0eG4gT25Db21wbGV0aW9uCmludGNfMCAvLyBOb09wCj09CnR4biBBcHBsaWNhdGlvbklECmludGNfMCAvLyAwCiE9CiYmCmFzc2VydApjYWxsc3ViIGNyZWF0ZWF1cmF0b2tlbnNjYXN0ZXJfNTcKaW50Y18xIC8vIDEKcmV0dXJuCm1haW5fbDIwOgp0eG4gT25Db21wbGV0aW9uCmludGNfMCAvLyBOb09wCj09CnR4biBBcHBsaWNhdGlvbklECmludGNfMCAvLyAwCiE9CiYmCmFzc2VydApjYWxsc3ViIHVuZnJlZXplYXVyYXNjYXN0ZXJfNTYKaW50Y18xIC8vIDEKcmV0dXJuCm1haW5fbDIxOgp0eG4gT25Db21wbGV0aW9uCmludGNfMCAvLyBOb09wCj09CnR4biBBcHBsaWNhdGlvbklECmludGNfMCAvLyAwCiE9CiYmCmFzc2VydApjYWxsc3ViIGVuZHByb3Bvc2Fsdm90aW5nY2FzdGVyXzU1CmludGNfMSAvLyAxCnJldHVybgptYWluX2wyMjoKdHhuIE9uQ29tcGxldGlvbgppbnRjXzAgLy8gTm9PcAo9PQp0eG4gQXBwbGljYXRpb25JRAppbnRjXzAgLy8gMAohPQomJgphc3NlcnQKY2FsbHN1YiB2b3Rlb25wcm9wb3NhbGNhc3Rlcl81NAppbnRjXzEgLy8gMQpyZXR1cm4KbWFpbl9sMjM6CnR4biBPbkNvbXBsZXRpb24KaW50Y18wIC8vIE5vT3AKPT0KdHhuIEFwcGxpY2F0aW9uSUQKaW50Y18wIC8vIDAKIT0KJiYKYXNzZXJ0CmNhbGxzdWIgY3JlYXRlcHJvcG9zYWxjYXN0ZXJfNTMKaW50Y18xIC8vIDEKcmV0dXJuCm1haW5fbDI0Ogp0eG4gT25Db21wbGV0aW9uCmludGNfMCAvLyBOb09wCj09CnR4biBBcHBsaWNhdGlvbklECmludGNfMCAvLyAwCiE9CiYmCmFzc2VydApjYWxsc3ViIHRyYW5zZmVybmZ0Y2FzdGVyXzUyCmludGNfMSAvLyAxCnJldHVybgptYWluX2wyNToKdHhuIE9uQ29tcGxldGlvbgppbnRjXzAgLy8gTm9PcAo9PQp0eG4gQXBwbGljYXRpb25JRAppbnRjXzAgLy8gMAohPQomJgphc3NlcnQKY2FsbHN1YiBwdXJjaGFzZW5mdGNhc3Rlcl81MQppbnRjXzEgLy8gMQpyZXR1cm4KbWFpbl9sMjY6CnR4biBPbkNvbXBsZXRpb24KaW50Y18wIC8vIE5vT3AKPT0KdHhuIEFwcGxpY2F0aW9uSUQKaW50Y18wIC8vIDAKIT0KJiYKYXNzZXJ0CmNhbGxzdWIgY29tcGxldGVhcnRhdWN0aW9uY2FzdGVyXzUwCmludGNfMSAvLyAxCnJldHVybgptYWluX2wyNzoKdHhuIE9uQ29tcGxldGlvbgppbnRjXzAgLy8gTm9PcAo9PQp0eG4gQXBwbGljYXRpb25JRAppbnRjXzAgLy8gMAohPQomJgphc3NlcnQKY2FsbHN1YiBiaWRvbmFydGF1Y3Rpb25jYXN0ZXJfNDkKaW50Y18xIC8vIDEKcmV0dXJuCm1haW5fbDI4Ogp0eG4gT25Db21wbGV0aW9uCmludGNfMCAvLyBOb09wCj09CnR4biBBcHBsaWNhdGlvbklECmludGNfMCAvLyAwCiE9CiYmCmFzc2VydApjYWxsc3ViIGNyZWF0ZWFydGF1Y3Rpb25jYXN0ZXJfNDgKaW50Y18xIC8vIDEKcmV0dXJuCm1haW5fbDI5Ogp0eG4gT25Db21wbGV0aW9uCmludGNfMCAvLyBOb09wCj09CnR4biBBcHBsaWNhdGlvbklECmludGNfMCAvLyAwCiE9CiYmCmFzc2VydApjYWxsc3ViIGNyZWF0ZWFydG5mdGNhc3Rlcl80NwppbnRjXzEgLy8gMQpyZXR1cm4KbWFpbl9sMzA6CnR4biBPbkNvbXBsZXRpb24KaW50Y18wIC8vIE5vT3AKPT0KdHhuIEFwcGxpY2F0aW9uSUQKaW50Y18wIC8vIDAKIT0KJiYKYXNzZXJ0CmNhbGxzdWIgY3JlYXRlc291bmRuZnRjYXN0ZXJfNDYKaW50Y18xIC8vIDEKcmV0dXJuCm1haW5fbDMxOgp0eG4gT25Db21wbGV0aW9uCmludGNfMCAvLyBOb09wCj09CnR4biBBcHBsaWNhdGlvbklECmludGNfMCAvLyAwCiE9CiYmCmFzc2VydApjYWxsc3ViIHJlZ2lzdGVyY3JlYXRvcmNhc3Rlcl80NQppbnRjXzEgLy8gMQpyZXR1cm4KbWFpbl9sMzI6CnR4biBPbkNvbXBsZXRpb24KaW50Y18wIC8vIE5vT3AKPT0KdHhuIEFwcGxpY2F0aW9uSUQKaW50Y18wIC8vIDAKIT0KJiYKYXNzZXJ0CmNhbGxzdWIgZGVtb3RlZnJvbWFkbWluY2FzdGVyXzQ0CmludGNfMSAvLyAxCnJldHVybgptYWluX2wzMzoKdHhuIE9uQ29tcGxldGlvbgppbnRjXzAgLy8gTm9PcAo9PQp0eG4gQXBwbGljYXRpb25JRAppbnRjXzAgLy8gMAohPQomJgphc3NlcnQKY2FsbHN1YiBwcm9tb3RldG9hZG1pbmNhc3Rlcl80MwppbnRjXzEgLy8gMQpyZXR1cm4KbWFpbl9sMzQ6CnR4biBPbkNvbXBsZXRpb24KaW50Y18wIC8vIE5vT3AKPT0KYm56IG1haW5fbDQwCnR4biBPbkNvbXBsZXRpb24KcHVzaGludCA0IC8vIFVwZGF0ZUFwcGxpY2F0aW9uCj09CmJueiBtYWluX2wzOQp0eG4gT25Db21wbGV0aW9uCnB1c2hpbnQgNSAvLyBEZWxldGVBcHBsaWNhdGlvbgo9PQpibnogbWFpbl9sMzgKZXJyCm1haW5fbDM4Ogp0eG4gQXBwbGljYXRpb25JRAppbnRjXzAgLy8gMAohPQphc3NlcnQKY2FsbHN1YiBkZWxldGVfMgppbnRjXzEgLy8gMQpyZXR1cm4KbWFpbl9sMzk6CnR4biBBcHBsaWNhdGlvbklECmludGNfMCAvLyAwCiE9CmFzc2VydApjYWxsc3ViIHVwZGF0ZV8xCmludGNfMSAvLyAxCnJldHVybgptYWluX2w0MDoKdHhuIEFwcGxpY2F0aW9uSUQKaW50Y18wIC8vIDAKPT0KYXNzZXJ0CmNhbGxzdWIgY3JlYXRlXzAKaW50Y18xIC8vIDEKcmV0dXJuCgovLyBjcmVhdGUKY3JlYXRlXzA6CnByb3RvIDAgMApieXRlY18yIC8vICJhY3RpdmVfcHJvcG9zYWwiCmJ5dGVjIDQgLy8gIk5vbmUiCmFwcF9nbG9iYWxfcHV0CnJldHN1YgoKLy8gdXBkYXRlCnVwZGF0ZV8xOgpwcm90byAwIDAKdHhuIFNlbmRlcgpnbG9iYWwgQ3JlYXRvckFkZHJlc3MKPT0KLy8gdW5hdXRob3JpemVkCmFzc2VydAppbnRjXzEgLy8gMQpyZXR1cm4KCi8vIGRlbGV0ZQpkZWxldGVfMjoKcHJvdG8gMCAwCnR4biBTZW5kZXIKZ2xvYmFsIENyZWF0b3JBZGRyZXNzCj09Ci8vIHVuYXV0aG9yaXplZAphc3NlcnQKaW50Y18xIC8vIDEKcmV0dXJuCgovLyBwcm9tb3RlX3RvX2FkbWluCnByb21vdGV0b2FkbWluXzM6CnByb3RvIDIgMQpieXRlY18wIC8vICIiCmR1cApmcmFtZV9kaWcgLTIKY2FsbHN1YiBlbnN1cmV6ZXJvcGF5bWVudF8yMQpmcmFtZV9kaWcgLTIKY2FsbHN1YiBlbnN1cmVzZW5kZXJpc2NyZWF0b3JfMjMKZnJhbWVfZGlnIC0xCnR4bmFzIEFjY291bnRzCmJveF9sZW4Kc3RvcmUgMQpzdG9yZSAwCmxvYWQgMQohCmFzc2VydApwdXNoYnl0ZXMgMHgwMDA0NTQ3Mjc1NjUgLy8gMHgwMDA0NTQ3Mjc1NjUKZnJhbWVfYnVyeSAxCmZyYW1lX2RpZyAtMQp0eG5hcyBBY2NvdW50cwpib3hfZGVsCnBvcApmcmFtZV9kaWcgLTEKdHhuYXMgQWNjb3VudHMKZnJhbWVfZGlnIDEKYm94X3B1dApmcmFtZV9kaWcgLTEKdHhuYXMgQWNjb3VudHMKYm94X2dldApzdG9yZSAzCnN0b3JlIDIKbG9hZCAzCmFzc2VydApsb2FkIDIKZnJhbWVfYnVyeSAwCnJldHN1YgoKLy8gZGVtb3RlX2Zyb21fYWRtaW4KZGVtb3RlZnJvbWFkbWluXzQ6CnByb3RvIDIgMQpieXRlY18wIC8vICIiCmR1cApmcmFtZV9kaWcgLTIKY2FsbHN1YiBlbnN1cmV6ZXJvcGF5bWVudF8yMQpmcmFtZV9kaWcgLTIKY2FsbHN1YiBlbnN1cmVzZW5kZXJpc2NyZWF0b3JfMjMKZnJhbWVfZGlnIC0xCnR4bmFzIEFjY291bnRzCmJveF9sZW4Kc3RvcmUgNQpzdG9yZSA0CmxvYWQgNQphc3NlcnQKcHVzaGJ5dGVzIDB4MDAwNTQ2NjE2YzczNjUgLy8gMHgwMDA1NDY2MTZjNzM2NQpmcmFtZV9idXJ5IDEKZnJhbWVfZGlnIC0xCnR4bmFzIEFjY291bnRzCmJveF9kZWwKcG9wCmZyYW1lX2RpZyAtMQp0eG5hcyBBY2NvdW50cwpmcmFtZV9kaWcgMQpib3hfcHV0CmZyYW1lX2RpZyAtMQp0eG5hcyBBY2NvdW50cwpib3hfZ2V0CnN0b3JlIDcKc3RvcmUgNgpsb2FkIDcKYXNzZXJ0CmxvYWQgNgpmcmFtZV9idXJ5IDAKcmV0c3ViCgovLyByZWdpc3Rlcl9jcmVhdG9yCnJlZ2lzdGVyY3JlYXRvcl81Ogpwcm90byAzIDEKYnl0ZWNfMCAvLyAiIgpmcmFtZV9kaWcgLTMKZ3R4bnMgU2VuZGVyCmJveF9sZW4Kc3RvcmUgOQpzdG9yZSA4CmxvYWQgOQohCmJ6IHJlZ2lzdGVyY3JlYXRvcl81X2wyCmZyYW1lX2RpZyAtMwpmcmFtZV9kaWcgLTIKZnJhbWVfZGlnIC0xCmNhbGxzdWIgY3JlYXRlbmZ0b3duZXJfMjUKcmVnaXN0ZXJjcmVhdG9yXzVfbDI6CmZyYW1lX2RpZyAtMwpndHhucyBTZW5kZXIKYm94X2dldApzdG9yZSAxMQpzdG9yZSAxMApsb2FkIDExCmFzc2VydApsb2FkIDEwCmZyYW1lX2J1cnkgMApyZXRzdWIKCi8vIGNyZWF0ZV9zb3VuZF9uZnQKY3JlYXRlc291bmRuZnRfNjoKcHJvdG8gMTYgMQpieXRlY18wIC8vICIiCmR1cAppbnRjXzAgLy8gMApieXRlY18wIC8vICIiCmR1cAppbnRjXzAgLy8gMApkdXAKYnl0ZWNfMCAvLyAiIgpkdXAKaW50Y18wIC8vIDAKcHVzaGJ5dGVzIDB4MDAwNTZkNzU3MzY5NjMgLy8gMHgwMDA1NmQ3NTczNjk2MwpmcmFtZV9idXJ5IDEKZnJhbWVfZGlnIC0xNgpmcmFtZV9kaWcgMQpjYWxsc3ViIGVuc3VyZXJlZ2lzdGVyZWRjcmVhdGl2ZV8yNgpmcmFtZV9kaWcgLTE0CmV4dHJhY3QgMiAwCmJveF9sZW4Kc3RvcmUgMTMKc3RvcmUgMTIKbG9hZCAxMwohCmFzc2VydAppdHhuX2JlZ2luCnB1c2hpbnQgMyAvLyBhY2ZnCml0eG5fZmllbGQgVHlwZUVudW0KZnJhbWVfZGlnIC0xNQpleHRyYWN0IDIgMAppdHhuX2ZpZWxkIENvbmZpZ0Fzc2V0TmFtZQpmcmFtZV9kaWcgLTQKaXR4bl9maWVsZCBDb25maWdBc3NldFRvdGFsCmZyYW1lX2RpZyAtNQpleHRyYWN0IDIgMAppdHhuX2ZpZWxkIENvbmZpZ0Fzc2V0VVJMCmZyYW1lX2RpZyAtMTYKZ3R4bnMgU2VuZGVyCml0eG5fZmllbGQgQ29uZmlnQXNzZXRNYW5hZ2VyCml0eG5fc3VibWl0Cml0eG4gQ3JlYXRlZEFzc2V0SUQKZnJhbWVfYnVyeSAyCmZyYW1lX2RpZyAtMTYKZ3R4bnMgU2VuZGVyCmZyYW1lX2J1cnkgMwpmcmFtZV9kaWcgMwpsZW4KaW50Y18zIC8vIDMyCj09CmFzc2VydApmcmFtZV9kaWcgMgppdG9iCmZyYW1lX2RpZyAtNAppdG9iCmNvbmNhdApmcmFtZV9kaWcgLTEzCmZyYW1lX2J1cnkgOApmcmFtZV9kaWcgOApmcmFtZV9idXJ5IDcKcHVzaGludCA3MyAvLyA3MwpmcmFtZV9idXJ5IDUKZnJhbWVfZGlnIDUKZnJhbWVfZGlnIDgKbGVuCisKZnJhbWVfYnVyeSA2CmZyYW1lX2RpZyA2CmludGNfMiAvLyA2NTUzNgo8CmFzc2VydApmcmFtZV9kaWcgNQppdG9iCmV4dHJhY3QgNiAwCmNvbmNhdApmcmFtZV9kaWcgLTEyCmZyYW1lX2J1cnkgOApmcmFtZV9kaWcgNwpmcmFtZV9kaWcgOApjb25jYXQKZnJhbWVfYnVyeSA3CmZyYW1lX2RpZyA2CmZyYW1lX2J1cnkgNQpmcmFtZV9kaWcgNQpmcmFtZV9kaWcgOApsZW4KKwpmcmFtZV9idXJ5IDYKZnJhbWVfZGlnIDYKaW50Y18yIC8vIDY1NTM2CjwKYXNzZXJ0CmZyYW1lX2RpZyA1Cml0b2IKZXh0cmFjdCA2IDAKY29uY2F0CmZyYW1lX2RpZyAtMTEKZnJhbWVfYnVyeSA4CmZyYW1lX2RpZyA3CmZyYW1lX2RpZyA4CmNvbmNhdApmcmFtZV9idXJ5IDcKZnJhbWVfZGlnIDYKZnJhbWVfYnVyeSA1CmZyYW1lX2RpZyA1CmZyYW1lX2RpZyA4CmxlbgorCmZyYW1lX2J1cnkgNgpmcmFtZV9kaWcgNgppbnRjXzIgLy8gNjU1MzYKPAphc3NlcnQKZnJhbWVfZGlnIDUKaXRvYgpleHRyYWN0IDYgMApjb25jYXQKZnJhbWVfZGlnIC0xMApmcmFtZV9idXJ5IDgKZnJhbWVfZGlnIDcKZnJhbWVfZGlnIDgKY29uY2F0CmZyYW1lX2J1cnkgNwpmcmFtZV9kaWcgNgpmcmFtZV9idXJ5IDUKZnJhbWVfZGlnIDUKZnJhbWVfZGlnIDgKbGVuCisKZnJhbWVfYnVyeSA2CmZyYW1lX2RpZyA2CmludGNfMiAvLyA2NTUzNgo8CmFzc2VydApmcmFtZV9kaWcgNQppdG9iCmV4dHJhY3QgNiAwCmNvbmNhdApmcmFtZV9kaWcgLTkKZnJhbWVfYnVyeSA4CmZyYW1lX2RpZyA3CmZyYW1lX2RpZyA4CmNvbmNhdApmcmFtZV9idXJ5IDcKZnJhbWVfZGlnIDYKZnJhbWVfYnVyeSA1CmZyYW1lX2RpZyA1CmZyYW1lX2RpZyA4CmxlbgorCmZyYW1lX2J1cnkgNgpmcmFtZV9kaWcgNgppbnRjXzIgLy8gNjU1MzYKPAphc3NlcnQKZnJhbWVfZGlnIDUKaXRvYgpleHRyYWN0IDYgMApjb25jYXQKZnJhbWVfZGlnIC04Cml0b2IKY29uY2F0CmZyYW1lX2RpZyAtNwpmcmFtZV9idXJ5IDgKZnJhbWVfZGlnIDcKZnJhbWVfZGlnIDgKY29uY2F0CmZyYW1lX2J1cnkgNwpmcmFtZV9kaWcgNgpmcmFtZV9idXJ5IDUKZnJhbWVfZGlnIDUKZnJhbWVfZGlnIDgKbGVuCisKZnJhbWVfYnVyeSA2CmZyYW1lX2RpZyA2CmludGNfMiAvLyA2NTUzNgo8CmFzc2VydApmcmFtZV9kaWcgNQppdG9iCmV4dHJhY3QgNiAwCmNvbmNhdApmcmFtZV9kaWcgLTYKZnJhbWVfYnVyeSA4CmZyYW1lX2RpZyA3CmZyYW1lX2RpZyA4CmNvbmNhdApmcmFtZV9idXJ5IDcKZnJhbWVfZGlnIDYKZnJhbWVfYnVyeSA1CmZyYW1lX2RpZyA1CmZyYW1lX2RpZyA4CmxlbgorCmZyYW1lX2J1cnkgNgpmcmFtZV9kaWcgNgppbnRjXzIgLy8gNjU1MzYKPAphc3NlcnQKZnJhbWVfZGlnIDUKaXRvYgpleHRyYWN0IDYgMApjb25jYXQKZnJhbWVfZGlnIC01CmZyYW1lX2J1cnkgOApmcmFtZV9kaWcgNwpmcmFtZV9kaWcgOApjb25jYXQKZnJhbWVfYnVyeSA3CmZyYW1lX2RpZyA2CmZyYW1lX2J1cnkgNQpmcmFtZV9kaWcgNQppdG9iCmV4dHJhY3QgNiAwCmNvbmNhdApmcmFtZV9kaWcgMwpjb25jYXQKYnl0ZWNfMyAvLyAweDAwCmludGNfMCAvLyAwCmZyYW1lX2RpZyAtMwpzZXRiaXQKY29uY2F0CmZyYW1lX2RpZyA3CmNvbmNhdApmcmFtZV9idXJ5IDQKZnJhbWVfZGlnIC0xNApleHRyYWN0IDIgMApib3hfZGVsCnBvcApmcmFtZV9kaWcgLTE0CmV4dHJhY3QgMiAwCmZyYW1lX2RpZyA0CmJveF9wdXQKZnJhbWVfZGlnIDMKY2FsbHN1YiBpbmNyZW1lbnRjcmVhdG9ybmZ0Y291bnRfMjcKaW50Y18xIC8vIDEKZnJhbWVfYnVyeSA5CmZyYW1lX2RpZyAzCmZyYW1lX2RpZyA5CmNhbGxzdWIgc2VuZGF1cmF0b2tlbl8zOQpmcmFtZV9kaWcgLTE0CmV4dHJhY3QgMiAwCmJveF9nZXQKc3RvcmUgMTUKc3RvcmUgMTQKbG9hZCAxNQphc3NlcnQKbG9hZCAxNApmcmFtZV9idXJ5IDAKcmV0c3ViCgovLyBjcmVhdGVfYXJ0X25mdApjcmVhdGVhcnRuZnRfNzoKcHJvdG8gMTEgMQpieXRlY18wIC8vICIiCmR1cAppbnRjXzAgLy8gMApieXRlY18wIC8vICIiCmludGNfMCAvLyAwCmJ5dGVjXzAgLy8gIiIKaW50Y18wIC8vIDAKZHVwCmJ5dGVjXzAgLy8gIiIKZHVwCmludGNfMCAvLyAwCmZyYW1lX2RpZyAtNQpleHRyYWN0IDIgMApib3hfbGVuCnN0b3JlIDI3CnN0b3JlIDI2CmxvYWQgMjcKIQphc3NlcnQKcHVzaGJ5dGVzIDB4MDAwMzYxNzI3NCAvLyAweDAwMDM2MTcyNzQKZnJhbWVfYnVyeSAxCmZyYW1lX2RpZyAtMTEKZnJhbWVfZGlnIDEKY2FsbHN1YiBlbnN1cmVyZWdpc3RlcmVkY3JlYXRpdmVfMjYKaXR4bl9iZWdpbgpwdXNoaW50IDMgLy8gYWNmZwppdHhuX2ZpZWxkIFR5cGVFbnVtCmZyYW1lX2RpZyAtMTAKZXh0cmFjdCAyIDAKaXR4bl9maWVsZCBDb25maWdBc3NldE5hbWUKZnJhbWVfZGlnIC03Cml0eG5fZmllbGQgQ29uZmlnQXNzZXRUb3RhbApmcmFtZV9kaWcgLTUKZXh0cmFjdCAyIDAKaXR4bl9maWVsZCBDb25maWdBc3NldFVSTApmcmFtZV9kaWcgLTExCmd0eG5zIFNlbmRlcgppdHhuX2ZpZWxkIENvbmZpZ0Fzc2V0TWFuYWdlcgppdHhuX3N1Ym1pdAppdHhuIENyZWF0ZWRBc3NldElECmZyYW1lX2J1cnkgMgpmcmFtZV9kaWcgLTExCmd0eG5zIFNlbmRlcgpmcmFtZV9idXJ5IDMKZnJhbWVfZGlnIDMKbGVuCmludGNfMyAvLyAzMgo9PQphc3NlcnQKaW50Y18wIC8vIDAKZnJhbWVfYnVyeSA0CmZyYW1lX2RpZyAyCml0b2IKZnJhbWVfZGlnIC05CmZyYW1lX2J1cnkgOQpmcmFtZV9kaWcgOQpmcmFtZV9idXJ5IDgKcHVzaGludCA3MyAvLyA3MwpmcmFtZV9idXJ5IDYKZnJhbWVfZGlnIDYKZnJhbWVfZGlnIDkKbGVuCisKZnJhbWVfYnVyeSA3CmZyYW1lX2RpZyA3CmludGNfMiAvLyA2NTUzNgo8CmFzc2VydApmcmFtZV9kaWcgNgppdG9iCmV4dHJhY3QgNiAwCmNvbmNhdApmcmFtZV9kaWcgLTgKZnJhbWVfYnVyeSA5CmZyYW1lX2RpZyA4CmZyYW1lX2RpZyA5CmNvbmNhdApmcmFtZV9idXJ5IDgKZnJhbWVfZGlnIDcKZnJhbWVfYnVyeSA2CmZyYW1lX2RpZyA2CmZyYW1lX2RpZyA5CmxlbgorCmZyYW1lX2J1cnkgNwpmcmFtZV9kaWcgNwppbnRjXzIgLy8gNjU1MzYKPAphc3NlcnQKZnJhbWVfZGlnIDYKaXRvYgpleHRyYWN0IDYgMApjb25jYXQKZnJhbWVfZGlnIC03Cml0b2IKY29uY2F0CmZyYW1lX2RpZyAtNgpmcmFtZV9idXJ5IDkKZnJhbWVfZGlnIDgKZnJhbWVfZGlnIDkKY29uY2F0CmZyYW1lX2J1cnkgOApmcmFtZV9kaWcgNwpmcmFtZV9idXJ5IDYKZnJhbWVfZGlnIDYKZnJhbWVfZGlnIDkKbGVuCisKZnJhbWVfYnVyeSA3CmZyYW1lX2RpZyA3CmludGNfMiAvLyA2NTUzNgo8CmFzc2VydApmcmFtZV9kaWcgNgppdG9iCmV4dHJhY3QgNiAwCmNvbmNhdApmcmFtZV9kaWcgLTUKZnJhbWVfYnVyeSA5CmZyYW1lX2RpZyA4CmZyYW1lX2RpZyA5CmNvbmNhdApmcmFtZV9idXJ5IDgKZnJhbWVfZGlnIDcKZnJhbWVfYnVyeSA2CmZyYW1lX2RpZyA2Cml0b2IKZXh0cmFjdCA2IDAKY29uY2F0CmZyYW1lX2RpZyAtNAppdG9iCmNvbmNhdApmcmFtZV9kaWcgNAppdG9iCmNvbmNhdApmcmFtZV9kaWcgMwpjb25jYXQKYnl0ZWNfMyAvLyAweDAwCmludGNfMCAvLyAwCmZyYW1lX2RpZyAtMwpzZXRiaXQKY29uY2F0CmZyYW1lX2RpZyA4CmNvbmNhdApmcmFtZV9idXJ5IDUKZnJhbWVfZGlnIC01CmV4dHJhY3QgMiAwCmJveF9kZWwKcG9wCmZyYW1lX2RpZyAtNQpleHRyYWN0IDIgMApmcmFtZV9kaWcgNQpib3hfcHV0CmZyYW1lX2RpZyAzCmNhbGxzdWIgaW5jcmVtZW50Y3JlYXRvcm5mdGNvdW50XzI3CmludGNfMSAvLyAxCmZyYW1lX2J1cnkgMTAKZnJhbWVfZGlnIDMKZnJhbWVfZGlnIDEwCmNhbGxzdWIgc2VuZGF1cmF0b2tlbl8zOQpmcmFtZV9kaWcgLTUKZXh0cmFjdCAyIDAKYm94X2dldApzdG9yZSAyOQpzdG9yZSAyOApsb2FkIDI5CmFzc2VydApsb2FkIDI4CmZyYW1lX2J1cnkgMApyZXRzdWIKCi8vIGNyZWF0ZV9hcnRfYXVjdGlvbgpjcmVhdGVhcnRhdWN0aW9uXzg6CnByb3RvIDYgMQpieXRlY18wIC8vICIiCmR1cG4gMwpmcmFtZV9kaWcgLTYKY2FsbHN1YiBlbnN1cmV6ZXJvcGF5bWVudF8yMQpmcmFtZV9kaWcgLTIKZnJhbWVfZGlnIC0xCjwKYXNzZXJ0CmZyYW1lX2RpZyAtNApleHRyYWN0IDIgMApib3hfbGVuCnN0b3JlIDMxCnN0b3JlIDMwCmxvYWQgMzEKYXNzZXJ0CmZyYW1lX2RpZyAtNApleHRyYWN0IDIgMApib3hfZ2V0CnN0b3JlIDMzCnN0b3JlIDMyCmxvYWQgMzMKYXNzZXJ0CmxvYWQgMzIKZnJhbWVfYnVyeSAxCmZyYW1lX2RpZyAxCmV4dHJhY3QgNDAgMzIKZnJhbWVfYnVyeSAyCmZyYW1lX2RpZyAxCmZyYW1lX2RpZyAxCnB1c2hpbnQgMTAgLy8gMTAKZXh0cmFjdF91aW50MTYKZnJhbWVfZGlnIDEKcHVzaGludCAyMCAvLyAyMApleHRyYWN0X3VpbnQxNgpzdWJzdHJpbmczCmZyYW1lX2J1cnkgMwpmcmFtZV9kaWcgMgpmcmFtZV9kaWcgLTYKZ3R4bnMgU2VuZGVyCj09CmFzc2VydApmcmFtZV9kaWcgLTYKZnJhbWVfZGlnIC01CmZyYW1lX2RpZyAtNApmcmFtZV9kaWcgMwpmcmFtZV9kaWcgLTMKZnJhbWVfZGlnIC0yCmZyYW1lX2RpZyAtMQpjYWxsc3ViIGNyZWF0ZWFydGF1Y3Rpb25fMjgKZnJhbWVfZGlnIC01CmV4dHJhY3QgMiAwCmJveF9nZXQKc3RvcmUgMzUKc3RvcmUgMzQKbG9hZCAzNQphc3NlcnQKbG9hZCAzNApmcmFtZV9idXJ5IDAKcmV0c3ViCgovLyBiaWRfb25fYXJ0X2F1Y3Rpb24KYmlkb25hcnRhdWN0aW9uXzk6CnByb3RvIDMgMQpieXRlY18wIC8vICIiCmZyYW1lX2RpZyAtMwpjYWxsc3ViIGVuc3VyZXplcm9wYXltZW50XzIxCmZyYW1lX2RpZyAtMgpleHRyYWN0IDIgMApib3hfbGVuCnN0b3JlIDM5CnN0b3JlIDM4CmxvYWQgMzkKYXNzZXJ0CmZyYW1lX2RpZyAtMwpmcmFtZV9kaWcgLTIKZnJhbWVfZGlnIC0xCmNhbGxzdWIgcGVyZm9ybWF1Y3Rpb25iaWRfMjkKZnJhbWVfZGlnIC0yCmV4dHJhY3QgMiAwCmJveF9nZXQKc3RvcmUgNDEKc3RvcmUgNDAKbG9hZCA0MQphc3NlcnQKbG9hZCA0MApmcmFtZV9idXJ5IDAKcmV0c3ViCgovLyBjb21wbGV0ZV9hcnRfYXVjdGlvbgpjb21wbGV0ZWFydGF1Y3Rpb25fMTA6CnByb3RvIDIgMQpieXRlY18wIC8vICIiCmR1cG4gMwpmcmFtZV9kaWcgLTIKY2FsbHN1YiBlbnN1cmV6ZXJvcGF5bWVudF8yMQpmcmFtZV9kaWcgLTEKZXh0cmFjdCAyIDAKYm94X2xlbgpzdG9yZSA0NQpzdG9yZSA0NApsb2FkIDQ1CmFzc2VydApmcmFtZV9kaWcgLTEKZXh0cmFjdCAyIDAKYm94X2dldApzdG9yZSA0NwpzdG9yZSA0Ngpsb2FkIDQ3CmFzc2VydApsb2FkIDQ2CmZyYW1lX2J1cnkgMQpmcmFtZV9kaWcgMQpmcmFtZV9kaWcgMQppbnRjXzMgLy8gMzIKZXh0cmFjdF91aW50MTYKZnJhbWVfZGlnIDEKcHVzaGludCAzNCAvLyAzNApleHRyYWN0X3VpbnQxNgpzdWJzdHJpbmczCmZyYW1lX2J1cnkgMgpmcmFtZV9kaWcgMQpleHRyYWN0IDAgMzIKZnJhbWVfYnVyeSAzCmZyYW1lX2RpZyAzCmZyYW1lX2RpZyAtMgpndHhucyBTZW5kZXIKPT0KYXNzZXJ0CmZyYW1lX2RpZyAtMQpjYWxsc3ViIHRyYW5zZmVyYXJ0YXVjdGlvbml0ZW10b2hpZ2hlc3RiaWRkZXJfMzAKZnJhbWVfZGlnIDIKZXh0cmFjdCAyIDAKYm94X2dldApzdG9yZSA0OQpzdG9yZSA0OApsb2FkIDQ5CmFzc2VydApsb2FkIDQ4CmZyYW1lX2J1cnkgMApyZXRzdWIKCi8vIHB1cmNoYXNlX25mdApwdXJjaGFzZW5mdF8xMToKcHJvdG8gOSAwCmZyYW1lX2RpZyAtNgpleHRyYWN0IDIgMApieXRlYyA1IC8vICJzb3VuZCIKPT0KZnJhbWVfZGlnIC02CmV4dHJhY3QgMiAwCmJ5dGVjIDcgLy8gImFydCIKPT0KfHwKYXNzZXJ0CmZyYW1lX2RpZyAtNgpleHRyYWN0IDIgMApieXRlYyA1IC8vICJzb3VuZCIKPT0KYm56IHB1cmNoYXNlbmZ0XzExX2wyCmZyYW1lX2RpZyAtOQpmcmFtZV9kaWcgLTcKY2FsbHN1YiB0cmFuc2ZlcmFydG5mdF8zNApiIHB1cmNoYXNlbmZ0XzExX2wzCnB1cmNoYXNlbmZ0XzExX2wyOgpmcmFtZV9kaWcgLTkKZnJhbWVfZGlnIC03CmNhbGxzdWIgdHJhbnNmZXJzb3VuZG5mdF8zMwpwdXJjaGFzZW5mdF8xMV9sMzoKcmV0c3ViCgovLyB0cmFuc2Zlcl9uZnQKdHJhbnNmZXJuZnRfMTI6CnByb3RvIDQgMApmcmFtZV9kaWcgLTQKZ3R4bnMgQW1vdW50CmludGNfMCAvLyAwCj09CmFzc2VydApmcmFtZV9kaWcgLTEKZXh0cmFjdCAyIDAKYnl0ZWMgNSAvLyAic291bmQiCj09CmZyYW1lX2RpZyAtMQpleHRyYWN0IDIgMApieXRlYyA3IC8vICJhcnQiCj09Cnx8CmFzc2VydApmcmFtZV9kaWcgLTEKZXh0cmFjdCAyIDAKYnl0ZWMgNSAvLyAic291bmQiCj09CmJueiB0cmFuc2Zlcm5mdF8xMl9sMgpmcmFtZV9kaWcgLTQKZnJhbWVfZGlnIC0yCmZyYW1lX2RpZyAtMwpjYWxsc3ViIHZhbGlkYXRlYW5kdXBkYXRlYXJ0bmZ0b3duZXJfMzcKYiB0cmFuc2Zlcm5mdF8xMl9sMwp0cmFuc2Zlcm5mdF8xMl9sMjoKZnJhbWVfZGlnIC00CmZyYW1lX2RpZyAtMgpmcmFtZV9kaWcgLTMKY2FsbHN1YiB2YWxpZGF0ZWFuZHVwZGF0ZXNvdW5kbmZ0b3duZXJfMzYKdHJhbnNmZXJuZnRfMTJfbDM6CnJldHN1YgoKLy8gY3JlYXRlX3Byb3Bvc2FsCmNyZWF0ZXByb3Bvc2FsXzEzOgpwcm90byAzIDEKYnl0ZWNfMCAvLyAiIgpkdXAKaW50Y18wIC8vIDAKZHVwCmJ5dGVjXzAgLy8gIiIKaW50Y18wIC8vIDAKZHVwCmJ5dGVjXzAgLy8gIiIKZHVwCmZyYW1lX2RpZyAtMwpndHhucyBTZW5kZXIKZnJhbWVfYnVyeSAxCmZyYW1lX2RpZyAxCmxlbgppbnRjXzMgLy8gMzIKPT0KYXNzZXJ0CmZyYW1lX2RpZyAxCmNhbGxzdWIgZW5zdXJlaXNhZG1pbm9yYXBwY3JlYXRvcl8yNApmcmFtZV9kaWcgLTMKY2FsbHN1YiBlbnN1cmV6ZXJvcGF5bWVudF8yMQpmcmFtZV9kaWcgLTMKY2FsbHN1YiBlbnN1cmVuZnRvd25lcmV4aXN0c2Zyb210eG5fMjAKYnl0ZWNfMiAvLyAiYWN0aXZlX3Byb3Bvc2FsIgphcHBfZ2xvYmFsX2dldApieXRlYyA0IC8vICJOb25lIgo9PQovLyBUaGVyZSdzIGFscmVhZHkgYW4gYWN0aXZlIHByb3Bvc2FsCmFzc2VydApmcmFtZV9kaWcgLTIKZXh0cmFjdCAyIDAKYm94X2xlbgpzdG9yZSA2OQpzdG9yZSA2OApsb2FkIDY5CiEKLy8gUHJvcG9zYWwgd2l0aCB0aGlzIGtleSBhbHJlYWR5IGV4aXN0cwphc3NlcnQKaW50Y18wIC8vIDAKZnJhbWVfYnVyeSAyCmludGNfMCAvLyAwCmZyYW1lX2J1cnkgMwpmcmFtZV9kaWcgLTIKZnJhbWVfYnVyeSA4CmZyYW1lX2RpZyA4CmZyYW1lX2J1cnkgNwpwdXNoaW50IDIwIC8vIDIwCmZyYW1lX2J1cnkgNQpmcmFtZV9kaWcgNQpmcmFtZV9kaWcgOApsZW4KKwpmcmFtZV9idXJ5IDYKZnJhbWVfZGlnIDYKaW50Y18yIC8vIDY1NTM2CjwKYXNzZXJ0CmZyYW1lX2RpZyA1Cml0b2IKZXh0cmFjdCA2IDAKZnJhbWVfZGlnIDIKaXRvYgpjb25jYXQKZnJhbWVfZGlnIDMKaXRvYgpjb25jYXQKZnJhbWVfZGlnIC0xCmZyYW1lX2J1cnkgOApmcmFtZV9kaWcgNwpmcmFtZV9kaWcgOApjb25jYXQKZnJhbWVfYnVyeSA3CmZyYW1lX2RpZyA2CmZyYW1lX2J1cnkgNQpmcmFtZV9kaWcgNQppdG9iCmV4dHJhY3QgNiAwCmNvbmNhdApmcmFtZV9kaWcgNwpjb25jYXQKZnJhbWVfYnVyeSA0CmZyYW1lX2RpZyAtMgpleHRyYWN0IDIgMApib3hfZGVsCnBvcApmcmFtZV9kaWcgLTIKZXh0cmFjdCAyIDAKZnJhbWVfZGlnIDQKYm94X3B1dApieXRlY18yIC8vICJhY3RpdmVfcHJvcG9zYWwiCmZyYW1lX2RpZyAtMgpleHRyYWN0IDIgMAphcHBfZ2xvYmFsX3B1dApmcmFtZV9kaWcgLTIKZXh0cmFjdCAyIDAKYm94X2dldApzdG9yZSA3MQpzdG9yZSA3MApsb2FkIDcxCmFzc2VydApsb2FkIDcwCmZyYW1lX2J1cnkgMApyZXRzdWIKCi8vIHZvdGVfb25fcHJvcG9zYWwKdm90ZW9ucHJvcG9zYWxfMTQ6CnByb3RvIDUgMQpieXRlY18wIC8vICIiCmludGNfMCAvLyAwCmJ5dGVjXzAgLy8gIiIKZHVwCmludGNfMCAvLyAwCmR1cApieXRlY18wIC8vICIiCmludGNfMCAvLyAwCmR1cApieXRlY18wIC8vICIiCmR1cApmcmFtZV9kaWcgLTUKY2FsbHN1YiBlbnN1cmVuZnRvd25lcmV4aXN0c2Zyb210eG5fMjAKZnJhbWVfZGlnIC01CmNhbGxzdWIgZW5zdXJlemVyb3BheW1lbnRfMjEKZnJhbWVfZGlnIC0xCmNhbGxzdWIgZW5zdXJlcHJvcG9zYWxleGlzdHNfMjIKZnJhbWVfZGlnIC0xCmV4dHJhY3QgMiAwCmJ5dGVjXzIgLy8gImFjdGl2ZV9wcm9wb3NhbCIKYXBwX2dsb2JhbF9nZXQKPT0KLy8gVGhpcyBwcm9wb3NhbCBpcyBjdXJyZW5sdHkgbm90IGFjdGl2ZQphc3NlcnQKZnJhbWVfZGlnIC01CmNhbGxzdWIgZW5zdXJlaGFzYXVyYXNfNDAKaW50Y18wIC8vIDAKZnJhbWVfYnVyeSAxCmZyYW1lX2RpZyAtNQpmcmFtZV9kaWcgMQpjYWxsc3ViIGVuc3VyZWF1cmFzZnJvemVuc3RhdHVzXzQxCmZyYW1lX2RpZyAtMQpleHRyYWN0IDIgMApib3hfZ2V0CnN0b3JlIDc3CnN0b3JlIDc2CmxvYWQgNzcKYXNzZXJ0CmxvYWQgNzYKZnJhbWVfYnVyeSAyCmZyYW1lX2RpZyAyCmZyYW1lX2RpZyAyCmludGNfMCAvLyAwCmV4dHJhY3RfdWludDE2CmZyYW1lX2RpZyAyCnB1c2hpbnQgMTggLy8gMTgKZXh0cmFjdF91aW50MTYKc3Vic3RyaW5nMwpmcmFtZV9idXJ5IDMKZnJhbWVfZGlnIDIKcHVzaGludCAyIC8vIDIKZXh0cmFjdF91aW50NjQKZnJhbWVfYnVyeSA0CmZyYW1lX2RpZyAyCnB1c2hpbnQgMTAgLy8gMTAKZXh0cmFjdF91aW50NjQKZnJhbWVfYnVyeSA1CmZyYW1lX2RpZyAyCmZyYW1lX2RpZyAyCnB1c2hpbnQgMTggLy8gMTgKZXh0cmFjdF91aW50MTYKZGlnIDEKbGVuCnN1YnN0cmluZzMKZnJhbWVfYnVyeSA2CmZyYW1lX2RpZyAtNApibnogdm90ZW9ucHJvcG9zYWxfMTRfbDIKZnJhbWVfZGlnIDUKaW50Y18xIC8vIDEKKwpmcmFtZV9idXJ5IDUKYiB2b3Rlb25wcm9wb3NhbF8xNF9sMwp2b3Rlb25wcm9wb3NhbF8xNF9sMjoKZnJhbWVfZGlnIDQKaW50Y18xIC8vIDEKKwpmcmFtZV9idXJ5IDQKdm90ZW9ucHJvcG9zYWxfMTRfbDM6CmZyYW1lX2RpZyAzCmZyYW1lX2J1cnkgMTAKZnJhbWVfZGlnIDEwCmZyYW1lX2J1cnkgOQpwdXNoaW50IDIwIC8vIDIwCmZyYW1lX2J1cnkgNwpmcmFtZV9kaWcgNwpmcmFtZV9kaWcgMTAKbGVuCisKZnJhbWVfYnVyeSA4CmZyYW1lX2RpZyA4CmludGNfMiAvLyA2NTUzNgo8CmFzc2VydApmcmFtZV9kaWcgNwppdG9iCmV4dHJhY3QgNiAwCmZyYW1lX2RpZyA0Cml0b2IKY29uY2F0CmZyYW1lX2RpZyA1Cml0b2IKY29uY2F0CmZyYW1lX2RpZyA2CmZyYW1lX2J1cnkgMTAKZnJhbWVfZGlnIDkKZnJhbWVfZGlnIDEwCmNvbmNhdApmcmFtZV9idXJ5IDkKZnJhbWVfZGlnIDgKZnJhbWVfYnVyeSA3CmZyYW1lX2RpZyA3Cml0b2IKZXh0cmFjdCA2IDAKY29uY2F0CmZyYW1lX2RpZyA5CmNvbmNhdApmcmFtZV9idXJ5IDIKZnJhbWVfZGlnIC0xCmV4dHJhY3QgMiAwCmJveF9kZWwKcG9wCmZyYW1lX2RpZyAtMQpleHRyYWN0IDIgMApmcmFtZV9kaWcgMgpib3hfcHV0CmludGNfMSAvLyAxCmZyYW1lX2J1cnkgMQpmcmFtZV9kaWcgLTUKZnJhbWVfZGlnIDEKY2FsbHN1YiBzZXRhdXJhdG9rZW5zZnJvemVuXzQyCmZyYW1lX2RpZyAtNQpmcmFtZV9kaWcgMQpjYWxsc3ViIGVuc3VyZWF1cmFzZnJvemVuc3RhdHVzXzQxCmZyYW1lX2RpZyAtMQpleHRyYWN0IDIgMApib3hfZ2V0CnN0b3JlIDc5CnN0b3JlIDc4CmxvYWQgNzkKYXNzZXJ0CmxvYWQgNzgKZnJhbWVfYnVyeSAwCnJldHN1YgoKLy8gZW5kX3Byb3Bvc2FsX3ZvdGluZwplbmRwcm9wb3NhbHZvdGluZ18xNToKcHJvdG8gMiAxCmJ5dGVjXzAgLy8gIiIKZHVwCmZyYW1lX2RpZyAtMgpjYWxsc3ViIGVuc3VyZXplcm9wYXltZW50XzIxCmZyYW1lX2RpZyAtMgpndHhucyBTZW5kZXIKZnJhbWVfYnVyeSAxCmZyYW1lX2RpZyAxCmxlbgppbnRjXzMgLy8gMzIKPT0KYXNzZXJ0CmZyYW1lX2RpZyAxCmNhbGxzdWIgZW5zdXJlaXNhZG1pbm9yYXBwY3JlYXRvcl8yNApmcmFtZV9kaWcgLTEKY2FsbHN1YiBlbnN1cmVwcm9wb3NhbGV4aXN0c18yMgpieXRlY18yIC8vICJhY3RpdmVfcHJvcG9zYWwiCmFwcF9nbG9iYWxfZ2V0CmZyYW1lX2RpZyAtMQpleHRyYWN0IDIgMAo9PQphc3NlcnQKYnl0ZWNfMiAvLyAiYWN0aXZlX3Byb3Bvc2FsIgpieXRlYyA0IC8vICJOb25lIgphcHBfZ2xvYmFsX3B1dApmcmFtZV9kaWcgLTEKZXh0cmFjdCAyIDAKYm94X2dldApzdG9yZSA5MgpzdG9yZSA5MQpsb2FkIDkyCmFzc2VydApsb2FkIDkxCmZyYW1lX2J1cnkgMApyZXRzdWIKCi8vIHVuZnJlZXplX2F1cmFzCnVuZnJlZXplYXVyYXNfMTY6CnByb3RvIDMgMAppbnRjXzAgLy8gMApmcmFtZV9kaWcgLTMKY2FsbHN1YiBlbnN1cmV6ZXJvcGF5bWVudF8yMQpieXRlY18yIC8vICJhY3RpdmVfcHJvcG9zYWwiCmFwcF9nbG9iYWxfZ2V0CmJ5dGVjIDQgLy8gIk5vbmUiCj09Ci8vIENhbm5vdCB1bmZyZWV6ZSB3aGlsZSBhIHByb3Bvc2FsIGlzIHN0aWxsIGFjdGl2ZQphc3NlcnQKaW50Y18wIC8vIDAKZnJhbWVfYnVyeSAwCmZyYW1lX2RpZyAtMwpmcmFtZV9kaWcgMApjYWxsc3ViIHNldGF1cmF0b2tlbnNmcm96ZW5fNDIKZnJhbWVfZGlnIC0zCmZyYW1lX2RpZyAwCmNhbGxzdWIgZW5zdXJlYXVyYXNmcm96ZW5zdGF0dXNfNDEKcmV0c3ViCgovLyBjcmVhdGVfYXVyYV90b2tlbnMKY3JlYXRlYXVyYXRva2Vuc18xNzoKcHJvdG8gMCAxCmJ5dGVjXzAgLy8gIiIKZHVwCmludGNfMCAvLyAwCmJ5dGVjIDggLy8gMHgwMDA0NjE3NTcyNjEKZnJhbWVfYnVyeSAxCmZyYW1lX2RpZyAxCmV4dHJhY3QgMiAwCmJveF9sZW4Kc3RvcmUgOTQKc3RvcmUgOTMKbG9hZCA5NAohCmFzc2VydApwdXNoaW50IDEwMDAwMDAwMDAwMDAgLy8gMTAwMDAwMDAwMDAwMApmcmFtZV9idXJ5IDIKZnJhbWVfZGlnIDEKZnJhbWVfZGlnIDIKY2FsbHN1YiBib290c3RyYXB0b2tlbl8zOApmcmFtZV9kaWcgMQpleHRyYWN0IDIgMApib3hfbGVuCnN0b3JlIDk2CnN0b3JlIDk1CmxvYWQgOTYKYXNzZXJ0CmZyYW1lX2RpZyAxCmV4dHJhY3QgMiAwCmJveF9nZXQKc3RvcmUgOTgKc3RvcmUgOTcKbG9hZCA5OAphc3NlcnQKbG9hZCA5NwpmcmFtZV9idXJ5IDAKcmV0c3ViCgovLyBoZWxsbwpoZWxsb18xODoKcHJvdG8gMSAxCmJ5dGVjXzAgLy8gIiIKZnJhbWVfZGlnIC0xCmV4dHJhY3QgMiAwCnB1c2hieXRlcyAweDIwNTc2ZjcyNmM2NCAvLyAiIFdvcmxkIgpjb25jYXQKZnJhbWVfYnVyeSAwCmZyYW1lX2RpZyAwCmxlbgppdG9iCmV4dHJhY3QgNiAwCmZyYW1lX2RpZyAwCmNvbmNhdApmcmFtZV9idXJ5IDAKcmV0c3ViCgovLyBlbnN1cmVfYXVyYXNfZXhpc3QKZW5zdXJlYXVyYXNleGlzdF8xOToKcHJvdG8gMCAwCmJ5dGVjIDYgLy8gImF1cmEiCmJveF9sZW4Kc3RvcmUgMjUKc3RvcmUgMjQKbG9hZCAyNQovLyBhdXJhIHRva2VucyBoYXZlIG5vdCBiZWVuIGNyZWF0ZWQgeWV0CmFzc2VydApyZXRzdWIKCi8vIGVuc3VyZV9uZnRfb3duZXJfZXhpc3RzX2Zyb21fdHhuCmVuc3VyZW5mdG93bmVyZXhpc3RzZnJvbXR4bl8yMDoKcHJvdG8gMSAwCmZyYW1lX2RpZyAtMQpndHhucyBTZW5kZXIKYm94X2xlbgpzdG9yZSA3MwpzdG9yZSA3Mgpsb2FkIDczCi8vIFVzZXIgaXMgbm90IGFuIE5GVCBvd25lcgphc3NlcnQKcmV0c3ViCgovLyBlbnN1cmVfemVyb19wYXltZW50CmVuc3VyZXplcm9wYXltZW50XzIxOgpwcm90byAxIDAKZnJhbWVfZGlnIC0xCmd0eG5zIEFtb3VudAppbnRjXzAgLy8gMAo9PQovLyBQYXltZW50IGFtb3VudCBtdXN0IGJlIDAKYXNzZXJ0CnJldHN1YgoKLy8gZW5zdXJlX3Byb3Bvc2FsX2V4aXN0cwplbnN1cmVwcm9wb3NhbGV4aXN0c18yMjoKcHJvdG8gMSAwCmZyYW1lX2RpZyAtMQpleHRyYWN0IDIgMApib3hfbGVuCnN0b3JlIDgxCnN0b3JlIDgwCmxvYWQgODEKLy8gUHJvcG9zYWwgd2l0aCBzcGVjaWZpZWQga2V5IHdhcyBub3QgZm91bmQKYXNzZXJ0CnJldHN1YgoKLy8gZW5zdXJlX3NlbmRlcl9pc19jcmVhdG9yCmVuc3VyZXNlbmRlcmlzY3JlYXRvcl8yMzoKcHJvdG8gMSAwCmZyYW1lX2RpZyAtMQpndHhucyBTZW5kZXIKZ2xvYmFsIENyZWF0b3JBZGRyZXNzCj09Ci8vIE5vdCBhcHAgY3JlYXRvcjogWW91IGFyZSBub3QgYXV0aG9yaXNlZCB0byBwZXJmb3JtIHRoaXMgYWN0aW9uCmFzc2VydApyZXRzdWIKCi8vIGVuc3VyZV9pc19hZG1pbl9vcl9hcHBfY3JlYXRvcgplbnN1cmVpc2FkbWlub3JhcHBjcmVhdG9yXzI0Ogpwcm90byAxIDAKZnJhbWVfZGlnIC0xCmdsb2JhbCBDcmVhdG9yQWRkcmVzcwo9PQpmcmFtZV9kaWcgLTEKYm94X2xlbgpzdG9yZSA3NQpzdG9yZSA3NApsb2FkIDc1Cnx8Ci8vIE5vdCBhZG1pbjogWW91IGFyZSBub3QgYXV0aG9yaXNlZCB0byBwZXJmb3JtIHRoaXMgYWN0aW9uCmFzc2VydApyZXRzdWIKCi8vIGNyZWF0ZV9uZnRfb3duZXIKY3JlYXRlbmZ0b3duZXJfMjU6CnByb3RvIDMgMAppbnRjXzAgLy8gMApkdXBuIDMKYnl0ZWNfMCAvLyAiIgppbnRjXzAgLy8gMApkdXAKYnl0ZWNfMCAvLyAiIgpkdXAKaXR4bl9iZWdpbgpwdXNoaW50IDMgLy8gYWNmZwppdHhuX2ZpZWxkIFR5cGVFbnVtCmZyYW1lX2RpZyAtMwpndHhucyBTZW5kZXIKaXR4bl9maWVsZCBDb25maWdBc3NldE5hbWUKZ2xvYmFsIEN1cnJlbnRBcHBsaWNhdGlvbkFkZHJlc3MKaXR4bl9maWVsZCBDb25maWdBc3NldE1hbmFnZXIKaW50Y18xIC8vIDEKaXR4bl9maWVsZCBDb25maWdBc3NldFRvdGFsCml0eG5fc3VibWl0Cml0eG4gQ3JlYXRlZEFzc2V0SUQKZnJhbWVfYnVyeSAwCmludGNfMCAvLyAwCmZyYW1lX2J1cnkgMQppbnRjXzAgLy8gMApmcmFtZV9idXJ5IDIKaW50Y18wIC8vIDAKZnJhbWVfYnVyeSAzCmJ5dGVjXzMgLy8gMHgwMAppbnRjXzAgLy8gMApmcmFtZV9kaWcgMQpzZXRiaXQKaW50Y18xIC8vIDEKZnJhbWVfZGlnIDIKc2V0Yml0CmZyYW1lX2RpZyAzCml0b2IKY29uY2F0CmZyYW1lX2RpZyAtMgpmcmFtZV9idXJ5IDgKZnJhbWVfZGlnIDgKZnJhbWVfYnVyeSA3CnB1c2hpbnQgMjEgLy8gMjEKZnJhbWVfYnVyeSA1CmZyYW1lX2RpZyA1CmZyYW1lX2RpZyA4CmxlbgorCmZyYW1lX2J1cnkgNgpmcmFtZV9kaWcgNgppbnRjXzIgLy8gNjU1MzYKPAphc3NlcnQKZnJhbWVfZGlnIDUKaXRvYgpleHRyYWN0IDYgMApjb25jYXQKZnJhbWVfZGlnIC0xCmZyYW1lX2J1cnkgOApmcmFtZV9kaWcgNwpmcmFtZV9kaWcgOApjb25jYXQKZnJhbWVfYnVyeSA3CmZyYW1lX2RpZyA2CmZyYW1lX2J1cnkgNQpmcmFtZV9kaWcgNQppdG9iCmV4dHJhY3QgNiAwCmNvbmNhdApmcmFtZV9kaWcgMAppdG9iCmNvbmNhdApmcmFtZV9kaWcgNwpjb25jYXQKZnJhbWVfYnVyeSA0CmZyYW1lX2RpZyAtMwpndHhucyBTZW5kZXIKYm94X2RlbApwb3AKZnJhbWVfZGlnIC0zCmd0eG5zIFNlbmRlcgpmcmFtZV9kaWcgNApib3hfcHV0CnJldHN1YgoKLy8gZW5zdXJlX3JlZ2lzdGVyZWRfY3JlYXRpdmUKZW5zdXJlcmVnaXN0ZXJlZGNyZWF0aXZlXzI2Ogpwcm90byAyIDAKYnl0ZWNfMCAvLyAiIgppbnRjXzAgLy8gMApkdXBuIDIKYnl0ZWNfMCAvLyAiIgpkdXAKaW50Y18wIC8vIDAKZHVwbiAyCmJ5dGVjXzAgLy8gIiIKZHVwCmZyYW1lX2RpZyAtMgpndHhucyBTZW5kZXIKYm94X2xlbgpzdG9yZSAxNwpzdG9yZSAxNgpsb2FkIDE3CmFzc2VydApmcmFtZV9kaWcgLTIKZ3R4bnMgU2VuZGVyCmJveF9nZXQKc3RvcmUgMTkKc3RvcmUgMTgKbG9hZCAxOQphc3NlcnQKbG9hZCAxOApmcmFtZV9idXJ5IDAKZnJhbWVfZGlnIDAKaW50Y18wIC8vIDAKZ2V0Yml0CmZyYW1lX2J1cnkgMQpmcmFtZV9kaWcgMAppbnRjXzEgLy8gMQpnZXRiaXQKZnJhbWVfYnVyeSAyCmZyYW1lX2RpZyAwCmludGNfMSAvLyAxCmV4dHJhY3RfdWludDY0CmZyYW1lX2J1cnkgMwpmcmFtZV9kaWcgMApmcmFtZV9kaWcgMApwdXNoaW50IDkgLy8gOQpleHRyYWN0X3VpbnQxNgpmcmFtZV9kaWcgMApwdXNoaW50IDExIC8vIDExCmV4dHJhY3RfdWludDE2CnN1YnN0cmluZzMKZnJhbWVfYnVyeSA0CmZyYW1lX2RpZyAwCmZyYW1lX2RpZyAwCnB1c2hpbnQgMTEgLy8gMTEKZXh0cmFjdF91aW50MTYKZGlnIDEKbGVuCnN1YnN0cmluZzMKZnJhbWVfYnVyeSA1CmZyYW1lX2RpZyAwCnB1c2hpbnQgMTMgLy8gMTMKZXh0cmFjdF91aW50NjQKZnJhbWVfYnVyeSA2CmZyYW1lX2RpZyAtMQpleHRyYWN0IDIgMApwdXNoYnl0ZXMgMHg2ZDc1NzM2OTYzIC8vICJtdXNpYyIKPT0KYm56IGVuc3VyZXJlZ2lzdGVyZWRjcmVhdGl2ZV8yNl9sMwplbnN1cmVyZWdpc3RlcmVkY3JlYXRpdmVfMjZfbDE6CmZyYW1lX2RpZyAtMQpleHRyYWN0IDIgMApieXRlYyA3IC8vICJhcnQiCj09CmJ6IGVuc3VyZXJlZ2lzdGVyZWRjcmVhdGl2ZV8yNl9sNAppbnRjXzEgLy8gMQpmcmFtZV9idXJ5IDEKYiBlbnN1cmVyZWdpc3RlcmVkY3JlYXRpdmVfMjZfbDQKZW5zdXJlcmVnaXN0ZXJlZGNyZWF0aXZlXzI2X2wzOgppbnRjXzEgLy8gMQpmcmFtZV9idXJ5IDEKYiBlbnN1cmVyZWdpc3RlcmVkY3JlYXRpdmVfMjZfbDEKZW5zdXJlcmVnaXN0ZXJlZGNyZWF0aXZlXzI2X2w0OgpieXRlY18zIC8vIDB4MDAKaW50Y18wIC8vIDAKZnJhbWVfZGlnIDEKc2V0Yml0CmludGNfMSAvLyAxCmZyYW1lX2RpZyAyCnNldGJpdApmcmFtZV9kaWcgMwppdG9iCmNvbmNhdApmcmFtZV9kaWcgNApmcmFtZV9idXJ5IDEwCmZyYW1lX2RpZyAxMApmcmFtZV9idXJ5IDkKcHVzaGludCAyMSAvLyAyMQpmcmFtZV9idXJ5IDcKZnJhbWVfZGlnIDcKZnJhbWVfZGlnIDEwCmxlbgorCmZyYW1lX2J1cnkgOApmcmFtZV9kaWcgOAppbnRjXzIgLy8gNjU1MzYKPAphc3NlcnQKZnJhbWVfZGlnIDcKaXRvYgpleHRyYWN0IDYgMApjb25jYXQKZnJhbWVfZGlnIDUKZnJhbWVfYnVyeSAxMApmcmFtZV9kaWcgOQpmcmFtZV9kaWcgMTAKY29uY2F0CmZyYW1lX2J1cnkgOQpmcmFtZV9kaWcgOApmcmFtZV9idXJ5IDcKZnJhbWVfZGlnIDcKaXRvYgpleHRyYWN0IDYgMApjb25jYXQKZnJhbWVfZGlnIDYKaXRvYgpjb25jYXQKZnJhbWVfZGlnIDkKY29uY2F0CmZyYW1lX2J1cnkgMApmcmFtZV9kaWcgLTIKZ3R4bnMgU2VuZGVyCmJveF9kZWwKcG9wCmZyYW1lX2RpZyAtMgpndHhucyBTZW5kZXIKZnJhbWVfZGlnIDAKYm94X3B1dApyZXRzdWIKCi8vIGluY3JlbWVudF9jcmVhdG9yX25mdF9jb3VudAppbmNyZW1lbnRjcmVhdG9ybmZ0Y291bnRfMjc6CnByb3RvIDEgMApieXRlY18wIC8vICIiCmludGNfMCAvLyAwCmR1cG4gMgpieXRlY18wIC8vICIiCmR1cAppbnRjXzAgLy8gMApkdXBuIDIKYnl0ZWNfMCAvLyAiIgpkdXAKZnJhbWVfZGlnIC0xCmJveF9nZXQKc3RvcmUgMjEKc3RvcmUgMjAKbG9hZCAyMQphc3NlcnQKbG9hZCAyMApmcmFtZV9idXJ5IDAKZnJhbWVfZGlnIDAKaW50Y18xIC8vIDEKZXh0cmFjdF91aW50NjQKZnJhbWVfYnVyeSAxCmZyYW1lX2RpZyAxCmludGNfMSAvLyAxCisKZnJhbWVfYnVyeSAxCmZyYW1lX2RpZyAwCmludGNfMCAvLyAwCmdldGJpdApmcmFtZV9idXJ5IDIKZnJhbWVfZGlnIDAKaW50Y18xIC8vIDEKZ2V0Yml0CmZyYW1lX2J1cnkgMwpmcmFtZV9kaWcgMApmcmFtZV9kaWcgMApwdXNoaW50IDkgLy8gOQpleHRyYWN0X3VpbnQxNgpmcmFtZV9kaWcgMApwdXNoaW50IDExIC8vIDExCmV4dHJhY3RfdWludDE2CnN1YnN0cmluZzMKZnJhbWVfYnVyeSA0CmZyYW1lX2RpZyAwCmZyYW1lX2RpZyAwCnB1c2hpbnQgMTEgLy8gMTEKZXh0cmFjdF91aW50MTYKZGlnIDEKbGVuCnN1YnN0cmluZzMKZnJhbWVfYnVyeSA1CmZyYW1lX2RpZyAwCnB1c2hpbnQgMTMgLy8gMTMKZXh0cmFjdF91aW50NjQKZnJhbWVfYnVyeSA2CmJ5dGVjXzMgLy8gMHgwMAppbnRjXzAgLy8gMApmcmFtZV9kaWcgMgpzZXRiaXQKaW50Y18xIC8vIDEKZnJhbWVfZGlnIDMKc2V0Yml0CmZyYW1lX2RpZyAxCml0b2IKY29uY2F0CmZyYW1lX2RpZyA0CmZyYW1lX2J1cnkgMTAKZnJhbWVfZGlnIDEwCmZyYW1lX2J1cnkgOQpwdXNoaW50IDIxIC8vIDIxCmZyYW1lX2J1cnkgNwpmcmFtZV9kaWcgNwpmcmFtZV9kaWcgMTAKbGVuCisKZnJhbWVfYnVyeSA4CmZyYW1lX2RpZyA4CmludGNfMiAvLyA2NTUzNgo8CmFzc2VydApmcmFtZV9kaWcgNwppdG9iCmV4dHJhY3QgNiAwCmNvbmNhdApmcmFtZV9kaWcgNQpmcmFtZV9idXJ5IDEwCmZyYW1lX2RpZyA5CmZyYW1lX2RpZyAxMApjb25jYXQKZnJhbWVfYnVyeSA5CmZyYW1lX2RpZyA4CmZyYW1lX2J1cnkgNwpmcmFtZV9kaWcgNwppdG9iCmV4dHJhY3QgNiAwCmNvbmNhdApmcmFtZV9kaWcgNgppdG9iCmNvbmNhdApmcmFtZV9kaWcgOQpjb25jYXQKZnJhbWVfYnVyeSAwCmZyYW1lX2RpZyAtMQpib3hfZGVsCnBvcApmcmFtZV9kaWcgLTEKZnJhbWVfZGlnIDAKYm94X3B1dApyZXRzdWIKCi8vIGNyZWF0ZV9hcnRfYXVjdGlvbgpjcmVhdGVhcnRhdWN0aW9uXzI4Ogpwcm90byA3IDAKYnl0ZWNfMCAvLyAiIgppbnRjXzAgLy8gMApieXRlY18wIC8vICIiCmR1cAppbnRjXzAgLy8gMApkdXAKYnl0ZWNfMCAvLyAiIgpkdXAKZnJhbWVfZGlnIC02CmV4dHJhY3QgMiAwCmJveF9sZW4Kc3RvcmUgMzcKc3RvcmUgMzYKbG9hZCAzNwohCmFzc2VydApmcmFtZV9kaWcgLTcKZ3R4bnMgU2VuZGVyCmZyYW1lX2J1cnkgMApmcmFtZV9kaWcgMApsZW4KaW50Y18zIC8vIDMyCj09CmFzc2VydAppbnRjXzAgLy8gMApmcmFtZV9idXJ5IDEKZ2xvYmFsIEN1cnJlbnRBcHBsaWNhdGlvbkFkZHJlc3MKZnJhbWVfYnVyeSAyCmZyYW1lX2RpZyAyCmxlbgppbnRjXzMgLy8gMzIKPT0KYXNzZXJ0CmZyYW1lX2RpZyAwCmZyYW1lX2RpZyAtNQpmcmFtZV9idXJ5IDcKZnJhbWVfZGlnIDcKZnJhbWVfYnVyeSA2CnB1c2hpbnQgMTAwIC8vIDEwMApmcmFtZV9idXJ5IDQKZnJhbWVfZGlnIDQKZnJhbWVfZGlnIDcKbGVuCisKZnJhbWVfYnVyeSA1CmZyYW1lX2RpZyA1CmludGNfMiAvLyA2NTUzNgo8CmFzc2VydApmcmFtZV9kaWcgNAppdG9iCmV4dHJhY3QgNiAwCmNvbmNhdApmcmFtZV9kaWcgLTQKZnJhbWVfYnVyeSA3CmZyYW1lX2RpZyA2CmZyYW1lX2RpZyA3CmNvbmNhdApmcmFtZV9idXJ5IDYKZnJhbWVfZGlnIDUKZnJhbWVfYnVyeSA0CmZyYW1lX2RpZyA0Cml0b2IKZXh0cmFjdCA2IDAKY29uY2F0CmZyYW1lX2RpZyAtMwppdG9iCmNvbmNhdApmcmFtZV9kaWcgLTIKaXRvYgpjb25jYXQKZnJhbWVfZGlnIC0xCml0b2IKY29uY2F0CmZyYW1lX2RpZyAxCml0b2IKY29uY2F0CmZyYW1lX2RpZyAyCmNvbmNhdApmcmFtZV9kaWcgNgpjb25jYXQKZnJhbWVfYnVyeSAzCmZyYW1lX2RpZyAtNgpleHRyYWN0IDIgMApib3hfZGVsCnBvcApmcmFtZV9kaWcgLTYKZXh0cmFjdCAyIDAKZnJhbWVfZGlnIDMKYm94X3B1dApyZXRzdWIKCi8vIHBlcmZvcm1fYXVjdGlvbl9iaWQKcGVyZm9ybWF1Y3Rpb25iaWRfMjk6CnByb3RvIDMgMApieXRlY18wIC8vICIiCmludGNfMCAvLyAwCmR1cG4gMwpieXRlY18wIC8vICIiCmR1cG4gMwppbnRjXzAgLy8gMApkdXAKYnl0ZWNfMCAvLyAiIgpkdXAKZnJhbWVfZGlnIC0yCmV4dHJhY3QgMiAwCmJveF9nZXQKc3RvcmUgNDMKc3RvcmUgNDIKbG9hZCA0Mwphc3NlcnQKbG9hZCA0MgpmcmFtZV9idXJ5IDAKZnJhbWVfZGlnIDAKcHVzaGludCA2MCAvLyA2MApleHRyYWN0X3VpbnQ2NApmcmFtZV9idXJ5IDEKZnJhbWVfZGlnIDAKcHVzaGludCAzNiAvLyAzNgpleHRyYWN0X3VpbnQ2NApmcmFtZV9idXJ5IDIKZnJhbWVfZGlnIDAKcHVzaGludCA0NCAvLyA0NApleHRyYWN0X3VpbnQ2NApmcmFtZV9idXJ5IDMKZnJhbWVfZGlnIDAKcHVzaGludCA1MiAvLyA1MgpleHRyYWN0X3VpbnQ2NApmcmFtZV9idXJ5IDQKZ2xvYmFsIExhdGVzdFRpbWVzdGFtcApmcmFtZV9kaWcgMwo+CmFzc2VydApnbG9iYWwgTGF0ZXN0VGltZXN0YW1wCmZyYW1lX2RpZyA0CjwKYXNzZXJ0CmZyYW1lX2RpZyAtMQpmcmFtZV9kaWcgMQo+CmFzc2VydApmcmFtZV9kaWcgLTEKZnJhbWVfZGlnIDIKPgphc3NlcnQKZnJhbWVfZGlnIDAKZXh0cmFjdCAwIDMyCmZyYW1lX2J1cnkgNQpmcmFtZV9kaWcgMApmcmFtZV9kaWcgMAppbnRjXzMgLy8gMzIKZXh0cmFjdF91aW50MTYKZnJhbWVfZGlnIDAKcHVzaGludCAzNCAvLyAzNApleHRyYWN0X3VpbnQxNgpzdWJzdHJpbmczCmZyYW1lX2J1cnkgNgpmcmFtZV9kaWcgMApmcmFtZV9kaWcgMApwdXNoaW50IDM0IC8vIDM0CmV4dHJhY3RfdWludDE2CmRpZyAxCmxlbgpzdWJzdHJpbmczCmZyYW1lX2J1cnkgNwpmcmFtZV9kaWcgLTMKZ3R4bnMgU2VuZGVyCmZyYW1lX2J1cnkgOApmcmFtZV9kaWcgOApsZW4KaW50Y18zIC8vIDMyCj09CmFzc2VydApmcmFtZV9kaWcgNQpmcmFtZV9kaWcgNgpmcmFtZV9idXJ5IDEyCmZyYW1lX2RpZyAxMgpmcmFtZV9idXJ5IDExCnB1c2hpbnQgMTAwIC8vIDEwMApmcmFtZV9idXJ5IDkKZnJhbWVfZGlnIDkKZnJhbWVfZGlnIDEyCmxlbgorCmZyYW1lX2J1cnkgMTAKZnJhbWVfZGlnIDEwCmludGNfMiAvLyA2NTUzNgo8CmFzc2VydApmcmFtZV9kaWcgOQppdG9iCmV4dHJhY3QgNiAwCmNvbmNhdApmcmFtZV9kaWcgNwpmcmFtZV9idXJ5IDEyCmZyYW1lX2RpZyAxMQpmcmFtZV9kaWcgMTIKY29uY2F0CmZyYW1lX2J1cnkgMTEKZnJhbWVfZGlnIDEwCmZyYW1lX2J1cnkgOQpmcmFtZV9kaWcgOQppdG9iCmV4dHJhY3QgNiAwCmNvbmNhdApmcmFtZV9kaWcgMgppdG9iCmNvbmNhdApmcmFtZV9kaWcgMwppdG9iCmNvbmNhdApmcmFtZV9kaWcgNAppdG9iCmNvbmNhdApmcmFtZV9kaWcgLTEKaXRvYgpjb25jYXQKZnJhbWVfZGlnIDgKY29uY2F0CmZyYW1lX2RpZyAxMQpjb25jYXQKZnJhbWVfYnVyeSAwCmZyYW1lX2RpZyAtMgpleHRyYWN0IDIgMApib3hfZGVsCnBvcApmcmFtZV9kaWcgLTIKZXh0cmFjdCAyIDAKZnJhbWVfZGlnIDAKYm94X3B1dApyZXRzdWIKCi8vIHRyYW5zZmVyX2FydF9hdWN0aW9uX2l0ZW1fdG9faGlnaGVzdF9iaWRkZXIKdHJhbnNmZXJhcnRhdWN0aW9uaXRlbXRvaGlnaGVzdGJpZGRlcl8zMDoKcHJvdG8gMSAwCmJ5dGVjXzAgLy8gIiIKZHVwbiAyCmZyYW1lX2RpZyAtMQpleHRyYWN0IDIgMApib3hfZ2V0CnN0b3JlIDUxCnN0b3JlIDUwCmxvYWQgNTEKYXNzZXJ0CmxvYWQgNTAKZnJhbWVfYnVyeSAwCmZyYW1lX2RpZyAwCmV4dHJhY3QgNjggMzIKZnJhbWVfYnVyeSAxCmZyYW1lX2RpZyAwCmZyYW1lX2RpZyAwCmludGNfMyAvLyAzMgpleHRyYWN0X3VpbnQxNgpmcmFtZV9kaWcgMApwdXNoaW50IDM0IC8vIDM0CmV4dHJhY3RfdWludDE2CnN1YnN0cmluZzMKZnJhbWVfYnVyeSAyCmZyYW1lX2RpZyAyCmZyYW1lX2RpZyAxCmNhbGxzdWIgdXBkYXRlYXJ0bmZ0b3duZXJfMzEKcmV0c3ViCgovLyB1cGRhdGVfYXJ0X25mdF9vd25lcgp1cGRhdGVhcnRuZnRvd25lcl8zMToKcHJvdG8gMiAwCmJ5dGVjXzAgLy8gIiIKaW50Y18wIC8vIDAKYnl0ZWNfMCAvLyAiIgpkdXAKaW50Y18wIC8vIDAKYnl0ZWNfMCAvLyAiIgpkdXAKaW50Y18wIC8vIDAKZHVwbiA0CmJ5dGVjXzAgLy8gIiIKZHVwCmZyYW1lX2RpZyAtMgpleHRyYWN0IDIgMApib3hfZ2V0CnN0b3JlIDUzCnN0b3JlIDUyCmxvYWQgNTMKYXNzZXJ0CmxvYWQgNTIKZnJhbWVfYnVyeSAwCmZyYW1lX2RpZyAwCmludGNfMCAvLyAwCmV4dHJhY3RfdWludDY0CmZyYW1lX2J1cnkgMQpmcmFtZV9kaWcgMApmcmFtZV9kaWcgMApwdXNoaW50IDggLy8gOApleHRyYWN0X3VpbnQxNgpmcmFtZV9kaWcgMApwdXNoaW50IDEwIC8vIDEwCmV4dHJhY3RfdWludDE2CnN1YnN0cmluZzMKZnJhbWVfYnVyeSAyCmZyYW1lX2RpZyAwCmZyYW1lX2RpZyAwCnB1c2hpbnQgMTAgLy8gMTAKZXh0cmFjdF91aW50MTYKZnJhbWVfZGlnIDAKcHVzaGludCAyMCAvLyAyMApleHRyYWN0X3VpbnQxNgpzdWJzdHJpbmczCmZyYW1lX2J1cnkgMwpmcmFtZV9kaWcgMApwdXNoaW50IDEyIC8vIDEyCmV4dHJhY3RfdWludDY0CmZyYW1lX2J1cnkgNApmcmFtZV9kaWcgMApmcmFtZV9kaWcgMApwdXNoaW50IDIwIC8vIDIwCmV4dHJhY3RfdWludDE2CmZyYW1lX2RpZyAwCnB1c2hpbnQgMjIgLy8gMjIKZXh0cmFjdF91aW50MTYKc3Vic3RyaW5nMwpmcmFtZV9idXJ5IDUKZnJhbWVfZGlnIDAKZnJhbWVfZGlnIDAKcHVzaGludCAyMiAvLyAyMgpleHRyYWN0X3VpbnQxNgpkaWcgMQpsZW4Kc3Vic3RyaW5nMwpmcmFtZV9idXJ5IDYKZnJhbWVfZGlnIDAKcHVzaGludCAyNCAvLyAyNApleHRyYWN0X3VpbnQ2NApmcmFtZV9idXJ5IDcKZnJhbWVfZGlnIDAKaW50Y18zIC8vIDMyCmV4dHJhY3RfdWludDY0CmZyYW1lX2J1cnkgOApmcmFtZV9kaWcgMAppbnRjIDQgLy8gNTc2CmdldGJpdApmcmFtZV9idXJ5IDkKZnJhbWVfZGlnIDEKaXRvYgpmcmFtZV9kaWcgMgpmcmFtZV9idXJ5IDEzCmZyYW1lX2RpZyAxMwpmcmFtZV9idXJ5IDEyCnB1c2hpbnQgNzMgLy8gNzMKZnJhbWVfYnVyeSAxMApmcmFtZV9kaWcgMTAKZnJhbWVfZGlnIDEzCmxlbgorCmZyYW1lX2J1cnkgMTEKZnJhbWVfZGlnIDExCmludGNfMiAvLyA2NTUzNgo8CmFzc2VydApmcmFtZV9kaWcgMTAKaXRvYgpleHRyYWN0IDYgMApjb25jYXQKZnJhbWVfZGlnIDMKZnJhbWVfYnVyeSAxMwpmcmFtZV9kaWcgMTIKZnJhbWVfZGlnIDEzCmNvbmNhdApmcmFtZV9idXJ5IDEyCmZyYW1lX2RpZyAxMQpmcmFtZV9idXJ5IDEwCmZyYW1lX2RpZyAxMApmcmFtZV9kaWcgMTMKbGVuCisKZnJhbWVfYnVyeSAxMQpmcmFtZV9kaWcgMTEKaW50Y18yIC8vIDY1NTM2CjwKYXNzZXJ0CmZyYW1lX2RpZyAxMAppdG9iCmV4dHJhY3QgNiAwCmNvbmNhdApmcmFtZV9kaWcgNAppdG9iCmNvbmNhdApmcmFtZV9kaWcgNQpmcmFtZV9idXJ5IDEzCmZyYW1lX2RpZyAxMgpmcmFtZV9kaWcgMTMKY29uY2F0CmZyYW1lX2J1cnkgMTIKZnJhbWVfZGlnIDExCmZyYW1lX2J1cnkgMTAKZnJhbWVfZGlnIDEwCmZyYW1lX2RpZyAxMwpsZW4KKwpmcmFtZV9idXJ5IDExCmZyYW1lX2RpZyAxMQppbnRjXzIgLy8gNjU1MzYKPAphc3NlcnQKZnJhbWVfZGlnIDEwCml0b2IKZXh0cmFjdCA2IDAKY29uY2F0CmZyYW1lX2RpZyA2CmZyYW1lX2J1cnkgMTMKZnJhbWVfZGlnIDEyCmZyYW1lX2RpZyAxMwpjb25jYXQKZnJhbWVfYnVyeSAxMgpmcmFtZV9kaWcgMTEKZnJhbWVfYnVyeSAxMApmcmFtZV9kaWcgMTAKaXRvYgpleHRyYWN0IDYgMApjb25jYXQKZnJhbWVfZGlnIDcKaXRvYgpjb25jYXQKZnJhbWVfZGlnIDgKaXRvYgpjb25jYXQKZnJhbWVfZGlnIC0xCmNvbmNhdApieXRlY18zIC8vIDB4MDAKaW50Y18wIC8vIDAKZnJhbWVfZGlnIDkKc2V0Yml0CmNvbmNhdApmcmFtZV9kaWcgMTIKY29uY2F0CmZyYW1lX2J1cnkgMApmcmFtZV9kaWcgLTIKZXh0cmFjdCAyIDAKYm94X2RlbApwb3AKZnJhbWVfZGlnIC0yCmV4dHJhY3QgMiAwCmZyYW1lX2RpZyAwCmJveF9wdXQKcmV0c3ViCgovLyB1cGRhdGVfc291bmRfbmZ0X293bmVyCnVwZGF0ZXNvdW5kbmZ0b3duZXJfMzI6CnByb3RvIDIgMApieXRlY18wIC8vICIiCmludGNfMCAvLyAwCmR1cApieXRlY18wIC8vICIiCmR1cG4gNAppbnRjXzAgLy8gMApieXRlY18wIC8vICIiCmR1cG4gMgppbnRjXzAgLy8gMApkdXBuIDIKYnl0ZWNfMCAvLyAiIgpkdXAKZnJhbWVfZGlnIC0yCmV4dHJhY3QgMiAwCmJveF9nZXQKc3RvcmUgNTcKc3RvcmUgNTYKbG9hZCA1Nwphc3NlcnQKbG9hZCA1NgpmcmFtZV9idXJ5IDAKZnJhbWVfZGlnIDAKaW50Y18wIC8vIDAKZXh0cmFjdF91aW50NjQKZnJhbWVfYnVyeSAxCmZyYW1lX2RpZyAwCnB1c2hpbnQgOCAvLyA4CmV4dHJhY3RfdWludDY0CmZyYW1lX2J1cnkgMgpmcmFtZV9kaWcgMApmcmFtZV9kaWcgMApwdXNoaW50IDE2IC8vIDE2CmV4dHJhY3RfdWludDE2CmZyYW1lX2RpZyAwCnB1c2hpbnQgMTggLy8gMTgKZXh0cmFjdF91aW50MTYKc3Vic3RyaW5nMwpmcmFtZV9idXJ5IDMKZnJhbWVfZGlnIDAKZnJhbWVfZGlnIDAKcHVzaGludCAxOCAvLyAxOApleHRyYWN0X3VpbnQxNgpmcmFtZV9kaWcgMApwdXNoaW50IDIwIC8vIDIwCmV4dHJhY3RfdWludDE2CnN1YnN0cmluZzMKZnJhbWVfYnVyeSA0CmZyYW1lX2RpZyAwCmZyYW1lX2RpZyAwCnB1c2hpbnQgMjAgLy8gMjAKZXh0cmFjdF91aW50MTYKZnJhbWVfZGlnIDAKcHVzaGludCAyMiAvLyAyMgpleHRyYWN0X3VpbnQxNgpzdWJzdHJpbmczCmZyYW1lX2J1cnkgNQpmcmFtZV9kaWcgMApmcmFtZV9kaWcgMApwdXNoaW50IDIyIC8vIDIyCmV4dHJhY3RfdWludDE2CmZyYW1lX2RpZyAwCnB1c2hpbnQgMjQgLy8gMjQKZXh0cmFjdF91aW50MTYKc3Vic3RyaW5nMwpmcmFtZV9idXJ5IDYKZnJhbWVfZGlnIDAKZnJhbWVfZGlnIDAKcHVzaGludCAyNCAvLyAyNApleHRyYWN0X3VpbnQxNgpmcmFtZV9kaWcgMApwdXNoaW50IDM0IC8vIDM0CmV4dHJhY3RfdWludDE2CnN1YnN0cmluZzMKZnJhbWVfYnVyeSA3CmZyYW1lX2RpZyAwCnB1c2hpbnQgMjYgLy8gMjYKZXh0cmFjdF91aW50NjQKZnJhbWVfYnVyeSA4CmZyYW1lX2RpZyAwCmZyYW1lX2RpZyAwCnB1c2hpbnQgMzQgLy8gMzQKZXh0cmFjdF91aW50MTYKZnJhbWVfZGlnIDAKcHVzaGludCAzNiAvLyAzNgpleHRyYWN0X3VpbnQxNgpzdWJzdHJpbmczCmZyYW1lX2J1cnkgOQpmcmFtZV9kaWcgMApmcmFtZV9kaWcgMApwdXNoaW50IDM2IC8vIDM2CmV4dHJhY3RfdWludDE2CmZyYW1lX2RpZyAwCnB1c2hpbnQgMzggLy8gMzgKZXh0cmFjdF91aW50MTYKc3Vic3RyaW5nMwpmcmFtZV9idXJ5IDEwCmZyYW1lX2RpZyAwCmZyYW1lX2RpZyAwCnB1c2hpbnQgMzggLy8gMzgKZXh0cmFjdF91aW50MTYKZGlnIDEKbGVuCnN1YnN0cmluZzMKZnJhbWVfYnVyeSAxMQpmcmFtZV9kaWcgMAppbnRjIDQgLy8gNTc2CmdldGJpdApmcmFtZV9idXJ5IDEyCmZyYW1lX2RpZyAxCml0b2IKZnJhbWVfZGlnIDIKaXRvYgpjb25jYXQKZnJhbWVfZGlnIDMKZnJhbWVfYnVyeSAxNgpmcmFtZV9kaWcgMTYKZnJhbWVfYnVyeSAxNQpwdXNoaW50IDczIC8vIDczCmZyYW1lX2J1cnkgMTMKZnJhbWVfZGlnIDEzCmZyYW1lX2RpZyAxNgpsZW4KKwpmcmFtZV9idXJ5IDE0CmZyYW1lX2RpZyAxNAppbnRjXzIgLy8gNjU1MzYKPAphc3NlcnQKZnJhbWVfZGlnIDEzCml0b2IKZXh0cmFjdCA2IDAKY29uY2F0CmZyYW1lX2RpZyA0CmZyYW1lX2J1cnkgMTYKZnJhbWVfZGlnIDE1CmZyYW1lX2RpZyAxNgpjb25jYXQKZnJhbWVfYnVyeSAxNQpmcmFtZV9kaWcgMTQKZnJhbWVfYnVyeSAxMwpmcmFtZV9kaWcgMTMKZnJhbWVfZGlnIDE2CmxlbgorCmZyYW1lX2J1cnkgMTQKZnJhbWVfZGlnIDE0CmludGNfMiAvLyA2NTUzNgo8CmFzc2VydApmcmFtZV9kaWcgMTMKaXRvYgpleHRyYWN0IDYgMApjb25jYXQKZnJhbWVfZGlnIDUKZnJhbWVfYnVyeSAxNgpmcmFtZV9kaWcgMTUKZnJhbWVfZGlnIDE2CmNvbmNhdApmcmFtZV9idXJ5IDE1CmZyYW1lX2RpZyAxNApmcmFtZV9idXJ5IDEzCmZyYW1lX2RpZyAxMwpmcmFtZV9kaWcgMTYKbGVuCisKZnJhbWVfYnVyeSAxNApmcmFtZV9kaWcgMTQKaW50Y18yIC8vIDY1NTM2CjwKYXNzZXJ0CmZyYW1lX2RpZyAxMwppdG9iCmV4dHJhY3QgNiAwCmNvbmNhdApmcmFtZV9kaWcgNgpmcmFtZV9idXJ5IDE2CmZyYW1lX2RpZyAxNQpmcmFtZV9kaWcgMTYKY29uY2F0CmZyYW1lX2J1cnkgMTUKZnJhbWVfZGlnIDE0CmZyYW1lX2J1cnkgMTMKZnJhbWVfZGlnIDEzCmZyYW1lX2RpZyAxNgpsZW4KKwpmcmFtZV9idXJ5IDE0CmZyYW1lX2RpZyAxNAppbnRjXzIgLy8gNjU1MzYKPAphc3NlcnQKZnJhbWVfZGlnIDEzCml0b2IKZXh0cmFjdCA2IDAKY29uY2F0CmZyYW1lX2RpZyA3CmZyYW1lX2J1cnkgMTYKZnJhbWVfZGlnIDE1CmZyYW1lX2RpZyAxNgpjb25jYXQKZnJhbWVfYnVyeSAxNQpmcmFtZV9kaWcgMTQKZnJhbWVfYnVyeSAxMwpmcmFtZV9kaWcgMTMKZnJhbWVfZGlnIDE2CmxlbgorCmZyYW1lX2J1cnkgMTQKZnJhbWVfZGlnIDE0CmludGNfMiAvLyA2NTUzNgo8CmFzc2VydApmcmFtZV9kaWcgMTMKaXRvYgpleHRyYWN0IDYgMApjb25jYXQKZnJhbWVfZGlnIDgKaXRvYgpjb25jYXQKZnJhbWVfZGlnIDkKZnJhbWVfYnVyeSAxNgpmcmFtZV9kaWcgMTUKZnJhbWVfZGlnIDE2CmNvbmNhdApmcmFtZV9idXJ5IDE1CmZyYW1lX2RpZyAxNApmcmFtZV9idXJ5IDEzCmZyYW1lX2RpZyAxMwpmcmFtZV9kaWcgMTYKbGVuCisKZnJhbWVfYnVyeSAxNApmcmFtZV9kaWcgMTQKaW50Y18yIC8vIDY1NTM2CjwKYXNzZXJ0CmZyYW1lX2RpZyAxMwppdG9iCmV4dHJhY3QgNiAwCmNvbmNhdApmcmFtZV9kaWcgMTAKZnJhbWVfYnVyeSAxNgpmcmFtZV9kaWcgMTUKZnJhbWVfZGlnIDE2CmNvbmNhdApmcmFtZV9idXJ5IDE1CmZyYW1lX2RpZyAxNApmcmFtZV9idXJ5IDEzCmZyYW1lX2RpZyAxMwpmcmFtZV9kaWcgMTYKbGVuCisKZnJhbWVfYnVyeSAxNApmcmFtZV9kaWcgMTQKaW50Y18yIC8vIDY1NTM2CjwKYXNzZXJ0CmZyYW1lX2RpZyAxMwppdG9iCmV4dHJhY3QgNiAwCmNvbmNhdApmcmFtZV9kaWcgMTEKZnJhbWVfYnVyeSAxNgpmcmFtZV9kaWcgMTUKZnJhbWVfZGlnIDE2CmNvbmNhdApmcmFtZV9idXJ5IDE1CmZyYW1lX2RpZyAxNApmcmFtZV9idXJ5IDEzCmZyYW1lX2RpZyAxMwppdG9iCmV4dHJhY3QgNiAwCmNvbmNhdApmcmFtZV9kaWcgLTEKY29uY2F0CmJ5dGVjXzMgLy8gMHgwMAppbnRjXzAgLy8gMApmcmFtZV9kaWcgMTIKc2V0Yml0CmNvbmNhdApmcmFtZV9kaWcgMTUKY29uY2F0CmZyYW1lX2J1cnkgMApyZXRzdWIKCi8vIHRyYW5zZmVyX3NvdW5kX25mdAp0cmFuc2ZlcnNvdW5kbmZ0XzMzOgpwcm90byAyIDAKYnl0ZWNfMCAvLyAiIgppbnRjXzAgLy8gMApieXRlY18wIC8vICIiCmR1cAppbnRjXzAgLy8gMApmcmFtZV9kaWcgLTEKZXh0cmFjdCAyIDAKYm94X2dldApzdG9yZSA1NQpzdG9yZSA1NApsb2FkIDU1CmFzc2VydApsb2FkIDU0CmZyYW1lX2J1cnkgMApmcmFtZV9kaWcgMApwdXNoaW50IDI2IC8vIDI2CmV4dHJhY3RfdWludDY0CmZyYW1lX2J1cnkgMQpmcmFtZV9kaWcgMApleHRyYWN0IDQwIDMyCmZyYW1lX2J1cnkgMgpmcmFtZV9kaWcgLTIKZ3R4bnMgU2VuZGVyCmZyYW1lX2J1cnkgMwpmcmFtZV9kaWcgMwpsZW4KaW50Y18zIC8vIDMyCj09CmFzc2VydApmcmFtZV9kaWcgLTIKZnJhbWVfZGlnIDEKZnJhbWVfZGlnIDIKY2FsbHN1YiBwYXk5NXBlcmNlbnRfMzUKZnJhbWVfZGlnIC0xCmZyYW1lX2RpZyAzCmNhbGxzdWIgdXBkYXRlc291bmRuZnRvd25lcl8zMgppbnRjXzEgLy8gMQpmcmFtZV9idXJ5IDQKZnJhbWVfZGlnIDMKZnJhbWVfZGlnIDQKY2FsbHN1YiBzZW5kYXVyYXRva2VuXzM5CmludGNfMSAvLyAxCnJldHVybgoKLy8gdHJhbnNmZXJfYXJ0X25mdAp0cmFuc2ZlcmFydG5mdF8zNDoKcHJvdG8gMiAwCmJ5dGVjXzAgLy8gIiIKaW50Y18wIC8vIDAKYnl0ZWNfMCAvLyAiIgpkdXAKaW50Y18wIC8vIDAKZnJhbWVfZGlnIC0xCmV4dHJhY3QgMiAwCmJveF9nZXQKc3RvcmUgNTkKc3RvcmUgNTgKbG9hZCA1OQphc3NlcnQKbG9hZCA1OApmcmFtZV9idXJ5IDAKZnJhbWVfZGlnIDAKcHVzaGludCAyNCAvLyAyNApleHRyYWN0X3VpbnQ2NApmcmFtZV9idXJ5IDEKZnJhbWVfZGlnIDAKZXh0cmFjdCA0MCAzMgpmcmFtZV9idXJ5IDIKZnJhbWVfZGlnIC0yCmd0eG5zIFNlbmRlcgpmcmFtZV9idXJ5IDMKZnJhbWVfZGlnIDMKbGVuCmludGNfMyAvLyAzMgo9PQphc3NlcnQKZnJhbWVfZGlnIC0yCmZyYW1lX2RpZyAxCmZyYW1lX2RpZyAyCmNhbGxzdWIgcGF5OTVwZXJjZW50XzM1CmZyYW1lX2RpZyAtMQpmcmFtZV9kaWcgMwpjYWxsc3ViIHVwZGF0ZWFydG5mdG93bmVyXzMxCmludGNfMSAvLyAxCmZyYW1lX2J1cnkgNApmcmFtZV9kaWcgMwpmcmFtZV9kaWcgNApjYWxsc3ViIHNlbmRhdXJhdG9rZW5fMzkKaW50Y18xIC8vIDEKcmV0dXJuCgovLyBwYXlfOTVfcGVyY2VudApwYXk5NXBlcmNlbnRfMzU6CnByb3RvIDMgMAppbnRjXzAgLy8gMApmcmFtZV9kaWcgLTMKZ3R4bnMgQW1vdW50CmZyYW1lX2RpZyAtMgo9PQphc3NlcnQKZnJhbWVfZGlnIC0zCmd0eG5zIFJlY2VpdmVyCmdsb2JhbCBDdXJyZW50QXBwbGljYXRpb25BZGRyZXNzCj09CmFzc2VydApmcmFtZV9kaWcgLTIKcHVzaGludCA1IC8vIDUKKgpwdXNoaW50IDEwMCAvLyAxMDAKLwpmcmFtZV9idXJ5IDAKaXR4bl9iZWdpbgppbnRjXzEgLy8gcGF5Cml0eG5fZmllbGQgVHlwZUVudW0KZnJhbWVfZGlnIDAKaXR4bl9maWVsZCBBbW91bnQKZ2xvYmFsIEN1cnJlbnRBcHBsaWNhdGlvbkFkZHJlc3MKaXR4bl9maWVsZCBTZW5kZXIKZnJhbWVfZGlnIC0xCml0eG5fZmllbGQgUmVjZWl2ZXIKaXR4bl9zdWJtaXQKcmV0c3ViCgovLyB2YWxpZGF0ZV9hbmRfdXBkYXRlX3NvdW5kX25mdF9vd25lcgp2YWxpZGF0ZWFuZHVwZGF0ZXNvdW5kbmZ0b3duZXJfMzY6CnByb3RvIDMgMApieXRlY18wIC8vICIiCmR1cApmcmFtZV9kaWcgLTIKZXh0cmFjdCAyIDAKYm94X2xlbgpzdG9yZSA2MQpzdG9yZSA2MApsb2FkIDYxCmFzc2VydApmcmFtZV9kaWcgLTIKZXh0cmFjdCAyIDAKYm94X2dldApzdG9yZSA2MwpzdG9yZSA2Mgpsb2FkIDYzCmFzc2VydApsb2FkIDYyCmZyYW1lX2J1cnkgMApmcmFtZV9kaWcgMApleHRyYWN0IDQwIDMyCmZyYW1lX2J1cnkgMQpmcmFtZV9kaWcgMQpmcmFtZV9kaWcgLTMKZ3R4bnMgU2VuZGVyCj09CmFzc2VydApmcmFtZV9kaWcgLTIKZnJhbWVfZGlnIC0xCmNhbGxzdWIgdXBkYXRlc291bmRuZnRvd25lcl8zMgppbnRjXzEgLy8gMQpyZXR1cm4KCi8vIHZhbGlkYXRlX2FuZF91cGRhdGVfYXJ0X25mdF9vd25lcgp2YWxpZGF0ZWFuZHVwZGF0ZWFydG5mdG93bmVyXzM3Ogpwcm90byAzIDAKYnl0ZWNfMCAvLyAiIgpkdXAKZnJhbWVfZGlnIC0yCmV4dHJhY3QgMiAwCmJveF9sZW4Kc3RvcmUgNjUKc3RvcmUgNjQKbG9hZCA2NQphc3NlcnQKZnJhbWVfZGlnIC0yCmV4dHJhY3QgMiAwCmJveF9nZXQKc3RvcmUgNjcKc3RvcmUgNjYKbG9hZCA2Nwphc3NlcnQKbG9hZCA2NgpmcmFtZV9idXJ5IDAKZnJhbWVfZGlnIDAKZXh0cmFjdCA0MCAzMgpmcmFtZV9idXJ5IDEKZnJhbWVfZGlnIDEKZnJhbWVfZGlnIC0zCmd0eG5zIFNlbmRlcgo9PQphc3NlcnQKZnJhbWVfZGlnIC0yCmZyYW1lX2RpZyAtMQpjYWxsc3ViIHVwZGF0ZWFydG5mdG93bmVyXzMxCmludGNfMSAvLyAxCnJldHVybgoKLy8gYm9vdHN0cmFwX3Rva2VuCmJvb3RzdHJhcHRva2VuXzM4Ogpwcm90byAyIDAKaW50Y18wIC8vIDAKYnl0ZWNfMCAvLyAiIgppbnRjXzAgLy8gMApkdXAKYnl0ZWNfMCAvLyAiIgpkdXAKZnJhbWVfZGlnIC0yCmV4dHJhY3QgMiAwCmJveF9sZW4Kc3RvcmUgMTAwCnN0b3JlIDk5CmxvYWQgMTAwCiEKYXNzZXJ0Cml0eG5fYmVnaW4KcHVzaGludCAzIC8vIGFjZmcKaXR4bl9maWVsZCBUeXBlRW51bQpmcmFtZV9kaWcgLTEKaXR4bl9maWVsZCBDb25maWdBc3NldFRvdGFsCmZyYW1lX2RpZyAtMgpleHRyYWN0IDIgMAppdHhuX2ZpZWxkIENvbmZpZ0Fzc2V0TmFtZQpnbG9iYWwgQ3VycmVudEFwcGxpY2F0aW9uQWRkcmVzcwppdHhuX2ZpZWxkIENvbmZpZ0Fzc2V0RnJlZXplCmdsb2JhbCBDdXJyZW50QXBwbGljYXRpb25BZGRyZXNzCml0eG5fZmllbGQgQ29uZmlnQXNzZXRNYW5hZ2VyCmdsb2JhbCBDdXJyZW50QXBwbGljYXRpb25BZGRyZXNzCml0eG5fZmllbGQgQ29uZmlnQXNzZXRSZXNlcnZlCmdsb2JhbCBDdXJyZW50QXBwbGljYXRpb25BZGRyZXNzCml0eG5fZmllbGQgQ29uZmlnQXNzZXRDbGF3YmFjawppdHhuX3N1Ym1pdAppdHhuIENyZWF0ZWRBc3NldElECmZyYW1lX2J1cnkgMApmcmFtZV9kaWcgMAppdG9iCmxvZwpmcmFtZV9kaWcgMAppdG9iCmZyYW1lX2RpZyAtMgpmcmFtZV9idXJ5IDUKZnJhbWVfZGlnIDUKZnJhbWVfYnVyeSA0CnB1c2hpbnQgMTggLy8gMTgKZnJhbWVfYnVyeSAyCmZyYW1lX2RpZyAyCml0b2IKZXh0cmFjdCA2IDAKY29uY2F0CmZyYW1lX2RpZyAtMQppdG9iCmNvbmNhdApmcmFtZV9kaWcgNApjb25jYXQKZnJhbWVfYnVyeSAxCmZyYW1lX2RpZyAtMgpleHRyYWN0IDIgMApib3hfZGVsCnBvcApmcmFtZV9kaWcgLTIKZXh0cmFjdCAyIDAKZnJhbWVfZGlnIDEKYm94X3B1dApyZXRzdWIKCi8vIHNlbmRfYXVyYV90b2tlbgpzZW5kYXVyYXRva2VuXzM5Ogpwcm90byAyIDAKYnl0ZWNfMCAvLyAiIgpkdXAKaW50Y18wIC8vIDAKZHVwbiAzCmJ5dGVjXzAgLy8gIiIKZHVwCmNhbGxzdWIgZW5zdXJlYXVyYXNleGlzdF8xOQpieXRlYyA4IC8vIDB4MDAwNDYxNzU3MjYxCmZyYW1lX2J1cnkgMApmcmFtZV9kaWcgMApleHRyYWN0IDIgMApib3hfZ2V0CnN0b3JlIDIzCnN0b3JlIDIyCmxvYWQgMjMKYXNzZXJ0CmxvYWQgMjIKZnJhbWVfYnVyeSAxCmZyYW1lX2RpZyAxCmludGNfMCAvLyAwCmV4dHJhY3RfdWludDY0CmZyYW1lX2J1cnkgMgpmcmFtZV9kaWcgMQpwdXNoaW50IDEwIC8vIDEwCmV4dHJhY3RfdWludDY0CmZyYW1lX2J1cnkgMwpmcmFtZV9kaWcgMwppbnRjXzEgLy8gMQo+CmFzc2VydAppdHhuX2JlZ2luCnB1c2hpbnQgNCAvLyBheGZlcgppdHhuX2ZpZWxkIFR5cGVFbnVtCmZyYW1lX2RpZyAyCml0eG5fZmllbGQgWGZlckFzc2V0CmZyYW1lX2RpZyAtMgppdHhuX2ZpZWxkIEFzc2V0UmVjZWl2ZXIKZnJhbWVfZGlnIC0xCml0eG5fZmllbGQgQXNzZXRBbW91bnQKaXR4bl9zdWJtaXQKZnJhbWVfZGlnIDMKaW50Y18xIC8vIDEKLQpmcmFtZV9idXJ5IDMKZnJhbWVfZGlnIDIKaXRvYgpmcmFtZV9kaWcgMApmcmFtZV9idXJ5IDcKZnJhbWVfZGlnIDcKZnJhbWVfYnVyeSA2CnB1c2hpbnQgMTggLy8gMTgKZnJhbWVfYnVyeSA0CmZyYW1lX2RpZyA0Cml0b2IKZXh0cmFjdCA2IDAKY29uY2F0CmZyYW1lX2RpZyAzCml0b2IKY29uY2F0CmZyYW1lX2RpZyA2CmNvbmNhdApmcmFtZV9idXJ5IDEKZnJhbWVfZGlnIDAKZXh0cmFjdCAyIDAKYm94X2RlbApwb3AKZnJhbWVfZGlnIDAKZXh0cmFjdCAyIDAKZnJhbWVfZGlnIDEKYm94X3B1dApyZXRzdWIKCi8vIGVuc3VyZV9oYXNfYXVyYXMKZW5zdXJlaGFzYXVyYXNfNDA6CnByb3RvIDEgMApieXRlY18wIC8vICIiCmludGNfMCAvLyAwCmNhbGxzdWIgZW5zdXJlYXVyYXNleGlzdF8xOQpieXRlYyA2IC8vICJhdXJhIgpib3hfZ2V0CnN0b3JlIDgzCnN0b3JlIDgyCmxvYWQgODMKYXNzZXJ0CmxvYWQgODIKZnJhbWVfYnVyeSAwCmZyYW1lX2RpZyAwCmludGNfMCAvLyAwCmV4dHJhY3RfdWludDY0CmZyYW1lX2J1cnkgMQpmcmFtZV9kaWcgLTEKZ3R4bnMgU2VuZGVyCmZyYW1lX2RpZyAxCmFzc2V0X2hvbGRpbmdfZ2V0IEFzc2V0QmFsYW5jZQpzdG9yZSA4NAppbnRjXzAgLy8gMAo+CmFzc2VydApyZXRzdWIKCi8vIGVuc3VyZV9hdXJhc19mcm96ZW5fc3RhdHVzCmVuc3VyZWF1cmFzZnJvemVuc3RhdHVzXzQxOgpwcm90byAyIDAKYnl0ZWNfMCAvLyAiIgppbnRjXzAgLy8gMApjYWxsc3ViIGVuc3VyZWF1cmFzZXhpc3RfMTkKYnl0ZWMgNiAvLyAiYXVyYSIKYm94X2dldApzdG9yZSA4NgpzdG9yZSA4NQpsb2FkIDg2CmFzc2VydApsb2FkIDg1CmZyYW1lX2J1cnkgMApmcmFtZV9kaWcgMAppbnRjXzAgLy8gMApleHRyYWN0X3VpbnQ2NApmcmFtZV9idXJ5IDEKZnJhbWVfZGlnIC0yCmd0eG5zIFNlbmRlcgpmcmFtZV9kaWcgMQphc3NldF9ob2xkaW5nX2dldCBBc3NldEZyb3plbgpzdG9yZSA4OApzdG9yZSA4NwpmcmFtZV9kaWcgLTEKYm56IGVuc3VyZWF1cmFzZnJvemVuc3RhdHVzXzQxX2wyCmxvYWQgODcKIQovLyBhdXJhcyBzaG91bGQgbm90IGJlIGZyb3plbgphc3NlcnQKYiBlbnN1cmVhdXJhc2Zyb3plbnN0YXR1c180MV9sMwplbnN1cmVhdXJhc2Zyb3plbnN0YXR1c180MV9sMjoKbG9hZCA4NwovLyBhdXJhcyBzaG91bGQgYmUgZnJvemVuCmFzc2VydAplbnN1cmVhdXJhc2Zyb3plbnN0YXR1c180MV9sMzoKcmV0c3ViCgovLyBzZXRfYXVyYV90b2tlbnNfZnJvemVuCnNldGF1cmF0b2tlbnNmcm96ZW5fNDI6CnByb3RvIDIgMApieXRlY18wIC8vICIiCmludGNfMCAvLyAwCmNhbGxzdWIgZW5zdXJlYXVyYXNleGlzdF8xOQpieXRlYyA2IC8vICJhdXJhIgpib3hfZ2V0CnN0b3JlIDkwCnN0b3JlIDg5CmxvYWQgOTAKYXNzZXJ0CmxvYWQgODkKZnJhbWVfYnVyeSAwCmZyYW1lX2RpZyAwCmludGNfMCAvLyAwCmV4dHJhY3RfdWludDY0CmZyYW1lX2J1cnkgMQppdHhuX2JlZ2luCnB1c2hpbnQgNSAvLyBhZnJ6Cml0eG5fZmllbGQgVHlwZUVudW0KZnJhbWVfZGlnIDEKaXR4bl9maWVsZCBGcmVlemVBc3NldApmcmFtZV9kaWcgLTIKZ3R4bnMgU2VuZGVyCml0eG5fZmllbGQgRnJlZXplQXNzZXRBY2NvdW50CmZyYW1lX2RpZyAtMQppdHhuX2ZpZWxkIEZyZWV6ZUFzc2V0RnJvemVuCml0eG5fc3VibWl0CnJldHN1YgoKLy8gcHJvbW90ZV90b19hZG1pbl9jYXN0ZXIKcHJvbW90ZXRvYWRtaW5jYXN0ZXJfNDM6CnByb3RvIDAgMApieXRlY18wIC8vICIiCmludGNfMCAvLyAwCmR1cAp0eG5hIEFwcGxpY2F0aW9uQXJncyAxCmludGNfMCAvLyAwCmdldGJ5dGUKZnJhbWVfYnVyeSAyCnR4biBHcm91cEluZGV4CmludGNfMSAvLyAxCi0KZnJhbWVfYnVyeSAxCmZyYW1lX2RpZyAxCmd0eG5zIFR5cGVFbnVtCmludGNfMSAvLyBwYXkKPT0KYXNzZXJ0CmZyYW1lX2RpZyAxCmZyYW1lX2RpZyAyCmNhbGxzdWIgcHJvbW90ZXRvYWRtaW5fMwpmcmFtZV9idXJ5IDAKYnl0ZWNfMSAvLyAweDE1MWY3Yzc1CmZyYW1lX2RpZyAwCmNvbmNhdApsb2cKcmV0c3ViCgovLyBkZW1vdGVfZnJvbV9hZG1pbl9jYXN0ZXIKZGVtb3RlZnJvbWFkbWluY2FzdGVyXzQ0Ogpwcm90byAwIDAKYnl0ZWNfMCAvLyAiIgppbnRjXzAgLy8gMApkdXAKdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMQppbnRjXzAgLy8gMApnZXRieXRlCmZyYW1lX2J1cnkgMgp0eG4gR3JvdXBJbmRleAppbnRjXzEgLy8gMQotCmZyYW1lX2J1cnkgMQpmcmFtZV9kaWcgMQpndHhucyBUeXBlRW51bQppbnRjXzEgLy8gcGF5Cj09CmFzc2VydApmcmFtZV9kaWcgMQpmcmFtZV9kaWcgMgpjYWxsc3ViIGRlbW90ZWZyb21hZG1pbl80CmZyYW1lX2J1cnkgMApieXRlY18xIC8vIDB4MTUxZjdjNzUKZnJhbWVfZGlnIDAKY29uY2F0CmxvZwpyZXRzdWIKCi8vIHJlZ2lzdGVyX2NyZWF0b3JfY2FzdGVyCnJlZ2lzdGVyY3JlYXRvcmNhc3Rlcl80NToKcHJvdG8gMCAwCmJ5dGVjXzAgLy8gIiIKaW50Y18wIC8vIDAKYnl0ZWNfMCAvLyAiIgpkdXAKdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMQpmcmFtZV9idXJ5IDIKdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMgpmcmFtZV9idXJ5IDMKdHhuIEdyb3VwSW5kZXgKaW50Y18xIC8vIDEKLQpmcmFtZV9idXJ5IDEKZnJhbWVfZGlnIDEKZnJhbWVfZGlnIDIKZnJhbWVfZGlnIDMKY2FsbHN1YiByZWdpc3RlcmNyZWF0b3JfNQpmcmFtZV9idXJ5IDAKYnl0ZWNfMSAvLyAweDE1MWY3Yzc1CmZyYW1lX2RpZyAwCmNvbmNhdApsb2cKcmV0c3ViCgovLyBjcmVhdGVfc291bmRfbmZ0X2Nhc3RlcgpjcmVhdGVzb3VuZG5mdGNhc3Rlcl80NjoKcHJvdG8gMCAwCmJ5dGVjXzAgLy8gIiIKaW50Y18wIC8vIDAKYnl0ZWNfMCAvLyAiIgpkdXBuIDYKaW50Y18wIC8vIDAKYnl0ZWNfMCAvLyAiIgpkdXBuIDIKaW50Y18wIC8vIDAKZHVwbiAzCnR4bmEgQXBwbGljYXRpb25BcmdzIDEKZnJhbWVfYnVyeSAyCnR4bmEgQXBwbGljYXRpb25BcmdzIDIKZnJhbWVfYnVyeSAzCnR4bmEgQXBwbGljYXRpb25BcmdzIDMKZnJhbWVfYnVyeSA0CnR4bmEgQXBwbGljYXRpb25BcmdzIDQKZnJhbWVfYnVyeSA1CnR4bmEgQXBwbGljYXRpb25BcmdzIDUKZnJhbWVfYnVyeSA2CnR4bmEgQXBwbGljYXRpb25BcmdzIDYKZnJhbWVfYnVyeSA3CnR4bmEgQXBwbGljYXRpb25BcmdzIDcKZnJhbWVfYnVyeSA4CnR4bmEgQXBwbGljYXRpb25BcmdzIDgKYnRvaQpmcmFtZV9idXJ5IDkKdHhuYSBBcHBsaWNhdGlvbkFyZ3MgOQpmcmFtZV9idXJ5IDEwCnR4bmEgQXBwbGljYXRpb25BcmdzIDEwCmZyYW1lX2J1cnkgMTEKdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMTEKZnJhbWVfYnVyeSAxMgp0eG5hIEFwcGxpY2F0aW9uQXJncyAxMgpidG9pCmZyYW1lX2J1cnkgMTMKdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMTMKaW50Y18wIC8vIDAKcHVzaGludCA4IC8vIDgKKgpnZXRiaXQKZnJhbWVfYnVyeSAxNAp0eG5hIEFwcGxpY2F0aW9uQXJncyAxNAppbnRjXzAgLy8gMApnZXRieXRlCmZyYW1lX2J1cnkgMTUKdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMTUKaW50Y18wIC8vIDAKZ2V0Ynl0ZQpmcmFtZV9idXJ5IDE2CnR4biBHcm91cEluZGV4CmludGNfMSAvLyAxCi0KZnJhbWVfYnVyeSAxCmZyYW1lX2RpZyAxCmZyYW1lX2RpZyAyCmZyYW1lX2RpZyAzCmZyYW1lX2RpZyA0CmZyYW1lX2RpZyA1CmZyYW1lX2RpZyA2CmZyYW1lX2RpZyA3CmZyYW1lX2RpZyA4CmZyYW1lX2RpZyA5CmZyYW1lX2RpZyAxMApmcmFtZV9kaWcgMTEKZnJhbWVfZGlnIDEyCmZyYW1lX2RpZyAxMwpmcmFtZV9kaWcgMTQKZnJhbWVfZGlnIDE1CmZyYW1lX2RpZyAxNgpjYWxsc3ViIGNyZWF0ZXNvdW5kbmZ0XzYKZnJhbWVfYnVyeSAwCmJ5dGVjXzEgLy8gMHgxNTFmN2M3NQpmcmFtZV9kaWcgMApjb25jYXQKbG9nCnJldHN1YgoKLy8gY3JlYXRlX2FydF9uZnRfY2FzdGVyCmNyZWF0ZWFydG5mdGNhc3Rlcl80NzoKcHJvdG8gMCAwCmJ5dGVjXzAgLy8gIiIKaW50Y18wIC8vIDAKYnl0ZWNfMCAvLyAiIgpkdXBuIDIKaW50Y18wIC8vIDAKYnl0ZWNfMCAvLyAiIgpkdXAKaW50Y18wIC8vIDAKZHVwbiAzCnR4bmEgQXBwbGljYXRpb25BcmdzIDEKZnJhbWVfYnVyeSAyCnR4bmEgQXBwbGljYXRpb25BcmdzIDIKZnJhbWVfYnVyeSAzCnR4bmEgQXBwbGljYXRpb25BcmdzIDMKZnJhbWVfYnVyeSA0CnR4bmEgQXBwbGljYXRpb25BcmdzIDQKYnRvaQpmcmFtZV9idXJ5IDUKdHhuYSBBcHBsaWNhdGlvbkFyZ3MgNQpmcmFtZV9idXJ5IDYKdHhuYSBBcHBsaWNhdGlvbkFyZ3MgNgpmcmFtZV9idXJ5IDcKdHhuYSBBcHBsaWNhdGlvbkFyZ3MgNwpidG9pCmZyYW1lX2J1cnkgOAp0eG5hIEFwcGxpY2F0aW9uQXJncyA4CmludGNfMCAvLyAwCnB1c2hpbnQgOCAvLyA4CioKZ2V0Yml0CmZyYW1lX2J1cnkgOQp0eG5hIEFwcGxpY2F0aW9uQXJncyA5CmludGNfMCAvLyAwCmdldGJ5dGUKZnJhbWVfYnVyeSAxMAp0eG5hIEFwcGxpY2F0aW9uQXJncyAxMAppbnRjXzAgLy8gMApnZXRieXRlCmZyYW1lX2J1cnkgMTEKdHhuIEdyb3VwSW5kZXgKaW50Y18xIC8vIDEKLQpmcmFtZV9idXJ5IDEKZnJhbWVfZGlnIDEKZnJhbWVfZGlnIDIKZnJhbWVfZGlnIDMKZnJhbWVfZGlnIDQKZnJhbWVfZGlnIDUKZnJhbWVfZGlnIDYKZnJhbWVfZGlnIDcKZnJhbWVfZGlnIDgKZnJhbWVfZGlnIDkKZnJhbWVfZGlnIDEwCmZyYW1lX2RpZyAxMQpjYWxsc3ViIGNyZWF0ZWFydG5mdF83CmZyYW1lX2J1cnkgMApieXRlY18xIC8vIDB4MTUxZjdjNzUKZnJhbWVfZGlnIDAKY29uY2F0CmxvZwpyZXRzdWIKCi8vIGNyZWF0ZV9hcnRfYXVjdGlvbl9jYXN0ZXIKY3JlYXRlYXJ0YXVjdGlvbmNhc3Rlcl80ODoKcHJvdG8gMCAwCmJ5dGVjXzAgLy8gIiIKaW50Y18wIC8vIDAKYnl0ZWNfMCAvLyAiIgpkdXAKaW50Y18wIC8vIDAKZHVwbiAyCnR4bmEgQXBwbGljYXRpb25BcmdzIDEKZnJhbWVfYnVyeSAyCnR4bmEgQXBwbGljYXRpb25BcmdzIDIKZnJhbWVfYnVyeSAzCnR4bmEgQXBwbGljYXRpb25BcmdzIDMKYnRvaQpmcmFtZV9idXJ5IDQKdHhuYSBBcHBsaWNhdGlvbkFyZ3MgNApidG9pCmZyYW1lX2J1cnkgNQp0eG5hIEFwcGxpY2F0aW9uQXJncyA1CmJ0b2kKZnJhbWVfYnVyeSA2CnR4biBHcm91cEluZGV4CmludGNfMSAvLyAxCi0KZnJhbWVfYnVyeSAxCmZyYW1lX2RpZyAxCmd0eG5zIFR5cGVFbnVtCmludGNfMSAvLyBwYXkKPT0KYXNzZXJ0CmZyYW1lX2RpZyAxCmZyYW1lX2RpZyAyCmZyYW1lX2RpZyAzCmZyYW1lX2RpZyA0CmZyYW1lX2RpZyA1CmZyYW1lX2RpZyA2CmNhbGxzdWIgY3JlYXRlYXJ0YXVjdGlvbl84CmZyYW1lX2J1cnkgMApieXRlY18xIC8vIDB4MTUxZjdjNzUKZnJhbWVfZGlnIDAKY29uY2F0CmxvZwpyZXRzdWIKCi8vIGJpZF9vbl9hcnRfYXVjdGlvbl9jYXN0ZXIKYmlkb25hcnRhdWN0aW9uY2FzdGVyXzQ5Ogpwcm90byAwIDAKYnl0ZWNfMCAvLyAiIgppbnRjXzAgLy8gMApieXRlY18wIC8vICIiCmludGNfMCAvLyAwCnR4bmEgQXBwbGljYXRpb25BcmdzIDEKZnJhbWVfYnVyeSAyCnR4bmEgQXBwbGljYXRpb25BcmdzIDIKYnRvaQpmcmFtZV9idXJ5IDMKdHhuIEdyb3VwSW5kZXgKaW50Y18xIC8vIDEKLQpmcmFtZV9idXJ5IDEKZnJhbWVfZGlnIDEKZ3R4bnMgVHlwZUVudW0KaW50Y18xIC8vIHBheQo9PQphc3NlcnQKZnJhbWVfZGlnIDEKZnJhbWVfZGlnIDIKZnJhbWVfZGlnIDMKY2FsbHN1YiBiaWRvbmFydGF1Y3Rpb25fOQpmcmFtZV9idXJ5IDAKYnl0ZWNfMSAvLyAweDE1MWY3Yzc1CmZyYW1lX2RpZyAwCmNvbmNhdApsb2cKcmV0c3ViCgovLyBjb21wbGV0ZV9hcnRfYXVjdGlvbl9jYXN0ZXIKY29tcGxldGVhcnRhdWN0aW9uY2FzdGVyXzUwOgpwcm90byAwIDAKYnl0ZWNfMCAvLyAiIgppbnRjXzAgLy8gMApieXRlY18wIC8vICIiCnR4bmEgQXBwbGljYXRpb25BcmdzIDEKZnJhbWVfYnVyeSAyCnR4biBHcm91cEluZGV4CmludGNfMSAvLyAxCi0KZnJhbWVfYnVyeSAxCmZyYW1lX2RpZyAxCmd0eG5zIFR5cGVFbnVtCmludGNfMSAvLyBwYXkKPT0KYXNzZXJ0CmZyYW1lX2RpZyAxCmZyYW1lX2RpZyAyCmNhbGxzdWIgY29tcGxldGVhcnRhdWN0aW9uXzEwCmZyYW1lX2J1cnkgMApieXRlY18xIC8vIDB4MTUxZjdjNzUKZnJhbWVfZGlnIDAKY29uY2F0CmxvZwpyZXRzdWIKCi8vIHB1cmNoYXNlX25mdF9jYXN0ZXIKcHVyY2hhc2VuZnRjYXN0ZXJfNTE6CnByb3RvIDAgMAppbnRjXzAgLy8gMApkdXAKYnl0ZWNfMCAvLyAiIgpkdXAKaW50Y18wIC8vIDAKZHVwbiA0CnR4bmEgQXBwbGljYXRpb25BcmdzIDEKZnJhbWVfYnVyeSAyCnR4bmEgQXBwbGljYXRpb25BcmdzIDIKZnJhbWVfYnVyeSAzCnR4bmEgQXBwbGljYXRpb25BcmdzIDMKaW50Y18wIC8vIDAKZ2V0Ynl0ZQpmcmFtZV9idXJ5IDQKdHhuYSBBcHBsaWNhdGlvbkFyZ3MgNAppbnRjXzAgLy8gMApnZXRieXRlCmZyYW1lX2J1cnkgNQp0eG5hIEFwcGxpY2F0aW9uQXJncyA1CmludGNfMCAvLyAwCmdldGJ5dGUKZnJhbWVfYnVyeSA2CnR4bmEgQXBwbGljYXRpb25BcmdzIDYKaW50Y18wIC8vIDAKZ2V0Ynl0ZQpmcmFtZV9idXJ5IDgKdHhuIEdyb3VwSW5kZXgKcHVzaGludCAzIC8vIDMKLQpmcmFtZV9idXJ5IDAKZnJhbWVfZGlnIDAKZ3R4bnMgVHlwZUVudW0KaW50Y18xIC8vIHBheQo9PQphc3NlcnQKdHhuIEdyb3VwSW5kZXgKcHVzaGludCAyIC8vIDIKLQpmcmFtZV9idXJ5IDEKZnJhbWVfZGlnIDEKZ3R4bnMgVHlwZUVudW0KcHVzaGludCA0IC8vIGF4ZmVyCj09CmFzc2VydAp0eG4gR3JvdXBJbmRleAppbnRjXzEgLy8gMQotCmZyYW1lX2J1cnkgNwpmcmFtZV9kaWcgNwpndHhucyBUeXBlRW51bQpwdXNoaW50IDQgLy8gYXhmZXIKPT0KYXNzZXJ0CmZyYW1lX2RpZyAwCmZyYW1lX2RpZyAxCmZyYW1lX2RpZyAyCmZyYW1lX2RpZyAzCmZyYW1lX2RpZyA0CmZyYW1lX2RpZyA1CmZyYW1lX2RpZyA2CmZyYW1lX2RpZyA3CmZyYW1lX2RpZyA4CmNhbGxzdWIgcHVyY2hhc2VuZnRfMTEKcmV0c3ViCgovLyB0cmFuc2Zlcl9uZnRfY2FzdGVyCnRyYW5zZmVybmZ0Y2FzdGVyXzUyOgpwcm90byAwIDAKaW50Y18wIC8vIDAKYnl0ZWNfMCAvLyAiIgpkdXBuIDIKdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMQpmcmFtZV9idXJ5IDEKdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMgpmcmFtZV9idXJ5IDIKdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMwpmcmFtZV9idXJ5IDMKdHhuIEdyb3VwSW5kZXgKaW50Y18xIC8vIDEKLQpmcmFtZV9idXJ5IDAKZnJhbWVfZGlnIDAKZ3R4bnMgVHlwZUVudW0KaW50Y18xIC8vIHBheQo9PQphc3NlcnQKZnJhbWVfZGlnIDAKZnJhbWVfZGlnIDEKZnJhbWVfZGlnIDIKZnJhbWVfZGlnIDMKY2FsbHN1YiB0cmFuc2Zlcm5mdF8xMgpyZXRzdWIKCi8vIGNyZWF0ZV9wcm9wb3NhbF9jYXN0ZXIKY3JlYXRlcHJvcG9zYWxjYXN0ZXJfNTM6CnByb3RvIDAgMApieXRlY18wIC8vICIiCmludGNfMCAvLyAwCmJ5dGVjXzAgLy8gIiIKZHVwCnR4bmEgQXBwbGljYXRpb25BcmdzIDEKZnJhbWVfYnVyeSAyCnR4bmEgQXBwbGljYXRpb25BcmdzIDIKZnJhbWVfYnVyeSAzCnR4biBHcm91cEluZGV4CmludGNfMSAvLyAxCi0KZnJhbWVfYnVyeSAxCmZyYW1lX2RpZyAxCmd0eG5zIFR5cGVFbnVtCmludGNfMSAvLyBwYXkKPT0KYXNzZXJ0CmZyYW1lX2RpZyAxCmZyYW1lX2RpZyAyCmZyYW1lX2RpZyAzCmNhbGxzdWIgY3JlYXRlcHJvcG9zYWxfMTMKZnJhbWVfYnVyeSAwCmJ5dGVjXzEgLy8gMHgxNTFmN2M3NQpmcmFtZV9kaWcgMApjb25jYXQKbG9nCnJldHN1YgoKLy8gdm90ZV9vbl9wcm9wb3NhbF9jYXN0ZXIKdm90ZW9ucHJvcG9zYWxjYXN0ZXJfNTQ6CnByb3RvIDAgMApieXRlY18wIC8vICIiCmludGNfMCAvLyAwCmR1cG4gMwpieXRlY18wIC8vICIiCnR4bmEgQXBwbGljYXRpb25BcmdzIDEKaW50Y18wIC8vIDAKcHVzaGludCA4IC8vIDgKKgpnZXRiaXQKZnJhbWVfYnVyeSAyCnR4bmEgQXBwbGljYXRpb25BcmdzIDIKaW50Y18wIC8vIDAKZ2V0Ynl0ZQpmcmFtZV9idXJ5IDMKdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMwppbnRjXzAgLy8gMApnZXRieXRlCmZyYW1lX2J1cnkgNAp0eG5hIEFwcGxpY2F0aW9uQXJncyA0CmZyYW1lX2J1cnkgNQp0eG4gR3JvdXBJbmRleAppbnRjXzEgLy8gMQotCmZyYW1lX2J1cnkgMQpmcmFtZV9kaWcgMQpndHhucyBUeXBlRW51bQppbnRjXzEgLy8gcGF5Cj09CmFzc2VydApmcmFtZV9kaWcgMQpmcmFtZV9kaWcgMgpmcmFtZV9kaWcgMwpmcmFtZV9kaWcgNApmcmFtZV9kaWcgNQpjYWxsc3ViIHZvdGVvbnByb3Bvc2FsXzE0CmZyYW1lX2J1cnkgMApieXRlY18xIC8vIDB4MTUxZjdjNzUKZnJhbWVfZGlnIDAKY29uY2F0CmxvZwpyZXRzdWIKCi8vIGVuZF9wcm9wb3NhbF92b3RpbmdfY2FzdGVyCmVuZHByb3Bvc2Fsdm90aW5nY2FzdGVyXzU1Ogpwcm90byAwIDAKYnl0ZWNfMCAvLyAiIgppbnRjXzAgLy8gMApieXRlY18wIC8vICIiCnR4bmEgQXBwbGljYXRpb25BcmdzIDEKZnJhbWVfYnVyeSAyCnR4biBHcm91cEluZGV4CmludGNfMSAvLyAxCi0KZnJhbWVfYnVyeSAxCmZyYW1lX2RpZyAxCmd0eG5zIFR5cGVFbnVtCmludGNfMSAvLyBwYXkKPT0KYXNzZXJ0CmZyYW1lX2RpZyAxCmZyYW1lX2RpZyAyCmNhbGxzdWIgZW5kcHJvcG9zYWx2b3RpbmdfMTUKZnJhbWVfYnVyeSAwCmJ5dGVjXzEgLy8gMHgxNTFmN2M3NQpmcmFtZV9kaWcgMApjb25jYXQKbG9nCnJldHN1YgoKLy8gdW5mcmVlemVfYXVyYXNfY2FzdGVyCnVuZnJlZXplYXVyYXNjYXN0ZXJfNTY6CnByb3RvIDAgMAppbnRjXzAgLy8gMApkdXBuIDIKdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMQppbnRjXzAgLy8gMApnZXRieXRlCmZyYW1lX2J1cnkgMQp0eG5hIEFwcGxpY2F0aW9uQXJncyAyCmludGNfMCAvLyAwCmdldGJ5dGUKZnJhbWVfYnVyeSAyCnR4biBHcm91cEluZGV4CmludGNfMSAvLyAxCi0KZnJhbWVfYnVyeSAwCmZyYW1lX2RpZyAwCmd0eG5zIFR5cGVFbnVtCmludGNfMSAvLyBwYXkKPT0KYXNzZXJ0CmZyYW1lX2RpZyAwCmZyYW1lX2RpZyAxCmZyYW1lX2RpZyAyCmNhbGxzdWIgdW5mcmVlemVhdXJhc18xNgpyZXRzdWIKCi8vIGNyZWF0ZV9hdXJhX3Rva2Vuc19jYXN0ZXIKY3JlYXRlYXVyYXRva2Vuc2Nhc3Rlcl81NzoKcHJvdG8gMCAwCmJ5dGVjXzAgLy8gIiIKY2FsbHN1YiBjcmVhdGVhdXJhdG9rZW5zXzE3CmZyYW1lX2J1cnkgMApieXRlY18xIC8vIDB4MTUxZjdjNzUKZnJhbWVfZGlnIDAKY29uY2F0CmxvZwpyZXRzdWIKCi8vIGhlbGxvX2Nhc3RlcgpoZWxsb2Nhc3Rlcl81ODoKcHJvdG8gMCAwCmJ5dGVjXzAgLy8gIiIKZHVwCnR4bmEgQXBwbGljYXRpb25BcmdzIDEKZnJhbWVfYnVyeSAxCmZyYW1lX2RpZyAxCmNhbGxzdWIgaGVsbG9fMTgKZnJhbWVfYnVyeSAwCmJ5dGVjXzEgLy8gMHgxNTFmN2M3NQpmcmFtZV9kaWcgMApjb25jYXQKbG9nCnJldHN1Yg==",
     "clear": "I3ByYWdtYSB2ZXJzaW9uIDgKcHVzaGludCAwIC8vIDAKcmV0dXJu"
   },
   "state": {
     "global": {
-      "num_byte_slices": 0,
+      "num_byte_slices": 1,
       "num_uints": 0
     },
     "local": {
@@ -145,7 +474,13 @@ export const APP_SPEC: AppSpec = {
   },
   "schema": {
     "global": {
-      "declared": {},
+      "declared": {
+        "active_proposal": {
+          "type": "bytes",
+          "key": "active_proposal",
+          "descr": ""
+        }
+      },
       "reserved": {}
     },
     "local": {
@@ -157,10 +492,42 @@ export const APP_SPEC: AppSpec = {
     "name": "Aurally",
     "methods": [
       {
+        "name": "promote_to_admin",
+        "args": [
+          {
+            "type": "pay",
+            "name": "txn"
+          },
+          {
+            "type": "account",
+            "name": "acc"
+          }
+        ],
+        "returns": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "demote_from_admin",
+        "args": [
+          {
+            "type": "pay",
+            "name": "txn"
+          },
+          {
+            "type": "account",
+            "name": "acc"
+          }
+        ],
+        "returns": {
+          "type": "string"
+        }
+      },
+      {
         "name": "register_creator",
         "args": [
           {
-            "type": "acfg",
+            "type": "txn",
             "name": "txn"
           },
           {
@@ -173,15 +540,19 @@ export const APP_SPEC: AppSpec = {
           }
         ],
         "returns": {
-          "type": "(string,uint64,string,string,uint64)"
+          "type": "(bool,bool,uint64,string,string,uint64)"
         }
       },
       {
         "name": "create_sound_nft",
         "args": [
           {
-            "type": "acfg",
+            "type": "txn",
             "name": "txn"
+          },
+          {
+            "type": "string",
+            "name": "nft_name"
           },
           {
             "type": "string",
@@ -230,10 +601,297 @@ export const APP_SPEC: AppSpec = {
           {
             "type": "bool",
             "name": "for_sale"
+          },
+          {
+            "type": "asset",
+            "name": "aura_asset"
+          },
+          {
+            "type": "account",
+            "name": "creator"
           }
         ],
         "returns": {
           "type": "(uint64,uint64,string,string,string,string,string,uint64,string,string,string,address,bool)"
+        }
+      },
+      {
+        "name": "create_art_nft",
+        "args": [
+          {
+            "type": "txn",
+            "name": "txn"
+          },
+          {
+            "type": "string",
+            "name": "nft_name"
+          },
+          {
+            "type": "string",
+            "name": "title"
+          },
+          {
+            "type": "string",
+            "name": "name"
+          },
+          {
+            "type": "uint64",
+            "name": "supply"
+          },
+          {
+            "type": "string",
+            "name": "description"
+          },
+          {
+            "type": "string",
+            "name": "ipfs_location"
+          },
+          {
+            "type": "uint64",
+            "name": "price"
+          },
+          {
+            "type": "bool",
+            "name": "for_sale"
+          },
+          {
+            "type": "asset",
+            "name": "aura_asset"
+          },
+          {
+            "type": "account",
+            "name": "creator"
+          }
+        ],
+        "returns": {
+          "type": "(uint64,string,string,uint64,string,string,uint64,uint64,address,bool)"
+        }
+      },
+      {
+        "name": "create_art_auction",
+        "args": [
+          {
+            "type": "pay",
+            "name": "txn"
+          },
+          {
+            "type": "string",
+            "name": "auction_key"
+          },
+          {
+            "type": "string",
+            "name": "ipfs_location"
+          },
+          {
+            "type": "uint64",
+            "name": "min_bid"
+          },
+          {
+            "type": "uint64",
+            "name": "starts_at"
+          },
+          {
+            "type": "uint64",
+            "name": "ends_at"
+          }
+        ],
+        "returns": {
+          "type": "(address,string,string,uint64,uint64,uint64,uint64,address)"
+        }
+      },
+      {
+        "name": "bid_on_art_auction",
+        "args": [
+          {
+            "type": "pay",
+            "name": "txn"
+          },
+          {
+            "type": "string",
+            "name": "auction_key"
+          },
+          {
+            "type": "uint64",
+            "name": "bid_ammount"
+          }
+        ],
+        "returns": {
+          "type": "(address,string,string,uint64,uint64,uint64,uint64,address)"
+        }
+      },
+      {
+        "name": "complete_art_auction",
+        "args": [
+          {
+            "type": "pay",
+            "name": "txn"
+          },
+          {
+            "type": "string",
+            "name": "auction_key"
+          }
+        ],
+        "returns": {
+          "type": "(uint64,string,string,uint64,string,string,uint64,uint64,address,bool)"
+        }
+      },
+      {
+        "name": "purchase_nft",
+        "args": [
+          {
+            "type": "pay",
+            "name": "txn"
+          },
+          {
+            "type": "axfer",
+            "name": "optin_txn"
+          },
+          {
+            "type": "string",
+            "name": "asset_key"
+          },
+          {
+            "type": "string",
+            "name": "nft_type"
+          },
+          {
+            "type": "account",
+            "name": "seller"
+          },
+          {
+            "type": "asset",
+            "name": "sound_nft_id"
+          },
+          {
+            "type": "asset",
+            "name": "aura_id"
+          },
+          {
+            "type": "axfer",
+            "name": "aura_optin_txn"
+          },
+          {
+            "type": "account",
+            "name": "buyer"
+          }
+        ],
+        "returns": {
+          "type": "void"
+        }
+      },
+      {
+        "name": "transfer_nft",
+        "args": [
+          {
+            "type": "pay",
+            "name": "txn"
+          },
+          {
+            "type": "address",
+            "name": "to"
+          },
+          {
+            "type": "string",
+            "name": "asset_key"
+          },
+          {
+            "type": "string",
+            "name": "nft_type"
+          }
+        ],
+        "returns": {
+          "type": "void"
+        }
+      },
+      {
+        "name": "create_proposal",
+        "args": [
+          {
+            "type": "pay",
+            "name": "txn"
+          },
+          {
+            "type": "string",
+            "name": "proposal_key"
+          },
+          {
+            "type": "string",
+            "name": "proposal_detail"
+          }
+        ],
+        "returns": {
+          "type": "(string,uint64,uint64,string)"
+        }
+      },
+      {
+        "name": "vote_on_proposal",
+        "args": [
+          {
+            "type": "pay",
+            "name": "txn"
+          },
+          {
+            "type": "bool",
+            "name": "vote_for"
+          },
+          {
+            "type": "asset",
+            "name": "aura_id"
+          },
+          {
+            "type": "account",
+            "name": "voter"
+          },
+          {
+            "type": "string",
+            "name": "proposal_key"
+          }
+        ],
+        "returns": {
+          "type": "(string,uint64,uint64,string)"
+        }
+      },
+      {
+        "name": "end_proposal_voting",
+        "args": [
+          {
+            "type": "pay",
+            "name": "txn"
+          },
+          {
+            "type": "string",
+            "name": "proposal_key"
+          }
+        ],
+        "returns": {
+          "type": "(string,uint64,uint64,string)"
+        }
+      },
+      {
+        "name": "unfreeze_auras",
+        "args": [
+          {
+            "type": "pay",
+            "name": "txn"
+          },
+          {
+            "type": "asset",
+            "name": "aura"
+          },
+          {
+            "type": "account",
+            "name": "acc"
+          }
+        ],
+        "returns": {
+          "type": "void"
+        }
+      },
+      {
+        "name": "create_aura_tokens",
+        "args": [],
+        "returns": {
+          "type": "(uint64,string,uint64)"
         }
       },
       {
@@ -252,7 +910,9 @@ export const APP_SPEC: AppSpec = {
     "networks": {}
   },
   "bare_call_config": {
-    "no_op": "CREATE"
+    "delete_application": "CALL",
+    "no_op": "CREATE",
+    "update_application": "CALL"
   }
 }
 
@@ -311,7 +971,23 @@ export type Aurally = {
    * Maps method signatures / names to their argument and return types.
    */
   methods:
-    & Record<'register_creator(acfg,string,string)(string,uint64,string,string,uint64)' | 'register_creator', {
+    & Record<'promote_to_admin(pay,account)string' | 'promote_to_admin', {
+      argsObj: {
+        txn: TransactionToSign | Transaction | Promise<SendTransactionResult>
+        acc: string | Uint8Array
+      }
+      argsTuple: [txn: TransactionToSign | Transaction | Promise<SendTransactionResult>, acc: string | Uint8Array]
+      returns: string
+    }>
+    & Record<'demote_from_admin(pay,account)string' | 'demote_from_admin', {
+      argsObj: {
+        txn: TransactionToSign | Transaction | Promise<SendTransactionResult>
+        acc: string | Uint8Array
+      }
+      argsTuple: [txn: TransactionToSign | Transaction | Promise<SendTransactionResult>, acc: string | Uint8Array]
+      returns: string
+    }>
+    & Record<'register_creator(txn,string,string)(bool,bool,uint64,string,string,uint64)' | 'register_creator', {
       argsObj: {
         txn: TransactionToSign | Transaction | Promise<SendTransactionResult>
         fullname: string
@@ -320,9 +996,10 @@ export type Aurally = {
       argsTuple: [txn: TransactionToSign | Transaction | Promise<SendTransactionResult>, fullname: string, username: string]
       returns: AurallyCreative
     }>
-    & Record<'create_sound_nft(acfg,string,string,string,string,string,string,uint64,string,string,string,uint64,bool)(uint64,uint64,string,string,string,string,string,uint64,string,string,string,address,bool)' | 'create_sound_nft', {
+    & Record<'create_sound_nft(txn,string,string,string,string,string,string,string,uint64,string,string,string,uint64,bool,asset,account)(uint64,uint64,string,string,string,string,string,uint64,string,string,string,address,bool)' | 'create_sound_nft', {
       argsObj: {
         txn: TransactionToSign | Transaction | Promise<SendTransactionResult>
+        nft_name: string
         asset_key: string
         title: string
         label: string
@@ -335,9 +1012,125 @@ export type Aurally = {
         full_track_ipfs: string
         supply: bigint | number
         for_sale: boolean
+        aura_asset: number | bigint
+        creator: string | Uint8Array
       }
-      argsTuple: [txn: TransactionToSign | Transaction | Promise<SendTransactionResult>, asset_key: string, title: string, label: string, artist: string, release_date: string, genre: string, price: bigint | number, cover_image_ipfs: string, audio_sample_ipfs: string, full_track_ipfs: string, supply: bigint | number, for_sale: boolean]
+      argsTuple: [txn: TransactionToSign | Transaction | Promise<SendTransactionResult>, nft_name: string, asset_key: string, title: string, label: string, artist: string, release_date: string, genre: string, price: bigint | number, cover_image_ipfs: string, audio_sample_ipfs: string, full_track_ipfs: string, supply: bigint | number, for_sale: boolean, aura_asset: number | bigint, creator: string | Uint8Array]
       returns: SoundNft
+    }>
+    & Record<'create_art_nft(txn,string,string,string,uint64,string,string,uint64,bool,asset,account)(uint64,string,string,uint64,string,string,uint64,uint64,address,bool)' | 'create_art_nft', {
+      argsObj: {
+        txn: TransactionToSign | Transaction | Promise<SendTransactionResult>
+        nft_name: string
+        title: string
+        name: string
+        supply: bigint | number
+        description: string
+        ipfs_location: string
+        price: bigint | number
+        for_sale: boolean
+        aura_asset: number | bigint
+        creator: string | Uint8Array
+      }
+      argsTuple: [txn: TransactionToSign | Transaction | Promise<SendTransactionResult>, nft_name: string, title: string, name: string, supply: bigint | number, description: string, ipfs_location: string, price: bigint | number, for_sale: boolean, aura_asset: number | bigint, creator: string | Uint8Array]
+      returns: ArtNft
+    }>
+    & Record<'create_art_auction(pay,string,string,uint64,uint64,uint64)(address,string,string,uint64,uint64,uint64,uint64,address)' | 'create_art_auction', {
+      argsObj: {
+        txn: TransactionToSign | Transaction | Promise<SendTransactionResult>
+        auction_key: string
+        ipfs_location: string
+        min_bid: bigint | number
+        starts_at: bigint | number
+        ends_at: bigint | number
+      }
+      argsTuple: [txn: TransactionToSign | Transaction | Promise<SendTransactionResult>, auction_key: string, ipfs_location: string, min_bid: bigint | number, starts_at: bigint | number, ends_at: bigint | number]
+      returns: ArtAuctionItem
+    }>
+    & Record<'bid_on_art_auction(pay,string,uint64)(address,string,string,uint64,uint64,uint64,uint64,address)' | 'bid_on_art_auction', {
+      argsObj: {
+        txn: TransactionToSign | Transaction | Promise<SendTransactionResult>
+        auction_key: string
+        bid_ammount: bigint | number
+      }
+      argsTuple: [txn: TransactionToSign | Transaction | Promise<SendTransactionResult>, auction_key: string, bid_ammount: bigint | number]
+      returns: ArtAuctionItem
+    }>
+    & Record<'complete_art_auction(pay,string)(uint64,string,string,uint64,string,string,uint64,uint64,address,bool)' | 'complete_art_auction', {
+      argsObj: {
+        txn: TransactionToSign | Transaction | Promise<SendTransactionResult>
+        auction_key: string
+      }
+      argsTuple: [txn: TransactionToSign | Transaction | Promise<SendTransactionResult>, auction_key: string]
+      returns: ArtNft
+    }>
+    & Record<'purchase_nft(pay,axfer,string,string,account,asset,asset,axfer,account)void' | 'purchase_nft', {
+      argsObj: {
+        txn: TransactionToSign | Transaction | Promise<SendTransactionResult>
+        optin_txn: TransactionToSign | Transaction | Promise<SendTransactionResult>
+        asset_key: string
+        nft_type: string
+        seller: string | Uint8Array
+        sound_nft_id: number | bigint
+        aura_id: number | bigint
+        aura_optin_txn: TransactionToSign | Transaction | Promise<SendTransactionResult>
+        buyer: string | Uint8Array
+      }
+      argsTuple: [txn: TransactionToSign | Transaction | Promise<SendTransactionResult>, optin_txn: TransactionToSign | Transaction | Promise<SendTransactionResult>, asset_key: string, nft_type: string, seller: string | Uint8Array, sound_nft_id: number | bigint, aura_id: number | bigint, aura_optin_txn: TransactionToSign | Transaction | Promise<SendTransactionResult>, buyer: string | Uint8Array]
+      returns: void
+    }>
+    & Record<'transfer_nft(pay,address,string,string)void' | 'transfer_nft', {
+      argsObj: {
+        txn: TransactionToSign | Transaction | Promise<SendTransactionResult>
+        to: string
+        asset_key: string
+        nft_type: string
+      }
+      argsTuple: [txn: TransactionToSign | Transaction | Promise<SendTransactionResult>, to: string, asset_key: string, nft_type: string]
+      returns: void
+    }>
+    & Record<'create_proposal(pay,string,string)(string,uint64,uint64,string)' | 'create_proposal', {
+      argsObj: {
+        txn: TransactionToSign | Transaction | Promise<SendTransactionResult>
+        proposal_key: string
+        proposal_detail: string
+      }
+      argsTuple: [txn: TransactionToSign | Transaction | Promise<SendTransactionResult>, proposal_key: string, proposal_detail: string]
+      returns: Proposal
+    }>
+    & Record<'vote_on_proposal(pay,bool,asset,account,string)(string,uint64,uint64,string)' | 'vote_on_proposal', {
+      argsObj: {
+        txn: TransactionToSign | Transaction | Promise<SendTransactionResult>
+        vote_for: boolean
+        aura_id: number | bigint
+        voter: string | Uint8Array
+        proposal_key: string
+      }
+      argsTuple: [txn: TransactionToSign | Transaction | Promise<SendTransactionResult>, vote_for: boolean, aura_id: number | bigint, voter: string | Uint8Array, proposal_key: string]
+      returns: Proposal
+    }>
+    & Record<'end_proposal_voting(pay,string)(string,uint64,uint64,string)' | 'end_proposal_voting', {
+      argsObj: {
+        txn: TransactionToSign | Transaction | Promise<SendTransactionResult>
+        proposal_key: string
+      }
+      argsTuple: [txn: TransactionToSign | Transaction | Promise<SendTransactionResult>, proposal_key: string]
+      returns: Proposal
+    }>
+    & Record<'unfreeze_auras(pay,asset,account)void' | 'unfreeze_auras', {
+      argsObj: {
+        txn: TransactionToSign | Transaction | Promise<SendTransactionResult>
+        aura: number | bigint
+        acc: string | Uint8Array
+      }
+      argsTuple: [txn: TransactionToSign | Transaction | Promise<SendTransactionResult>, aura: number | bigint, acc: string | Uint8Array]
+      returns: void
+    }>
+    & Record<'create_aura_tokens()(uint64,string,uint64)' | 'create_aura_tokens', {
+      argsObj: {
+      }
+      argsTuple: []
+      returns: AurallyToken
     }>
     & Record<'hello(string)string' | 'hello', {
       argsObj: {
@@ -346,6 +1139,14 @@ export type Aurally = {
       argsTuple: [name: string]
       returns: string
     }>
+  /**
+   * Defines the shape of the global and local state of the application.
+   */
+  state: {
+    global: {
+      'active_proposal'?: BinaryState
+    }
+  }
 }
 /**
  * Defines the possible abi call signatures
@@ -366,7 +1167,8 @@ export type BareCallArgs = Omit<RawAppCallArgs, keyof CoreAppCallArgs>
  * Represents a AurallyCreative result as a struct
  */
 export type AurallyCreative = {
-  creative_type: string
+  is_music_creative: boolean
+  is_art_creative: boolean
   minted: bigint
   fullname: string
   username: string
@@ -375,9 +1177,10 @@ export type AurallyCreative = {
 /**
  * Converts the tuple representation of a AurallyCreative to the struct representation
  */
-export function AurallyCreative([creative_type, minted, fullname, username, d_nft_id]: [string, bigint, string, string, bigint] ) {
+export function AurallyCreative([is_music_creative, is_art_creative, minted, fullname, username, d_nft_id]: [boolean, boolean, bigint, string, string, bigint] ) {
   return {
-    creative_type,
+    is_music_creative,
+    is_art_creative,
     minted,
     fullname,
     username,
@@ -423,6 +1226,204 @@ export function SoundNft([asset_id, supply, title, label, artist, release_date, 
   }
 }
 /**
+ * Represents a ArtNFT result as a struct
+ */
+export type ArtNft = {
+  asset_id: bigint
+  title: string
+  name: string
+  supply: bigint
+  description: string
+  ipfs_location: string
+  price: bigint
+  sold_price: bigint
+  owner: string
+  for_sale: boolean
+}
+/**
+ * Converts the tuple representation of a ArtNFT to the struct representation
+ */
+export function ArtNft([asset_id, title, name, supply, description, ipfs_location, price, sold_price, owner, for_sale]: [bigint, string, string, bigint, string, string, bigint, bigint, string, boolean] ) {
+  return {
+    asset_id,
+    title,
+    name,
+    supply,
+    description,
+    ipfs_location,
+    price,
+    sold_price,
+    owner,
+    for_sale,
+  }
+}
+/**
+ * Represents a ArtAuctionItem result as a struct
+ */
+export type ArtAuctionItem = {
+  auctioneer: string
+  item_id: string
+  item_name: string
+  min_bid: bigint
+  starts_at: bigint
+  ends_at: bigint
+  highest_bid: bigint
+  highest_bidder: string
+}
+/**
+ * Converts the tuple representation of a ArtAuctionItem to the struct representation
+ */
+export function ArtAuctionItem([auctioneer, item_id, item_name, min_bid, starts_at, ends_at, highest_bid, highest_bidder]: [string, string, string, bigint, bigint, bigint, bigint, string] ) {
+  return {
+    auctioneer,
+    item_id,
+    item_name,
+    min_bid,
+    starts_at,
+    ends_at,
+    highest_bid,
+    highest_bidder,
+  }
+}
+/**
+ * Represents a ArtAuctionItem result as a struct
+ */
+export type ArtAuctionItem = {
+  auctioneer: string
+  item_id: string
+  item_name: string
+  min_bid: bigint
+  starts_at: bigint
+  ends_at: bigint
+  highest_bid: bigint
+  highest_bidder: string
+}
+/**
+ * Converts the tuple representation of a ArtAuctionItem to the struct representation
+ */
+export function ArtAuctionItem([auctioneer, item_id, item_name, min_bid, starts_at, ends_at, highest_bid, highest_bidder]: [string, string, string, bigint, bigint, bigint, bigint, string] ) {
+  return {
+    auctioneer,
+    item_id,
+    item_name,
+    min_bid,
+    starts_at,
+    ends_at,
+    highest_bid,
+    highest_bidder,
+  }
+}
+/**
+ * Represents a ArtNFT result as a struct
+ */
+export type ArtNft = {
+  asset_id: bigint
+  title: string
+  name: string
+  supply: bigint
+  description: string
+  ipfs_location: string
+  price: bigint
+  sold_price: bigint
+  owner: string
+  for_sale: boolean
+}
+/**
+ * Converts the tuple representation of a ArtNFT to the struct representation
+ */
+export function ArtNft([asset_id, title, name, supply, description, ipfs_location, price, sold_price, owner, for_sale]: [bigint, string, string, bigint, string, string, bigint, bigint, string, boolean] ) {
+  return {
+    asset_id,
+    title,
+    name,
+    supply,
+    description,
+    ipfs_location,
+    price,
+    sold_price,
+    owner,
+    for_sale,
+  }
+}
+/**
+ * Represents a Proposal result as a struct
+ */
+export type Proposal = {
+  proposal_id: string
+  yes_votes: bigint
+  no_votes: bigint
+  details: string
+}
+/**
+ * Converts the tuple representation of a Proposal to the struct representation
+ */
+export function Proposal([proposal_id, yes_votes, no_votes, details]: [string, bigint, bigint, string] ) {
+  return {
+    proposal_id,
+    yes_votes,
+    no_votes,
+    details,
+  }
+}
+/**
+ * Represents a Proposal result as a struct
+ */
+export type Proposal = {
+  proposal_id: string
+  yes_votes: bigint
+  no_votes: bigint
+  details: string
+}
+/**
+ * Converts the tuple representation of a Proposal to the struct representation
+ */
+export function Proposal([proposal_id, yes_votes, no_votes, details]: [string, bigint, bigint, string] ) {
+  return {
+    proposal_id,
+    yes_votes,
+    no_votes,
+    details,
+  }
+}
+/**
+ * Represents a Proposal result as a struct
+ */
+export type Proposal = {
+  proposal_id: string
+  yes_votes: bigint
+  no_votes: bigint
+  details: string
+}
+/**
+ * Converts the tuple representation of a Proposal to the struct representation
+ */
+export function Proposal([proposal_id, yes_votes, no_votes, details]: [string, bigint, bigint, string] ) {
+  return {
+    proposal_id,
+    yes_votes,
+    no_votes,
+    details,
+  }
+}
+/**
+ * Represents a AurallyToken result as a struct
+ */
+export type AurallyToken = {
+  asset_id: bigint
+  asset_key: string
+  asset_total: bigint
+}
+/**
+ * Converts the tuple representation of a AurallyToken to the struct representation
+ */
+export function AurallyToken([asset_id, asset_key, asset_total]: [bigint, string, bigint] ) {
+  return {
+    asset_id,
+    asset_key,
+    asset_total,
+  }
+}
+/**
  * Maps a method signature from the Aurally smart contract to the method's arguments in either tuple of struct form
  */
 export type MethodArgs<TSignature extends AurallySig> = Aurally['methods'][TSignature]['argsObj' | 'argsTuple']
@@ -441,6 +1442,24 @@ export type AurallyCreateCalls = (typeof AurallyCallFactory)['create']
 export type AurallyCreateCallParams =
   | (TypedCallParams<undefined> & (OnCompleteNoOp))
 /**
+ * A factory for available 'update' calls
+ */
+export type AurallyUpdateCalls = (typeof AurallyCallFactory)['update']
+/**
+ * Defines supported update methods for this smart contract
+ */
+export type AurallyUpdateCallParams =
+  | TypedCallParams<undefined>
+/**
+ * A factory for available 'delete' calls
+ */
+export type AurallyDeleteCalls = (typeof AurallyCallFactory)['delete']
+/**
+ * Defines supported delete methods for this smart contract
+ */
+export type AurallyDeleteCallParams =
+  | TypedCallParams<undefined>
+/**
  * Defines arguments required for the deploy method.
  */
 export type AurallyDeployArgs = {
@@ -449,6 +1468,14 @@ export type AurallyDeployArgs = {
    * A delegate which takes a create call factory and returns the create call params for this smart contract
    */
   createCall?: (callFactory: AurallyCreateCalls) => AurallyCreateCallParams
+  /**
+   * A delegate which takes a update call factory and returns the update call params for this smart contract
+   */
+  updateCall?: (callFactory: AurallyUpdateCalls) => AurallyUpdateCallParams
+  /**
+   * A delegate which takes a delete call factory and returns the delete call params for this smart contract
+   */
+  deleteCall?: (callFactory: AurallyDeleteCalls) => AurallyDeleteCallParams
 }
 
 
@@ -478,30 +1505,254 @@ export abstract class AurallyCallFactory {
   }
 
   /**
-   * Constructs a no op call for the register_creator(acfg,string,string)(string,uint64,string,string,uint64) ABI method
+   * Gets available update call factories
+   */
+  static get update() {
+    return {
+      /**
+       * Constructs an update call for the Aurally smart contract using a bare call
+       *
+       * @param params Any parameters for the call
+       * @returns A TypedCallParams object for the call
+       */
+      bare(params: BareCallArgs & AppClientCallCoreParams & CoreAppCallArgs & AppClientCompilationParams = {}) {
+        return {
+          method: undefined,
+          methodArgs: undefined,
+          ...params,
+        }
+      },
+    }
+  }
+
+  /**
+   * Gets available delete call factories
+   */
+  static get delete() {
+    return {
+      /**
+       * Constructs a delete call for the Aurally smart contract using a bare call
+       *
+       * @param params Any parameters for the call
+       * @returns A TypedCallParams object for the call
+       */
+      bare(params: BareCallArgs & AppClientCallCoreParams & CoreAppCallArgs = {}) {
+        return {
+          method: undefined,
+          methodArgs: undefined,
+          ...params,
+        }
+      },
+    }
+  }
+
+  /**
+   * Constructs a no op call for the promote_to_admin(pay,account)string ABI method
    *
    * @param args Any args for the contract call
    * @param params Any additional parameters for the call
    * @returns A TypedCallParams object for the call
    */
-  static registerCreator(args: MethodArgs<'register_creator(acfg,string,string)(string,uint64,string,string,uint64)'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
+  static promoteToAdmin(args: MethodArgs<'promote_to_admin(pay,account)string'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
     return {
-      method: 'register_creator(acfg,string,string)(string,uint64,string,string,uint64)' as const,
+      method: 'promote_to_admin(pay,account)string' as const,
+      methodArgs: Array.isArray(args) ? args : [args.txn, args.acc],
+      ...params,
+    }
+  }
+  /**
+   * Constructs a no op call for the demote_from_admin(pay,account)string ABI method
+   *
+   * @param args Any args for the contract call
+   * @param params Any additional parameters for the call
+   * @returns A TypedCallParams object for the call
+   */
+  static demoteFromAdmin(args: MethodArgs<'demote_from_admin(pay,account)string'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
+    return {
+      method: 'demote_from_admin(pay,account)string' as const,
+      methodArgs: Array.isArray(args) ? args : [args.txn, args.acc],
+      ...params,
+    }
+  }
+  /**
+   * Constructs a no op call for the register_creator(txn,string,string)(bool,bool,uint64,string,string,uint64) ABI method
+   *
+   * @param args Any args for the contract call
+   * @param params Any additional parameters for the call
+   * @returns A TypedCallParams object for the call
+   */
+  static registerCreator(args: MethodArgs<'register_creator(txn,string,string)(bool,bool,uint64,string,string,uint64)'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
+    return {
+      method: 'register_creator(txn,string,string)(bool,bool,uint64,string,string,uint64)' as const,
       methodArgs: Array.isArray(args) ? args : [args.txn, args.fullname, args.username],
       ...params,
     }
   }
   /**
-   * Constructs a no op call for the create_sound_nft(acfg,string,string,string,string,string,string,uint64,string,string,string,uint64,bool)(uint64,uint64,string,string,string,string,string,uint64,string,string,string,address,bool) ABI method
+   * Constructs a no op call for the create_sound_nft(txn,string,string,string,string,string,string,string,uint64,string,string,string,uint64,bool,asset,account)(uint64,uint64,string,string,string,string,string,uint64,string,string,string,address,bool) ABI method
    *
    * @param args Any args for the contract call
    * @param params Any additional parameters for the call
    * @returns A TypedCallParams object for the call
    */
-  static createSoundNft(args: MethodArgs<'create_sound_nft(acfg,string,string,string,string,string,string,uint64,string,string,string,uint64,bool)(uint64,uint64,string,string,string,string,string,uint64,string,string,string,address,bool)'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
+  static createSoundNft(args: MethodArgs<'create_sound_nft(txn,string,string,string,string,string,string,string,uint64,string,string,string,uint64,bool,asset,account)(uint64,uint64,string,string,string,string,string,uint64,string,string,string,address,bool)'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
     return {
-      method: 'create_sound_nft(acfg,string,string,string,string,string,string,uint64,string,string,string,uint64,bool)(uint64,uint64,string,string,string,string,string,uint64,string,string,string,address,bool)' as const,
-      methodArgs: Array.isArray(args) ? args : [args.txn, args.asset_key, args.title, args.label, args.artist, args.release_date, args.genre, args.price, args.cover_image_ipfs, args.audio_sample_ipfs, args.full_track_ipfs, args.supply, args.for_sale],
+      method: 'create_sound_nft(txn,string,string,string,string,string,string,string,uint64,string,string,string,uint64,bool,asset,account)(uint64,uint64,string,string,string,string,string,uint64,string,string,string,address,bool)' as const,
+      methodArgs: Array.isArray(args) ? args : [args.txn, args.nft_name, args.asset_key, args.title, args.label, args.artist, args.release_date, args.genre, args.price, args.cover_image_ipfs, args.audio_sample_ipfs, args.full_track_ipfs, args.supply, args.for_sale, args.aura_asset, args.creator],
+      ...params,
+    }
+  }
+  /**
+   * Constructs a no op call for the create_art_nft(txn,string,string,string,uint64,string,string,uint64,bool,asset,account)(uint64,string,string,uint64,string,string,uint64,uint64,address,bool) ABI method
+   *
+   * @param args Any args for the contract call
+   * @param params Any additional parameters for the call
+   * @returns A TypedCallParams object for the call
+   */
+  static createArtNft(args: MethodArgs<'create_art_nft(txn,string,string,string,uint64,string,string,uint64,bool,asset,account)(uint64,string,string,uint64,string,string,uint64,uint64,address,bool)'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
+    return {
+      method: 'create_art_nft(txn,string,string,string,uint64,string,string,uint64,bool,asset,account)(uint64,string,string,uint64,string,string,uint64,uint64,address,bool)' as const,
+      methodArgs: Array.isArray(args) ? args : [args.txn, args.nft_name, args.title, args.name, args.supply, args.description, args.ipfs_location, args.price, args.for_sale, args.aura_asset, args.creator],
+      ...params,
+    }
+  }
+  /**
+   * Constructs a no op call for the create_art_auction(pay,string,string,uint64,uint64,uint64)(address,string,string,uint64,uint64,uint64,uint64,address) ABI method
+   *
+   * @param args Any args for the contract call
+   * @param params Any additional parameters for the call
+   * @returns A TypedCallParams object for the call
+   */
+  static createArtAuction(args: MethodArgs<'create_art_auction(pay,string,string,uint64,uint64,uint64)(address,string,string,uint64,uint64,uint64,uint64,address)'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
+    return {
+      method: 'create_art_auction(pay,string,string,uint64,uint64,uint64)(address,string,string,uint64,uint64,uint64,uint64,address)' as const,
+      methodArgs: Array.isArray(args) ? args : [args.txn, args.auction_key, args.ipfs_location, args.min_bid, args.starts_at, args.ends_at],
+      ...params,
+    }
+  }
+  /**
+   * Constructs a no op call for the bid_on_art_auction(pay,string,uint64)(address,string,string,uint64,uint64,uint64,uint64,address) ABI method
+   *
+   * @param args Any args for the contract call
+   * @param params Any additional parameters for the call
+   * @returns A TypedCallParams object for the call
+   */
+  static bidOnArtAuction(args: MethodArgs<'bid_on_art_auction(pay,string,uint64)(address,string,string,uint64,uint64,uint64,uint64,address)'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
+    return {
+      method: 'bid_on_art_auction(pay,string,uint64)(address,string,string,uint64,uint64,uint64,uint64,address)' as const,
+      methodArgs: Array.isArray(args) ? args : [args.txn, args.auction_key, args.bid_ammount],
+      ...params,
+    }
+  }
+  /**
+   * Constructs a no op call for the complete_art_auction(pay,string)(uint64,string,string,uint64,string,string,uint64,uint64,address,bool) ABI method
+   *
+   * @param args Any args for the contract call
+   * @param params Any additional parameters for the call
+   * @returns A TypedCallParams object for the call
+   */
+  static completeArtAuction(args: MethodArgs<'complete_art_auction(pay,string)(uint64,string,string,uint64,string,string,uint64,uint64,address,bool)'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
+    return {
+      method: 'complete_art_auction(pay,string)(uint64,string,string,uint64,string,string,uint64,uint64,address,bool)' as const,
+      methodArgs: Array.isArray(args) ? args : [args.txn, args.auction_key],
+      ...params,
+    }
+  }
+  /**
+   * Constructs a no op call for the purchase_nft(pay,axfer,string,string,account,asset,asset,axfer,account)void ABI method
+   *
+   * @param args Any args for the contract call
+   * @param params Any additional parameters for the call
+   * @returns A TypedCallParams object for the call
+   */
+  static purchaseNft(args: MethodArgs<'purchase_nft(pay,axfer,string,string,account,asset,asset,axfer,account)void'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
+    return {
+      method: 'purchase_nft(pay,axfer,string,string,account,asset,asset,axfer,account)void' as const,
+      methodArgs: Array.isArray(args) ? args : [args.txn, args.optin_txn, args.asset_key, args.nft_type, args.seller, args.sound_nft_id, args.aura_id, args.aura_optin_txn, args.buyer],
+      ...params,
+    }
+  }
+  /**
+   * Constructs a no op call for the transfer_nft(pay,address,string,string)void ABI method
+   *
+   * @param args Any args for the contract call
+   * @param params Any additional parameters for the call
+   * @returns A TypedCallParams object for the call
+   */
+  static transferNft(args: MethodArgs<'transfer_nft(pay,address,string,string)void'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
+    return {
+      method: 'transfer_nft(pay,address,string,string)void' as const,
+      methodArgs: Array.isArray(args) ? args : [args.txn, args.to, args.asset_key, args.nft_type],
+      ...params,
+    }
+  }
+  /**
+   * Constructs a no op call for the create_proposal(pay,string,string)(string,uint64,uint64,string) ABI method
+   *
+   * @param args Any args for the contract call
+   * @param params Any additional parameters for the call
+   * @returns A TypedCallParams object for the call
+   */
+  static createProposal(args: MethodArgs<'create_proposal(pay,string,string)(string,uint64,uint64,string)'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
+    return {
+      method: 'create_proposal(pay,string,string)(string,uint64,uint64,string)' as const,
+      methodArgs: Array.isArray(args) ? args : [args.txn, args.proposal_key, args.proposal_detail],
+      ...params,
+    }
+  }
+  /**
+   * Constructs a no op call for the vote_on_proposal(pay,bool,asset,account,string)(string,uint64,uint64,string) ABI method
+   *
+   * @param args Any args for the contract call
+   * @param params Any additional parameters for the call
+   * @returns A TypedCallParams object for the call
+   */
+  static voteOnProposal(args: MethodArgs<'vote_on_proposal(pay,bool,asset,account,string)(string,uint64,uint64,string)'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
+    return {
+      method: 'vote_on_proposal(pay,bool,asset,account,string)(string,uint64,uint64,string)' as const,
+      methodArgs: Array.isArray(args) ? args : [args.txn, args.vote_for, args.aura_id, args.voter, args.proposal_key],
+      ...params,
+    }
+  }
+  /**
+   * Constructs a no op call for the end_proposal_voting(pay,string)(string,uint64,uint64,string) ABI method
+   *
+   * @param args Any args for the contract call
+   * @param params Any additional parameters for the call
+   * @returns A TypedCallParams object for the call
+   */
+  static endProposalVoting(args: MethodArgs<'end_proposal_voting(pay,string)(string,uint64,uint64,string)'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
+    return {
+      method: 'end_proposal_voting(pay,string)(string,uint64,uint64,string)' as const,
+      methodArgs: Array.isArray(args) ? args : [args.txn, args.proposal_key],
+      ...params,
+    }
+  }
+  /**
+   * Constructs a no op call for the unfreeze_auras(pay,asset,account)void ABI method
+   *
+   * @param args Any args for the contract call
+   * @param params Any additional parameters for the call
+   * @returns A TypedCallParams object for the call
+   */
+  static unfreezeAuras(args: MethodArgs<'unfreeze_auras(pay,asset,account)void'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
+    return {
+      method: 'unfreeze_auras(pay,asset,account)void' as const,
+      methodArgs: Array.isArray(args) ? args : [args.txn, args.aura, args.acc],
+      ...params,
+    }
+  }
+  /**
+   * Constructs a no op call for the create_aura_tokens()(uint64,string,uint64) ABI method
+   *
+   * @param args Any args for the contract call
+   * @param params Any additional parameters for the call
+   * @returns A TypedCallParams object for the call
+   */
+  static createAuraTokens(args: MethodArgs<'create_aura_tokens()(uint64,string,uint64)'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
+    return {
+      method: 'create_aura_tokens()(uint64,string,uint64)' as const,
+      methodArgs: Array.isArray(args) ? args : [],
       ...params,
     }
   }
@@ -582,8 +1833,12 @@ export class AurallyClient {
    */
   public deploy(params: AurallyDeployArgs & AppClientDeployCoreParams = {}): ReturnType<ApplicationClient['deploy']> {
     const createArgs = params.createCall?.(AurallyCallFactory.create)
+    const updateArgs = params.updateCall?.(AurallyCallFactory.update)
+    const deleteArgs = params.deleteCall?.(AurallyCallFactory.delete)
     return this.appClient.deploy({
       ...params,
+      updateArgs,
+      deleteArgs,
       createArgs,
       createOnCompleteAction: createArgs?.onCompleteAction,
     })
@@ -608,6 +1863,42 @@ export class AurallyClient {
   }
 
   /**
+   * Gets available update methods
+   */
+  public get update() {
+    const $this = this
+    return {
+      /**
+       * Updates an existing instance of the Aurally smart contract using a bare call.
+       *
+       * @param args The arguments for the bare call
+       * @returns The update result
+       */
+      bare(args: BareCallArgs & AppClientCallCoreParams & AppClientCompilationParams & CoreAppCallArgs = {}): Promise<AppCallTransactionResultOfType<undefined>> {
+        return $this.appClient.update(args) as unknown as Promise<AppCallTransactionResultOfType<undefined>>
+      },
+    }
+  }
+
+  /**
+   * Gets available delete methods
+   */
+  public get delete() {
+    const $this = this
+    return {
+      /**
+       * Deletes an existing instance of the Aurally smart contract using a bare call.
+       *
+       * @param args The arguments for the bare call
+       * @returns The delete result
+       */
+      bare(args: BareCallArgs & AppClientCallCoreParams & CoreAppCallArgs = {}): Promise<AppCallTransactionResultOfType<undefined>> {
+        return $this.appClient.delete(args) as unknown as Promise<AppCallTransactionResultOfType<undefined>>
+      },
+    }
+  }
+
+  /**
    * Makes a clear_state call to an existing instance of the Aurally smart contract.
    *
    * @param args The arguments for the bare call
@@ -618,25 +1909,168 @@ export class AurallyClient {
   }
 
   /**
-   * Calls the register_creator(acfg,string,string)(string,uint64,string,string,uint64) ABI method.
+   * Calls the promote_to_admin(pay,account)string ABI method.
    *
    * @param args The arguments for the contract call
    * @param params Any additional parameters for the call
    * @returns The result of the call
    */
-  public registerCreator(args: MethodArgs<'register_creator(acfg,string,string)(string,uint64,string,string,uint64)'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
+  public promoteToAdmin(args: MethodArgs<'promote_to_admin(pay,account)string'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
+    return this.call(AurallyCallFactory.promoteToAdmin(args, params))
+  }
+
+  /**
+   * Calls the demote_from_admin(pay,account)string ABI method.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The result of the call
+   */
+  public demoteFromAdmin(args: MethodArgs<'demote_from_admin(pay,account)string'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
+    return this.call(AurallyCallFactory.demoteFromAdmin(args, params))
+  }
+
+  /**
+   * Calls the register_creator(txn,string,string)(bool,bool,uint64,string,string,uint64) ABI method.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The result of the call
+   */
+  public registerCreator(args: MethodArgs<'register_creator(txn,string,string)(bool,bool,uint64,string,string,uint64)'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
     return this.call(AurallyCallFactory.registerCreator(args, params), AurallyCreative)
   }
 
   /**
-   * Calls the create_sound_nft(acfg,string,string,string,string,string,string,uint64,string,string,string,uint64,bool)(uint64,uint64,string,string,string,string,string,uint64,string,string,string,address,bool) ABI method.
+   * Calls the create_sound_nft(txn,string,string,string,string,string,string,string,uint64,string,string,string,uint64,bool,asset,account)(uint64,uint64,string,string,string,string,string,uint64,string,string,string,address,bool) ABI method.
    *
    * @param args The arguments for the contract call
    * @param params Any additional parameters for the call
    * @returns The result of the call
    */
-  public createSoundNft(args: MethodArgs<'create_sound_nft(acfg,string,string,string,string,string,string,uint64,string,string,string,uint64,bool)(uint64,uint64,string,string,string,string,string,uint64,string,string,string,address,bool)'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
+  public createSoundNft(args: MethodArgs<'create_sound_nft(txn,string,string,string,string,string,string,string,uint64,string,string,string,uint64,bool,asset,account)(uint64,uint64,string,string,string,string,string,uint64,string,string,string,address,bool)'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
     return this.call(AurallyCallFactory.createSoundNft(args, params), SoundNft)
+  }
+
+  /**
+   * Calls the create_art_nft(txn,string,string,string,uint64,string,string,uint64,bool,asset,account)(uint64,string,string,uint64,string,string,uint64,uint64,address,bool) ABI method.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The result of the call
+   */
+  public createArtNft(args: MethodArgs<'create_art_nft(txn,string,string,string,uint64,string,string,uint64,bool,asset,account)(uint64,string,string,uint64,string,string,uint64,uint64,address,bool)'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
+    return this.call(AurallyCallFactory.createArtNft(args, params), ArtNft)
+  }
+
+  /**
+   * Calls the create_art_auction(pay,string,string,uint64,uint64,uint64)(address,string,string,uint64,uint64,uint64,uint64,address) ABI method.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The result of the call
+   */
+  public createArtAuction(args: MethodArgs<'create_art_auction(pay,string,string,uint64,uint64,uint64)(address,string,string,uint64,uint64,uint64,uint64,address)'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
+    return this.call(AurallyCallFactory.createArtAuction(args, params), ArtAuctionItem)
+  }
+
+  /**
+   * Calls the bid_on_art_auction(pay,string,uint64)(address,string,string,uint64,uint64,uint64,uint64,address) ABI method.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The result of the call
+   */
+  public bidOnArtAuction(args: MethodArgs<'bid_on_art_auction(pay,string,uint64)(address,string,string,uint64,uint64,uint64,uint64,address)'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
+    return this.call(AurallyCallFactory.bidOnArtAuction(args, params), ArtAuctionItem)
+  }
+
+  /**
+   * Calls the complete_art_auction(pay,string)(uint64,string,string,uint64,string,string,uint64,uint64,address,bool) ABI method.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The result of the call
+   */
+  public completeArtAuction(args: MethodArgs<'complete_art_auction(pay,string)(uint64,string,string,uint64,string,string,uint64,uint64,address,bool)'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
+    return this.call(AurallyCallFactory.completeArtAuction(args, params), ArtNft)
+  }
+
+  /**
+   * Calls the purchase_nft(pay,axfer,string,string,account,asset,asset,axfer,account)void ABI method.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The result of the call
+   */
+  public purchaseNft(args: MethodArgs<'purchase_nft(pay,axfer,string,string,account,asset,asset,axfer,account)void'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
+    return this.call(AurallyCallFactory.purchaseNft(args, params))
+  }
+
+  /**
+   * Calls the transfer_nft(pay,address,string,string)void ABI method.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The result of the call
+   */
+  public transferNft(args: MethodArgs<'transfer_nft(pay,address,string,string)void'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
+    return this.call(AurallyCallFactory.transferNft(args, params))
+  }
+
+  /**
+   * Calls the create_proposal(pay,string,string)(string,uint64,uint64,string) ABI method.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The result of the call
+   */
+  public createProposal(args: MethodArgs<'create_proposal(pay,string,string)(string,uint64,uint64,string)'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
+    return this.call(AurallyCallFactory.createProposal(args, params), Proposal)
+  }
+
+  /**
+   * Calls the vote_on_proposal(pay,bool,asset,account,string)(string,uint64,uint64,string) ABI method.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The result of the call
+   */
+  public voteOnProposal(args: MethodArgs<'vote_on_proposal(pay,bool,asset,account,string)(string,uint64,uint64,string)'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
+    return this.call(AurallyCallFactory.voteOnProposal(args, params), Proposal)
+  }
+
+  /**
+   * Calls the end_proposal_voting(pay,string)(string,uint64,uint64,string) ABI method.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The result of the call
+   */
+  public endProposalVoting(args: MethodArgs<'end_proposal_voting(pay,string)(string,uint64,uint64,string)'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
+    return this.call(AurallyCallFactory.endProposalVoting(args, params), Proposal)
+  }
+
+  /**
+   * Calls the unfreeze_auras(pay,asset,account)void ABI method.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The result of the call
+   */
+  public unfreezeAuras(args: MethodArgs<'unfreeze_auras(pay,asset,account)void'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
+    return this.call(AurallyCallFactory.unfreezeAuras(args, params))
+  }
+
+  /**
+   * Calls the create_aura_tokens()(uint64,string,uint64) ABI method.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The result of the call
+   */
+  public createAuraTokens(args: MethodArgs<'create_aura_tokens()(uint64,string,uint64)'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
+    return this.call(AurallyCallFactory.createAuraTokens(args, params), AurallyToken)
   }
 
   /**
@@ -650,26 +2084,167 @@ export class AurallyClient {
     return this.call(AurallyCallFactory.hello(args, params))
   }
 
+  /**
+   * Extracts a binary state value out of an AppState dictionary
+   *
+   * @param state The state dictionary containing the state value
+   * @param key The key of the state value
+   * @returns A BinaryState instance containing the state value, or undefined if the key was not found
+   */
+  private static getBinaryState(state: AppState, key: string): BinaryState | undefined {
+    const value = state[key]
+    if (!value) return undefined
+    if (!('valueRaw' in value))
+      throw new Error(`Failed to parse state value for ${key}; received an int when expected a byte array`)
+    return {
+      asString(): string {
+        return value.value
+      },
+      asByteArray(): Uint8Array {
+        return value.valueRaw
+      }
+    }
+  }
+
+  /**
+   * Extracts a integer state value out of an AppState dictionary
+   *
+   * @param state The state dictionary containing the state value
+   * @param key The key of the state value
+   * @returns An IntegerState instance containing the state value, or undefined if the key was not found
+   */
+  private static getIntegerState(state: AppState, key: string): IntegerState | undefined {
+    const value = state[key]
+    if (!value) return undefined
+    if ('valueRaw' in value)
+      throw new Error(`Failed to parse state value for ${key}; received a byte array when expected a number`)
+    return {
+      asBigInt() {
+        return typeof value.value === 'bigint' ? value.value : BigInt(value.value)
+      },
+      asNumber(): number {
+        return typeof value.value === 'bigint' ? Number(value.value) : value.value
+      },
+    }
+  }
+
+  /**
+   * Returns the smart contract's global state wrapped in a strongly typed accessor with options to format the stored value
+   */
+  public async getGlobalState(): Promise<Aurally['state']['global']> {
+    const state = await this.appClient.getGlobalState()
+    return {
+      get active_proposal() {
+        return AurallyClient.getBinaryState(state, 'active_proposal')
+      },
+    }
+  }
+
   public compose(): AurallyComposer {
     const client = this
     const atc = new AtomicTransactionComposer()
     let promiseChain:Promise<unknown> = Promise.resolve()
     const resultMappers: Array<undefined | ((x: any) => any)> = []
     return {
-      registerCreator(args: MethodArgs<'register_creator(acfg,string,string)(string,uint64,string,string,uint64)'>, params?: AppClientCallCoreParams & CoreAppCallArgs) {
+      promoteToAdmin(args: MethodArgs<'promote_to_admin(pay,account)string'>, params?: AppClientCallCoreParams & CoreAppCallArgs) {
+        promiseChain = promiseChain.then(() => client.promoteToAdmin(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
+        resultMappers.push(undefined)
+        return this
+      },
+      demoteFromAdmin(args: MethodArgs<'demote_from_admin(pay,account)string'>, params?: AppClientCallCoreParams & CoreAppCallArgs) {
+        promiseChain = promiseChain.then(() => client.demoteFromAdmin(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
+        resultMappers.push(undefined)
+        return this
+      },
+      registerCreator(args: MethodArgs<'register_creator(txn,string,string)(bool,bool,uint64,string,string,uint64)'>, params?: AppClientCallCoreParams & CoreAppCallArgs) {
         promiseChain = promiseChain.then(() => client.registerCreator(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
         resultMappers.push(AurallyCreative)
         return this
       },
-      createSoundNft(args: MethodArgs<'create_sound_nft(acfg,string,string,string,string,string,string,uint64,string,string,string,uint64,bool)(uint64,uint64,string,string,string,string,string,uint64,string,string,string,address,bool)'>, params?: AppClientCallCoreParams & CoreAppCallArgs) {
+      createSoundNft(args: MethodArgs<'create_sound_nft(txn,string,string,string,string,string,string,string,uint64,string,string,string,uint64,bool,asset,account)(uint64,uint64,string,string,string,string,string,uint64,string,string,string,address,bool)'>, params?: AppClientCallCoreParams & CoreAppCallArgs) {
         promiseChain = promiseChain.then(() => client.createSoundNft(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
         resultMappers.push(SoundNFT)
+        return this
+      },
+      createArtNft(args: MethodArgs<'create_art_nft(txn,string,string,string,uint64,string,string,uint64,bool,asset,account)(uint64,string,string,uint64,string,string,uint64,uint64,address,bool)'>, params?: AppClientCallCoreParams & CoreAppCallArgs) {
+        promiseChain = promiseChain.then(() => client.createArtNft(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
+        resultMappers.push(ArtNFT)
+        return this
+      },
+      createArtAuction(args: MethodArgs<'create_art_auction(pay,string,string,uint64,uint64,uint64)(address,string,string,uint64,uint64,uint64,uint64,address)'>, params?: AppClientCallCoreParams & CoreAppCallArgs) {
+        promiseChain = promiseChain.then(() => client.createArtAuction(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
+        resultMappers.push(ArtAuctionItem)
+        return this
+      },
+      bidOnArtAuction(args: MethodArgs<'bid_on_art_auction(pay,string,uint64)(address,string,string,uint64,uint64,uint64,uint64,address)'>, params?: AppClientCallCoreParams & CoreAppCallArgs) {
+        promiseChain = promiseChain.then(() => client.bidOnArtAuction(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
+        resultMappers.push(ArtAuctionItem)
+        return this
+      },
+      completeArtAuction(args: MethodArgs<'complete_art_auction(pay,string)(uint64,string,string,uint64,string,string,uint64,uint64,address,bool)'>, params?: AppClientCallCoreParams & CoreAppCallArgs) {
+        promiseChain = promiseChain.then(() => client.completeArtAuction(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
+        resultMappers.push(ArtNFT)
+        return this
+      },
+      purchaseNft(args: MethodArgs<'purchase_nft(pay,axfer,string,string,account,asset,asset,axfer,account)void'>, params?: AppClientCallCoreParams & CoreAppCallArgs) {
+        promiseChain = promiseChain.then(() => client.purchaseNft(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
+        resultMappers.push(undefined)
+        return this
+      },
+      transferNft(args: MethodArgs<'transfer_nft(pay,address,string,string)void'>, params?: AppClientCallCoreParams & CoreAppCallArgs) {
+        promiseChain = promiseChain.then(() => client.transferNft(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
+        resultMappers.push(undefined)
+        return this
+      },
+      createProposal(args: MethodArgs<'create_proposal(pay,string,string)(string,uint64,uint64,string)'>, params?: AppClientCallCoreParams & CoreAppCallArgs) {
+        promiseChain = promiseChain.then(() => client.createProposal(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
+        resultMappers.push(Proposal)
+        return this
+      },
+      voteOnProposal(args: MethodArgs<'vote_on_proposal(pay,bool,asset,account,string)(string,uint64,uint64,string)'>, params?: AppClientCallCoreParams & CoreAppCallArgs) {
+        promiseChain = promiseChain.then(() => client.voteOnProposal(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
+        resultMappers.push(Proposal)
+        return this
+      },
+      endProposalVoting(args: MethodArgs<'end_proposal_voting(pay,string)(string,uint64,uint64,string)'>, params?: AppClientCallCoreParams & CoreAppCallArgs) {
+        promiseChain = promiseChain.then(() => client.endProposalVoting(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
+        resultMappers.push(Proposal)
+        return this
+      },
+      unfreezeAuras(args: MethodArgs<'unfreeze_auras(pay,asset,account)void'>, params?: AppClientCallCoreParams & CoreAppCallArgs) {
+        promiseChain = promiseChain.then(() => client.unfreezeAuras(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
+        resultMappers.push(undefined)
+        return this
+      },
+      createAuraTokens(args: MethodArgs<'create_aura_tokens()(uint64,string,uint64)'>, params?: AppClientCallCoreParams & CoreAppCallArgs) {
+        promiseChain = promiseChain.then(() => client.createAuraTokens(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
+        resultMappers.push(AurallyToken)
         return this
       },
       hello(args: MethodArgs<'hello(string)string'>, params?: AppClientCallCoreParams & CoreAppCallArgs) {
         promiseChain = promiseChain.then(() => client.hello(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
         resultMappers.push(undefined)
         return this
+      },
+      get update() {
+        const $this = this
+        return {
+          bare(args?: BareCallArgs & AppClientCallCoreParams & AppClientCompilationParams & CoreAppCallArgs) {
+            promiseChain = promiseChain.then(() => client.update.bare({...args, sendParams: {...args?.sendParams, skipSending: true, atc}}))
+            resultMappers.push(undefined)
+            return $this
+          },
+        }
+      },
+      get delete() {
+        const $this = this
+        return {
+          bare(args?: BareCallArgs & AppClientCallCoreParams & CoreAppCallArgs) {
+            promiseChain = promiseChain.then(() => client.delete.bare({...args, sendParams: {...args?.sendParams, skipSending: true, atc}}))
+            resultMappers.push(undefined)
+            return $this
+          },
+        }
       },
       clearState(args?: BareCallArgs & AppClientCallCoreParams & CoreAppCallArgs) {
         promiseChain = promiseChain.then(() => client.clearState({...args, sendParams: {...args?.sendParams, skipSending: true, atc}}))
@@ -697,22 +2272,139 @@ export class AurallyClient {
 }
 export type AurallyComposer<TReturns extends [...any[]] = []> = {
   /**
-   * Calls the register_creator(acfg,string,string)(string,uint64,string,string,uint64) ABI method.
+   * Calls the promote_to_admin(pay,account)string ABI method.
    *
    * @param args The arguments for the contract call
    * @param params Any additional parameters for the call
    * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
    */
-  registerCreator(args: MethodArgs<'register_creator(acfg,string,string)(string,uint64,string,string,uint64)'>, params?: AppClientCallCoreParams & CoreAppCallArgs): AurallyComposer<[...TReturns, MethodReturn<'register_creator(acfg,string,string)(string,uint64,string,string,uint64)'>]>
+  promoteToAdmin(args: MethodArgs<'promote_to_admin(pay,account)string'>, params?: AppClientCallCoreParams & CoreAppCallArgs): AurallyComposer<[...TReturns, MethodReturn<'promote_to_admin(pay,account)string'>]>
 
   /**
-   * Calls the create_sound_nft(acfg,string,string,string,string,string,string,uint64,string,string,string,uint64,bool)(uint64,uint64,string,string,string,string,string,uint64,string,string,string,address,bool) ABI method.
+   * Calls the demote_from_admin(pay,account)string ABI method.
    *
    * @param args The arguments for the contract call
    * @param params Any additional parameters for the call
    * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
    */
-  createSoundNft(args: MethodArgs<'create_sound_nft(acfg,string,string,string,string,string,string,uint64,string,string,string,uint64,bool)(uint64,uint64,string,string,string,string,string,uint64,string,string,string,address,bool)'>, params?: AppClientCallCoreParams & CoreAppCallArgs): AurallyComposer<[...TReturns, MethodReturn<'create_sound_nft(acfg,string,string,string,string,string,string,uint64,string,string,string,uint64,bool)(uint64,uint64,string,string,string,string,string,uint64,string,string,string,address,bool)'>]>
+  demoteFromAdmin(args: MethodArgs<'demote_from_admin(pay,account)string'>, params?: AppClientCallCoreParams & CoreAppCallArgs): AurallyComposer<[...TReturns, MethodReturn<'demote_from_admin(pay,account)string'>]>
+
+  /**
+   * Calls the register_creator(txn,string,string)(bool,bool,uint64,string,string,uint64) ABI method.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
+   */
+  registerCreator(args: MethodArgs<'register_creator(txn,string,string)(bool,bool,uint64,string,string,uint64)'>, params?: AppClientCallCoreParams & CoreAppCallArgs): AurallyComposer<[...TReturns, MethodReturn<'register_creator(txn,string,string)(bool,bool,uint64,string,string,uint64)'>]>
+
+  /**
+   * Calls the create_sound_nft(txn,string,string,string,string,string,string,string,uint64,string,string,string,uint64,bool,asset,account)(uint64,uint64,string,string,string,string,string,uint64,string,string,string,address,bool) ABI method.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
+   */
+  createSoundNft(args: MethodArgs<'create_sound_nft(txn,string,string,string,string,string,string,string,uint64,string,string,string,uint64,bool,asset,account)(uint64,uint64,string,string,string,string,string,uint64,string,string,string,address,bool)'>, params?: AppClientCallCoreParams & CoreAppCallArgs): AurallyComposer<[...TReturns, MethodReturn<'create_sound_nft(txn,string,string,string,string,string,string,string,uint64,string,string,string,uint64,bool,asset,account)(uint64,uint64,string,string,string,string,string,uint64,string,string,string,address,bool)'>]>
+
+  /**
+   * Calls the create_art_nft(txn,string,string,string,uint64,string,string,uint64,bool,asset,account)(uint64,string,string,uint64,string,string,uint64,uint64,address,bool) ABI method.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
+   */
+  createArtNft(args: MethodArgs<'create_art_nft(txn,string,string,string,uint64,string,string,uint64,bool,asset,account)(uint64,string,string,uint64,string,string,uint64,uint64,address,bool)'>, params?: AppClientCallCoreParams & CoreAppCallArgs): AurallyComposer<[...TReturns, MethodReturn<'create_art_nft(txn,string,string,string,uint64,string,string,uint64,bool,asset,account)(uint64,string,string,uint64,string,string,uint64,uint64,address,bool)'>]>
+
+  /**
+   * Calls the create_art_auction(pay,string,string,uint64,uint64,uint64)(address,string,string,uint64,uint64,uint64,uint64,address) ABI method.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
+   */
+  createArtAuction(args: MethodArgs<'create_art_auction(pay,string,string,uint64,uint64,uint64)(address,string,string,uint64,uint64,uint64,uint64,address)'>, params?: AppClientCallCoreParams & CoreAppCallArgs): AurallyComposer<[...TReturns, MethodReturn<'create_art_auction(pay,string,string,uint64,uint64,uint64)(address,string,string,uint64,uint64,uint64,uint64,address)'>]>
+
+  /**
+   * Calls the bid_on_art_auction(pay,string,uint64)(address,string,string,uint64,uint64,uint64,uint64,address) ABI method.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
+   */
+  bidOnArtAuction(args: MethodArgs<'bid_on_art_auction(pay,string,uint64)(address,string,string,uint64,uint64,uint64,uint64,address)'>, params?: AppClientCallCoreParams & CoreAppCallArgs): AurallyComposer<[...TReturns, MethodReturn<'bid_on_art_auction(pay,string,uint64)(address,string,string,uint64,uint64,uint64,uint64,address)'>]>
+
+  /**
+   * Calls the complete_art_auction(pay,string)(uint64,string,string,uint64,string,string,uint64,uint64,address,bool) ABI method.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
+   */
+  completeArtAuction(args: MethodArgs<'complete_art_auction(pay,string)(uint64,string,string,uint64,string,string,uint64,uint64,address,bool)'>, params?: AppClientCallCoreParams & CoreAppCallArgs): AurallyComposer<[...TReturns, MethodReturn<'complete_art_auction(pay,string)(uint64,string,string,uint64,string,string,uint64,uint64,address,bool)'>]>
+
+  /**
+   * Calls the purchase_nft(pay,axfer,string,string,account,asset,asset,axfer,account)void ABI method.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
+   */
+  purchaseNft(args: MethodArgs<'purchase_nft(pay,axfer,string,string,account,asset,asset,axfer,account)void'>, params?: AppClientCallCoreParams & CoreAppCallArgs): AurallyComposer<[...TReturns, MethodReturn<'purchase_nft(pay,axfer,string,string,account,asset,asset,axfer,account)void'>]>
+
+  /**
+   * Calls the transfer_nft(pay,address,string,string)void ABI method.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
+   */
+  transferNft(args: MethodArgs<'transfer_nft(pay,address,string,string)void'>, params?: AppClientCallCoreParams & CoreAppCallArgs): AurallyComposer<[...TReturns, MethodReturn<'transfer_nft(pay,address,string,string)void'>]>
+
+  /**
+   * Calls the create_proposal(pay,string,string)(string,uint64,uint64,string) ABI method.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
+   */
+  createProposal(args: MethodArgs<'create_proposal(pay,string,string)(string,uint64,uint64,string)'>, params?: AppClientCallCoreParams & CoreAppCallArgs): AurallyComposer<[...TReturns, MethodReturn<'create_proposal(pay,string,string)(string,uint64,uint64,string)'>]>
+
+  /**
+   * Calls the vote_on_proposal(pay,bool,asset,account,string)(string,uint64,uint64,string) ABI method.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
+   */
+  voteOnProposal(args: MethodArgs<'vote_on_proposal(pay,bool,asset,account,string)(string,uint64,uint64,string)'>, params?: AppClientCallCoreParams & CoreAppCallArgs): AurallyComposer<[...TReturns, MethodReturn<'vote_on_proposal(pay,bool,asset,account,string)(string,uint64,uint64,string)'>]>
+
+  /**
+   * Calls the end_proposal_voting(pay,string)(string,uint64,uint64,string) ABI method.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
+   */
+  endProposalVoting(args: MethodArgs<'end_proposal_voting(pay,string)(string,uint64,uint64,string)'>, params?: AppClientCallCoreParams & CoreAppCallArgs): AurallyComposer<[...TReturns, MethodReturn<'end_proposal_voting(pay,string)(string,uint64,uint64,string)'>]>
+
+  /**
+   * Calls the unfreeze_auras(pay,asset,account)void ABI method.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
+   */
+  unfreezeAuras(args: MethodArgs<'unfreeze_auras(pay,asset,account)void'>, params?: AppClientCallCoreParams & CoreAppCallArgs): AurallyComposer<[...TReturns, MethodReturn<'unfreeze_auras(pay,asset,account)void'>]>
+
+  /**
+   * Calls the create_aura_tokens()(uint64,string,uint64) ABI method.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
+   */
+  createAuraTokens(args: MethodArgs<'create_aura_tokens()(uint64,string,uint64)'>, params?: AppClientCallCoreParams & CoreAppCallArgs): AurallyComposer<[...TReturns, MethodReturn<'create_aura_tokens()(uint64,string,uint64)'>]>
 
   /**
    * Calls the hello(string)string ABI method.
@@ -722,6 +2414,32 @@ export type AurallyComposer<TReturns extends [...any[]] = []> = {
    * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
    */
   hello(args: MethodArgs<'hello(string)string'>, params?: AppClientCallCoreParams & CoreAppCallArgs): AurallyComposer<[...TReturns, MethodReturn<'hello(string)string'>]>
+
+  /**
+   * Gets available update methods
+   */
+  readonly update: {
+    /**
+     * Updates an existing instance of the Aurally smart contract using a bare call.
+     *
+     * @param args The arguments for the bare call
+     * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
+     */
+    bare(args?: BareCallArgs & AppClientCallCoreParams & AppClientCompilationParams & CoreAppCallArgs): AurallyComposer<[...TReturns, undefined]>
+  }
+
+  /**
+   * Gets available delete methods
+   */
+  readonly delete: {
+    /**
+     * Deletes an existing instance of the Aurally smart contract using a bare call.
+     *
+     * @param args The arguments for the bare call
+     * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
+     */
+    bare(args?: BareCallArgs & AppClientCallCoreParams & CoreAppCallArgs): AurallyComposer<[...TReturns, undefined]>
+  }
 
   /**
    * Makes a clear_state call to an existing instance of the Aurally smart contract.

@@ -39,6 +39,8 @@ const Transact = ({ openModal, setModalState }: TransactInterface) => {
       amount: 1e6,
       suggestedParams,
     })
+    // algosdk.makeApplicationOptInTxn()
+    // algosdk.makeApplicationOptInTxnFromObject()
 
     const encodedTransaction = algosdk.encodeUnsignedTransaction(transaction)
 
