@@ -4,15 +4,27 @@ import profile from '../../assets/profile.jpg'
 import CopyButton from '../../components/General/CopyButton'
 import { ellipseAddress } from '../../utils/ellipseAddress'
 import noActiviy from '../../assets/no-activity.svg'
-import { useAtomValue } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { createdNftsAtom } from '../../store/atoms'
 import tabClass from '../../styles/tab.module.css'
 import NftCard from '../../components/Cards/NftCard'
+import { appClientAtom } from '../../store/contractAtom'
+import React from 'react'
 
 const TYPES = ['Created', 'Purchased', 'Sold', 'Minted', 'Activity']
 
 const ProfileTab = () => {
   const nftList = useAtomValue(createdNftsAtom)
+  const [appClient] = useAtom(appClientAtom);
+
+  const getResgisteredInfo = async () => {
+    const boxes = await appClient?.appClient.getBoxNames()
+    console.log({boxes})
+  }
+
+  React.useEffect(() => {
+    getResgisteredInfo()
+  }, [])
 
   return (
     <div className="gboard bg-[#1e1e1e] mt-6 mb-[90px]">

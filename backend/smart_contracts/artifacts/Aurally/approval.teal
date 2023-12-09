@@ -22,7 +22,7 @@ pushbytes 0x374cb239 // "create_sound_nft(txn,string,string,string,string,string
 ==
 bnz main_l34
 txna ApplicationArgs 0
-pushbytes 0x35945f58 // "create_art_nft(txn,string,string,string,string,uint64,string,string,uint64,bool,asset,account)(uint64,string,string,string,uint64,string,string,uint64,uint64,address,bool)"
+pushbytes 0xce3ad392 // "create_art_nft(pay,string,string,string,string,uint64,string,string,uint64,asset,account)(uint64,string,string,string,uint64,string,string,uint64,uint64,address,bool)"
 ==
 bnz main_l33
 txna ApplicationArgs 0
@@ -741,12 +741,13 @@ retsub
 
 // create_art_nft
 createartnft_7:
-proto 12 1
+proto 11 1
 bytec_0 // ""
 dup
 intc_0 // 0
 bytec_0 // ""
 intc_0 // 0
+dup
 bytec_0 // ""
 intc_0 // 0
 dup
@@ -754,6 +755,8 @@ bytec_0 // ""
 dup
 intc_0 // 0
 frame_dig -11
+callsub ensurezeropayment_23
+frame_dig -10
 extract 2 0
 box_len
 store 27
@@ -763,27 +766,27 @@ load 27
 assert
 pushbytes 0x0003617274 // 0x0003617274
 frame_bury 1
-frame_dig -12
+frame_dig -11
 frame_dig 1
 callsub ensureregisteredcreative_28
 itxn_begin
 pushint 3 // acfg
 itxn_field TypeEnum
-frame_dig -10
+frame_dig -9
 extract 2 0
 itxn_field ConfigAssetName
-frame_dig -7
+frame_dig -6
 itxn_field ConfigAssetTotal
-frame_dig -5
+frame_dig -4
 extract 2 0
 itxn_field ConfigAssetURL
-frame_dig -12
+frame_dig -11
 gtxns Sender
 itxn_field ConfigAssetManager
 itxn_submit
 itxn CreatedAssetID
 frame_bury 2
-frame_dig -12
+frame_dig -11
 gtxns Sender
 frame_bury 3
 frame_dig 3
@@ -793,106 +796,108 @@ intc_3 // 32
 assert
 intc_0 // 0
 frame_bury 4
+intc_0 // 0
+frame_bury 5
 frame_dig 2
 itob
-frame_dig -11
+frame_dig -10
+frame_bury 10
+frame_dig 10
 frame_bury 9
-frame_dig 9
-frame_bury 8
 pushint 75 // 75
-frame_bury 6
-frame_dig 6
-frame_dig 9
-len
-+
 frame_bury 7
 frame_dig 7
-intc_2 // 65536
-<
-assert
-frame_dig 6
-itob
-extract 6 0
-concat
-frame_dig -9
-frame_bury 9
-frame_dig 8
-frame_dig 9
-concat
+frame_dig 10
+len
++
 frame_bury 8
-frame_dig 7
-frame_bury 6
-frame_dig 6
-frame_dig 9
-len
-+
-frame_bury 7
-frame_dig 7
+frame_dig 8
 intc_2 // 65536
 <
 assert
-frame_dig 6
+frame_dig 7
 itob
 extract 6 0
 concat
 frame_dig -8
+frame_bury 10
+frame_dig 9
+frame_dig 10
+concat
 frame_bury 9
 frame_dig 8
-frame_dig 9
-concat
-frame_bury 8
-frame_dig 7
-frame_bury 6
-frame_dig 6
-frame_dig 9
-len
-+
 frame_bury 7
 frame_dig 7
+frame_dig 10
+len
++
+frame_bury 8
+frame_dig 8
 intc_2 // 65536
 <
 assert
-frame_dig 6
+frame_dig 7
 itob
 extract 6 0
 concat
 frame_dig -7
-itob
+frame_bury 10
+frame_dig 9
+frame_dig 10
 concat
-frame_dig -6
 frame_bury 9
 frame_dig 8
-frame_dig 9
-concat
-frame_bury 8
-frame_dig 7
-frame_bury 6
-frame_dig 6
-frame_dig 9
-len
-+
 frame_bury 7
 frame_dig 7
+frame_dig 10
+len
++
+frame_bury 8
+frame_dig 8
 intc_2 // 65536
 <
 assert
-frame_dig 6
+frame_dig 7
 itob
 extract 6 0
 concat
+frame_dig -6
+itob
+concat
 frame_dig -5
+frame_bury 10
+frame_dig 9
+frame_dig 10
+concat
 frame_bury 9
 frame_dig 8
-frame_dig 9
-concat
-frame_bury 8
+frame_bury 7
 frame_dig 7
-frame_bury 6
-frame_dig 6
+frame_dig 10
+len
++
+frame_bury 8
+frame_dig 8
+intc_2 // 65536
+<
+assert
+frame_dig 7
 itob
 extract 6 0
 concat
 frame_dig -4
+frame_bury 10
+frame_dig 9
+frame_dig 10
+concat
+frame_bury 9
+frame_dig 8
+frame_bury 7
+frame_dig 7
+itob
+extract 6 0
+concat
+frame_dig -3
 itob
 concat
 frame_dig 4
@@ -902,28 +907,28 @@ frame_dig 3
 concat
 bytec_3 // 0x00
 intc_0 // 0
-frame_dig -3
+frame_dig 5
 setbit
 concat
-frame_dig 8
+frame_dig 9
 concat
-frame_bury 5
-frame_dig -11
+frame_bury 6
+frame_dig -10
 extract 2 0
 box_del
 pop
-frame_dig -11
+frame_dig -10
 extract 2 0
-frame_dig 5
+frame_dig 6
 box_put
 frame_dig 3
 callsub incrementcreatornftcount_30
 intc_1 // 1
-frame_bury 10
+frame_bury 11
 frame_dig 3
-frame_dig 10
+frame_dig 11
 callsub sendauratoken_41
-frame_dig -11
+frame_dig -10
 extract 2 0
 box_get
 store 29
@@ -3585,7 +3590,7 @@ intc_0 // 0
 bytec_0 // ""
 dup
 intc_0 // 0
-dupn 3
+dupn 2
 txna ApplicationArgs 1
 frame_bury 2
 txna ApplicationArgs 2
@@ -3606,22 +3611,21 @@ btoi
 frame_bury 9
 txna ApplicationArgs 9
 intc_0 // 0
-pushint 8 // 8
-*
-getbit
+getbyte
 frame_bury 10
 txna ApplicationArgs 10
 intc_0 // 0
 getbyte
 frame_bury 11
-txna ApplicationArgs 11
-intc_0 // 0
-getbyte
-frame_bury 12
 txn GroupIndex
 intc_1 // 1
 -
 frame_bury 1
+frame_dig 1
+gtxns TypeEnum
+intc_1 // pay
+==
+assert
 frame_dig 1
 frame_dig 2
 frame_dig 3
@@ -3633,7 +3637,6 @@ frame_dig 8
 frame_dig 9
 frame_dig 10
 frame_dig 11
-frame_dig 12
 callsub createartnft_7
 frame_bury 0
 bytec_1 // 0x151f7c75

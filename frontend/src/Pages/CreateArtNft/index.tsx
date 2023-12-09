@@ -10,7 +10,6 @@ import algosdk from 'algosdk'
 import { useAtom } from 'jotai'
 import React, { useRef } from 'react'
 import toast from 'react-hot-toast'
-import { nftListAtom } from '../../store/atoms'
 import classes from '../../styles/textinput.module.css'
 import { uploadToIpfs } from '../../utils/ipfs-calls'
 import { getAlgodClient } from '../../utils/network/contract-config'
@@ -19,12 +18,12 @@ import { auraAtom } from '../../store/auraAtoms'
 import encodeText from '../../utils/encoding'
 
 const CreateArtNft = () => {
-  const { activeAddress, signTransactions, sendTransactions } = useWallet()
+  const { activeAddress } = useWallet()
   const openRef = useRef<() => void>(null)
   const [appClient,] = useAtom(appClientAtom)
   const [auraToken,] = useAtom(auraAtom)
   const [appRef,] = useAtom(appRefAtom)
-  const [nftList, setNftList] = useAtom(nftListAtom)
+
   const form = useForm({
     initialValues: {
       title: '',
@@ -37,7 +36,6 @@ const CreateArtNft = () => {
     },
     validate: {
       title: (value) => (!value ? 'title is required' : null),
-      // artist: (value) => (!value ? 'artist is required' : null),
       desc: (value) => (!value ? 'description is required' : null),
       price: (value) => (value <= 0 ? 'price is required' : null),
       supply: (value) => (value <= 0 ? 'supply is required' : null),
@@ -49,64 +47,39 @@ const CreateArtNft = () => {
   const imageName = imageFile?.name || imageFile?.path
   const error = form.values.errors[0]?.errors[0]?.message
 
-  const sendTransaction = async (from = activeAddress, to = activeAddress, amount = 0.1) => {
-    try {
-      if (!from || !to || !amount) {
-        throw new Error('Missing transaction params.')
-      }
-      amount = amount * 1000000
-
-      const suggestedParams = await getAlgodClient().getTransactionParams().do()
-
-      const transaction = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
-        from,
-        to,
-        amount,
-        suggestedParams,
-      })
-
-      const encodedTransaction = algosdk.encodeUnsignedTransaction(transaction)
-      const signedTransactions = await signTransactions([encodedTransaction])
-      const waitRoundsToConfirm = 4
-      const { id } = await sendTransactions(signedTransactions, waitRoundsToConfirm)
-      return id
-    } catch (error) {
-      throw new Error('Error while sending transaction')
-    }
-  }
-
   const createArtCall = async () => {
-    if (!activeAddress) {
-      throw new Error('Connect Your Wallet')
-    }
-    if (error) {
-      throw new Error(error)
-    }
-    if (!form.isValid()) {
-      const a = form.validate()
-      const errorsKey = Object.keys(a.errors)
-      throw new Error(a.errors[errorsKey[0]] as string)
-    }
-    const toastId = toast.loading('Uploading files')
+    const assetKey = `${form.values.title} ${new Date().toLocaleString()}`
     const url = await uploadToIpfs(imageFile)
-    toast.success('File uploaded successfully', {
-      id: toastId,
-    })
-    await sendTransaction(activeAddress, activeAddress, Number(form.values.price.toString()))
+    const sp = await getAlgodClient().getTransactionParams().do()
+    const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({ from: activeAddress ?? "", to: activeAddress ?? "", amount: 0, suggestedParams: sp })
 
-    setNftList((prev) => [
-      ...prev,
-      {
-        id: nftList.length,
-        title: form.values.title,
-        supply: form.values.supply,
-        desc: form.values.desc,
-        price: form.values.price,
-        artist: '@user23456',
-        imgUrl: url,
-        type: 'art',
-      },
-    ])
+    try {
+      const artNFT = await appClient?.createArtNft(
+        {
+          nft_name: form.values.title,
+          name: form.values.title,
+          price: BigInt(form.values.price),
+          supply: form.values.supply,
+          creator: activeAddress ?? "",
+          asset_key: assetKey,
+          description: form.values.desc,
+          title: form.values.title,
+          ipfs_location: url,
+          txn: txn,
+          aura_asset: auraToken?.asset_id ?? 0
+        },
+        {
+          boxes: [
+            { appId: appRef?.appId ?? 0, name: encodeText(assetKey)},
+            { appId: appRef?.appId ?? 0, name: encodeText("aura")},
+            { appId: appRef?.appId ?? 0, name: algosdk.decodeAddress(activeAddress ?? "").publicKey}
+          ]
+        }
+      )
+      console.log({artNFT: artNFT?.return})
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   const { isPending, isError, mutateAsync } = useMutation({
@@ -119,7 +92,6 @@ const CreateArtNft = () => {
           icon: 'success',
           desc: 'Your art has been created successfully',
           btnLabel: 'View activity',
-          link: `/dapp/marketplace/art/${nftList.length}`,
         },
       })
     },
@@ -130,33 +102,6 @@ const CreateArtNft = () => {
 
   const create = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const assetKey = `${form.values.title} ${new Date().toLocaleString()}`
-    const url = await uploadToIpfs(imageFile)
-    const sp = await getAlgodClient().getTransactionParams().do()
-    const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({ from: activeAddress ?? "", to: activeAddress ?? "", amount: 0, suggestedParams: sp })
-    appClient?.createArtNft(
-      {
-        nft_name: form.values.title,
-        name: form.values.title,
-        price: form.values.price,
-        supply: form.values.supply,
-        creator: activeAddress ?? "",
-        for_sale: true,
-        asset_key: assetKey,
-        description: form.values.desc,
-        title: form.values.title,
-        ipfs_location: url,
-        txn: txn,
-        aura_asset: auraToken?.asset_id ?? 0
-      },
-      {
-        boxes: [
-          { appId: appRef?.appId ?? 0, name: encodeText(url)},
-          { appId: appRef?.appId ?? 0, name: encodeText("aura")},
-          { appId: appRef?.appId ?? 0, name: algosdk.decodeAddress(activeAddress ?? "").publicKey}
-        ]
-      }
-    )
     await mutateAsync()
   }
 

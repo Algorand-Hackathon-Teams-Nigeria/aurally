@@ -130,7 +130,10 @@ def ensure_registered_creative(txn: P.abi.Transaction, creative_type: P.abi.Stri
     Ensures that the person carrying out this transaction is a valid creatie
     """
     return P.Seq(
-        P.Assert(app.state.aurally_nft_owners[txn.get().sender()].exists()),
+        P.Assert(
+            app.state.aurally_nft_owners[txn.get().sender()].exists(),
+            comment="Account is not a registered creative",
+        ),
         (creative := AurallyCreative()).decode(
             app.state.aurally_nft_owners[txn.get().sender()].get()
         ),

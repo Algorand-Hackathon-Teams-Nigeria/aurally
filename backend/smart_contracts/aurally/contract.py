@@ -147,7 +147,7 @@ def create_sound_nft(
 
 @app.external
 def create_art_nft(
-    txn: P.abi.Transaction,
+    txn: P.abi.PaymentTransaction,
     asset_key: P.abi.String,
     nft_name: P.abi.String,
     title: P.abi.String,
@@ -156,7 +156,6 @@ def create_art_nft(
     description: P.abi.String,
     ipfs_location: P.abi.String,
     price: P.abi.Uint64,
-    for_sale: P.abi.Bool,
     aura_asset: P.abi.Asset,
     creator: P.abi.Account,
     *,
@@ -165,11 +164,16 @@ def create_art_nft(
     from .subroutines import (
         ensure_registered_creative,
         increment_creator_nft_count,
+        ensure_zero_payment,
         send_aura_token,
     )
 
     return P.Seq(
-        P.Assert(P.Not(app.state.art_nfts[asset_key.get()].exists())),
+        ensure_zero_payment(txn),
+        P.Assert(
+            P.Not(app.state.art_nfts[asset_key.get()].exists()),
+            comment="An art NFT with this key already exists",
+        ),
         (creative_type := P.abi.String()).set("art"),
         ensure_registered_creative(txn, creative_type),
         P.InnerTxnBuilder.Execute(
@@ -184,6 +188,7 @@ def create_art_nft(
         (asset_id := P.abi.Uint64()).set(P.InnerTxn.created_asset_id()),
         (owner := P.abi.Address()).set(txn.get().sender()),
         (sold_price := P.abi.Uint64()).set(0),
+        (for_sale := P.abi.Bool()).set(False),
         (art_nft := ArtNFT()).set(
             asset_id,
             asset_key,

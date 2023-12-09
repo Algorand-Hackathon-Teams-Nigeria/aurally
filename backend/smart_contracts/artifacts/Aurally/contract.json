@@ -129,7 +129,7 @@
             "name": "create_art_nft",
             "args": [
                 {
-                    "type": "txn",
+                    "type": "pay",
                     "name": "txn"
                 },
                 {
@@ -163,10 +163,6 @@
                 {
                     "type": "uint64",
                     "name": "price"
-                },
-                {
-                    "type": "bool",
-                    "name": "for_sale"
                 },
                 {
                     "type": "asset",

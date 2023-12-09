@@ -174,7 +174,6 @@ def test_create_art_nft(
         description="Gear 5 Luffy",
         ipfs_location=url,
         price=20000,
-        for_sale=True,
         aura_asset=aura_token,
         creator=test_account.address,
         boxes=[
