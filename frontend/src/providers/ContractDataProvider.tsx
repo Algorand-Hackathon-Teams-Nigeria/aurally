@@ -3,7 +3,6 @@ import { useAtom } from 'jotai'
 import { appClientAtom, appRefAtom, userAccountAtom } from '../store/contractAtom'
 import { useWallet } from '@txnlab/use-wallet'
 import { createAppClient, getAlgodClient } from '../utils/network/contract-config'
-import algosdk from 'algosdk'
 import { auraAtom } from '../store/auraAtoms'
 
 interface AppDataProviderProps {

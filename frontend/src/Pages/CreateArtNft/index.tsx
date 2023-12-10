@@ -47,6 +47,28 @@ const CreateArtNft = () => {
   const imageName = imageFile?.name || imageFile?.path
   const error = form.values.errors[0]?.errors[0]?.message
 
+  const registUser = async () => {
+    const sp = await getAlgodClient().getTransactionParams().do()
+    const optInTxn = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({ from: activeAddress ?? "", to: activeAddress ?? "", amount: 0, suggestedParams: sp, assetIndex: Number(auraToken?.asset_id ?? 0) })
+    try {
+      const res = await appClient?.registerCreator(
+        {
+          fullname: "Ezekiel Victor",
+          username: "McEazy", txn: optInTxn
+        },
+        {
+          boxes: [
+            { appId: appRef?.appId ?? 0, name: algosdk.decodeAddress(activeAddress ?? "").publicKey},
+            { appId: appRef?.appId ?? 0, name: encodeText("aura")}
+          ]
+        }
+      )
+      toast.success(`${res?.return?.username} registred`)
+    } catch (err) {
+      toast.error(JSON.stringify(err))
+    }
+  }
+
   const createArtCall = async () => {
     const assetKey = `${form.values.title} ${new Date().toLocaleString()}`
     const url = await uploadToIpfs(imageFile)
@@ -70,20 +92,26 @@ const CreateArtNft = () => {
         },
         {
           boxes: [
-            { appId: appRef?.appId ?? 0, name: encodeText(assetKey)},
-            { appId: appRef?.appId ?? 0, name: encodeText("aura")},
-            { appId: appRef?.appId ?? 0, name: algosdk.decodeAddress(activeAddress ?? "").publicKey}
+            { appId: appRef?.appId ?? 0, name: encodeText(assetKey) },
+            { appId: appRef?.appId ?? 0, name: encodeText("aura") },
+            { appId: appRef?.appId ?? 0, name: algosdk.decodeAddress(activeAddress ?? "").publicKey }
           ]
         }
       )
-      console.log({artNFT: artNFT?.return})
+      toast.success(`Success: ${artNFT?.return?.title} created`)
     } catch (err) {
-      console.error(err)
+      toast.error(JSON.stringify(err))
     }
   }
 
+  const createArt = async () => {
+    await registUser();
+    await createArtCall();
+    form.reset()
+  }
+
   const { isPending, isError, mutateAsync } = useMutation({
-    mutationFn: createArtCall,
+    mutationFn: createArt,
     onSuccess: () => {
       modals.openContextModal({
         modal: 'message',
