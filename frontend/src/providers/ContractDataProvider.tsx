@@ -1,9 +1,11 @@
 import React from 'react'
 import { useAtom } from 'jotai'
-import { appClientAtom, appRefAtom, userAccountAtom } from '../store/contractAtom'
+import { appClientAtom, appRefAtom, userAccountAtom, auraAtom, aurallyCreativeAtom } from '../store/contractAtom'
 import { useWallet } from '@txnlab/use-wallet'
 import { createAppClient, getAlgodClient } from '../utils/network/contract-config'
-import { auraAtom } from '../store/auraAtoms'
+import { toast } from 'react-hot-toast'
+import encodeText from '../utils/encoding'
+import algosdk from 'algosdk'
 
 interface AppDataProviderProps {
   children: React.ReactNode
@@ -13,6 +15,7 @@ export const ContractDataProvider = ({ children }: AppDataProviderProps) => {
   const [, setAppRef] = useAtom(appRefAtom)
   const [, setAppClient] = useAtom(appClientAtom)
   const [, setUserAccount] = useAtom(userAccountAtom)
+  const [, setAurallyCreative] = useAtom(aurallyCreativeAtom)
   const [, setAuraTokens] = useAtom(auraAtom)
   const { activeAddress, activeAccount, signer } = useWallet()
 
@@ -27,9 +30,27 @@ export const ContractDataProvider = ({ children }: AppDataProviderProps) => {
         setAppClient(newAppClient)
         setAppRef(newAppRef)
         setUserAccount(account as WalletAccountType)
-        const auras_result = await newAppClient.createAuraTokens({}, { boxes: [{ appId: newAppRef.appId, name: new Uint8Array(new TextEncoder().encode("aura")) }] })
-        const auras = auras_result.return
-        setAuraTokens(auras)
+
+        // Get / Create Aura Tokens
+        try {
+          const auras_result = await newAppClient.createAuraTokens({}, {
+            boxes: [{ appId: newAppRef.appId, name: encodeText("aura") }]
+          })
+          setAuraTokens(auras_result.return)
+        } catch (err) {
+          toast.error(JSON.stringify(err))
+        }
+
+        // Get registred User Information
+        try {
+          const registredUser = await newAppClient?.getRegisteredCreative(
+            { addr: activeAddress },
+            {boxes: [{ appId: newAppRef?.appId ?? 0, name: algosdk.decodeAddress(activeAddress).publicKey }]}
+          )
+          setAurallyCreative(registredUser?.return);
+        } catch (err) {
+          toast.error(JSON.stringify(err))
+        }
       }
     }
     getGlobalAppState()

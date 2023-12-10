@@ -97,6 +97,19 @@ def test_register_creator(
     assert list(result.return_value)[3] == "Dev Ready"
 
 
+def test_get_registered_creative(aurally_client: ApplicationClient, test_account: LocalAccount):
+    res = aurally_client.call(
+            aurally_contract.get_registered_creative,
+            addr=test_account.address,
+            boxes=[
+                (aurally_client.app_id, encoding.decode_address(test_account.address))
+                ]
+            )
+
+    print(res.return_value)
+    assert list(res.return_value)[3] == "Dev Ready"
+
+
 @pytest.fixture(scope="session")
 def test_create_sound_nft(
     algod_client: AlgodClient,

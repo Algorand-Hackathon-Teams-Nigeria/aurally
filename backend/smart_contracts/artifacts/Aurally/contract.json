@@ -54,6 +54,18 @@
             }
         },
         {
+            "name": "get_registered_creative",
+            "args": [
+                {
+                    "type": "address",
+                    "name": "addr"
+                }
+            ],
+            "returns": {
+                "type": "(bool,bool,uint64,string,string,uint64)"
+            }
+        },
+        {
             "name": "create_sound_nft",
             "args": [
                 {

@@ -8,24 +8,15 @@ import { useAtom, useAtomValue } from 'jotai'
 import { createdNftsAtom } from '../../store/atoms'
 import tabClass from '../../styles/tab.module.css'
 import NftCard from '../../components/Cards/NftCard'
-import { appClientAtom } from '../../store/contractAtom'
+import { appClientAtom, appRefAtom, aurallyCreativeAtom } from '../../store/contractAtom'
 import React from 'react'
+import algosdk from 'algosdk'
+import { AurallyCreative } from '../../contracts/Aurally'
 
 const TYPES = ['Created', 'Purchased', 'Sold', 'Minted', 'Activity']
 
 const ProfileTab = () => {
   const nftList = useAtomValue(createdNftsAtom)
-  const [appClient] = useAtom(appClientAtom);
-
-  const getResgisteredInfo = async () => {
-    const boxes = await appClient?.appClient.getBoxNames()
-    console.log({boxes})
-  }
-
-  React.useEffect(() => {
-    getResgisteredInfo()
-  }, [])
-
   return (
     <div className="gboard bg-[#1e1e1e] mt-6 mb-[90px]">
       <div className="w-full">
@@ -79,15 +70,17 @@ const ProfileTab = () => {
 }
 
 const Profile = () => {
-  const { activeAddress } = useWallet()
+  const { activeAddress } = useWallet();
+  const [user,] = useAtom(aurallyCreativeAtom)
+
 
   return (
     <div className="routePage mb-32">
       <div className="routeName">Profile</div>
       <Avatar size={150} className="mt-12" src={profile} />
-      <div className="text-3xl sm:text-[45px] font-bold sm:leading-[52px] mt-6">John Doe</div>
+      <div className="text-3xl sm:text-[45px] font-bold sm:leading-[52px] mt-6">{user ? user.fullname : "Anonymous"}</div>
       <div className="flex flex-wrap items-center sm:text-[22px] mt-3">
-        <div className="pr-4">@username</div>
+        <div className="pr-4">@{user ? user.username.toLowerCase() : "username"}</div>
         {activeAddress && (
           <div className="flex items-center gap-4 border-l pl-4 border-[#444]">
             <span>{ellipseAddress(activeAddress)}</span>
@@ -98,7 +91,7 @@ const Profile = () => {
       <div className="grid grid-cols-profile-card-sm sm:grid-cols-profile-card gap-4 sm:gap-5 mt-8">
         <div className="gcard-with-bg">
           <div>Minted</div>
-          <div>0</div>
+          <div>{user ? Number(user.minted) : 0}</div>
         </div>
         <div className="gcard-with-bg">
           <div>Created</div>

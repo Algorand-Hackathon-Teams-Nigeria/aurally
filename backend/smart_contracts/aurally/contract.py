@@ -79,6 +79,17 @@ def register_creator(
     )
 
 
+@app.external(read_only=True)
+def get_registered_creative(addr: P.abi.Address, *, output: AurallyCreative):
+    return P.Seq(
+        P.Assert(
+            app.state.aurally_nft_owners[addr.get()].exists(),
+            comment="This account is not a registred creative",
+        ),
+        output.decode(app.state.aurally_nft_owners[addr.get()].get()),
+    )
+
+
 @app.external
 def create_sound_nft(
     txn: P.abi.Transaction,
@@ -106,7 +117,9 @@ def create_sound_nft(
         send_aura_token,
     )
 
+    opup = P.OpUp(P.OpUpMode.OnCall)
     return P.Seq(
+        opup.maximize_budget(P.Int(1000)),
         (creative_type := P.abi.String()).set("music"),
         ensure_registered_creative(txn, creative_type),
         P.Assert(P.Not(app.state.sound_nfts[asset_key.get()].exists())),
@@ -305,7 +318,6 @@ def purchase_nft(
     buyer: P.abi.Account,
 ):
     from .subroutines import transfer_sound_nft, transfer_art_nft
-
     return P.Seq(
         P.Assert(
             P.Or(nft_type.get() == P.Bytes("sound"), nft_type.get() == P.Bytes("art"))

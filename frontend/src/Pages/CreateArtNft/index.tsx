@@ -13,8 +13,7 @@ import toast from 'react-hot-toast'
 import classes from '../../styles/textinput.module.css'
 import { uploadToIpfs } from '../../utils/ipfs-calls'
 import { getAlgodClient } from '../../utils/network/contract-config'
-import { appClientAtom, appRefAtom } from '../../store/contractAtom'
-import { auraAtom } from '../../store/auraAtoms'
+import { appClientAtom, appRefAtom, auraAtom } from '../../store/contractAtom'
 import encodeText from '../../utils/encoding'
 
 const CreateArtNft = () => {
