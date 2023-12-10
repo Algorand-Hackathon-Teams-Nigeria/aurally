@@ -91,7 +91,6 @@ def test_register_creator(
         username="Dev2700",
         boxes=[
             (aurally_client.app_id, encoding.decode_address(txn.txn.sender)),
-            (aurally_client.app_id, "aura".encode()),
         ],
     )
     assert list(result.return_value)[3] == "Dev Ready"
