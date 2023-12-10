@@ -15,7 +15,7 @@ import { nftListAtom } from '../../store/atoms'
 import classes from '../../styles/textinput.module.css'
 import { uploadToIpfs } from '../../utils/ipfs-calls'
 import { getAlgodClient } from '../../utils/network/contract-config'
-import { appClientAtom } from '../../store/contractAtom'
+import { appClientAtom, aurallyCreativeAtom } from '../../store/contractAtom'
 
 const GENRES = ['Pop', 'Electronic', 'R&B', 'Alte', 'Reggae', 'Afrobeat', 'Rock', 'Amapiano']
 
@@ -24,7 +24,8 @@ const SButton = () => <Button radius="md">Upload File</Button>
 const CreateSoundNFt = () => {
   const { activeAddress, signTransactions, sendTransactions } = useWallet()
   const [nftList, setNftList] = useAtom(nftListAtom)
-  const [appClient, ] = useAtom(appClientAtom)
+  const [appClient,] = useAtom(appClientAtom)
+  const [creative] = useAtom(aurallyCreativeAtom)
   const openRef = useRef<() => void>(null)
   const form = useForm({
     initialValues: {
@@ -147,98 +148,100 @@ const CreateSoundNFt = () => {
 
   const create = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    appClient?.createSoundNft({ audio_sample_ipfs})
+    appClient?.createSoundNft({ audio_sample_ipfs })
     await mutateAsync()
   }
 
   return (
-    <form onSubmit={create} className="routePage mb-32 max-w-[850px]">
-      <div className="routeName mb-10">Upload</div>
-      <div className="space-y-5">
-        <div>
+    <form title={!creative ? "You need to become a creative first" : undefined} onSubmit={create} className="routePage mb-32 max-w-[850px]">
+      <fieldset disabled={!creative} className={!creative ? "pointer-events-none opacity-60" : ""}>
+        <div className="routeName mb-10">Upload</div>
+        <div className="space-y-5">
           <div>
-            Music Cover <span className="text-[#8A2BE2]">*</span>
+            <div>
+              Music Cover <span className="text-[#8A2BE2]">*</span>
+            </div>
+            <div>
+              <div className="text-sm opacity-70">File types supported: JPG, PNG, GIF, Max size: 5 MB</div>
+            </div>
           </div>
+          <Dropzone
+            openRef={openRef}
+            onReject={(value) => form.setFieldValue('errors', value)}
+            onDrop={(value) => form.setFieldValue('files', value)}
+            maxSize={5 * 1024 ** 2}
+            accept={IMAGE_MIME_TYPE}
+            className="flex justify-center"
+            radius="md"
+            bg={'#1E1E1E'}
+          >
+            <div className=" pointer-events-none py-10">
+              <Icon className="mx-auto" icon="fluent:collections-20-regular" width="38px" stroke="1.5" />
+              <Text ta="center" fw={700} fz="lg" mt="lg">
+                <Dropzone.Accept>Drop files here</Dropzone.Accept>
+                <Dropzone.Reject>Image must be less than 3mb</Dropzone.Reject>
+                <Dropzone.Idle>
+                  {error ? (
+                    <span className="text-red-500">{error}</span>
+                  ) : name ? (
+                    <span className="text-[#8A2BE2]">{name}</span>
+                  ) : (
+                    'Upload Cover'
+                  )}
+                </Dropzone.Idle>
+              </Text>
+              <Text ta="center" fz="sm" mt="xs" c="dimmed">
+                Drag&apos;n&apos;drop files here to upload. Files must be less than 3mb in size.
+              </Text>
+            </div>
+          </Dropzone>
+          <FileInput
+            rightSection={<SButton />}
+            label="Audio File"
+            placeholder="(WAV or MP3)"
+            required
+            accept="audio/*"
+            rightSectionPointerEvents="none"
+            {...form.getInputProps('audio')}
+            classNames={{ ...classes, input: classes.input2, section: classes.section2 }}
+            mt="md"
+          />
+          <FileInput
+            rightSection={<SButton />}
+            label="Sample Audio File"
+            description="No more than 15 seconds"
+            placeholder="No more than 15 seconds"
+            required
+            accept="audio/*"
+            rightSectionPointerEvents="none"
+            {...form.getInputProps('sample')}
+            classNames={{ ...classes, input: classes.input2, section: classes.section2 }}
+            mt="md"
+          />
+          <TextInput {...form.getInputProps('title')} classNames={classes} required label="Music Title" placeholder="Your music title" />
+          <TextInput {...form.getInputProps('label')} classNames={classes} required label="Music Label" placeholder="Your music label" />
+          <TextInput {...form.getInputProps('artist')} classNames={classes} required label="Artist" placeholder="Add name of artists" />
           <div>
-            <div className="text-sm opacity-70">File types supported: JPG, PNG, GIF, Max size: 5 MB</div>
+            <div className="mb-2">
+              Genre <span className="text-[#8A2BE2]">*</span>
+            </div>
+            <Select {...form.getInputProps('genre')} placeholder="Pick a genre" data={GENRES} classNames={classes} />
           </div>
+          <NumberInput {...form.getInputProps('price')} classNames={classes} required label="Stream Price" placeholder="0.0 ALGO" />
+          <Textarea
+            required
+            autosize
+            minRows={8}
+            label="Description"
+            {...form.getInputProps('desc')}
+            classNames={classes}
+            placeholder="Description about your music"
+          />
+          <Button type='submit' fullWidth size="lg" radius={'md'} mt={32} loading={isPending && !isError}>
+            Create
+          </Button>
         </div>
-        <Dropzone
-          openRef={openRef}
-          onReject={(value) => form.setFieldValue('errors', value)}
-          onDrop={(value) => form.setFieldValue('files', value)}
-          maxSize={5 * 1024 ** 2}
-          accept={IMAGE_MIME_TYPE}
-          className="flex justify-center"
-          radius="md"
-          bg={'#1E1E1E'}
-        >
-          <div className=" pointer-events-none py-10">
-            <Icon className="mx-auto" icon="fluent:collections-20-regular" width="38px" stroke="1.5" />
-            <Text ta="center" fw={700} fz="lg" mt="lg">
-              <Dropzone.Accept>Drop files here</Dropzone.Accept>
-              <Dropzone.Reject>Image must be less than 3mb</Dropzone.Reject>
-              <Dropzone.Idle>
-                {error ? (
-                  <span className="text-red-500">{error}</span>
-                ) : name ? (
-                  <span className="text-[#8A2BE2]">{name}</span>
-                ) : (
-                  'Upload Cover'
-                )}
-              </Dropzone.Idle>
-            </Text>
-            <Text ta="center" fz="sm" mt="xs" c="dimmed">
-              Drag&apos;n&apos;drop files here to upload. Files must be less than 3mb in size.
-            </Text>
-          </div>
-        </Dropzone>
-        <FileInput
-          rightSection={<SButton />}
-          label="Audio File"
-          placeholder="(WAV or MP3)"
-          required
-          accept="audio/*"
-          rightSectionPointerEvents="none"
-          {...form.getInputProps('audio')}
-          classNames={{ ...classes, input: classes.input2, section: classes.section2 }}
-          mt="md"
-        />
-        <FileInput
-          rightSection={<SButton />}
-          label="Sample Audio File"
-          description="No more than 15 seconds"
-          placeholder="No more than 15 seconds"
-          required
-          accept="audio/*"
-          rightSectionPointerEvents="none"
-          {...form.getInputProps('sample')}
-          classNames={{ ...classes, input: classes.input2, section: classes.section2 }}
-          mt="md"
-        />
-        <TextInput {...form.getInputProps('title')} classNames={classes} required label="Music Title" placeholder="Your music title" />
-        <TextInput {...form.getInputProps('label')} classNames={classes} required label="Music Label" placeholder="Your music label" />
-        <TextInput {...form.getInputProps('artist')} classNames={classes} required label="Artist" placeholder="Add name of artists" />
-        <div>
-          <div className="mb-2">
-            Genre <span className="text-[#8A2BE2]">*</span>
-          </div>
-          <Select {...form.getInputProps('genre')} placeholder="Pick a genre" data={GENRES} classNames={classes} />
-        </div>
-        <NumberInput {...form.getInputProps('price')} classNames={classes} required label="Stream Price" placeholder="0.0 ALGO" />
-        <Textarea
-          required
-          autosize
-          minRows={8}
-          label="Description"
-          {...form.getInputProps('desc')}
-          classNames={classes}
-          placeholder="Description about your music"
-        />
-        <Button type='submit' fullWidth size="lg" radius={'md'} mt={32} loading={isPending && !isError}>
-          Create
-        </Button>
-      </div>
+      </fieldset>
     </form>
   )
 }

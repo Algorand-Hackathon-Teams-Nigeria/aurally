@@ -1,6 +1,6 @@
 import React from 'react'
 import { useAtom } from 'jotai'
-import { appClientAtom, appRefAtom, userAccountAtom, auraAtom, aurallyCreativeAtom } from '../store/contractAtom'
+import { appClientAtom, appRefAtom, userAccountAtom, auraTokenAtom, aurallyCreativeAtom } from '../store/contractAtom'
 import { useWallet } from '@txnlab/use-wallet'
 import { createAppClient, getAlgodClient } from '../utils/network/contract-config'
 import { toast } from 'react-hot-toast'
@@ -16,7 +16,7 @@ export const ContractDataProvider = ({ children }: AppDataProviderProps) => {
   const [, setAppClient] = useAtom(appClientAtom)
   const [, setUserAccount] = useAtom(userAccountAtom)
   const [, setAurallyCreative] = useAtom(aurallyCreativeAtom)
-  const [, setAuraTokens] = useAtom(auraAtom)
+  const [, setAuraTokens] = useAtom(auraTokenAtom)
   const { activeAddress, activeAccount, signer } = useWallet()
 
   React.useEffect(() => {
@@ -45,7 +45,11 @@ export const ContractDataProvider = ({ children }: AppDataProviderProps) => {
         try {
           const registredUser = await newAppClient?.getRegisteredCreative(
             { addr: activeAddress },
-            {boxes: [{ appId: newAppRef?.appId ?? 0, name: algosdk.decodeAddress(activeAddress).publicKey }]}
+            {
+              boxes: [
+                { appId: newAppRef?.appId ?? 0, name: algosdk.decodeAddress(activeAddress).publicKey }
+              ]
+            }
           )
           setAurallyCreative(registredUser?.return);
         } catch (err) {
