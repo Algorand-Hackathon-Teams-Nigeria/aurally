@@ -34,7 +34,7 @@ export default function App() {
         <Route index Component={Home} />
         <Route path="marketplace" Component={MarketPlace} />
         <Route path="marketplace/music/:musicId" Component={MusicDetails} />
-        <Route path="marketplace/art/:artId" Component={ArtDetails} />
+        <Route path="marketplace/art" Component={ArtDetails} />
         <Route path="dao" Component={DAO} />
         <Route path="dao/create" Component={CreateProposal} />
         <Route path="nfts" Component={MyNfts} />

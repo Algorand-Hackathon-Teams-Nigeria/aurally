@@ -2,6 +2,11 @@ import { AspectRatio, Avatar, Button, Image } from '@mantine/core'
 import { Link } from 'react-router-dom'
 import { ArtType, SoundType } from '../../../types/assets'
 import { microalgosToAlgos } from 'algosdk'
+import { useAtom } from 'jotai'
+import { appClientAtom } from '../../../store/contractAtom'
+import React from 'react'
+import { UserAccount } from '../../../types/account'
+import { getUserFromAddressSlice } from '../../../utils/queries'
 
 
 type Prop = {
@@ -37,6 +42,20 @@ export const NftCardLoader = () => {
 }
 
 const NftCard = ({ data, buttonAction, buttonLabel }: Prop) => {
+  const [appClient,] = useAtom(appClientAtom)
+  const [creator, setCreator] = React.useState<UserAccount>()
+
+  async function getCreator() {
+    if (appClient) {
+      const user = await getUserFromAddressSlice(data.data.owner, appClient)
+      setCreator(user)
+    }
+  }
+
+  React.useEffect(() => {
+    getCreator()
+  }, [])
+
   return (
     <div className="h-max rounded-lg bg-[#1e1e1e] border-[0.5px] border-[#444] overflow-hidden flex-1 shadow-md">
       <AspectRatio ratio={4 / 3} classNames={{ root: 'overflow-hidden' }}>
@@ -51,7 +70,7 @@ const NftCard = ({ data, buttonAction, buttonLabel }: Prop) => {
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-1 min-w-0 flex-1">
             <Avatar size={14} alt="music owner" />
-            <div className="text-[11px] text-[#afafaf] truncate font-sans">Artist</div>
+            <div className="text-[11px] text-[#afafaf] truncate font-sans">@{creator?.data.username.toLowerCase()}</div>
           </div>
           <div className="text-sm text-[#afafaf] shrink-0 font-[500]">{microalgosToAlgos(Number(data.data.price))} ALGO</div>
         </div>
@@ -61,7 +80,7 @@ const NftCard = ({ data, buttonAction, buttonLabel }: Prop) => {
             {buttonLabel}
           </Button>
         ) : (
-          <Link to={`/dapp/marketplace/${data.type === 'art' ? 'art' : 'music'}/${data.data.asset_id}`}>
+          <Link to={`/dapp/marketplace/${data.type === 'art' ? 'art' : 'music'}?assetKey=${data.data.asset_key}`}>
             <Button variant="primary-full-sm" size="sm">
               {buttonLabel ? buttonLabel : data.type === 'sound' ? 'Stream and Buy' : 'Buy'}
             </Button>

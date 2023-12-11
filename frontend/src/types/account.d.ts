@@ -1,3 +1,5 @@
+import { AurallyCreative } from "../contracts/Aurally"
+
 type WalletAccountType = {
   address: string
   amount: number
@@ -7,4 +9,9 @@ type WalletAccountType = {
     'if-frozen': boolean
   }[]
   'min-balance': number
+}
+
+type UserAccount = {
+  address: string
+  data: AurallyCreative
 }
