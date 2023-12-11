@@ -21,7 +21,7 @@ class SoundNFT(P.abi.NamedTuple):
     title: P.abi.Field[P.abi.String]
     label: P.abi.Field[P.abi.String]
     artist: P.abi.Field[P.abi.String]
-    release_date: P.abi.Field[P.abi.String]  # A UTC timestamp of the release_date
+    release_date: P.abi.Field[P.abi.Uint64]  # A UTC timestamp of the release_date
     genre: P.abi.Field[P.abi.String]
     price: P.abi.Field[P.abi.Uint64]
     cover_image_ipfs: P.abi.Field[P.abi.String]

@@ -1,4 +1,4 @@
-import { Button, Input } from "@mantine/core";
+import { Button, TextInput } from "@mantine/core";
 import React from "react";
 import { getAlgodClient } from "../../utils/network/contract-config";
 import algosdk from "algosdk";
@@ -51,14 +51,8 @@ export default function RegistrationForm() {
       <fieldset className="w-full">
         <legend className="text-3xl font-bold">Become a Creative</legend>
         <div className="pt-5 flex w-full flex-col gap-3 lg:flex-row">
-          <div className="w-full">
-            <label className="py-3" htmlFor="fullname">Full Name</label>
-            <Input size="lg" ref={fullNameRef} id="fullname" placeholder="John Doe" required aria-label="full name" type="text" />
-          </div>
-          <div className="w-full">
-            <label className="py-3" htmlFor="username">Username</label>
-            <Input size="lg" ref={userNameRef} id="username" placeholder="johncena" required aria-label="full name" type="text" />
-          </div>
+          <TextInput className="w-full" label="Full Name" size="lg" ref={fullNameRef} placeholder="John Doe" required aria-label="full name" type="text" />
+          <TextInput className="w-full" label="Username" size="lg" ref={userNameRef} placeholder="johncena" required aria-label="full name" type="text" />
         </div>
       </fieldset>
       <Button loading={loading} disabled={loading} type="submit" mt={20} size="lg" radius={"md"} className="w-fit self-end">

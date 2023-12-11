@@ -93,7 +93,7 @@
                     "name": "artist"
                 },
                 {
-                    "type": "string",
+                    "type": "uint64",
                     "name": "release_date"
                 },
                 {
@@ -121,10 +121,6 @@
                     "name": "supply"
                 },
                 {
-                    "type": "bool",
-                    "name": "for_sale"
-                },
-                {
                     "type": "asset",
                     "name": "aura_asset"
                 },
@@ -134,7 +130,7 @@
                 }
             ],
             "returns": {
-                "type": "(uint64,string,uint64,string,string,string,string,string,uint64,string,string,string,address,bool)"
+                "type": "(uint64,string,uint64,string,string,string,uint64,string,uint64,string,string,string,address,bool)"
             }
         },
         {

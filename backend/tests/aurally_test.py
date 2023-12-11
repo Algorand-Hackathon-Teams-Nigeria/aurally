@@ -135,7 +135,7 @@ def test_create_sound_nft(
         title="Dev Tokens",
         label="Dev Reccords",
         artist="GigaChad",
-        release_date="200023021",
+        release_date=200023021,
         genre="Pop",
         price=20000,
         cover_image_ipfs="some_id",
@@ -144,7 +144,6 @@ def test_create_sound_nft(
         aura_asset=aura_token,
         creator=test_account.address,
         supply=20,
-        for_sale=False,
         boxes=[
             (aurally_client.app_id, asset_key.encode()),
             (aurally_client.app_id, "aura".encode()),

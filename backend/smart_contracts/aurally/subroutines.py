@@ -344,7 +344,7 @@ def update_sound_nft_owner(asset_key: P.abi.String, new_owner: P.abi.Address):
         (title := P.abi.String()).set(sound_nft.title),
         (label := P.abi.String()).set(sound_nft.label),
         (artist := P.abi.String()).set(sound_nft.artist),
-        (release_date := P.abi.String()).set(sound_nft.release_date),
+        (release_date := P.abi.Uint64()).set(sound_nft.release_date),
         (genre := P.abi.String()).set(sound_nft.genre),
         (price := P.abi.Uint64()).set(sound_nft.price),
         (cover_image_ipfs := P.abi.String()).set(sound_nft.cover_image_ipfs),

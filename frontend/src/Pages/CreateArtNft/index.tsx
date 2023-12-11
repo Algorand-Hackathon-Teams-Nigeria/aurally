@@ -48,7 +48,7 @@ const CreateArtNft = () => {
   const error = form.values.errors[0]?.errors[0]?.message
 
   const createArtCall = async () => {
-    const assetKey = `${form.values.title} ${new Date().toLocaleString()}`
+    const assetKey = `Art:${form.values.title} ${new Date().toLocaleString()}`
     const url = await uploadToIpfs(imageFile)
     const sp = await getAlgodClient().getTransactionParams().do()
     const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({ from: activeAddress ?? "", to: activeAddress ?? "", amount: 0, suggestedParams: sp })
@@ -96,7 +96,6 @@ const CreateArtNft = () => {
           title: 'Art Nft Created',
           icon: 'success',
           desc: 'Your art has been created successfully',
-          btnLabel: 'View activity',
         },
       })
     },
