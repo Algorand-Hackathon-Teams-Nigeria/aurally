@@ -1,5 +1,3 @@
-import { useAtomValue } from 'jotai'
-import { nftListAtom } from '../../store/atoms'
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { Button, Checkbox, Group, Menu, NumberInput } from '@mantine/core'
@@ -7,15 +5,18 @@ import { Icon } from '@iconify/react'
 import inputClasses from '../../styles/textinput.module.css'
 import { useState } from 'react'
 import NftCard, { NftCardLoader } from '../../components/Cards/NftCard'
+import { useAtom } from 'jotai'
+import { appClientAtom } from '../../store/contractAtom'
+import { parseNftBoxData } from '../../utils/parsing'
+import { ArtType, BoxData, SoundType } from '../../types/assets'
 
 const MarketPlace = () => {
-  const nftList = useAtomValue(nftListAtom)
+  const [appClient,] = useAtom(appClientAtom);
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
 
   // params from url
   const type = searchParams.get('type')
-  const query = searchParams.get('query')
 
   const [value, setValue] = useState<string[]>(type ? [type] : [])
 
@@ -23,16 +24,20 @@ const MarketPlace = () => {
   const toggle = () => setOpened((o) => !o)
 
   // filtering by type
-  const filterList = (type: string | null) => {
-    const list = nftList.filter((item) => {
-      if (!type) return true
-      if (type === item.type) return true
-      return false
-    })
-    return list
+  const filterList = async (type: string | null) => {
+    let nftBoxes: BoxData[] | undefined
+    if (type) {
+      nftBoxes = await appClient?.appClient.getBoxValues(name => name.name.startsWith(type))
+    } else {
+      nftBoxes = await appClient?.appClient.getBoxValues(name => name.name.startsWith("Art") || name.name.startsWith("Sound"))
+    }
+    if (nftBoxes) {
+      return parseNftBoxData(nftBoxes)
+    }
+    return []
   }
 
-  const getNftData = async (type: string | null): Promise<typeof nftList> => {
+  const getNftData = async (type: string | null): Promise<(SoundType | ArtType)[]> => {
     return await new Promise((resolve, reject) => {
       setTimeout(() => {
         try {
@@ -76,8 +81,8 @@ const MarketPlace = () => {
               <div className="py-5 px-2">
                 <Checkbox.Group mb={20} label="Filter by Type" value={value} onChange={setValue}>
                   <Group mt="xs">
-                    <Checkbox classNames={{ input: inputClasses.checkbox_input }} value="art" label="Art" />
-                    <Checkbox classNames={{ input: inputClasses.checkbox_input }} value="sound" label="Sound" />
+                    <Checkbox classNames={{ input: inputClasses.checkbox_input }} value="Art" label="Art" />
+                    <Checkbox classNames={{ input: inputClasses.checkbox_input }} value="Sound" label="Sound" />
                   </Group>
                 </Checkbox.Group>
                 <NumberInput classNames={inputClasses} label="Price" placeholder="0.00 ALGO" min={0} />
@@ -91,9 +96,9 @@ const MarketPlace = () => {
         <div className="grid grid-cols-music-card gap-3 sm:gap-4">
           {isLoading
             ? [1, 2, 3, 4].map((item) => <NftCardLoader key={item} />)
-            : data?.map((item) => <NftCard key={item.id} data={item} />)}
+            : data?.map((item) => <NftCard key={Number(item.data.asset_id)} data={item} />)}
         </div>
-        {nftList.length === 0 && (
+        {data?.length === 0 && (
           <div className="w-full py-28  flex justify-center items-center text-center text-[#8A2BE2] font-bold">No NFTs found</div>
         )}
       </div>

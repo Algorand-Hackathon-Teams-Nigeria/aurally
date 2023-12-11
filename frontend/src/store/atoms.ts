@@ -1,5 +1,6 @@
 import { atom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
+import { ArtNftType, SoundNftType } from '../types/assets'
 
 type DaoType = {
   price: number

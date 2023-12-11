@@ -1,3 +1,20 @@
+import { ArtNft, SoundNft } from "../contracts/Aurally"
+
+type BoxData = {
+  name: BoxName;
+  value: Uint8Array;
+}
+
+type SoundType = {
+  type: "sound",
+  data: SoundNft
+}
+
+type ArtType = {
+  type: "art",
+  data: ArtNft
+}
+
 type SoundNftType = {
   id: number
   title: string

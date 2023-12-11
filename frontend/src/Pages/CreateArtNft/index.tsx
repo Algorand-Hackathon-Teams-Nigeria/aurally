@@ -14,7 +14,7 @@ import classes from '../../styles/textinput.module.css'
 import { uploadToIpfs } from '../../utils/ipfs-calls'
 import { getAlgodClient } from '../../utils/network/contract-config'
 import { appClientAtom, appRefAtom, auraTokenAtom, aurallyCreativeAtom } from '../../store/contractAtom'
-import encodeText from '../../utils/encoding'
+import { encodeText, generateAssetKey } from '../../utils/encoding'
 
 const CreateArtNft = () => {
   const { activeAddress } = useWallet()
@@ -48,7 +48,7 @@ const CreateArtNft = () => {
   const error = form.values.errors[0]?.errors[0]?.message
 
   const createArtCall = async () => {
-    const assetKey = `Art:${form.values.title} ${new Date().toLocaleString()}`
+    const assetKey = generateAssetKey("Art", form.values.title, activeAddress ?? "")
     const url = await uploadToIpfs(imageFile)
     const sp = await getAlgodClient().getTransactionParams().do()
     const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({ from: activeAddress ?? "", to: activeAddress ?? "", amount: 0, suggestedParams: sp })

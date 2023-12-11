@@ -4,7 +4,7 @@ import { appClientAtom, appRefAtom, userAccountAtom, auraTokenAtom, aurallyCreat
 import { useWallet } from '@txnlab/use-wallet'
 import { createAppClient, getAlgodClient } from '../utils/network/contract-config'
 import { toast } from 'react-hot-toast'
-import encodeText from '../utils/encoding'
+import { encodeText } from '../utils/encoding'
 import algosdk from 'algosdk'
 
 interface AppDataProviderProps {

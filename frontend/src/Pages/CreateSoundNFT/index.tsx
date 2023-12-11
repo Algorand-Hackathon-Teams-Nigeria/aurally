@@ -17,7 +17,7 @@ import { getAlgodClient } from '../../utils/network/contract-config'
 import { appClientAtom, appRefAtom, auraTokenAtom, aurallyCreativeAtom } from '../../store/contractAtom'
 import { DateInput } from '@mantine/dates'
 import { getTimeStamp } from '../../utils/parsing'
-import encodeText from '../../utils/encoding'
+import { encodeText, generateAssetKey } from '../../utils/encoding'
 
 const GENRES = ['Pop', 'Electronic', 'R&B', 'Alte', 'Reggae', 'Afrobeat', 'Rock', 'Amapiano']
 
@@ -66,7 +66,7 @@ const CreateSoundNFt = () => {
 
 
   const createArtCall = async () => {
-    const assetKey = `Sound:${form.values.title} ${new Date().toLocaleString()}`
+    const assetKey = generateAssetKey("Sound", form.values.title, activeAddress ?? "")
     const toastId = toast.loading('Uploading files')
     const imageUrl = await uploadToIpfs(imageFile)
     const sampleUrl = await uploadToIpfs(form.values.sample as File)
@@ -78,7 +78,13 @@ const CreateSoundNFt = () => {
 
     const sp = await getAlgodClient().getTransactionParams().do()
 
-    const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({ from: activeAddress ?? "", to: activeAddress ?? "", amount: 0, suggestedParams: sp })
+    const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject(
+      {
+        from: activeAddress ?? "",
+        to: activeAddress ?? "",
+        amount: 0, suggestedParams: sp
+      }
+    )
     try {
       const res = await appClient?.createSoundNft(
         {

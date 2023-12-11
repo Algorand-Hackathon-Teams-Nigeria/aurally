@@ -50,8 +50,8 @@ const MyNfts = () => {
           </div>
           {soundList.length > 0 ? (
             <div className="grid grid-cols-music-card gap-4 sm:gap-5">
-              {soundList.map((item) => (
-                <NftCard key={item.id} data={item} buttonLabel="Play" buttonAction={() => {}} />
+              {[].map((item, id) => (
+                <NftCard key={id} data={item} buttonLabel="Play" buttonAction={() => {}} />
               ))}
             </div>
           ) : (
@@ -68,8 +68,8 @@ const MyNfts = () => {
         <Tabs.Panel value={TYPES[1]}>
           {artList.length > 0 ? (
             <div className="grid grid-cols-music-card gap-4 sm:gap-5">
-              {artList.map((item) => (
-                <NftCard key={item.id} data={item} buttonLabel="View Details" />
+              {[].map((item, id) => (
+                <NftCard key={id} data={item} buttonLabel="View Details" />
               ))}
             </div>
           ) : (

@@ -1,75 +1,17 @@
-import { Avatar, Tabs } from '@mantine/core'
+import { Avatar } from '@mantine/core'
 import profile from '../../assets/profile.jpg'
 import CopyButton from '../../components/General/CopyButton'
-import { useAtom, useAtomValue } from 'jotai'
+import { useAtom } from 'jotai'
 import { ellipseAddress } from '../../utils/ellipseAddress'
-import { createdNftsAtom } from '../../store/atoms'
-import noActiviy from '../../assets/no-activity.svg'
-import tabClass from '../../styles/tab.module.css'
-import NftCard from '../../components/Cards/NftCard'
 import { AurallyCreative } from '../../contracts/Aurally'
 import { useWallet } from '@txnlab/use-wallet'
 import { appClientAtom, appRefAtom, aurallyCreativeAtom } from '../../store/contractAtom'
 import React from 'react'
 import algosdk from 'algosdk'
 import { toast } from 'react-hot-toast'
+import ProfileTab from './ProfileTab'
 
 
-const TYPES = ['Created', 'Purchased', 'Sold', 'Minted', 'Activity']
-
-const ProfileTab = () => {
-  const nftList = useAtomValue(createdNftsAtom)
-  return (
-    <div className="gboard bg-[#1e1e1e] mt-6 mb-[90px]">
-      <div className="w-full">
-        <Tabs classNames={{ tab: tabClass.tab, list: tabClass.list, panel: tabClass.panel }} defaultValue={TYPES[0]}>
-          <Tabs.List className="mb-8">
-            {TYPES.map((item) => (
-              <Tabs.Tab value={item} key={item}>
-                {item}
-              </Tabs.Tab>
-            ))}
-          </Tabs.List>
-
-          <Tabs.Panel value={TYPES[0]}>
-            <div className="w-full grid grid-cols-music-card gap-5">
-              {nftList.map((item) => (
-                <NftCard data={item} key={item.id} />
-              ))}
-            </div>
-          </Tabs.Panel>
-          <Tabs.Panel value={TYPES[1]}>
-            <div className="w-full grid grid-cols-music-card gap-5">
-              {nftList.map((item) => (
-                <NftCard data={item} key={item.id} />
-              ))}
-            </div>
-          </Tabs.Panel>
-          <Tabs.Panel value={TYPES[2]}>
-            <div className="w-full grid grid-cols-music-card gap-5">
-              {nftList.map((item) => (
-                <NftCard data={item} key={item.id} />
-              ))}
-            </div>
-          </Tabs.Panel>
-          <Tabs.Panel value={TYPES[3]}>
-            <div className="w-full grid grid-cols-music-card gap-5">
-              {nftList.map((item) => (
-                <NftCard data={item} key={item.id} />
-              ))}
-            </div>
-          </Tabs.Panel>
-          <Tabs.Panel value={TYPES[4]}>
-            <div className="min-h-[305px] flex flex-col items-center justify-center gap-5">
-              <img src={noActiviy} width={49} alt="" />
-              <div className="w-full text-center text-xl">You don’t have any activity</div>
-            </div>
-          </Tabs.Panel>
-        </Tabs>
-      </div>
-    </div>
-  )
-}
 
 interface UserProfileProps {
   creative: AurallyCreative
@@ -100,6 +42,7 @@ export default function UserProfile(props: UserProfileProps) {
   }
 
   React.useEffect(() => {
+    getUpdatedData()
   }, [])
 
   return (

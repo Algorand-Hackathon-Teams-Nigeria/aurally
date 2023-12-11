@@ -1,8 +1,11 @@
 import { AspectRatio, Avatar, Button, Image } from '@mantine/core'
 import { Link } from 'react-router-dom'
+import { ArtType, SoundType } from '../../../types/assets'
+import { microalgosToAlgos } from 'algosdk'
+
 
 type Prop = {
-  data: SoundNftType | ArtNftType
+  data: SoundType | ArtType
   buttonAction?: () => void
   buttonLabel?: string
 }
@@ -37,20 +40,20 @@ const NftCard = ({ data, buttonAction, buttonLabel }: Prop) => {
   return (
     <div className="h-max rounded-lg bg-[#1e1e1e] border-[0.5px] border-[#444] overflow-hidden flex-1 shadow-md">
       <AspectRatio ratio={4 / 3} classNames={{ root: 'overflow-hidden' }}>
-        <Image src={data.imgUrl} className="object-cover object-top" alt="Norway" />
+        <Image src={data.type == "sound" ? data.data.cover_image_ipfs : data.data.ipfs_location} className="object-cover object-top" alt="Norway" />
       </AspectRatio>
       <div className="px-4 pb-3">
         <div className="flex justify-between items-center gap-1 mt-2.5 mb-1.5">
-          <div className="text-[14.5px] font-bold truncate">{data.title}</div>
+          <div className="text-[14.5px] font-bold truncate">{data.data.title}</div>
           <div className="text-[11px] text-[#afafaf] shrink-0">Bid</div>
         </div>
 
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-1 min-w-0 flex-1">
-            <Avatar size={14} src={data.imgUrl} alt="music owner" />
-            <div className="text-[11px] text-[#afafaf] truncate font-sans">{data.artist}</div>
+            <Avatar size={14} alt="music owner" />
+            <div className="text-[11px] text-[#afafaf] truncate font-sans">Artist</div>
           </div>
-          <div className="text-sm text-[#afafaf] shrink-0 font-[500]">{data.price} ALGO</div>
+          <div className="text-sm text-[#afafaf] shrink-0 font-[500]">{microalgosToAlgos(Number(data.data.price))} ALGO</div>
         </div>
 
         {buttonAction ? (
@@ -58,7 +61,7 @@ const NftCard = ({ data, buttonAction, buttonLabel }: Prop) => {
             {buttonLabel}
           </Button>
         ) : (
-          <Link to={`/dapp/marketplace/${data.type === 'art' ? 'art' : 'music'}/${data.id}`}>
+          <Link to={`/dapp/marketplace/${data.type === 'art' ? 'art' : 'music'}/${data.data.asset_id}`}>
             <Button variant="primary-full-sm" size="sm">
               {buttonLabel ? buttonLabel : data.type === 'sound' ? 'Stream and Buy' : 'Buy'}
             </Button>
