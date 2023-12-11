@@ -1,8 +1,8 @@
 import { Button } from '@mantine/core'
-import { useAtomValue } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import MusicPlayerCarousel from './component/MusicPlayerCarousel'
 import { nftListAtom } from '../../store/atoms'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { NftCarousel } from '../../components/Carousels/NftCarousel'
 import TitleHeader from '../../components/General/TitleHeader'
@@ -10,40 +10,55 @@ import { EventCarousel } from '../../components/Carousels/EventCarousel'
 import { eventData } from '../Events'
 import { CommunitiesCarousel } from '../../components/Carousels/CommunitiesCarousel'
 import { CommunitiesData } from '../Communities'
+import { appClientAtom } from '../../store/contractAtom'
+import { parseNftBoxData } from '../../utils/parsing'
+import { ArtType, SoundType } from '../../types/assets'
 
-const TYPES = [
+
+interface NFTType {
+  value: string;
+  label: string
+}
+const TYPES: NFTType[] = [
   {
     value: 'all',
     label: 'All',
   },
   {
-    value: 'art',
+    value: 'Art',
     label: 'Art',
   },
   {
-    value: 'sound',
+    value: 'Sound',
     label: 'Music',
   },
 ]
 
 const NftShowCase = () => {
   const [type, setType] = useState(TYPES[0])
-  const nftList = useAtomValue(nftListAtom)
+  const [appClient] = useAtom(appClientAtom)
 
-  const filteredData = nftList.filter((item) => (type.value === 'all' ? true : item.type === type.value))
-
-  const getDummyData = async () => {
-    return await new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(true)
-      }, 2000)
-    })
+  const getData = async (): Promise<(SoundType | ArtType)[]> => {
+    const boxes = await appClient?.appClient.getBoxValues((name) => (
+      type.value === "all"
+        ? (name.name.startsWith("Art") || name.name.startsWith("Sound"))
+        : name.name.startsWith(type.value)
+    ))
+    if (boxes) {
+      return parseNftBoxData(boxes)
+    }
+    return []
   }
 
-  const { isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ['trending-nft'],
-    queryFn: getDummyData,
+    queryFn: getData,
   })
+
+  function refetchData(type: NFTType) {
+    setType(type);
+    refetch()
+  }
 
   return (
     <>
@@ -52,12 +67,12 @@ const NftShowCase = () => {
           <TitleHeader title="Trending Nft" link="/dapp/marketplace" />
           <div className="flex gap-4 flex-1 h-[42px] overflow-x-auto mt-2 mb-4">
             {TYPES.map((item) => (
-              <Button onClick={() => setType(item)} key={item.label} variant={item.value === type.value ? 'filled' : 'outline'} radius="xl">
+              <Button onClick={() => refetchData(item)} key={item.label} variant={item.value === type.value ? 'filled' : 'outline'} radius="xl">
                 {item.label}
               </Button>
             ))}
           </div>
-          <NftCarousel isLoading={isLoading} data={filteredData} />
+          <NftCarousel isLoading={isLoading} data={data} />
         </div>
         <div>
           <TitleHeader title="Upcoming Events" link="/dapp/events" />

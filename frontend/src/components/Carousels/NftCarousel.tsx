@@ -1,6 +1,7 @@
 import carouselClasses from '../../styles/carousel.module.css'
 import { Carousel } from '@mantine/carousel'
 import NftCard, { NftCardLoader } from '../Cards/NftCard'
+import { ArtType, SoundType } from '../../types/assets'
 
 const CarouselLoader = () => {
   return (
@@ -16,7 +17,11 @@ const CarouselLoader = () => {
   )
 }
 
-export const NftCarousel = ({ data = [], isLoading }: { isLoading?: boolean; data?: (ArtNftType | SoundNftType)[] }) => {
+interface NftCarouselProps {
+  isLoading?: boolean;
+  data?: (ArtType | SoundType)[]
+}
+export const NftCarousel = ({ data = [], isLoading }: NftCarouselProps) => {
   return isLoading ? (
     <CarouselLoader />
   ) : (
@@ -29,7 +34,7 @@ export const NftCarousel = ({ data = [], isLoading }: { isLoading?: boolean; dat
       align="end"
     >
       {data.map((item) => (
-        <Carousel.Slide key={item.id}>
+        <Carousel.Slide key={Number(item.data.asset_id ?? 0)}>
           <NftCard data={item} />
         </Carousel.Slide>
       ))}

@@ -5,13 +5,12 @@ import tabClass from '../../styles/tab.module.css'
 import NftCard from '../../components/Cards/NftCard'
 import { appClientAtom } from '../../store/contractAtom'
 import React from 'react'
-import { ArtNFTTupple, SoundNFTTupple, artNFTDecoder, filterByKeyCreator, soundNFTDecoder } from '../../utils/encoding'
+import { filterByKeyCreator } from '../../utils/encoding'
 import { useWallet } from '@txnlab/use-wallet'
-import { ArtNft, SoundNft } from '../../contracts/Aurally'
 import { ArtType, SoundType } from '../../types/assets'
 import { parseNftBoxData } from '../../utils/parsing'
 
-const TYPES = ['Created', 'Purchased', 'Sold', 'Minted', 'Activity']
+const TYPES = ['Created', 'Purchased', 'Sold', 'Activity']
 
 export default function ProfileTab() {
   const [appClient] = useAtom(appClientAtom)
@@ -64,13 +63,6 @@ export default function ProfileTab() {
             </div>
           </Tabs.Panel>
           <Tabs.Panel value={TYPES[3]}>
-            <div className="w-full grid grid-cols-music-card gap-5">
-              {[].map((item, id) => (
-                <NftCard data={item} key={id} />
-              ))}
-            </div>
-          </Tabs.Panel>
-          <Tabs.Panel value={TYPES[4]}>
             <div className="min-h-[305px] flex flex-col items-center justify-center gap-5">
               <img src={noActiviy} width={49} alt="" />
               <div className="w-full text-center text-xl">You don’t have any activity</div>
