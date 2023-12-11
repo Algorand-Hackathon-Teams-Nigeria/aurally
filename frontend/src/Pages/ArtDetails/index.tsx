@@ -3,9 +3,8 @@ import React, { useState } from 'react'
 import classes from '../MusicDetails/musicdetail.module.css'
 import Stat1 from '../../components/General/Stat1'
 import { Icon } from '@iconify/react'
-import { useParams, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { useAtom } from 'jotai'
-import { nftListAtom } from '../../store/atoms'
 import { ArtNft } from '../../contracts/Aurally'
 import { appClientAtom } from '../../store/contractAtom'
 import { ArtNFTTupple, AssetKeyData, artNFTDecoder, parseAssetKey } from '../../utils/encoding'
@@ -35,20 +34,20 @@ const ArtDetails = () => {
 
   const artId = searchParams.get("assetKey")
   async function getArt() {
-    const keyVal = parseAssetKey(artId ?? "")
-    if (keyVal.type == "Art") {
-      setKeyData(keyVal)
+    const res = await appClient?.appClient.getBoxValue(artId ?? "")
+    if (res) {
+      const val = artNFTDecoder.decode(res)
+      const artVal = ArtNft(val as ArtNFTTupple)
+      setNft(artVal)
+
       if (appClient) {
-        const user = await getUserFromAddressSlice(keyVal.addressSlice, appClient)
+        const user = await getUserFromAddressSlice(artVal.owner, appClient)
         setCreator(user)
       }
     }
 
-    const res = await appClient?.appClient.getBoxValue(artId ?? "")
-    if (res) {
-      const val = artNFTDecoder.decode(res)
-      setNft(ArtNft(val as ArtNFTTupple))
-    }
+    const keyVal = parseAssetKey(artId ?? "")
+    if (keyVal.type == "Art") setKeyData(keyVal)
   }
 
   React.useEffect(() => {
