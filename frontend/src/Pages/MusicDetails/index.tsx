@@ -116,7 +116,7 @@ const MusicDetails = () => {
           </div>
         </div>
         <div className="font-bold text-sm text-[#afafaf] mb-1 mt-3.5">Preview</div>
-        <AudioPlayer audioUrl={nft?.audio_sample_ipfs} wavesurferRef={wavesurferRef} />
+        <AudioPlayer audioUrl={nft?.full_track_ipfs} wavesurferRef={wavesurferRef} />
         <div className="gboard mt-6 mb-[90px] min-h-[434px]">
           <div className="flex overflow-x-auto  pb-0.5">
             <Button size="lg" onClick={() => setType(0)} classNames={{ root: classes.greyButton }} bg={bg(0)}>
