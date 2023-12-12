@@ -10,7 +10,7 @@ import { modals } from '@mantine/modals'
 import Stat1 from '../../components/General/Stat1'
 import { useAtom } from 'jotai'
 import { SoundNft } from '../../contracts/Aurally'
-import { AssetKeyData, SoundNFTTupple, parseAssetKey, soundNFTDecoder } from '../../utils/encoding'
+import { BoxKeyData, SoundNFTTupple, parseBoxKey, soundNFTDecoder } from '../../utils/encoding'
 import { UserAccount } from '../../types/account'
 import { appClientAtom } from '../../store/contractAtom'
 import { getUserFromAddressSlice } from '../../utils/queries'
@@ -19,7 +19,7 @@ import { getUserFromAddressSlice } from '../../utils/queries'
 const MusicDetails = () => {
   const [searchParams] = useSearchParams()
   const [nft, setNft] = useState<SoundNft>()
-  const [keyData, setKeyData] = useState<AssetKeyData>()
+  const [keyData, setKeyData] = useState<BoxKeyData>()
   const [creator, setCreator] = useState<UserAccount>()
   const [appClient,] = useAtom(appClientAtom)
   const [type, setType] = useState(0)
@@ -40,7 +40,7 @@ const MusicDetails = () => {
       }
     }
 
-    const keyVal = parseAssetKey(musicId ?? "")
+    const keyVal = parseBoxKey(musicId ?? "")
     if (keyVal.type == "Sound") setKeyData(keyVal)
   }
 

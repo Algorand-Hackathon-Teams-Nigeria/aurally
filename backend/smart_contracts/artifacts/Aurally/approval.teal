@@ -596,7 +596,7 @@ len
 intc_3 // 32
 ==
 assert
-intc_0 // 0
+intc_1 // 1
 frame_bury 4
 frame_dig 2
 itob
@@ -860,7 +860,7 @@ intc_3 // 32
 assert
 intc_0 // 0
 frame_bury 4
-intc_0 // 0
+intc_1 // 1
 frame_bury 5
 frame_dig 2
 itob

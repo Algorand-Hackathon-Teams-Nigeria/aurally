@@ -7,7 +7,7 @@ import { useSearchParams } from 'react-router-dom'
 import { useAtom } from 'jotai'
 import { ArtNft } from '../../contracts/Aurally'
 import { appClientAtom } from '../../store/contractAtom'
-import { ArtNFTTupple, AssetKeyData, artNFTDecoder, parseAssetKey } from '../../utils/encoding'
+import { ArtNFTTupple, BoxKeyData, artNFTDecoder, parseBoxKey } from '../../utils/encoding'
 import { getUserFromAddressSlice } from '../../utils/queries'
 import { UserAccount } from '../../types/account'
 import { ellipseAddress } from '../../utils/ellipseAddress'
@@ -25,7 +25,7 @@ const ArtDetails = () => {
   const [searchParams] = useSearchParams()
   const [type, setType] = useState(0)
   const [nft, setNft] = useState<ArtNft>()
-  const [keyData, setKeyData] = useState<AssetKeyData>()
+  const [keyData, setKeyData] = useState<BoxKeyData>()
   const [creator, setCreator] = useState<UserAccount>()
   const [appClient,] = useAtom(appClientAtom)
 
@@ -46,7 +46,7 @@ const ArtDetails = () => {
       }
     }
 
-    const keyVal = parseAssetKey(artId ?? "")
+    const keyVal = parseBoxKey(artId ?? "")
     if (keyVal.type == "Art") setKeyData(keyVal)
   }
 

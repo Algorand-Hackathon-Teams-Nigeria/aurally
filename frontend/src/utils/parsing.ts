@@ -28,14 +28,12 @@ export function parseNftBoxData(data: BoxData[]): (SoundType | ArtType)[] {
 }
 
 export function parseEventBoxData(data: BoxData[]): EventType[] {
-  const dataArray: EventType[] = []
+  const eventData: EventType[] = []
   for (const box of data ?? []) {
     if (box.name.name.startsWith('Event')) {
       const eventDetails = Event(eventDecoder.decode(box.value) as EventTupple)
-      console.log('box', eventDetails)
-      dataArray.push({ type: 'event', data: eventDetails } as EventType)
+      eventData.push({ type: "event", data: eventDetails })
     }
   }
-  console.log('event data array', dataArray, data)
-  return dataArray
+  return eventData
 }

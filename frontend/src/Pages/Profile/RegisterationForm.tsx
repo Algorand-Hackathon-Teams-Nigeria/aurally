@@ -3,13 +3,13 @@ import React from 'react'
 import { getAlgodClient } from '../../utils/network/contract-config'
 import algosdk from 'algosdk'
 import { useAtom } from 'jotai'
-import { appClientAtom, appRefAtom, aurallyCreativeAtom } from '../../store/contractAtom'
+import { appClientAtom, appRefAtom, auraTokenAtom, aurallyCreativeAtom } from '../../store/contractAtom'
 import { useWallet } from '@txnlab/use-wallet'
 import { toast } from 'react-hot-toast'
-import { auraToken } from '../../utils/network/algo-constants'
 
 export default function RegistrationForm() {
   const [appClient] = useAtom(appClientAtom)
+  const [auraToken] = useAtom(auraTokenAtom)
   const [appRef] = useAtom(appRefAtom)
   const [, setCreative] = useAtom(aurallyCreativeAtom)
   const [loading, setLoading] = React.useState(false)

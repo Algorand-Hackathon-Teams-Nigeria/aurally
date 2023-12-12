@@ -4,10 +4,11 @@ export function encodeText(text: string): Uint8Array {
   return new Uint8Array(new TextEncoder().encode(text))
 }
 
+type KeyType = 'Sound' | 'Art' | 'Event' | "Proposal"
 /**
  * Generates the box key for easy identification and searching
  */
-export function generateBoxKey(type: 'Sound' | 'Art' | 'Event', title: string, creatorAddress: string): string {
+export function generateBoxKey(type: KeyType, title: string, creatorAddress: string): string {
   const subTitle = title.substring(0, 12)
   const date = new Date().toLocaleDateString()
   const creator = (creatorAddress ?? '').slice(0, 25)
@@ -20,17 +21,17 @@ interface UnknownAsset {
   type: 'Unknown'
 }
 
-export interface AssetKeyData {
-  type: 'Sound' | 'Art'
+export interface BoxKeyData {
+  type: KeyType
   dateCreated: string
   addressSlice: string
 }
 
-export function parseAssetKey(key: string): AssetKeyData | UnknownAsset {
+export function parseBoxKey(key: string): BoxKeyData | UnknownAsset {
   const parts = key.split('-')
   if (parts.length === 3) {
-    const val: AssetKeyData = {
-      type: parts[0].split(':')[0] as 'Sound' | 'Art',
+    const val: BoxKeyData = {
+      type: parts[0].split(':')[0] as KeyType,
       dateCreated: parts[1].split(':')[1],
       addressSlice: parts[2].split(':')[1],
     }
@@ -78,4 +79,7 @@ export type AurallyCreativeTupple = [boolean, boolean, bigint, string, string, b
 export const aurallyCreativeDecoder = algosdk.ABIType.from('(bool,bool,uint64,string,string,uint64)')
 
 export type EventTupple = [bigint, string, string, bigint, bigint, string, bigint, string]
-export const eventDecoder = algosdk.ABIType.from('(uint64,string,string,uint64,uint64,string,uint64,string)')
+export const eventDecoder = algosdk.ABIType.from('(uint64,string,string,uint64,uint64,string,uint64,address)')
+
+export type AurallyTokenTupple = [bigint, string, bigint]
+export const aurallyTokenDecoder = algosdk.ABIType.from("(uint64,string,uint64)")

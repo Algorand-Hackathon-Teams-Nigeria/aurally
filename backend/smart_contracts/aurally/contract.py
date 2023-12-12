@@ -141,7 +141,7 @@ def create_sound_nft(
         ),
         (asset_id := P.abi.Uint64()).set(P.InnerTxn.created_asset_id()),
         (owner := P.abi.Address()).set(txn.get().sender()),
-        (for_sale := P.abi.Bool()).set(False),
+        (for_sale := P.abi.Bool()).set(True),
         (sound_nft := SoundNFT()).set(
             asset_id,
             asset_key,
@@ -209,7 +209,7 @@ def create_art_nft(
         (asset_id := P.abi.Uint64()).set(P.InnerTxn.created_asset_id()),
         (owner := P.abi.Address()).set(txn.get().sender()),
         (sold_price := P.abi.Uint64()).set(0),
-        (for_sale := P.abi.Bool()).set(False),
+        (for_sale := P.abi.Bool()).set(True),
         (art_nft := ArtNFT()).set(
             asset_id,
             asset_key,
