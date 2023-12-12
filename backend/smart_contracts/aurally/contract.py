@@ -314,6 +314,29 @@ def complete_art_auction(
 
 
 @app.external
+def place_nft_on_sale(
+    txn: P.abi.AssetTransferTransaction, asset_key: P.abi.String, nft_type: P.abi.String
+):
+    from .subroutines import ensure_sound_nft_exists, ensure_art_nft_exists
+
+    return P.Seq(
+        P.Assert(
+            P.Or(nft_type.get() == P.Bytes("art"), nft_type.get() == P.Bytes("sound")),
+            comment="nft_type can only be `art` or `sound`",
+        ),
+        P.If(
+            nft_type.get() == P.Bytes("sound"),
+            ensure_sound_nft_exists(asset_key),
+            ensure_art_nft_exists(asset_key),
+        ),
+        P.Assert(
+            txn.get().asset_receiver() == P.Global.current_application_address(),
+            comment="Reciever of the NFT must be the application address",
+        ),
+    )
+
+
+@app.external
 def purchase_nft(
     txn: P.abi.PaymentTransaction,
     optin_txn: P.abi.AssetTransferTransaction,

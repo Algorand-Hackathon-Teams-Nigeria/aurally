@@ -78,7 +78,7 @@ def ensure_sound_nft_exists(key: P.abi.String):
 
 
 @P.Subroutine(P.TealType.none)
-def ensure_sound_art_exists(key: P.abi.String):
+def ensure_art_nft_exists(key: P.abi.String):
     return P.Assert(
         app.state.art_nfts[key.get()].exists(),
         comment="ArtNFT with specified key does not exist",
@@ -568,4 +568,27 @@ def set_aura_tokens_frozen(txn: P.abi.Transaction, state: P.abi.Bool):
                 P.TxnField.freeze_asset_frozen: state.get(),
             }
         ),
+    )
+
+
+@P.Subroutine(P.TealType.none)
+def update_sound_nft_sale(asset_key: P.abi.String):
+    return P.Seq(
+        ensure_sound_nft_exists(asset_key)
+    )
+
+
+@P.Subroutine(P.TealType.none)
+def opt_app_into_asset(asset_id: P.abi.Uint64):
+    return P.Seq(
+        # Perform Asset Transfer
+        P.InnerTxnBuilder.Execute(
+            {
+                P.TxnField.type_enum: P.TxnType.AssetTransfer,
+                P.TxnField.xfer_asset: asset_id.get(),
+                P.TxnField.asset_receiver: P.Global.current_application_address(),
+                P.TxnField.sender: P.Global.current_application_address(),
+                P.TxnField.asset_amount: P.Int(0),
+            }
+        )
     )
