@@ -254,6 +254,30 @@
             }
         },
         {
+            "name": "place_nft_on_sale",
+            "args": [
+                {
+                    "type": "pay",
+                    "name": "txn"
+                },
+                {
+                    "type": "string",
+                    "name": "asset_key"
+                },
+                {
+                    "type": "string",
+                    "name": "nft_type"
+                },
+                {
+                    "type": "asset",
+                    "name": "asset"
+                }
+            ],
+            "returns": {
+                "type": "void"
+            }
+        },
+        {
             "name": "purchase_nft",
             "args": [
                 {

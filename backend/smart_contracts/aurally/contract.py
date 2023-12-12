@@ -315,23 +315,36 @@ def complete_art_auction(
 
 @app.external
 def place_nft_on_sale(
-    txn: P.abi.AssetTransferTransaction, asset_key: P.abi.String, nft_type: P.abi.String
+    txn: P.abi.PaymentTransaction,
+    asset_key: P.abi.String,
+    nft_type: P.abi.String,
+    asset: P.abi.Asset,
 ):
-    from .subroutines import ensure_sound_nft_exists, ensure_art_nft_exists
+    from .subroutines import (
+        update_sound_nft_sale,
+        update_art_nft_sale,
+        ensure_zero_payment,
+        validate_sound_nft_owner,
+        validate_art_nft_owner
+    )
 
     return P.Seq(
+        ensure_zero_payment(txn),
         P.Assert(
             P.Or(nft_type.get() == P.Bytes("art"), nft_type.get() == P.Bytes("sound")),
             comment="nft_type can only be `art` or `sound`",
         ),
+        (for_sale := P.abi.Bool()).set(True),
         P.If(
             nft_type.get() == P.Bytes("sound"),
-            ensure_sound_nft_exists(asset_key),
-            ensure_art_nft_exists(asset_key),
-        ),
-        P.Assert(
-            txn.get().asset_receiver() == P.Global.current_application_address(),
-            comment="Reciever of the NFT must be the application address",
+            P.Seq(
+                validate_sound_nft_owner(txn, asset_key),
+                update_sound_nft_sale(asset_key, for_sale),
+            ),
+            P.Seq(
+                validate_art_nft_owner(txn, asset_key),
+                update_art_nft_sale(asset_key, for_sale),
+            )
         ),
     )
 
@@ -348,7 +361,7 @@ def purchase_nft(
     aura_optin_txn: P.abi.AssetTransferTransaction,
     buyer: P.abi.Account,
 ):
-    from .subroutines import transfer_sound_nft, transfer_art_nft
+    from .subroutines import perform_sound_nft_sale, perform_art_nft_sale
 
     return P.Seq(
         P.Assert(
@@ -356,8 +369,8 @@ def purchase_nft(
         ),
         P.If(
             nft_type.get() == P.Bytes("sound"),
-            transfer_sound_nft(txn, asset_key),
-            transfer_art_nft(txn, asset_key),
+            perform_sound_nft_sale(txn, asset_key),
+            perform_art_nft_sale(txn, asset_key),
         ),
     )
 
@@ -370,7 +383,8 @@ def transfer_nft(
     nft_type: P.abi.String,
 ):
     from .subroutines import (
-        validate_and_update_art_nft_owner,
+        validate_art_nft_owner,
+        update_art_nft_owner,
     )
 
     return P.Seq(
@@ -380,7 +394,10 @@ def transfer_nft(
         ),
         P.If(
             nft_type.get() == P.Bytes("art"),
-            validate_and_update_art_nft_owner(txn, asset_key, to),
+            P.Seq(
+                validate_art_nft_owner(txn, asset_key),
+                update_art_nft_owner(asset_key, to)
+            ),
         ),
     )
 
