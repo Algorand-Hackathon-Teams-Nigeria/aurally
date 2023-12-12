@@ -1,3 +1,11 @@
+"""
+Todo: 
+    1. Set aurally admins to string not address
+    2. Create sell nft method to transfer nft from seller to global.app_addr
+    3. Update but nft method to transfer the nft from global.app_addr to buyer
+    4. Update AurallyCreative to contain purchases, sales e.t.c infomation
+"""
+
 import beaker as B
 import pyteal as P
 
@@ -318,6 +326,7 @@ def purchase_nft(
     buyer: P.abi.Account,
 ):
     from .subroutines import transfer_sound_nft, transfer_art_nft
+
     return P.Seq(
         P.Assert(
             P.Or(nft_type.get() == P.Bytes("sound"), nft_type.get() == P.Bytes("art"))
@@ -356,8 +365,10 @@ def transfer_nft(
 @app.external
 def create_proposal(
     txn: P.abi.PaymentTransaction,
+    title: P.abi.String,
     proposal_key: P.abi.String,
     proposal_detail: P.abi.String,
+    end_date: P.abi.Uint64,
     *,
     output: Proposal,
 ):
@@ -383,7 +394,7 @@ def create_proposal(
         (yes_votes := P.abi.Uint64()).set(0),
         (no_votes := P.abi.Uint64()).set(0),
         (proposal := Proposal()).set(
-            proposal_key, yes_votes, no_votes, proposal_detail
+            proposal_key, title, yes_votes, no_votes, proposal_detail, end_date
         ),
         app.state.dao_proposals[proposal_key.get()].set(proposal),
         app.state.active_proposal.set(proposal_key.get()),
@@ -424,16 +435,20 @@ def vote_on_proposal(
         (proposal := Proposal()).decode(
             app.state.dao_proposals[proposal_key.get()].get()
         ),
-        (proposal_id := P.abi.String()).set(proposal.proposal_id),
+        (proposal_id := P.abi.String()).set(proposal.key),
+        (proposal_title := P.abi.String()).set(proposal.title),
         (yes_votes := P.abi.Uint64()).set(proposal.yes_votes),
         (no_votes := P.abi.Uint64()).set(proposal.no_votes),
         (details := P.abi.String()).set(proposal.details),
+        (proposal_end_date := P.abi.Uint64()).set(proposal.end_date),
         P.If(
             vote_for.get(),
             yes_votes.set(yes_votes.get() + P.Int(1)),
             no_votes.set(no_votes.get() + P.Int(1)),
         ),
-        proposal.set(proposal_id, yes_votes, no_votes, details),
+        proposal.set(
+            proposal_id, proposal_title, yes_votes, no_votes, details, proposal_end_date
+        ),
         app.state.dao_proposals[proposal_key.get()].set(proposal),
         auras_frozen_status.set(True),
         set_aura_tokens_frozen(txn, auras_frozen_status),

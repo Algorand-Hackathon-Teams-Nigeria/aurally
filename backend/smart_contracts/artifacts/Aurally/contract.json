@@ -330,15 +330,23 @@
                 },
                 {
                     "type": "string",
+                    "name": "title"
+                },
+                {
+                    "type": "string",
                     "name": "proposal_key"
                 },
                 {
                     "type": "string",
                     "name": "proposal_detail"
+                },
+                {
+                    "type": "uint64",
+                    "name": "end_date"
                 }
             ],
             "returns": {
-                "type": "(string,uint64,uint64,string)"
+                "type": "(string,string,uint64,uint64,string,uint64)"
             }
         },
         {
@@ -366,7 +374,7 @@
                 }
             ],
             "returns": {
-                "type": "(string,uint64,uint64,string)"
+                "type": "(string,string,uint64,uint64,string,uint64)"
             }
         },
         {
@@ -382,7 +390,7 @@
                 }
             ],
             "returns": {
-                "type": "(string,uint64,uint64,string)"
+                "type": "(string,string,uint64,uint64,string,uint64)"
             }
         },
         {

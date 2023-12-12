@@ -96,14 +96,14 @@ def test_register_creator(
     assert list(result.return_value)[3] == "Dev Ready"
 
 
-def test_get_registered_creative(aurally_client: ApplicationClient, test_account: LocalAccount):
+def test_get_registered_creative(
+    aurally_client: ApplicationClient, test_account: LocalAccount
+):
     res = aurally_client.call(
-            aurally_contract.get_registered_creative,
-            addr=test_account.address,
-            boxes=[
-                (aurally_client.app_id, encoding.decode_address(test_account.address))
-                ]
-            )
+        aurally_contract.get_registered_creative,
+        addr=test_account.address,
+        boxes=[(aurally_client.app_id, encoding.decode_address(test_account.address))],
+    )
 
     print(res.return_value)
     assert list(res.return_value)[3] == "Dev Ready"
@@ -392,8 +392,10 @@ def test_create_proposal(
     result = aurally_client.call(
         aurally_contract.create_proposal,
         txn=txn,
+        title=proposal_key,
         proposal_key=proposal_key,
         proposal_detail=proposal_detail,
+        end_date=int(datetime.now().timestamp()),
         boxes=[
             (aurally_client.app_id, proposal_key.encode()),
             (aurally_client.app_id, encoding.decode_address(test_account.address)),
@@ -434,7 +436,7 @@ def test_vote_on_proposal(
         ],
     )
 
-    assert list(result.return_value)[1] > 0
+    assert list(result.return_value)[2] > 0
 
 
 def test_end_proposal_voting(

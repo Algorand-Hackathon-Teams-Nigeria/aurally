@@ -17,7 +17,7 @@ import { getAlgodClient } from '../../utils/network/contract-config'
 import { appClientAtom, appRefAtom, auraTokenAtom, aurallyCreativeAtom } from '../../store/contractAtom'
 import { DateInput } from '@mantine/dates'
 import { getTimeStamp } from '../../utils/parsing'
-import { encodeText, generateAssetKey } from '../../utils/encoding'
+import { encodeText, generateBoxKey } from '../../utils/encoding'
 
 const GENRES = ['Pop', 'Electronic', 'R&B', 'Alte', 'Reggae', 'Afrobeat', 'Rock', 'Amapiano']
 
@@ -66,7 +66,7 @@ const CreateSoundNFt = () => {
 
 
   const createArtCall = async () => {
-    const assetKey = generateAssetKey("Sound", form.values.title, activeAddress ?? "")
+    const assetKey = generateBoxKey("Sound", form.values.title, activeAddress ?? "")
     const toastId = toast.loading('Uploading files')
     const imageUrl = await uploadToIpfs(imageFile)
     const sampleUrl = await uploadToIpfs(form.values.sample as File)
@@ -85,38 +85,33 @@ const CreateSoundNFt = () => {
         amount: 0, suggestedParams: sp
       }
     )
-    try {
-      const res = await appClient?.createSoundNft(
-        {
-          txn,
-          audio_sample_ipfs: sampleUrl,
-          label: form.values.label,
-          title: form.values.title,
-          genre: form.values.genre,
-          supply: form.values.supply,
-          nft_name: form.values.title,
-          full_track_ipfs: audioUrl,
-          cover_image_ipfs: imageUrl,
-          price: form.values.price,
-          artist: form.values.artist,
-          creator: activeAddress ?? "",
-          asset_key: assetKey,
-          aura_asset: Number(auraToken?.asset_id ?? 0),
-          release_date: getTimeStamp(form.values.releaseDate) ?? 0
-        },
-        {
-          boxes: [
-            { appId: appRef?.appId ?? 0, name: encodeText(assetKey) },
-            { appId: appRef?.appId ?? 0, name: encodeText("aura") },
-            { appId: appRef?.appId ?? 0, name: algosdk.decodeAddress(activeAddress ?? "").publicKey }
-          ]
-        }
-      )
-      toast.success(`Success: ${res?.return?.title} created`)
-      form.reset()
-    } catch (err) {
-      toast.error((err as any).message)
-    }
+    await appClient?.createSoundNft(
+      {
+        txn,
+        audio_sample_ipfs: sampleUrl,
+        label: form.values.label,
+        title: form.values.title,
+        genre: form.values.genre,
+        supply: form.values.supply,
+        nft_name: form.values.title,
+        full_track_ipfs: audioUrl,
+        cover_image_ipfs: imageUrl,
+        price: form.values.price,
+        artist: form.values.artist,
+        creator: activeAddress ?? "",
+        asset_key: assetKey,
+        aura_asset: Number(auraToken?.asset_id ?? 0),
+        release_date: getTimeStamp(form.values.releaseDate) ?? 0
+      },
+      {
+        boxes: [
+          { appId: appRef?.appId ?? 0, name: encodeText(assetKey) },
+          { appId: appRef?.appId ?? 0, name: encodeText("aura") },
+          { appId: appRef?.appId ?? 0, name: algosdk.decodeAddress(activeAddress ?? "").publicKey }
+        ]
+      }
+    )
+    form.reset()
   }
 
   const { isPending, isError, mutateAsync } = useMutation({

@@ -5,16 +5,14 @@ export function encodeText(text: string): Uint8Array {
 }
 
 /**
- * Generates the assetKey for easy identification and searching
+ * Generates the box key for easy identification and searching
  */
-export function generateAssetKey(type: "Sound" | "Art", title: string, address: string): string {
-  const subTitle = title.substring(0, 8)
-  const ellipse = title.length > 0 ? "..." : ""
+export function generateBoxKey(type: "Sound" | "Art" | "Event", title: string, creatorAddress: string): string {
+  const subTitle = title.substring(0, 12)
   const date = new Date().toLocaleDateString()
-  const creator = (address ?? "").slice(0, 25)
+  const creator = (creatorAddress ?? "").slice(0, 25)
 
-  const assetKey = `${type}:${subTitle}${ellipse}-On:${date}-By:${creator}`
-  console.log(assetKey.length, assetKey)
+  const assetKey = `${type}:${subTitle}-On:${date}-By:${creator}`
   return assetKey
 }
 
@@ -32,7 +30,7 @@ export function parseAssetKey(key: string): AssetKeyData | UnknownAsset {
   const parts = key.split("-")
   if (parts.length === 3) {
     const val: AssetKeyData = {
-      type: parts[0].split(":")[0],
+      type: parts[0].split(":")[0] as "Sound" | "Art",
       dateCreated: parts[1].split(":")[1],
       addressSlice: parts[2].split(":")[1]
     }

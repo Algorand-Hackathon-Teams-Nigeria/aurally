@@ -14,7 +14,7 @@ import classes from '../../styles/textinput.module.css'
 import { uploadToIpfs } from '../../utils/ipfs-calls'
 import { getAlgodClient } from '../../utils/network/contract-config'
 import { appClientAtom, appRefAtom, auraTokenAtom, aurallyCreativeAtom } from '../../store/contractAtom'
-import { encodeText, generateAssetKey } from '../../utils/encoding'
+import { encodeText, generateBoxKey } from '../../utils/encoding'
 
 const CreateArtNft = () => {
   const { activeAddress } = useWallet()
@@ -48,47 +48,38 @@ const CreateArtNft = () => {
   const error = form.values.errors[0]?.errors[0]?.message
 
   const createArtCall = async () => {
-    const assetKey = generateAssetKey("Art", form.values.title, activeAddress ?? "")
+    const assetKey = generateBoxKey("Art", form.values.title, activeAddress ?? "")
     const url = await uploadToIpfs(imageFile)
     const sp = await getAlgodClient().getTransactionParams().do()
     const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({ from: activeAddress ?? "", to: activeAddress ?? "", amount: 0, suggestedParams: sp })
 
-    try {
-      const artNFT = await appClient?.createArtNft(
-        {
-          nft_name: form.values.title,
-          name: form.values.title,
-          price: BigInt(form.values.price),
-          supply: form.values.supply,
-          creator: activeAddress ?? "",
-          asset_key: assetKey,
-          description: form.values.desc,
-          title: form.values.title,
-          ipfs_location: url,
-          txn: txn,
-          aura_asset: auraToken?.asset_id ?? 0
-        },
-        {
-          boxes: [
-            { appId: appRef?.appId ?? 0, name: encodeText(assetKey) },
-            { appId: appRef?.appId ?? 0, name: encodeText("aura") },
-            { appId: appRef?.appId ?? 0, name: algosdk.decodeAddress(activeAddress ?? "").publicKey }
-          ]
-        }
-      )
-      toast.success(`Success: ${artNFT?.return?.title} created`)
-    } catch (err) {
-      toast.error(JSON.stringify(err))
-    }
-  }
-
-  const createArt = async () => {
-    await createArtCall();
+    await appClient?.createArtNft(
+      {
+        nft_name: form.values.title,
+        name: form.values.title,
+        price: BigInt(form.values.price),
+        supply: form.values.supply,
+        creator: activeAddress ?? "",
+        asset_key: assetKey,
+        description: form.values.desc,
+        title: form.values.title,
+        ipfs_location: url,
+        txn: txn,
+        aura_asset: auraToken?.asset_id ?? 0
+      },
+      {
+        boxes: [
+          { appId: appRef?.appId ?? 0, name: encodeText(assetKey) },
+          { appId: appRef?.appId ?? 0, name: encodeText("aura") },
+          { appId: appRef?.appId ?? 0, name: algosdk.decodeAddress(activeAddress ?? "").publicKey }
+        ]
+      }
+    )
     form.reset()
   }
 
   const { isPending, isError, mutateAsync } = useMutation({
-    mutationFn: createArt,
+    mutationFn: createArtCall,
     onSuccess: () => {
       modals.openContextModal({
         modal: 'message',

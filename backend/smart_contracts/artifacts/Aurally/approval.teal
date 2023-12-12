@@ -50,15 +50,15 @@ pushbytes 0x07536ce3 // "transfer_nft(pay,address,string,string)void"
 ==
 bnz main_l29
 txna ApplicationArgs 0
-pushbytes 0xf5c2ab23 // "create_proposal(pay,string,string)(string,uint64,uint64,string)"
+pushbytes 0x58de49a6 // "create_proposal(pay,string,string,string,uint64)(string,string,uint64,uint64,string,uint64)"
 ==
 bnz main_l28
 txna ApplicationArgs 0
-pushbytes 0xca43aa9d // "vote_on_proposal(pay,bool,asset,account,string)(string,uint64,uint64,string)"
+pushbytes 0x512e5053 // "vote_on_proposal(pay,bool,asset,account,string)(string,string,uint64,uint64,string,uint64)"
 ==
 bnz main_l27
 txna ApplicationArgs 0
-pushbytes 0x8177781a // "end_proposal_voting(pay,string)(string,uint64,uint64,string)"
+pushbytes 0x3ecec19a // "end_proposal_voting(pay,string)(string,string,uint64,uint64,string,uint64)"
 ==
 bnz main_l26
 txna ApplicationArgs 0
@@ -1204,7 +1204,7 @@ retsub
 
 // create_proposal
 createproposal_14:
-proto 3 1
+proto 5 1
 bytec_0 // ""
 dup
 intc_0 // 0
@@ -1214,7 +1214,7 @@ intc_0 // 0
 dup
 bytec_0 // ""
 dup
-frame_dig -3
+frame_dig -5
 gtxns Sender
 frame_bury 1
 frame_dig 1
@@ -1224,9 +1224,9 @@ intc_3 // 32
 assert
 frame_dig 1
 callsub ensureisadminorappcreator_27
-frame_dig -3
+frame_dig -5
 callsub ensurezeropayment_24
-frame_dig -3
+frame_dig -5
 callsub ensurenftownerexistsfromtxn_23
 bytec_2 // "active_proposal"
 app_global_get
@@ -1234,7 +1234,7 @@ bytec 4 // "None"
 ==
 // There's already an active proposal
 assert
-frame_dig -2
+frame_dig -3
 extract 2 0
 box_len
 store 72
@@ -1247,11 +1247,11 @@ intc_0 // 0
 frame_bury 2
 intc_0 // 0
 frame_bury 3
-frame_dig -2
+frame_dig -3
 frame_bury 8
 frame_dig 8
 frame_bury 7
-pushint 20 // 20
+pushint 30 // 30
 frame_bury 5
 frame_dig 5
 frame_dig 8
@@ -1265,13 +1265,34 @@ assert
 frame_dig 5
 itob
 extract 6 0
+frame_dig -4
+frame_bury 8
+frame_dig 7
+frame_dig 8
+concat
+frame_bury 7
+frame_dig 6
+frame_bury 5
+frame_dig 5
+frame_dig 8
+len
++
+frame_bury 6
+frame_dig 6
+intc_2 // 65536
+<
+assert
+frame_dig 5
+itob
+extract 6 0
+concat
 frame_dig 2
 itob
 concat
 frame_dig 3
 itob
 concat
-frame_dig -1
+frame_dig -2
 frame_bury 8
 frame_dig 7
 frame_dig 8
@@ -1283,22 +1304,25 @@ frame_dig 5
 itob
 extract 6 0
 concat
+frame_dig -1
+itob
+concat
 frame_dig 7
 concat
 frame_bury 4
-frame_dig -2
+frame_dig -3
 extract 2 0
 box_del
 pop
-frame_dig -2
+frame_dig -3
 extract 2 0
 frame_dig 4
 box_put
 bytec_2 // "active_proposal"
-frame_dig -2
+frame_dig -3
 extract 2 0
 app_global_put
-frame_dig -2
+frame_dig -3
 extract 2 0
 box_get
 store 74
@@ -1315,12 +1339,12 @@ proto 5 1
 bytec_0 // ""
 intc_0 // 0
 bytec_0 // ""
-dup
+dupn 2
 intc_0 // 0
 dup
 bytec_0 // ""
 intc_0 // 0
-dup
+dupn 2
 bytec_0 // ""
 dup
 frame_dig -5
@@ -1357,76 +1381,113 @@ frame_dig 2
 intc_0 // 0
 extract_uint16
 frame_dig 2
-pushint 18 // 18
+pushint 2 // 2
 extract_uint16
 substring3
 frame_bury 3
 frame_dig 2
+frame_dig 2
 pushint 2 // 2
-extract_uint64
+extract_uint16
+frame_dig 2
+pushint 20 // 20
+extract_uint16
+substring3
 frame_bury 4
 frame_dig 2
-pushint 10 // 10
+pushint 4 // 4
 extract_uint64
 frame_bury 5
 frame_dig 2
+pushint 12 // 12
+extract_uint64
+frame_bury 6
 frame_dig 2
-pushint 18 // 18
+frame_dig 2
+pushint 20 // 20
 extract_uint16
 dig 1
 len
 substring3
-frame_bury 6
+frame_bury 7
+frame_dig 2
+pushint 22 // 22
+extract_uint64
+frame_bury 8
 frame_dig -4
 bnz voteonproposal_15_l2
+frame_dig 6
+intc_1 // 1
++
+frame_bury 6
+b voteonproposal_15_l3
+voteonproposal_15_l2:
 frame_dig 5
 intc_1 // 1
 +
 frame_bury 5
-b voteonproposal_15_l3
-voteonproposal_15_l2:
-frame_dig 4
-intc_1 // 1
-+
-frame_bury 4
 voteonproposal_15_l3:
 frame_dig 3
-frame_bury 10
-frame_dig 10
+frame_bury 12
+frame_dig 12
+frame_bury 11
+pushint 30 // 30
 frame_bury 9
-pushint 20 // 20
-frame_bury 7
-frame_dig 7
-frame_dig 10
+frame_dig 9
+frame_dig 12
 len
 +
-frame_bury 8
-frame_dig 8
+frame_bury 10
+frame_dig 10
 intc_2 // 65536
 <
 assert
-frame_dig 7
+frame_dig 9
 itob
 extract 6 0
 frame_dig 4
+frame_bury 12
+frame_dig 11
+frame_dig 12
+concat
+frame_bury 11
+frame_dig 10
+frame_bury 9
+frame_dig 9
+frame_dig 12
+len
++
+frame_bury 10
+frame_dig 10
+intc_2 // 65536
+<
+assert
+frame_dig 9
 itob
+extract 6 0
 concat
 frame_dig 5
 itob
 concat
 frame_dig 6
-frame_bury 10
-frame_dig 9
-frame_dig 10
+itob
 concat
-frame_bury 9
-frame_dig 8
-frame_bury 7
 frame_dig 7
+frame_bury 12
+frame_dig 11
+frame_dig 12
+concat
+frame_bury 11
+frame_dig 10
+frame_bury 9
+frame_dig 9
 itob
 extract 6 0
 concat
-frame_dig 9
+frame_dig 8
+itob
+concat
+frame_dig 11
 concat
 frame_bury 2
 frame_dig -1
@@ -3891,11 +3952,17 @@ proto 0 0
 bytec_0 // ""
 intc_0 // 0
 bytec_0 // ""
-dup
+dupn 2
+intc_0 // 0
 txna ApplicationArgs 1
 frame_bury 2
 txna ApplicationArgs 2
 frame_bury 3
+txna ApplicationArgs 3
+frame_bury 4
+txna ApplicationArgs 4
+btoi
+frame_bury 5
 txn GroupIndex
 intc_1 // 1
 -
@@ -3908,6 +3975,8 @@ assert
 frame_dig 1
 frame_dig 2
 frame_dig 3
+frame_dig 4
+frame_dig 5
 callsub createproposal_14
 frame_bury 0
 bytec_1 // 0x151f7c75
