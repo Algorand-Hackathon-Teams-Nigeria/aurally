@@ -1,14 +1,15 @@
 import { AlgoViteClientConfig, AlgoViteKMDConfig } from '../../interfaces/network'
-import type { AppRefrence } from "../../interfaces/application"
+import type { AppRefrence } from '../../interfaces/application'
+import { AurallyToken } from '../../contracts/Aurally'
 
 export function getAppRefrenceFromViteEnvironment(): AppRefrence {
   if (!import.meta.env.VITE_APPLICATION_ID) {
-    throw new Error("Attempt to get application id failed: VITE_APPLICATION_ID env variable not set")
+    throw new Error('Attempt to get application id failed: VITE_APPLICATION_ID env variable not set')
   }
 
   return {
     appId: import.meta.env.VITE_APPLICATION_ID,
-    creatorAddress: import.meta.env.VITE_CREATOR_ADDRESS
+    creatorAddress: import.meta.env.VITE_CREATOR_ADDRESS,
   }
 }
 
@@ -56,3 +57,9 @@ export const deployParams = {
   onSchemaBreak: 'append',
   onUpdate: 'append',
 } as const
+
+export const auraToken = {
+  asset_id: 497913686n,
+  asset_key: 'aura',
+  asset_total: 100000000000n,
+} as AurallyToken

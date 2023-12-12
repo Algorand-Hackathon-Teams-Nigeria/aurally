@@ -1,10 +1,10 @@
-import { BoxName } from "@algorandfoundation/algokit-utils/types/app";
-import { ArtType, BoxData, SoundType } from "../types/assets";
-import { ArtNft, SoundNft } from "../contracts/Aurally";
-import { ArtNFTTupple, SoundNFTTupple, artNFTDecoder, soundNFTDecoder } from "./encoding";
+import { BoxName } from '@algorandfoundation/algokit-utils/types/app'
+import { ArtType, BoxData, EventType, SoundType } from '../types/assets'
+import { ArtNft, SoundNft, Event } from '../contracts/Aurally'
+import { ArtNFTTupple, EventTupple, SoundNFTTupple, artNFTDecoder, eventDecoder, soundNFTDecoder } from './encoding'
 
 export function getTimeStamp(dateTime: string): number | undefined {
-  const date = new Date(dateTime);
+  const date = new Date(dateTime)
   if (!isNaN(date.getTime())) {
     return date.getTime()
   }
@@ -14,15 +14,28 @@ export function getTimeStamp(dateTime: string): number | undefined {
 export function parseNftBoxData(data: BoxData[]): (SoundType | ArtType)[] {
   const nftData: (SoundType | ArtType)[] = []
   for (const box of data ?? []) {
-    if (box.name.name.startsWith("Art")) {
+    if (box.name.name.startsWith('Art')) {
       const artNFT = ArtNft(artNFTDecoder.decode(box.value) as ArtNFTTupple)
-      const artNFTData: ArtType = { type: "art", data: artNFT }
+      const artNFTData: ArtType = { type: 'art', data: artNFT }
       nftData.push(artNFTData)
     } else {
       const soundNFT = SoundNft(soundNFTDecoder.decode(box.value) as SoundNFTTupple)
-      const soundNFTData: SoundType = { type: "sound", data: soundNFT }
+      const soundNFTData: SoundType = { type: 'sound', data: soundNFT }
       nftData.push(soundNFTData)
     }
   }
   return nftData
+}
+
+export function parseEventBoxData(data: BoxData[]): EventType[] {
+  const dataArray: EventType[] = []
+  for (const box of data ?? []) {
+    if (box.name.name.startsWith('Event')) {
+      const eventDetails = Event(eventDecoder.decode(box.value) as EventTupple)
+      console.log('box', eventDetails)
+      dataArray.push({ type: 'event', data: eventDetails } as EventType)
+    }
+  }
+  console.log('event data array', dataArray, data)
+  return dataArray
 }

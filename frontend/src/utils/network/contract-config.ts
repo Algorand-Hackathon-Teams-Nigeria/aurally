@@ -33,13 +33,12 @@ export class CustomError extends Error {
 
 export type AppClientProps = { address?: string; signer: TransactionSignerAccount['signer'] }
 
-
-export const createAppClient = (sender: TransactionSignerAccount) => {
-  const appRef = getAppRefrenceFromViteEnvironment();
+export const createAppClient = (sender?: TransactionSignerAccount) => {
+  const appRef = getAppRefrenceFromViteEnvironment()
   const appDetails: AppDetails = {
     resolveBy: 'id',
     id: Number(appRef.appId),
-    sender
+    sender,
   }
   return new AurallyClient(appDetails, getAlgodClient())
 }

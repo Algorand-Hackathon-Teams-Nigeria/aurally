@@ -13,16 +13,16 @@ import toast from 'react-hot-toast'
 import classes from '../../styles/textinput.module.css'
 import { uploadToIpfs } from '../../utils/ipfs-calls'
 import { getAlgodClient } from '../../utils/network/contract-config'
-import { appClientAtom, appRefAtom, auraTokenAtom, aurallyCreativeAtom } from '../../store/contractAtom'
+import { appClientAtom, appRefAtom, aurallyCreativeAtom } from '../../store/contractAtom'
 import { encodeText, generateBoxKey } from '../../utils/encoding'
+import { auraToken } from '../../utils/network/algo-constants'
 
 const CreateArtNft = () => {
   const { activeAddress } = useWallet()
   const openRef = useRef<() => void>(null)
-  const [appClient,] = useAtom(appClientAtom)
-  const [auraToken,] = useAtom(auraTokenAtom)
+  const [appClient] = useAtom(appClientAtom)
   const [creative] = useAtom(aurallyCreativeAtom)
-  const [appRef,] = useAtom(appRefAtom)
+  const [appRef] = useAtom(appRefAtom)
 
   const form = useForm({
     initialValues: {
@@ -48,10 +48,15 @@ const CreateArtNft = () => {
   const error = form.values.errors[0]?.errors[0]?.message
 
   const createArtCall = async () => {
-    const assetKey = generateBoxKey("Art", form.values.title, activeAddress ?? "")
+    const assetKey = generateBoxKey('Art', form.values.title, activeAddress ?? '')
     const url = await uploadToIpfs(imageFile)
     const sp = await getAlgodClient().getTransactionParams().do()
-    const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({ from: activeAddress ?? "", to: activeAddress ?? "", amount: 0, suggestedParams: sp })
+    const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+      from: activeAddress ?? '',
+      to: activeAddress ?? '',
+      amount: 0,
+      suggestedParams: sp,
+    })
 
     await appClient?.createArtNft(
       {
@@ -59,21 +64,21 @@ const CreateArtNft = () => {
         name: form.values.title,
         price: BigInt(form.values.price),
         supply: form.values.supply,
-        creator: activeAddress ?? "",
+        creator: activeAddress ?? '',
         asset_key: assetKey,
         description: form.values.desc,
         title: form.values.title,
         ipfs_location: url,
         txn: txn,
-        aura_asset: auraToken?.asset_id ?? 0
+        aura_asset: auraToken?.asset_id ?? 0,
       },
       {
         boxes: [
           { appId: appRef?.appId ?? 0, name: encodeText(assetKey) },
-          { appId: appRef?.appId ?? 0, name: encodeText("aura") },
-          { appId: appRef?.appId ?? 0, name: algosdk.decodeAddress(activeAddress ?? "").publicKey }
-        ]
-      }
+          { appId: appRef?.appId ?? 0, name: encodeText('aura') },
+          { appId: appRef?.appId ?? 0, name: algosdk.decodeAddress(activeAddress ?? '').publicKey },
+        ],
+      },
     )
     form.reset()
   }
@@ -87,6 +92,8 @@ const CreateArtNft = () => {
           title: 'Art Nft Created',
           icon: 'success',
           desc: 'Your art has been created successfully',
+          btnLabel: 'Explore Arts',
+          link: `/dapp/marketplace`,
         },
       })
     },
@@ -96,13 +103,17 @@ const CreateArtNft = () => {
   })
 
   const create = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    e.preventDefault()
     await mutateAsync()
   }
 
   return (
-    <form title={!creative ? "You need to register as a creative first" : undefined} onSubmit={create} className={`routePage mb-32 max-w-[850px]`}>
-      <fieldset className={!creative ? "pointer-events-none opacity-60" : ""} disabled={!creative}>
+    <form
+      title={!creative ? 'You need to register as a creative first' : undefined}
+      onSubmit={create}
+      className={`routePage mb-32 max-w-[850px]`}
+    >
+      <fieldset className={!creative ? 'pointer-events-none opacity-60' : ''} disabled={!creative}>
         <div className="routeName mb-10">Create NFT</div>
         <div className="space-y-5">
           <div>

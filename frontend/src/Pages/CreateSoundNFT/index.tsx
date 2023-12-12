@@ -14,10 +14,11 @@ import toast from 'react-hot-toast'
 import classes from '../../styles/textinput.module.css'
 import { uploadToIpfs } from '../../utils/ipfs-calls'
 import { getAlgodClient } from '../../utils/network/contract-config'
-import { appClientAtom, appRefAtom, auraTokenAtom, aurallyCreativeAtom } from '../../store/contractAtom'
+import { appClientAtom, appRefAtom, aurallyCreativeAtom } from '../../store/contractAtom'
 import { DateInput } from '@mantine/dates'
 import { getTimeStamp } from '../../utils/parsing'
 import { encodeText, generateBoxKey } from '../../utils/encoding'
+import { auraToken } from '../../utils/network/algo-constants'
 
 const GENRES = ['Pop', 'Electronic', 'R&B', 'Alte', 'Reggae', 'Afrobeat', 'Rock', 'Amapiano']
 
@@ -28,7 +29,6 @@ const CreateSoundNFt = () => {
   const [appClient] = useAtom(appClientAtom)
   const [appRef] = useAtom(appRefAtom)
   const [creative] = useAtom(aurallyCreativeAtom)
-  const [auraToken] = useAtom(auraTokenAtom)
   const openRef = useRef<() => void>(null)
 
   const form = useForm({
@@ -40,7 +40,7 @@ const CreateSoundNFt = () => {
       desc: '',
       supply: 0,
       price: 0,
-      releaseDate: "",
+      releaseDate: '',
       sample: null as File | null,
       audio: null as File | null,
       files: [] as FileWithPath[],
@@ -64,9 +64,8 @@ const CreateSoundNFt = () => {
   const name = imageFile?.name || imageFile?.path
   const error = form.values.errors[0]?.errors[0]?.message
 
-
   const createArtCall = async () => {
-    const assetKey = generateBoxKey("Sound", form.values.title, activeAddress ?? "")
+    const assetKey = generateBoxKey('Sound', form.values.title, activeAddress ?? '')
     const toastId = toast.loading('Uploading files')
     const imageUrl = await uploadToIpfs(imageFile)
     const sampleUrl = await uploadToIpfs(form.values.sample as File)
@@ -78,13 +77,12 @@ const CreateSoundNFt = () => {
 
     const sp = await getAlgodClient().getTransactionParams().do()
 
-    const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject(
-      {
-        from: activeAddress ?? "",
-        to: activeAddress ?? "",
-        amount: 0, suggestedParams: sp
-      }
-    )
+    const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+      from: activeAddress ?? '',
+      to: activeAddress ?? '',
+      amount: 0,
+      suggestedParams: sp,
+    })
     await appClient?.createSoundNft(
       {
         txn,
@@ -98,18 +96,18 @@ const CreateSoundNFt = () => {
         cover_image_ipfs: imageUrl,
         price: form.values.price,
         artist: form.values.artist,
-        creator: activeAddress ?? "",
+        creator: activeAddress ?? '',
         asset_key: assetKey,
         aura_asset: Number(auraToken?.asset_id ?? 0),
-        release_date: getTimeStamp(form.values.releaseDate) ?? 0
+        release_date: getTimeStamp(form.values.releaseDate) ?? 0,
       },
       {
         boxes: [
           { appId: appRef?.appId ?? 0, name: encodeText(assetKey) },
-          { appId: appRef?.appId ?? 0, name: encodeText("aura") },
-          { appId: appRef?.appId ?? 0, name: algosdk.decodeAddress(activeAddress ?? "").publicKey }
-        ]
-      }
+          { appId: appRef?.appId ?? 0, name: encodeText('aura') },
+          { appId: appRef?.appId ?? 0, name: algosdk.decodeAddress(activeAddress ?? '').publicKey },
+        ],
+      },
     )
     form.reset()
   }
@@ -123,6 +121,8 @@ const CreateSoundNFt = () => {
           title: 'Aura Nft Created',
           icon: 'success',
           desc: 'Your aura has been created successfully',
+          btnLabel: 'Explore Sounds',
+          link: `/dapp/marketplace`,
         },
       })
     },
@@ -137,8 +137,8 @@ const CreateSoundNFt = () => {
   }
 
   return (
-    <form title={!creative ? "You need to become a creative first" : undefined} onSubmit={create} className="routePage mb-32 max-w-[850px]">
-      <fieldset disabled={!creative} className={!creative ? "pointer-events-none opacity-60" : ""}>
+    <form title={!creative ? 'You need to become a creative first' : undefined} onSubmit={create} className="routePage mb-32 max-w-[850px]">
+      <fieldset disabled={!creative} className={!creative ? 'pointer-events-none opacity-60' : ''}>
         <div className="routeName mb-10">Upload</div>
         <div className="space-y-5">
           <div>
@@ -213,7 +213,13 @@ const CreateSoundNFt = () => {
           </div>
           <NumberInput {...form.getInputProps('supply')} classNames={classes} required label="Supply" placeholder="200" />
           <NumberInput {...form.getInputProps('price')} classNames={classes} required label="Stream Price" placeholder="0.0 ALGO" />
-          <DateInput {...form.getInputProps('releaseDate')} placeholder='December 10, 2023' classNames={classes} required label="Release Data" />
+          <DateInput
+            {...form.getInputProps('releaseDate')}
+            placeholder="December 10, 2023"
+            classNames={classes}
+            required
+            label="Release Data"
+          />
           <Textarea
             required
             autosize
@@ -223,7 +229,7 @@ const CreateSoundNFt = () => {
             classNames={classes}
             placeholder="Description about your music"
           />
-          <Button type='submit' fullWidth size="lg" radius={'md'} mt={32} loading={isPending && !isError}>
+          <Button type="submit" fullWidth size="lg" radius={'md'} mt={32} loading={isPending && !isError}>
             Create
           </Button>
         </div>

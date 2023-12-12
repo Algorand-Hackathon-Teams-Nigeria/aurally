@@ -8,61 +8,57 @@ import NftCard, { NftCardLoader } from '../../components/Cards/NftCard'
 import { useAtom } from 'jotai'
 import { appClientAtom } from '../../store/contractAtom'
 import { parseNftBoxData } from '../../utils/parsing'
-import { ArtType, BoxData, SoundType } from '../../types/assets'
+import { ArtType, SoundType } from '../../types/assets'
 
 const MarketPlace = () => {
-  const [appClient,] = useAtom(appClientAtom);
+  const [appClient] = useAtom(appClientAtom)
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
 
   // params from url
   const type = searchParams.get('type')
+  const query = searchParams.get('query')
 
   const [value, setValue] = useState<string[]>(type ? [type] : [])
 
   const [opened, setOpened] = useState(false)
   const toggle = () => setOpened((o) => !o)
 
-  // filtering by type
-  const filterList = async (type: string | null) => {
-    let nftBoxes: BoxData[] | undefined
-    if (type) {
-      nftBoxes = await appClient?.appClient.getBoxValues(name => name.name.startsWith(type))
-    } else {
-      nftBoxes = await appClient?.appClient.getBoxValues(name => name.name.startsWith("Art") || name.name.startsWith("Sound"))
-    }
-    if (nftBoxes) {
-      return parseNftBoxData(nftBoxes)
+  const getData = async (): Promise<(SoundType | ArtType)[]> => {
+    const boxes = await appClient?.appClient.getBoxValues((name) => name.name.startsWith('Art') || name.name.startsWith('Sound'))
+    if (boxes) {
+      return parseNftBoxData(boxes)
     }
     return []
   }
 
-  const getNftData = async (type: string | null): Promise<(SoundType | ArtType)[]> => {
-    return await new Promise((resolve, reject) => {
-      setTimeout(() => {
-        try {
-          resolve(filterList(type))
-        } catch (error) {
-          reject(error)
-        }
-      }, 2000)
-    })
-  }
+  const { data, isPending, isLoading } = useQuery({
+    queryKey: ['nfts'],
+    queryFn: getData,
+    enabled: !!appClient,
+  })
 
-  const { data, isLoading } = useQuery({
-    queryKey: ['marketplace', type],
-    queryFn: () => getNftData(type),
+  const filteredNft = data?.filter((item) => {
+    const loweredQ = query?.toLowerCase() || ''
+    const loweredTitle = item.data.title.toLowerCase()
+    const loweredOwner = item.data.owner.toLowerCase()
+    const typeBool = !type ? true : item.type === type
+    return (loweredOwner.includes(loweredQ) || loweredTitle.includes(loweredQ)) && typeBool
   })
 
   const applyChanges = () => {
     toggle()
+    gotoType()
+  }
+
+  const gotoType = () => {
     navigate(`/dapp/marketplace?${value.length === 1 ? `type=${value[0]}` : ''}`)
   }
 
   return (
     <div className="space-y-8 mb-32 routePage">
       <div>
-        <div className="flex justify-end">
+        <div className={`flex items-center justify-end`}>
           <Menu shadow="md" width={400} position="bottom-end" opened={opened} onChange={setOpened}>
             <Menu.Target>
               <Button
@@ -81,8 +77,8 @@ const MarketPlace = () => {
               <div className="py-5 px-2">
                 <Checkbox.Group mb={20} label="Filter by Type" value={value} onChange={setValue}>
                   <Group mt="xs">
-                    <Checkbox classNames={{ input: inputClasses.checkbox_input }} value="Art" label="Art" />
-                    <Checkbox classNames={{ input: inputClasses.checkbox_input }} value="Sound" label="Sound" />
+                    <Checkbox classNames={{ input: inputClasses.checkbox_input }} value="art" label="Art" />
+                    <Checkbox classNames={{ input: inputClasses.checkbox_input }} value="sound" label="Sound" />
                   </Group>
                 </Checkbox.Group>
                 <NumberInput classNames={inputClasses} label="Price" placeholder="0.00 ALGO" min={0} />
@@ -93,12 +89,18 @@ const MarketPlace = () => {
             </Menu.Dropdown>
           </Menu>
         </div>
+        {query && (
+          <div className="headTag flex items-center gap-2 flex-1 max-w-max">
+            <span>{query}</span>
+            <Icon icon={'material-symbols-light:close'} fontSize={24} color="white" className="shrink-0" onClick={gotoType} />
+          </div>
+        )}
         <div className="grid grid-cols-music-card gap-3 sm:gap-4">
-          {isLoading
+          {isLoading && isPending
             ? [1, 2, 3, 4].map((item) => <NftCardLoader key={item} />)
-            : data?.map((item) => <NftCard key={Number(item.data.asset_id)} data={item} />)}
+            : filteredNft?.map((item) => <NftCard key={Number(item.data.asset_id)} data={item} />)}
         </div>
-        {data?.length === 0 && (
+        {filteredNft?.length === 0 && (
           <div className="w-full py-28  flex justify-center items-center text-center text-[#8A2BE2] font-bold">No NFTs found</div>
         )}
       </div>

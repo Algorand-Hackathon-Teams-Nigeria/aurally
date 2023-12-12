@@ -15,10 +15,14 @@ const TYPES = ['Created', 'Purchased', 'Sold', 'Activity']
 export default function ProfileTab() {
   const [appClient] = useAtom(appClientAtom)
   const [nfts, setNfts] = React.useState<(SoundType | ArtType)[]>([])
-  const { activeAddress } = useWallet();
+  const { activeAddress } = useWallet()
 
   const getNames = async () => {
-    const boxes = await appClient?.appClient.getBoxValues((name) => filterByKeyCreator(name.name, activeAddress ?? "") && (name.name.startsWith("Art") || name.name.startsWith("Sound")))
+    const boxes = await appClient?.appClient.getBoxValues(
+      (name) => filterByKeyCreator(name.name, activeAddress ?? '') && (name.name.startsWith('Art') || name.name.startsWith('Sound')),
+    )
+    // console.log(boxes)
+
     if (boxes) {
       const nftData = parseNftBoxData(boxes)
       setNfts(nftData)
@@ -26,8 +30,10 @@ export default function ProfileTab() {
   }
 
   React.useEffect(() => {
-    getNames()
-  }, [])
+    if (activeAddress) {
+      getNames()
+    }
+  }, [activeAddress])
 
   return (
     <div className="gboard bg-[#1e1e1e] mt-6 mb-[90px]">
@@ -44,7 +50,7 @@ export default function ProfileTab() {
           <Tabs.Panel value={TYPES[0]}>
             <div className="w-full grid grid-cols-music-card gap-5">
               {nfts.map((item) => (
-                <NftCard data={item} key={Number(item.data.asset_id)} />
+                <NftCard buttonLabel="view details" data={item} key={Number(item.data.asset_id)} />
               ))}
             </div>
           </Tabs.Panel>

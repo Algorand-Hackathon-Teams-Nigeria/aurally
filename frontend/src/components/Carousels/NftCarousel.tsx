@@ -18,7 +18,7 @@ const CarouselLoader = () => {
 }
 
 interface NftCarouselProps {
-  isLoading?: boolean;
+  isLoading: boolean
   data?: (ArtType | SoundType)[]
 }
 export const NftCarousel = ({ data = [], isLoading }: NftCarouselProps) => {

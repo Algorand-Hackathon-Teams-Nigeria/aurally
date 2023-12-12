@@ -4,10 +4,8 @@ import { ArtType, SoundType } from '../../../types/assets'
 import { microalgosToAlgos } from 'algosdk'
 import { useAtom } from 'jotai'
 import { appClientAtom } from '../../../store/contractAtom'
-import React from 'react'
-import { UserAccount } from '../../../types/account'
 import { getUserFromAddressSlice } from '../../../utils/queries'
-
+import { useQuery } from '@tanstack/react-query'
 
 type Prop = {
   data: SoundType | ArtType
@@ -42,24 +40,28 @@ export const NftCardLoader = () => {
 }
 
 const NftCard = ({ data, buttonAction, buttonLabel }: Prop) => {
-  const [appClient,] = useAtom(appClientAtom)
-  const [creator, setCreator] = React.useState<UserAccount>()
+  const [appClient] = useAtom(appClientAtom)
 
   async function getCreator() {
     if (appClient) {
-      const user = await getUserFromAddressSlice(data.data.owner, appClient)
-      setCreator(user)
+      return await getUserFromAddressSlice(data.data.owner, appClient)
     }
+    return undefined
   }
 
-  React.useEffect(() => {
-    getCreator()
-  }, [])
+  const { data: creator } = useQuery({
+    queryKey: ['creator', data.data.owner],
+    queryFn: getCreator,
+  })
 
   return (
     <div className="h-max rounded-lg bg-[#1e1e1e] border-[0.5px] border-[#444] overflow-hidden flex-1 shadow-md">
       <AspectRatio ratio={4 / 3} classNames={{ root: 'overflow-hidden' }}>
-        <Image src={data.type == "sound" ? data.data.cover_image_ipfs : data.data.ipfs_location} className="object-cover object-top" alt="Norway" />
+        <Image
+          src={data.type == 'sound' ? data.data.cover_image_ipfs : data.data.ipfs_location}
+          className="object-cover object-top"
+          alt="Norway"
+        />
       </AspectRatio>
       <div className="px-4 pb-3">
         <div className="flex justify-between items-center gap-1 mt-2.5 mb-1.5">

@@ -46,12 +46,20 @@ const CreateEvent = () => {
   const imageName = imageFile?.name || imageFile?.path
   const error = form.values.errors[0]?.errors[0]?.message
 
-
   const createEventCall = async () => {
+    if (!activeAddress) {
+      toast.error('Please connect your wallet')
+      return
+    }
     const url = await uploadToIpfs(imageFile)
-    const eventKey = generateBoxKey("Event", form.values.name, activeAddress ?? "")
+    const eventKey = generateBoxKey('Event', form.values.name, activeAddress ?? '')
     const sp = await getAlgodClient().getTransactionParams().do()
-    const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({ from: activeAddress ?? "", to: activeAddress ?? "", amount: 0, suggestedParams: sp })
+    const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+      from: activeAddress ?? '',
+      to: activeAddress ?? '',
+      amount: 0,
+      suggestedParams: sp,
+    })
     await appClient?.createEvent(
       {
         txn,
@@ -59,12 +67,12 @@ const CreateEvent = () => {
         key: eventKey,
         start_date: getTimeStamp(form.values.startDate) ?? 0,
         end_date: getTimeStamp(form.values.endDate) ?? 0,
-        ticket_price: form.values.ticketPrice,
-        cover_image_ipfs: url
+        ticket_price: BigInt(form.values.ticketPrice),
+        cover_image_ipfs: url,
       },
       {
-        boxes: [{ appId: appRef?.appId ?? 0, name: encodeText(eventKey) }]
-      }
+        boxes: [{ appId: appRef?.appId ?? 0, name: encodeText(eventKey) }],
+      },
     )
     form.reset()
   }
@@ -93,9 +101,9 @@ const CreateEvent = () => {
   }
 
   return (
-    <form title={!activeAddress ? "Please connect your wallet" : undefined} className="routePage mb-32 max-w-[850px]">
+    <form title={!activeAddress ? 'Please connect your wallet' : undefined} className="routePage mb-32 max-w-[850px]">
       <div className="routeName mb-10">Create Event</div>
-      <fieldset disabled={!activeAddress} className={!activeAddress ? "pointer-events-none opacity-60" : ""}>
+      <fieldset className={!activeAddress ? 'pointer-events-none opacity-60' : ''}>
         <div className="space-y-5">
           <div>
             <div>
@@ -137,8 +145,14 @@ const CreateEvent = () => {
           </Dropzone>
           <TextInput {...form.getInputProps('name')} classNames={classes} required label="Event Title" placeholder="Your NFT Title" />
           <NumberInput {...form.getInputProps('ticketPrice')} classNames={classes} required label="Ticket Price" placeholder="0.0 ALGO" />
-          <DateInput {...form.getInputProps("startDate")} classNames={classes} required label="Start Date" placeholder='December 10, 2023' />
-          <DateInput {...form.getInputProps("endDate")} classNames={classes} required label="End Date" placeholder='December 10, 2023' />
+          <DateInput
+            {...form.getInputProps('startDate')}
+            classNames={classes}
+            required
+            label="Start Date"
+            placeholder="December 10, 2023"
+          />
+          <DateInput {...form.getInputProps('endDate')} classNames={classes} required label="End Date" placeholder="December 10, 2023" />
         </div>
         <Button fullWidth size="lg" radius={'md'} mt={32} loading={isPending && !isError} onClick={create}>
           Create

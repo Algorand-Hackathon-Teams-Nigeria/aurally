@@ -6,7 +6,7 @@ import SideDrawer from '../SideDrawer'
 import classes from './appnav.module.css'
 import NotifcationDrawer from '../NotifcationDrawer'
 import { useMediaQuery } from '@mantine/hooks'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { modals } from '@mantine/modals'
 import { useRef, useState } from 'react'
 
@@ -16,10 +16,15 @@ const SearchBar = () => {
   const [isCancel, setIsCancel] = useState(false)
   const loadingTimer = useRef<NodeJS.Timeout>()
   const inputRef = useRef<HTMLInputElement>(null)
+  const [searchParams] = useSearchParams()
   const navigate = useNavigate()
+
+  const type = searchParams.get('type')
 
   const clear = () => {
     inputRef.current!.value = ''
+    setIsCancel(false)
+    setOpen(false)
   }
 
   const open = () => {
@@ -44,7 +49,12 @@ const SearchBar = () => {
     e.preventDefault()
     const searchValue = inputRef.current!.value
     if (searchValue.length >= 3) {
-      navigate(`marketplace?query=${searchValue}`)
+      setOpen(false)
+      if (type) {
+        navigate(`marketplace?type=${type}&query=${searchValue}`)
+      } else {
+        navigate(`marketplace?query=${searchValue}`)
+      }
     }
   }
 

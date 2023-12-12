@@ -1,6 +1,7 @@
 import carouselClasses from '../../styles/carousel.module.css'
 import { Carousel } from '@mantine/carousel'
 import EventCard, { EventCardLoader } from '../Cards/EventCard'
+import { EventType } from '../../types/assets'
 
 const CarouselLoader = () => {
   return (
@@ -16,7 +17,7 @@ const CarouselLoader = () => {
   )
 }
 
-export const EventCarousel = ({ data = [], isLoading }: { isLoading?: boolean; data?: EventCardType[] }) => {
+export const EventCarousel = ({ data = [], isLoading }: { isLoading?: boolean; data?: EventType[] }) => {
   return isLoading ? (
     <CarouselLoader />
   ) : (
@@ -29,8 +30,8 @@ export const EventCarousel = ({ data = [], isLoading }: { isLoading?: boolean; d
       align="end"
     >
       {data?.map((item) => (
-        <Carousel.Slide key={item.id}>
-          <EventCard {...item} key={item.id} />
+        <Carousel.Slide key={Number(item.data.asset_id ?? 0)}>
+          <EventCard {...item} />
         </Carousel.Slide>
       ))}
     </Carousel>
