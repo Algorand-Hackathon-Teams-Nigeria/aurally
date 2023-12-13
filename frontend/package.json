@@ -46,7 +46,7 @@
     "@tanstack/react-query-devtools": "^5.8.4",
     "@txnlab/use-wallet": "^2.1.1",
     "@walletconnect/modal-sign-html": "^2.6.1",
-    "algosdk": "^2.5.0",
+    "algosdk": "^2.7.0",
     "buffer": "^6.0.3",
     "dayjs": "^1.11.10",
     "embla-carousel-autoplay": "^7.1.0",
