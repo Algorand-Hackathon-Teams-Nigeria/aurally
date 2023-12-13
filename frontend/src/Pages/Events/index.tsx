@@ -19,7 +19,7 @@ const Events = () => {
     return []
   }
 
-  const { data, isPending, isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['events'],
     queryFn: getData,
     enabled: !!appClient,
@@ -39,15 +39,15 @@ const Events = () => {
       </div>
       <div>
         <div className="headTag">Upcoming Events</div>
-        <EventCarousel isLoading={isLoading || isPending} data={data} />
+        <EventCarousel isLoading={isLoading} data={data} />
       </div>
       <div className="my-8">
         <div className="headTag">Free Events</div>
-        <EventCarousel isLoading={isLoading || isPending} data={data} />
+        <EventCarousel isLoading={isLoading} data={data} />
       </div>
       <div>
         <div className="headTag">Paid Events</div>
-        <EventCarousel isLoading={isLoading || isPending} data={data} />
+        <EventCarousel isLoading={isLoading} data={data} />
       </div>
     </div>
   )

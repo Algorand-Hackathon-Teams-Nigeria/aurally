@@ -43,7 +43,7 @@ const NftShowCase = () => {
     return []
   }
 
-  const { data, isPending, isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['nfts'],
     queryFn: getData,
     enabled: !!appClient,
@@ -64,7 +64,7 @@ const NftShowCase = () => {
           </Button>
         ))}
       </div>
-      <NftCarousel isLoading={isLoading || isPending} data={filteredNft} />
+      <NftCarousel isLoading={isLoading} data={filteredNft} />
     </>
   )
 }
@@ -80,13 +80,13 @@ const EventShowCase = () => {
     return []
   }
 
-  const { data, isPending, isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['events'],
     queryFn: getData,
     enabled: !!appClient,
   })
 
-  return <EventCarousel isLoading={isLoading || isPending} data={data} />
+  return <EventCarousel isLoading={isLoading} data={data} />
 }
 
 const Home = () => {

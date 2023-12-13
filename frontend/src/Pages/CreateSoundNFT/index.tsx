@@ -112,7 +112,7 @@ const CreateSoundNFt = () => {
     form.reset()
   }
 
-  const { isPending, isError, mutateAsync } = useMutation({
+  const { isLoading, isError, mutateAsync } = useMutation({
     mutationFn: createArtCall,
     onSuccess: () => {
       modals.openContextModal({
@@ -127,7 +127,9 @@ const CreateSoundNFt = () => {
       })
     },
     onError: (error) => {
-      toast.error(error.message)
+      if (error instanceof Error) {
+        toast.error(error.message)
+      }
     },
   })
 
@@ -229,7 +231,7 @@ const CreateSoundNFt = () => {
             classNames={classes}
             placeholder="Description about your music"
           />
-          <Button type="submit" fullWidth size="lg" radius={'md'} mt={32} loading={isPending && !isError}>
+          <Button type="submit" fullWidth size="lg" radius={'md'} mt={32} loading={isLoading && !isError}>
             Create
           </Button>
         </div>

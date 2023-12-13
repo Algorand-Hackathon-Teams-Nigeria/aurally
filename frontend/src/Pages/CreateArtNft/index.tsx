@@ -84,7 +84,7 @@ const CreateArtNft = () => {
     form.reset()
   }
 
-  const { isPending, isError, mutateAsync } = useMutation({
+  const { isLoading, isError, mutateAsync } = useMutation({
     mutationFn: createArtCall,
     onSuccess: () => {
       modals.openContextModal({
@@ -99,7 +99,9 @@ const CreateArtNft = () => {
       })
     },
     onError: (error) => {
-      toast.error(error.message)
+      if (error instanceof Error) {
+        toast.error(error.message)
+      }
     },
   })
 
@@ -160,7 +162,7 @@ const CreateArtNft = () => {
           <NumberInput {...form.getInputProps('price')} classNames={classes} required label="Bid Price" placeholder="0.0 ALGO" />
           <Textarea {...form.getInputProps('desc')} classNames={classes} required label="Description" placeholder="Enter a description" />
         </div>
-        <Button type="submit" fullWidth size="lg" radius={'md'} mt={32} loading={isPending && !isError}>
+        <Button type="submit" fullWidth size="lg" radius={'md'} mt={32} loading={isLoading && !isError}>
           Create
         </Button>
       </fieldset>

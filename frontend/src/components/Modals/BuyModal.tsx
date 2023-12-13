@@ -46,7 +46,7 @@ const BuyModal = ({
     }
   }
 
-  const { isPending, isError, mutateAsync } = useMutation({
+  const { isLoading, isError, mutateAsync } = useMutation({
     mutationFn: () => sendTransaction(activeAddress, activeAddress, innerProps.price),
     onSuccess: () => {
       modals.openContextModal({
@@ -60,7 +60,9 @@ const BuyModal = ({
       })
     },
     onError: (error) => {
-      toast.error(error.message)
+      if (error instanceof Error) {
+        toast.error(error.message)
+      }
     },
   })
   const buy = async () => {
@@ -96,7 +98,7 @@ const BuyModal = ({
           </tr>
         </table>
       </div>
-      <Button size="md" fullWidth loading={isPending && !isError} radius={'md'} onClick={buy}>
+      <Button size="md" fullWidth loading={isLoading && !isError} radius={'md'} onClick={buy}>
         Get Now
       </Button>
     </>
