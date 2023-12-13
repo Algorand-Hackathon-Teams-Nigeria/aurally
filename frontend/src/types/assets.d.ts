@@ -1,4 +1,4 @@
-import { ArtNft, SoundNft, Event } from '../contracts/Aurally'
+import { ArtNft, SoundNft, Event, Proposal } from '../contracts/Aurally'
 
 type BoxData = {
   name: BoxName
@@ -18,6 +18,11 @@ type ArtType = {
 type EventType = {
   type: 'event'
   data: Event
+}
+
+type ProposalType = {
+  type: 'proposal'
+  data: Proposal
 }
 
 type SoundNftType = {

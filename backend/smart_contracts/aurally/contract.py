@@ -325,7 +325,7 @@ def place_nft_on_sale(
         update_art_nft_sale,
         ensure_zero_payment,
         validate_sound_nft_owner,
-        validate_art_nft_owner
+        validate_art_nft_owner,
     )
 
     return P.Seq(
@@ -344,7 +344,7 @@ def place_nft_on_sale(
             P.Seq(
                 validate_art_nft_owner(txn, asset_key),
                 update_art_nft_sale(asset_key, for_sale),
-            )
+            ),
         ),
     )
 
@@ -396,7 +396,7 @@ def transfer_nft(
             nft_type.get() == P.Bytes("art"),
             P.Seq(
                 validate_art_nft_owner(txn, asset_key),
-                update_art_nft_owner(asset_key, to)
+                update_art_nft_owner(asset_key, to),
             ),
         ),
     )

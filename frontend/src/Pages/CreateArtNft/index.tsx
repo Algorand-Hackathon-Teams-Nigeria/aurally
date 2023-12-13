@@ -17,7 +17,7 @@ import { appClientAtom, appRefAtom, auraTokenAtom, aurallyCreativeAtom } from '.
 import { encodeText, generateBoxKey } from '../../utils/encoding'
 
 const CreateArtNft = () => {
-  const { activeAddress, signer } = useWallet()
+  const { activeAddress } = useWallet()
   const openRef = useRef<() => void>(null)
   const [appClient] = useAtom(appClientAtom)
   const [creative] = useAtom(aurallyCreativeAtom)
@@ -51,7 +51,6 @@ const CreateArtNft = () => {
     const assetKey = generateBoxKey('Art', form.values.title, activeAddress ?? '')
     const url = await uploadToIpfs(imageFile)
     const sp = await getAlgodClient().getTransactionParams().do()
-    const optIn = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({ from: activeAddress ?? "" to: activeAddress ?? "", suggestedParams: sp, amount: 0 })
 
     const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
       from: activeAddress ?? '',

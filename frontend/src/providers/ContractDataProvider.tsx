@@ -5,6 +5,7 @@ import { useWallet } from '@txnlab/use-wallet'
 import { createAppClient, getAlgodClient } from '../utils/network/contract-config'
 import { getAuraTokenInfo, getUserFromAddressSlice } from '../utils/queries'
 import { WalletAccountType } from '../types/account'
+// import { createAuraTokens } from '../utils/mutations'
 
 interface AppDataProviderProps {
   children: React.ReactNode
@@ -26,6 +27,7 @@ export const ContractDataProvider = ({ children }: AppDataProviderProps) => {
         const account = await algodClient.accountInformation(activeAccount.address).do()
         const newAppRef = await newAppClient.appClient.getAppReference()
 
+        // await createAuraTokens(newAppClient, Number(newAppRef.appId))
         setAppClient(newAppClient)
         setAppRef(newAppRef)
         setUserAccount(account as WalletAccountType)

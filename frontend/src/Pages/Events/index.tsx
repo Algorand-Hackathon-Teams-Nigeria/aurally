@@ -8,20 +8,6 @@ import { appClientAtom } from '../../store/contractAtom'
 import { useAtom } from 'jotai'
 import { useEffect } from 'react'
 
-export const eventData = (isFree = false) =>
-  Array.from({ length: 4 }, (_, index) => {
-    return {
-      id: index + 1,
-      imgUrl: 'https://gateway.pinata.cloud/ipfs/QmTaf7kEg9hNi3msa8GryvMLBHZVDCv34KMzmhN7sP99qu',
-      title: 'Beat the flow',
-      price: isFree ? 0 : 10,
-      desc: 'This event is to help new artist grow their fanbase and promote their music.',
-      date: 'Nov 20, 2021',
-      creator: 'Taulor su',
-      no_left: 10000,
-    }
-  })
-
 const Events = () => {
   const [appClient] = useAtom(appClientAtom)
 

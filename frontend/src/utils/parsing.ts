@@ -1,7 +1,7 @@
 import { BoxName } from '@algorandfoundation/algokit-utils/types/app'
-import { ArtType, BoxData, EventType, SoundType } from '../types/assets'
-import { ArtNft, SoundNft, Event } from '../contracts/Aurally'
-import { ArtNFTTupple, EventTupple, SoundNFTTupple, artNFTDecoder, eventDecoder, soundNFTDecoder } from './encoding'
+import { ArtType, BoxData, EventType, SoundType, ProposalType } from '../types/assets'
+import { ArtNft, SoundNft, Event, Proposal } from '../contracts/Aurally'
+import { ArtNFTTupple, EventTupple, ProposalTupple, SoundNFTTupple, artNFTDecoder, eventDecoder, proposaldecoder, soundNFTDecoder } from './encoding'
 
 export function getTimeStamp(dateTime: string): number | undefined {
   const date = new Date(dateTime)
@@ -36,4 +36,16 @@ export function parseEventBoxData(data: BoxData[]): EventType[] {
     }
   }
   return eventData
+}
+
+
+export function parseProposalBoxData(data: BoxData[]): ProposalType[] {
+  const proposalData: ProposalType[] = []
+  for (const box of data ?? []) {
+    if (box.name.name.startsWith("Proposal")) {
+      const proposalDetails = Proposal(proposaldecoder.decode(box.value) as ProposalTupple)
+      proposalData.push({ type: "proposal", data: proposalDetails })
+    }
+  }
+  return proposalData
 }

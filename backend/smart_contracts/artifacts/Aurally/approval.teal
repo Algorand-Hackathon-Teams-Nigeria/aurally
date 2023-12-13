@@ -2562,21 +2562,15 @@ frame_dig 0
 pushint 52 // 52
 extract_uint64
 frame_bury 4
-global LatestTimestamp
-frame_dig 3
->
-assert
-global LatestTimestamp
-frame_dig 4
-<
-assert
 frame_dig -1
 frame_dig 1
 >
+// The new bid must be larger than the current highest bid
 assert
 frame_dig -1
 frame_dig 2
 >
+// The new bid must be greater that the minimum bid price
 assert
 frame_dig 0
 extract 0 32

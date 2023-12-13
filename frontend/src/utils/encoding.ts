@@ -83,3 +83,6 @@ export const eventDecoder = algosdk.ABIType.from('(uint64,string,string,uint64,u
 
 export type AurallyTokenTupple = [bigint, string, bigint]
 export const aurallyTokenDecoder = algosdk.ABIType.from("(uint64,string,uint64)")
+
+export type ProposalTupple = [string, string, bigint, bigint, string, bigint]
+export const proposaldecoder = algosdk.ABIType.from("(string,string,uint64,uint64,string,uint64)")

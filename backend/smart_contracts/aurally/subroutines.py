@@ -274,10 +274,14 @@ def perform_auction_bid(
         (min_bid := P.abi.Uint64()).set(auction_item.min_bid),
         (starts_at := P.abi.Uint64()).set(auction_item.starts_at),
         (ends_at := P.abi.Uint64()).set(auction_item.ends_at),
-        P.Assert(P.Global.latest_timestamp() > starts_at.get()),
-        P.Assert(P.Global.latest_timestamp() < ends_at.get()),
-        P.Assert(bid_ammount.get() > highest_bid.get()),
-        P.Assert(bid_ammount.get() > min_bid.get()),
+        P.Assert(
+            bid_ammount.get() > highest_bid.get(),
+            comment="The new bid must be larger than the current highest bid",
+        ),
+        P.Assert(
+            bid_ammount.get() > min_bid.get(),
+            comment="The new bid must be greater that the minimum bid price",
+        ),
         (auctioneer := P.abi.Address()).set(auction_item.auctioneer),
         (item_id := P.abi.String()).set(auction_item.item_id),
         (item_name := P.abi.String()).set(auction_item.item_name),
@@ -477,7 +481,7 @@ def validate_art_nft_owner(txn: P.abi.Transaction, asset_key: P.abi.String):
         P.Assert(
             owner.get() == txn.get().sender(),
             comment="The transaction sender is not the owner of the art nft",
-        )
+        ),
     )
 
 
