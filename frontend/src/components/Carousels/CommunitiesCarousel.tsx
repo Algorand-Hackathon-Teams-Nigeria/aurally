@@ -1,6 +1,7 @@
 import carouselClasses from '../../styles/carousel.module.css'
 import { Carousel } from '@mantine/carousel'
 import CommunityCard, { CommunityCardLoader } from '../Cards/CommunityCard'
+import { CommunityCardType } from '../../types/assets'
 
 const CarouselLoader = () => {
   return (

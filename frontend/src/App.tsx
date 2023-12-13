@@ -1,8 +1,8 @@
 import { ModalsProvider } from '@mantine/modals'
 import { Outlet, Route, Routes } from 'react-router-dom'
 import ArtDetails from './Pages/ArtDetails'
-import { Communities, CommunitiesIndex } from './Pages/Communities'
-import Community from './Pages/Community'
+// import { Communities, CommunitiesIndex } from './Pages/Communities'
+// import Community from './Pages/Community'
 import CreateArtNft from './Pages/CreateArtNft'
 import CreateEvent from './Pages/CreateEvent'
 import CreateProposal from './Pages/CreateProposal'
@@ -40,10 +40,10 @@ export default function App() {
         <Route path="nfts" Component={MyNfts} />
         <Route path="create/art" Component={CreateArtNft} />
         <Route path="create/sound" Component={CreateSoundNFt} />
-        <Route path="communities" Component={Communities}>
+        {/* <Route path="communities" Component={Communities}>
           <Route index Component={CommunitiesIndex} />
           <Route path=":forumId" Component={Community} />
-        </Route>
+        </Route> */}
         <Route path="events" Component={Events} />
         <Route path="events/create" Component={CreateEvent} />
         <Route path="profile" Component={Profile} />
