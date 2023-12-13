@@ -4,7 +4,7 @@ export function encodeText(text: string): Uint8Array {
   return new Uint8Array(new TextEncoder().encode(text))
 }
 
-type KeyType = 'Sound' | 'Art' | 'Event' | "Proposal"
+type KeyType = 'Sound' | 'Art' | 'Event' | 'Proposal'
 /**
  * Generates the box key for easy identification and searching
  */
@@ -82,7 +82,7 @@ export type EventTupple = [bigint, string, string, bigint, bigint, string, bigin
 export const eventDecoder = algosdk.ABIType.from('(uint64,string,string,uint64,uint64,string,uint64,address)')
 
 export type AurallyTokenTupple = [bigint, string, bigint]
-export const aurallyTokenDecoder = algosdk.ABIType.from("(uint64,string,uint64)")
+export const aurallyTokenDecoder = algosdk.ABIType.from('(uint64,string,uint64)')
 
 export type ProposalTupple = [string, string, bigint, bigint, string, bigint]
-export const proposaldecoder = algosdk.ABIType.from("(string,string,uint64,uint64,string,uint64)")
+export const proposaldecoder = algosdk.ABIType.from('(string,string,uint64,uint64,string,uint64)')

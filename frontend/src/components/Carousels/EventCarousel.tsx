@@ -18,7 +18,7 @@ const CarouselLoader = () => {
 }
 
 interface EventCarouselProps {
-  isLoading?: boolean;
+  isLoading?: boolean
   data?: EventType[]
 }
 
@@ -34,8 +34,8 @@ export const EventCarousel = ({ data = [], isLoading }: EventCarouselProps) => {
       slidesToScroll={'auto'}
       align="end"
     >
-      {data?.map((item) => (
-        <Carousel.Slide key={Number(item.data.asset_id ?? 0)}>
+      {data?.map((item, index) => (
+        <Carousel.Slide key={Number(item.data.asset_id ?? index)}>
           <EventCard data={item} />
         </Carousel.Slide>
       ))}
