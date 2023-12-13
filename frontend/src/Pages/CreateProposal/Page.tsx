@@ -20,33 +20,42 @@ const Page = () => {
   const form = useForm({
     initialValues: {
       proposal: '',
-      details: "",
-      endDate: "",
+      details: '',
+      endDate: '',
       date: null as Date | null,
     },
     validate: {
       proposal: (value) => (!value ? 'Proposal title is required' : null),
-      details: (value) => (!value ? "Proposal details is required" : null),
-      endDate: (value) => (!value ? "Propodal end date is required" : null),
+      details: (value) => (!value ? 'Proposal details is required' : null),
+      endDate: (value) => (!value ? 'Propodal end date is required' : null),
       date: (value) => (!value ? 'date is required' : null),
     },
   })
 
-
   const createProposal = async () => {
-    const key = generateBoxKey("Proposal", form.values.proposal, activeAddress ?? "")
+    const key = generateBoxKey('Proposal', form.values.proposal, activeAddress ?? '')
     const sp = await getAlgodClient().getTransactionParams().do()
     const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
-      to: activeAddress ?? "",
-      from: activeAddress ?? "",
-      amount: 0, suggestedParams: sp
+      to: activeAddress ?? '',
+      from: activeAddress ?? '',
+      amount: 0,
+      suggestedParams: sp,
     })
-    await appClient?.createProposal({ title: form.values.proposal, proposal_detail: form.values.details, end_date: getTimeStamp(form.values.endDate) ?? 0, proposal_key: key, txn }, {
-      boxes: [
-        { appId: appRef?.appId ?? 0, name: encodeText(key) },
-        { appId: appRef?.appId ?? 0, name: algosdk.decodeAddress(activeAddress ?? '').publicKey },
-      ],
-    })
+    await appClient?.createProposal(
+      {
+        title: form.values.proposal,
+        proposal_detail: form.values.details,
+        end_date: BigInt(getTimeStamp(form.values.endDate) ?? 0),
+        proposal_key: key,
+        txn,
+      },
+      {
+        boxes: [
+          { appId: appRef?.appId ?? 0, name: encodeText(key) },
+          { appId: appRef?.appId ?? 0, name: algosdk.decodeAddress(activeAddress ?? '').publicKey },
+        ],
+      },
+    )
     form.reset()
   }
 
@@ -69,7 +78,15 @@ const Page = () => {
       <div className="routeName mb-14">Create Proposal</div>
       <div className="space-y-5">
         <TextInput {...form.getInputProps('proposal')} classNames={classes} required label="Title" placeholder="Your Proposal Title" />
-        <Textarea autosize minRows={8} {...form.getInputProps("details")} classNames={classes} required label="Details" placeholder='You Proposal Details' />
+        <Textarea
+          autosize
+          minRows={8}
+          {...form.getInputProps('details')}
+          classNames={classes}
+          required
+          label="Details"
+          placeholder="You Proposal Details"
+        />
         <DateInput label="Closing Date" {...form.getInputProps('date')} classNames={classes} placeholder="Date input" required />
       </div>
       <Button fullWidth size="lg" loading={isPending && !isError} onClick={create} radius={'md'} mt={32}>

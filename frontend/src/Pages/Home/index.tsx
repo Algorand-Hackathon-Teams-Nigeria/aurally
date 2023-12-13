@@ -5,8 +5,8 @@ import { useState } from 'react'
 import { NftCarousel } from '../../components/Carousels/NftCarousel'
 import TitleHeader from '../../components/General/TitleHeader'
 import { EventCarousel } from '../../components/Carousels/EventCarousel'
-import { CommunitiesCarousel } from '../../components/Carousels/CommunitiesCarousel'
-import { CommunitiesData } from '../Communities'
+// import { CommunitiesCarousel } from '../../components/Carousels/CommunitiesCarousel'
+// import { CommunitiesData } from '../Communities'
 import { appClientAtom } from '../../store/contractAtom'
 import { parseEventBoxData, parseNftBoxData } from '../../utils/parsing'
 import { ArtType, EventType, SoundType } from '../../types/assets'
@@ -103,10 +103,10 @@ const Home = () => {
             <TitleHeader title="Upcoming Events" link="/dapp/events" />
             <EventShowCase />
           </div>
-          <div>
+          {/* <div>
             <TitleHeader title="Popular Communities" link="/dapp/communities" />
             <CommunitiesCarousel data={CommunitiesData} />
-          </div>
+          </div> */}
         </div>
       </section>
     </div>

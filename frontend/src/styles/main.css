@@ -12,6 +12,15 @@
   --Grey-04: #ebebeb;
 }
 
+::-webkit-scrollbar {
+  display: none;
+  width: 0;
+}
+* {
+  scrollbar-width: 0;
+  -ms-overflow-style: none;
+}
+
 .routePage {
   @apply px-[4.5%] min-[375px]:px-5 lg:px-8 pt-6;
 }
@@ -106,6 +115,6 @@ body:before {
 }
 
 .scrollbar-hide {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }

@@ -10,11 +10,12 @@ const DaoCard = ({ proposal }: DaoCardProps) => {
   const open = () => {
     modals.openContextModal({
       modal: 'dao',
+      title: proposal.data.title,
       innerProps: {
-        header: proposal.data.title,
-        name: proposal.data.details,
-        total_stream: '10,343',
-        relase_date: proposal.data.end_date,
+        title: proposal.data.title,
+        details: proposal.data.details,
+        end_date: Number(proposal.data.end_date),
+        key: proposal.data.key,
       },
     })
   }

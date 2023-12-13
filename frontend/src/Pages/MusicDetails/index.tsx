@@ -14,21 +14,21 @@ import { BoxKeyData, SoundNFTTupple, parseBoxKey, soundNFTDecoder } from '../../
 import { UserAccount } from '../../types/account'
 import { appClientAtom } from '../../store/contractAtom'
 import { getUserFromAddressSlice } from '../../utils/queries'
-
+import { microalgosToAlgos } from 'algosdk'
 
 const MusicDetails = () => {
   const [searchParams] = useSearchParams()
   const [nft, setNft] = useState<SoundNft>()
   const [keyData, setKeyData] = useState<BoxKeyData>()
   const [creator, setCreator] = useState<UserAccount>()
-  const [appClient,] = useAtom(appClientAtom)
+  const [appClient] = useAtom(appClientAtom)
   const [type, setType] = useState(0)
   const bg = (num: number) => (type === num ? '#444' : 'transparent')
 
-  const musicId = searchParams.get("assetKey")
+  const musicId = searchParams.get('assetKey')
 
   async function getSound() {
-    const res = await appClient?.appClient.getBoxValue(musicId ?? "")
+    const res = await appClient?.appClient.getBoxValue(musicId ?? '')
     if (res) {
       const val = soundNFTDecoder.decode(res)
       const soundVal = SoundNft(val as SoundNFTTupple)
@@ -40,8 +40,8 @@ const MusicDetails = () => {
       }
     }
 
-    const keyVal = parseBoxKey(musicId ?? "")
-    if (keyVal.type == "Sound") setKeyData(keyVal)
+    const keyVal = parseBoxKey(musicId ?? '')
+    if (keyVal.type == 'Sound') setKeyData(keyVal)
   }
 
   React.useEffect(() => {
@@ -108,8 +108,8 @@ const MusicDetails = () => {
             </div>
           </div>
           <div className="flex items-end gap-4 sm:gap-6 self-start">
-            <Stat1 title="Price" title2={`${nft?.price} ALGO`} />
-            <Stat1 title="Streams" title2={nft?.supply.toString() ?? ""} />
+            <Stat1 title="Price" title2={`${microalgosToAlgos(Number(nft?.price ?? 0))} ALGO`} />
+            <Stat1 title="Streams" title2={nft?.supply.toString() ?? ''} />
             <Button onClick={openBuyModal} classNames={{ root: classes.btnGet }} size="xl">
               Get Now
             </Button>
@@ -130,8 +130,8 @@ const MusicDetails = () => {
             <>
               <div className="flex flex-wrap gap-5 sm:gap-20">
                 <Stat1 title="GENRES" title2="RnB" />
-                <Stat1 title="Date Created" title2={`${new Date(keyData?.dateCreated ?? "").toDateString()}`} />
-                <Stat1 title="Total Voume" title2={`${Number(nft?.supply)}`} />
+                <Stat1 title="Date Created" title2={`${new Date(keyData?.dateCreated ?? '').toDateString()}`} />
+                <Stat1 title="Total Volume" title2={`${Number(nft?.supply)}`} />
               </div>
             </>
           ) : (

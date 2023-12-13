@@ -40,12 +40,12 @@ const DAO = () => {
   const [appClient] = useAtom(appClientAtom)
 
   const { data } = useQuery({
-    queryKey: ["proposals"],
-    queryFn: getProposals
+    queryKey: ['proposals'],
+    queryFn: getProposals,
   })
 
   async function getProposals(): Promise<ProposalType[]> {
-    const boxes = await appClient?.appClient.getBoxValues((name) => name.name.startsWith("Proposal"))
+    const boxes = await appClient?.appClient.getBoxValues((name) => name.name.startsWith('Proposal'))
     if (boxes) {
       return parseProposalBoxData(boxes)
     }

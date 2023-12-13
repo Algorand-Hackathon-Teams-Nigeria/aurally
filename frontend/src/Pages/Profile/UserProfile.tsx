@@ -11,28 +11,25 @@ import algosdk from 'algosdk'
 import { toast } from 'react-hot-toast'
 import ProfileTab from './ProfileTab'
 
-
-
 interface UserProfileProps {
   creative: AurallyCreative
 }
 
 export default function UserProfile(props: UserProfileProps) {
-  const { activeAddress } = useWallet();
-  const [, setCreative] = useAtom(aurallyCreativeAtom);
-  const [appClient] = useAtom(appClientAtom);
-  const [appRef] = useAtom(appRefAtom);
-  const { creative } = props;
+  const { activeAddress } = useWallet()
+  const [, setCreative] = useAtom(aurallyCreativeAtom)
+  const [appClient] = useAtom(appClientAtom)
+  const [appRef] = useAtom(appRefAtom)
+  const { creative } = props
 
   async function getUpdatedData() {
     if (activeAddress) {
       try {
-        const res = await appClient?.getRegisteredCreative({ addr: activeAddress },
+        const res = await appClient?.getRegisteredCreative(
+          { addr: activeAddress },
           {
-            boxes: [
-              { appId: appRef?.appId ?? 0, name: algosdk.decodeAddress(activeAddress).publicKey }
-            ]
-          }
+            boxes: [{ appId: appRef?.appId ?? 0, name: algosdk.decodeAddress(activeAddress).publicKey }],
+          },
         )
         setCreative(res?.return)
       } catch (err) {
