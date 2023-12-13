@@ -6,9 +6,10 @@ const DaoModal = ({
   id,
   innerProps,
 }: ContextModalProps<{
+  key: string
   title: string
   details: string
-  endDate: string
+  end_date: number
   btnAction?: () => void
 }>) => {
   const message = () => {
@@ -25,20 +26,20 @@ const DaoModal = ({
     })
   }
 
+  const dat = new Date(innerProps.end_date).toDateString()
   return (
     <>
-      <div className="mb-5">{innerProps.title}</div>
       <div className="border-[#444] border py-2 px-3 rounded-lg mb-6">
-        <table className="w-full text-xs">
-          <tr>
-            <td className="py-2">Sound name</td>
-            <td className="text-end text-[#AFAFAF]">{innerProps.details}</td>
-          </tr>
-          <tr>
-            <td className="py-2">Creator</td>
-            <td className="text-end text-[#AFAFAF]">{innerProps.endDate}</td>
-          </tr>
-        </table>
+        <div className="w-full space-y-3">
+          <div>
+            <div className="font-bold text-sm">Description</div>
+            <div className="text-[#AFAFAF] text-xs">{innerProps.details}</div>
+          </div>
+          <div>
+            <div className="font-bold text-sm">Closing Date</div>
+            <div className="text-[#AFAFAF] text-xs">{dat}</div>
+          </div>
+        </div>
       </div>
       <Button size="md" fullWidth radius={'md'} onClick={message}>
         Vote Now

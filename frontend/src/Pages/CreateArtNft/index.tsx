@@ -63,8 +63,8 @@ const CreateArtNft = () => {
       {
         nft_name: form.values.title,
         name: form.values.title,
-        price: BigInt(form.values.price),
-        supply: form.values.supply,
+        price: BigInt(form.values.price * 1_000000),
+        supply: BigInt(form.values.supply),
         creator: activeAddress ?? '',
         asset_key: assetKey,
         description: form.values.desc,

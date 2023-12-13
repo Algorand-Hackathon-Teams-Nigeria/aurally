@@ -246,7 +246,7 @@ export default function Home() {
           <div className=" absolute -top-20 -left-20 h-56 w-56 rounded-full bg-[#6500764D]" />
           <div className=" absolute -bottom-20 -right-20 h-80 w-80 rounded-full bg-[#6500764D]" />
           <div className=" relative">
-            <div className="text-[28px] sm:text-4xl lg:text-5xl font-bold text-center mb-9">Joint Our Community</div>
+            <div className="text-[28px] sm:text-4xl lg:text-5xl font-bold text-center mb-9">Join Our Community</div>
             <Link to="/dapp" className="w-max block px-8 py-4 rounded-[40px] bg-white text-[#1C51FE] mx-auto">
               Get Started
             </Link>

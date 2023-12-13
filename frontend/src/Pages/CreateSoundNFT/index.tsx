@@ -90,11 +90,11 @@ const CreateSoundNFt = () => {
         label: form.values.label,
         title: form.values.title,
         genre: form.values.genre,
-        supply: form.values.supply,
+        supply: BigInt(form.values.supply),
         nft_name: form.values.title,
         full_track_ipfs: audioUrl,
         cover_image_ipfs: imageUrl,
-        price: form.values.price,
+        price: BigInt(form.values.price * 1_000000),
         artist: form.values.artist,
         creator: activeAddress ?? '',
         asset_key: assetKey,
@@ -118,7 +118,7 @@ const CreateSoundNFt = () => {
       modals.openContextModal({
         modal: 'message',
         innerProps: {
-          title: 'Aura Nft Created',
+          title: 'Aura Created',
           icon: 'success',
           desc: 'Your aura has been created successfully',
           btnLabel: 'Explore Sounds',

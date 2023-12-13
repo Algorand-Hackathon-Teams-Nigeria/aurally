@@ -11,7 +11,7 @@ import { ArtNFTTupple, BoxKeyData, artNFTDecoder, encodeText, parseBoxKey } from
 import { getUserFromAddressSlice } from '../../utils/queries'
 import { UserAccount } from '../../types/account'
 import { ellipseAddress } from '../../utils/ellipseAddress'
-import algosdk from 'algosdk'
+import algosdk, { microalgosToAlgos } from 'algosdk'
 import { useWallet } from '@txnlab/use-wallet'
 import { getAlgodClient } from '../../utils/network/contract-config'
 import { toast } from 'react-hot-toast'
@@ -31,18 +31,17 @@ const ArtDetails = () => {
   const [nft, setNft] = useState<ArtNft>()
   const [keyData, setKeyData] = useState<BoxKeyData>()
   const [creator, setCreator] = useState<UserAccount>()
-  const [appClient,] = useAtom(appClientAtom)
+  const [appClient] = useAtom(appClientAtom)
   const [appRef] = useAtom(appRefAtom)
   const [auraToken] = useAtom(auraTokenAtom)
   const [purchasing, setPurchasing] = React.useState(false)
   const { activeAddress } = useWallet()
 
-
   const bg = (num: number) => (type === num ? '#444' : 'transparent')
 
-  const artId = searchParams.get("assetKey")
+  const artId = searchParams.get('assetKey')
   async function getArt() {
-    const res = await appClient?.appClient.getBoxValue(artId ?? "")
+    const res = await appClient?.appClient.getBoxValue(artId ?? '')
     if (res) {
       const val = artNFTDecoder.decode(res)
       const artVal = ArtNft(val as ArtNFTTupple)
@@ -54,8 +53,8 @@ const ArtDetails = () => {
       }
     }
 
-    const keyVal = parseBoxKey(artId ?? "")
-    if (keyVal.type == "Art") setKeyData(keyVal)
+    const keyVal = parseBoxKey(artId ?? '')
+    if (keyVal.type == 'Art') setKeyData(keyVal)
   }
 
   React.useEffect(() => {
@@ -65,28 +64,45 @@ const ArtDetails = () => {
   async function purchaseNft() {
     setPurchasing(true)
     const sp = await getAlgodClient().getTransactionParams().do()
-    const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({ from: activeAddress ?? "", to: appRef?.appAddress ?? "", amount: nft?.price ?? 0, suggestedParams: sp })
-    const optInTxn = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({ from: activeAddress ?? "", to: activeAddress ?? "", amount: 0, suggestedParams: sp, assetIndex: Number(nft?.asset_id ?? 0) })
-    const auraOptIntTxn = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({ from: activeAddress ?? "", to: activeAddress ?? "", amount: 0, suggestedParams: sp, assetIndex: Number(auraToken?.asset_id ?? 0) })
+    const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+      from: activeAddress ?? '',
+      to: appRef?.appAddress ?? '',
+      amount: nft?.price ?? 0,
+      suggestedParams: sp,
+    })
+    const optInTxn = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
+      from: activeAddress ?? '',
+      to: activeAddress ?? '',
+      amount: 0,
+      suggestedParams: sp,
+      assetIndex: Number(nft?.asset_id ?? 0),
+    })
+    const auraOptIntTxn = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
+      from: activeAddress ?? '',
+      to: activeAddress ?? '',
+      amount: 0,
+      suggestedParams: sp,
+      assetIndex: Number(auraToken?.asset_id ?? 0),
+    })
     try {
       await appClient?.purchaseNft(
         {
           txn,
           optin_txn: optInTxn,
           aura_optin_txn: auraOptIntTxn,
-          asset_key: nft?.asset_key ?? "",
-          buyer: activeAddress ?? "",
-          seller: nft?.owner ?? "",
+          asset_key: nft?.asset_key ?? '',
+          buyer: activeAddress ?? '',
+          seller: nft?.owner ?? '',
           nft_id: nft?.asset_id ?? 0,
           aura_id: auraToken?.asset_id ?? 0,
-          nft_type: "art"
+          nft_type: 'art',
         },
         {
           boxes: [
-            { appId: appRef?.appId ?? 0, name: encodeText("aura") },
-            { appId: appRef?.appId ?? 0, name: encodeText(nft?.asset_key ?? "") }
-          ]
-        }
+            { appId: appRef?.appId ?? 0, name: encodeText('aura') },
+            { appId: appRef?.appId ?? 0, name: encodeText(nft?.asset_key ?? '') },
+          ],
+        },
       )
       toast.success(`Success: You've just pruchased a copy of ${nft?.name}`)
       setPurchasing(false)
@@ -105,7 +121,7 @@ const ArtDetails = () => {
         <div className="flex flex-col justify-end">
           <div className="py-5 lg:py-8 px-4 lg:px-6 border border-[#444444]">
             <div className="text-[#919191]">Price</div>
-            <div className="p-4 sm:p-6 rounded-[10px] bg-[#1E1E1E] mb-6 mt-1">{Number(nft?.price)} ALGO</div>
+            <div className="p-4 sm:p-6 rounded-[10px] bg-[#1E1E1E] mb-6 mt-1">{microalgosToAlgos(Number(nft?.price ?? 0))} ALGO</div>
             <Button loading={purchasing} disabled={purchasing} onClick={purchaseNft} size="md" fullWidth>
               Collect
             </Button>
@@ -134,7 +150,7 @@ const ArtDetails = () => {
             <div className="pt-4 pb-8">{nft?.description}</div>
             <div className="flex flex-wrap gap-5 sm:gap-20">
               <Stat1 title="GENRES" title2="RnB" />
-              <Stat1 title="Date Created" title2={new Date(keyData?.dateCreated ?? "").toDateString()} />
+              <Stat1 title="Date Created" title2={new Date(keyData?.dateCreated ?? '').toDateString()} />
               <Stat1 title="Total Voume" title2={`${nft?.supply}`} />
               <Stat1 title="Current Owner" title2={ellipseAddress(creator?.address)} />
             </div>
