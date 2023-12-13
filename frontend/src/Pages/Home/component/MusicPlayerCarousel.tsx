@@ -121,7 +121,7 @@ const MusicPlayerCarousel = () => {
   }
 
   const { data, isPending, isLoading } = useQuery({
-    queryKey: ['sounds'],
+    queryKey: ['nfts'],
     queryFn: getData,
     enabled: !!appClient,
   })
@@ -136,7 +136,7 @@ const MusicPlayerCarousel = () => {
   const { isPlaying } = audioState
 
   return (
-    <div className="sm:h-[25vw] min-h-[250px] sm:min-h-[300px] sm:max-h-[500px] relative bg-[#1e1e1e]">
+    <div className={`${isPending && isLoading ? 'bg-[#1e1e1e]' : ''} sm:h-[25vw] min-h-[250px] sm:min-h-[300px] sm:max-h-[500px] relative`}>
       {!isPending && !isLoading && (
         <>
           <audio ref={audioRef} className="hidden" />

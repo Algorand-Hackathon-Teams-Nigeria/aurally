@@ -145,7 +145,7 @@ export default function Home() {
           </div>
         </div>
         {/* MarketPlace */}
-        {/* <HomeMarketPlace /> */}
+        <HomeMarketPlace />
         {/* How it Works */}
         <div className="flex flex-col items-center my-36" id="works">
           <h2 className="text-center text-3xl md:text-4xl lg:text-5xl xl:text-[4rem] font-bold">How it works</h2>

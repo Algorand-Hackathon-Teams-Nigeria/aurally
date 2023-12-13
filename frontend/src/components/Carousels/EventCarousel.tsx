@@ -29,9 +29,9 @@ export const EventCarousel = ({ data = [], isLoading }: { isLoading?: boolean; d
       slidesToScroll={'auto'}
       align="end"
     >
-      {data?.map((item) => (
-        <Carousel.Slide key={Number(item.data.asset_id ?? 0)}>
-          <EventCard {...item} />
+      {data?.map((item, index) => (
+        <Carousel.Slide key={Number(item.data.asset_id ?? index)}>
+          <EventCard data={item} />
         </Carousel.Slide>
       ))}
     </Carousel>

@@ -1,41 +1,45 @@
 import { Button } from '@mantine/core'
 import { useState } from 'react'
-import { useAtomValue } from 'jotai'
-import { nftListAtom } from '../../../store/atoms'
 import { Link } from 'react-router-dom'
 import classes from '../landing.module.css'
 import { NftCarousel } from '../../../components/Carousels/NftCarousel'
 import { useQuery } from '@tanstack/react-query'
+import { ArtType, SoundType } from '../../../types/assets'
+import { parseNftBoxData } from '../../../utils/parsing'
+import { createAppClient } from '../../../utils/network/contract-config'
 
-const TYPES = ['All', 'Music', 'Art']
+const TYPES = [
+  {
+    value: 'all',
+    label: 'All',
+  },
+  {
+    value: 'art',
+    label: 'Art',
+  },
+  {
+    value: 'sound',
+    label: 'Music',
+  },
+]
 
 const HomeMarketPlace = () => {
   const [type, setType] = useState(TYPES[0])
-  const nftList = useAtomValue(nftListAtom)
 
-  const getNftData = async (): Promise<typeof nftList> => {
-    return await new Promise((resolve, reject) => {
-      setTimeout(() => {
-        try {
-          resolve(nftList)
-        } catch (error) {
-          reject(error)
-        }
-      }, 2000)
-    })
+  const getData = async (): Promise<(SoundType | ArtType)[]> => {
+    const boxes = await createAppClient()?.appClient.getBoxValues((name) => name.name.startsWith('Art') || name.name.startsWith('Sound'))
+    if (boxes) {
+      return parseNftBoxData(boxes)
+    }
+    return []
   }
 
-  const { data, isLoading } = useQuery({
-    queryKey: ['trending-nft'],
-    queryFn: getNftData,
+  const { data, isPending, isLoading } = useQuery({
+    queryKey: ['nfts'],
+    queryFn: getData,
   })
 
-  const filterList = data?.filter((item) => {
-    if (type === 'All') return true
-    if (type === 'Music') return item.type === 'sound'
-    if (type === 'Art') return item.type === 'art'
-    return false
-  })
+  const filteredNft = data?.filter((item) => (type.value === 'all' ? true : item.type === type.value))
 
   return (
     <div>
@@ -47,12 +51,12 @@ const HomeMarketPlace = () => {
       </div>
       <div className="flex gap-4 mb-4 w-full h-[42px] overflow-x-auto">
         {TYPES.map((item) => (
-          <Button onClick={() => setType(item)} key={item} variant={item === type ? 'filled' : 'outline'} radius="xl">
-            {item}
+          <Button onClick={() => setType(item)} key={item.value} variant={item.value === type.value ? 'filled' : 'outline'} radius="xl">
+            {item.label}
           </Button>
         ))}
       </div>
-      <NftCarousel isLoading={isLoading} data={filterList} />
+      <NftCarousel isLoading={isLoading || isPending} data={filteredNft} />
       <Link to="/dapp/marketplace" className={`${classes.getBtn} flex w-max mx-auto mt-20`}>
         Explore Marketplace
       </Link>

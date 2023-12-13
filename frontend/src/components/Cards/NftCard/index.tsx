@@ -2,10 +2,9 @@ import { AspectRatio, Avatar, Button, Image } from '@mantine/core'
 import { Link } from 'react-router-dom'
 import { ArtType, SoundType } from '../../../types/assets'
 import { microalgosToAlgos } from 'algosdk'
-import { useAtom } from 'jotai'
-import { appClientAtom } from '../../../store/contractAtom'
 import { getUserFromAddressSlice } from '../../../utils/queries'
 import { useQuery } from '@tanstack/react-query'
+import { createAppClient } from '../../../utils/network/contract-config'
 
 type Prop = {
   data: SoundType | ArtType
@@ -40,9 +39,8 @@ export const NftCardLoader = () => {
 }
 
 const NftCard = ({ data, buttonAction, buttonLabel }: Prop) => {
-  const [appClient] = useAtom(appClientAtom)
-
   async function getCreator() {
+    const appClient = createAppClient()
     if (appClient) {
       return await getUserFromAddressSlice(data.data.owner, appClient)
     }

@@ -44,7 +44,7 @@ const NftShowCase = () => {
   }
 
   const { data, isPending, isLoading } = useQuery({
-    queryKey: ['trending-nft'],
+    queryKey: ['nfts'],
     queryFn: getData,
     enabled: !!appClient,
   })
@@ -81,7 +81,7 @@ const EventShowCase = () => {
   }
 
   const { data, isPending, isLoading } = useQuery({
-    queryKey: ['trending-events'],
+    queryKey: ['events'],
     queryFn: getData,
     enabled: !!appClient,
   })

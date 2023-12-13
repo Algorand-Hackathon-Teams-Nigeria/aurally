@@ -78,4 +78,4 @@ export type AurallyCreativeTupple = [boolean, boolean, bigint, string, string, b
 export const aurallyCreativeDecoder = algosdk.ABIType.from('(bool,bool,uint64,string,string,uint64)')
 
 export type EventTupple = [bigint, string, string, bigint, bigint, string, bigint, string]
-export const eventDecoder = algosdk.ABIType.from('(uint64,string,string,uint64,uint64,string,uint64,string)')
+export const eventDecoder = algosdk.ABIType.from('(uint64,string,string,uint64,uint64,string,uint64,address)')
