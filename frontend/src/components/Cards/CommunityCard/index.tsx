@@ -1,5 +1,6 @@
 import { AspectRatio, Avatar, Button, Image } from '@mantine/core'
 import { Link } from 'react-router-dom'
+import { CommunityCardType } from '../../../types/assets'
 
 type Prop = {
   buttonAction?: () => void
