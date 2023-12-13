@@ -293,6 +293,33 @@ def test_complete_art_auction(
     assert list(result.return_value)[2] == nft_name
 
 
+def test_place_nft_on_sale(
+    algod_client: AlgodClient,
+    aurally_client: ApplicationClient,
+    test_account: LocalAccount,
+    test_create_sound_nft: Tuple[str, int],
+):
+    print(test_account.address, aurally_client.app_addr)
+    sp = algod_client.suggested_params()
+    txn = transaction.PaymentTxn(
+        sender=test_account.address,
+        receiver=aurally_client.app_addr,
+        sp=sp,
+        amt=0,
+    )
+    txn = atomic_transaction_composer.TransactionWithSigner(
+        txn=txn, signer=test_account.signer
+    )
+    aurally_client.call(
+        aurally_contract.place_nft_on_sale,
+        txn=txn,
+        asset=test_create_sound_nft[1],
+        asset_key=test_create_sound_nft[0],
+        nft_type="sound",
+        boxes=[(aurally_client.app_id, test_create_sound_nft[0].encode())],
+    )
+
+
 # @pytest.mark.skip
 def test_purchase_nft(
     algod_client: AlgodClient,

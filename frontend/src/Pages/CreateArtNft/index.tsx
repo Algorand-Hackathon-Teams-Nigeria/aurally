@@ -13,15 +13,15 @@ import toast from 'react-hot-toast'
 import classes from '../../styles/textinput.module.css'
 import { uploadToIpfs } from '../../utils/ipfs-calls'
 import { getAlgodClient } from '../../utils/network/contract-config'
-import { appClientAtom, appRefAtom, aurallyCreativeAtom } from '../../store/contractAtom'
+import { appClientAtom, appRefAtom, auraTokenAtom, aurallyCreativeAtom } from '../../store/contractAtom'
 import { encodeText, generateBoxKey } from '../../utils/encoding'
-import { auraToken } from '../../utils/network/algo-constants'
 
 const CreateArtNft = () => {
   const { activeAddress } = useWallet()
   const openRef = useRef<() => void>(null)
   const [appClient] = useAtom(appClientAtom)
   const [creative] = useAtom(aurallyCreativeAtom)
+  const [auraToken] = useAtom(auraTokenAtom)
   const [appRef] = useAtom(appRefAtom)
 
   const form = useForm({
@@ -51,6 +51,7 @@ const CreateArtNft = () => {
     const assetKey = generateBoxKey('Art', form.values.title, activeAddress ?? '')
     const url = await uploadToIpfs(imageFile)
     const sp = await getAlgodClient().getTransactionParams().do()
+
     const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
       from: activeAddress ?? '',
       to: activeAddress ?? '',

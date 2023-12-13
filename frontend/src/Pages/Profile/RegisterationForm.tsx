@@ -3,13 +3,14 @@ import React from 'react'
 import { getAlgodClient } from '../../utils/network/contract-config'
 import algosdk from 'algosdk'
 import { useAtom } from 'jotai'
-import { appClientAtom, appRefAtom, aurallyCreativeAtom } from '../../store/contractAtom'
+import { appClientAtom, appRefAtom, auraTokenAtom, aurallyCreativeAtom } from '../../store/contractAtom'
 import { useWallet } from '@txnlab/use-wallet'
 import { toast } from 'react-hot-toast'
-import { auraToken } from '../../utils/network/algo-constants'
+import classes from "../../styles/textinput.module.css"
 
 export default function RegistrationForm() {
   const [appClient] = useAtom(appClientAtom)
+  const [auraToken] = useAtom(auraTokenAtom)
   const [appRef] = useAtom(appRefAtom)
   const [, setCreative] = useAtom(aurallyCreativeAtom)
   const [loading, setLoading] = React.useState(false)
@@ -56,6 +57,7 @@ export default function RegistrationForm() {
         <legend className="text-3xl font-bold">Become a Creative</legend>
         <div className="pt-5 flex w-full flex-col gap-3 lg:flex-row">
           <TextInput
+            classNames={classes}
             className="w-full"
             label="Full Name"
             size="lg"
@@ -66,6 +68,7 @@ export default function RegistrationForm() {
             type="text"
           />
           <TextInput
+            classNames={classes}
             className="w-full"
             label="Username"
             size="lg"

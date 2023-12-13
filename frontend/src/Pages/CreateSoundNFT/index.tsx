@@ -14,11 +14,10 @@ import toast from 'react-hot-toast'
 import classes from '../../styles/textinput.module.css'
 import { uploadToIpfs } from '../../utils/ipfs-calls'
 import { getAlgodClient } from '../../utils/network/contract-config'
-import { appClientAtom, appRefAtom, aurallyCreativeAtom } from '../../store/contractAtom'
+import { appClientAtom, appRefAtom, auraTokenAtom, aurallyCreativeAtom } from '../../store/contractAtom'
 import { DateInput } from '@mantine/dates'
 import { getTimeStamp } from '../../utils/parsing'
 import { encodeText, generateBoxKey } from '../../utils/encoding'
-import { auraToken } from '../../utils/network/algo-constants'
 
 const GENRES = ['Pop', 'Electronic', 'R&B', 'Alte', 'Reggae', 'Afrobeat', 'Rock', 'Amapiano']
 
@@ -29,6 +28,7 @@ const CreateSoundNFt = () => {
   const [appClient] = useAtom(appClientAtom)
   const [appRef] = useAtom(appRefAtom)
   const [creative] = useAtom(aurallyCreativeAtom)
+  const [auraToken] = useAtom(auraTokenAtom)
   const openRef = useRef<() => void>(null)
 
   const form = useForm({

@@ -3,34 +3,16 @@ import DaoCard from '../../components/Cards/DaoCard'
 import { Link } from 'react-router-dom'
 import carouselClasses from '../../styles/carousel.module.css'
 import { Carousel } from '@mantine/carousel'
+import { useQuery } from '@tanstack/react-query'
+import { useAtom } from 'jotai'
+import { ProposalType } from '../../types/assets'
+import { appClientAtom } from '../../store/contractAtom'
+import { parseProposalBoxData } from '../../utils/parsing'
 
 type Prop = {
   title: string
-  data: {
-    title1: string
-    title2: string
-    creator: string
-    price: number
-    desc: string
-    date: string
-    totalVote: number
-    isClosed: boolean
-  }[]
+  data?: ProposalType[]
 }
-
-const data = (isClosed = false) =>
-  Array.from({ length: 4 }, () => {
-    return {
-      title1: 'Top 10 Songa Asked',
-      title2: 'Asked',
-      creator: 'Faye',
-      price: 110.25,
-      desc: 'Alright is a peer-to-peer agreements app to safely exchange goods & services with anyone through decentralized escrow',
-      date: '12 Nov 2023',
-      totalVote: 1000,
-      isClosed: isClosed,
-    }
-  })
 
 const DaoGrid = ({ title, data }: Prop) => {
   return (
@@ -44,9 +26,9 @@ const DaoGrid = ({ title, data }: Prop) => {
         slidesToScroll={'auto'}
         align="end"
       >
-        {data.map((item, index) => (
+        {data?.map((item, index) => (
           <Carousel.Slide key={index}>
-            <DaoCard {...item} />
+            <DaoCard proposal={item} />
           </Carousel.Slide>
         ))}
       </Carousel>
@@ -55,6 +37,21 @@ const DaoGrid = ({ title, data }: Prop) => {
 }
 
 const DAO = () => {
+  const [appClient] = useAtom(appClientAtom)
+
+  const { data } = useQuery({
+    queryKey: ["proposals"],
+    queryFn: getProposals
+  })
+
+  async function getProposals(): Promise<ProposalType[]> {
+    const boxes = await appClient?.appClient.getBoxValues((name) => name.name.startsWith("Proposal"))
+    if (boxes) {
+      return parseProposalBoxData(boxes)
+    }
+    return []
+  }
+
   return (
     <div className="routePage space-y-12 pb-32">
       <div className="flex items-center justify-between mb-14">
@@ -63,8 +60,8 @@ const DAO = () => {
           Create Proposal
         </Button>
       </div>
-      <DaoGrid data={data()} title="Trending Proposals" />
-      <DaoGrid data={data(true)} title="Open Proposals" />
+      <DaoGrid data={data} title="Trending Proposals" />
+      <DaoGrid data={data} title="Open Proposals" />
     </div>
   )
 }

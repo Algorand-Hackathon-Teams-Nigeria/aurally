@@ -7,26 +7,47 @@ import algosdk from 'algosdk'
 import { useAtom } from 'jotai'
 import toast from 'react-hot-toast'
 import classes from '../../styles/textinput.module.css'
+import { appClientAtom, appRefAtom } from '../../store/contractAtom'
+import { getTimeStamp } from '../../utils/parsing'
+import { encodeText, generateBoxKey } from '../../utils/encoding'
+import { getAlgodClient } from '../../utils/network/contract-config'
 
 const Page = () => {
-  const { activeAddress, signTransactions, sendTransactions } = useWallet()
+  const [appClient] = useAtom(appClientAtom)
+  const [appRef] = useAtom(appRefAtom)
+  const { activeAddress } = useWallet()
 
   const form = useForm({
     initialValues: {
       proposal: '',
       details: "",
+      endDate: "",
       date: null as Date | null,
     },
     validate: {
       proposal: (value) => (!value ? 'Proposal title is required' : null),
       details: (value) => (!value ? "Proposal details is required" : null),
+      endDate: (value) => (!value ? "Propodal end date is required" : null),
       date: (value) => (!value ? 'date is required' : null),
     },
   })
 
 
   const createProposal = async () => {
-
+    const key = generateBoxKey("Proposal", form.values.proposal, activeAddress ?? "")
+    const sp = await getAlgodClient().getTransactionParams().do()
+    const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+      to: activeAddress ?? "",
+      from: activeAddress ?? "",
+      amount: 0, suggestedParams: sp
+    })
+    await appClient?.createProposal({ title: form.values.proposal, proposal_detail: form.values.details, end_date: getTimeStamp(form.values.endDate) ?? 0, proposal_key: key, txn }, {
+      boxes: [
+        { appId: appRef?.appId ?? 0, name: encodeText(key) },
+        { appId: appRef?.appId ?? 0, name: algosdk.decodeAddress(activeAddress ?? '').publicKey },
+      ],
+    })
+    form.reset()
   }
 
   const { isPending, isError, mutateAsync } = useMutation({
