@@ -22,7 +22,7 @@ export default function UserProfile(props: UserProfileProps) {
   const [appRef] = useAtom(appRefAtom)
   const { creative } = props
 
-  async function getUpdatedData() {
+  const getUpdatedData = async () => {
     if (activeAddress) {
       try {
         const res = await appClient?.getRegisteredCreative(

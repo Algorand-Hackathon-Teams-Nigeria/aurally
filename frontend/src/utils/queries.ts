@@ -3,7 +3,7 @@ import { AurallyClient, AurallyCreative, AurallyToken } from '../contracts/Aural
 import { AurallyCreativeTupple, AurallyTokenTupple, aurallyCreativeDecoder, aurallyTokenDecoder } from './encoding'
 import { UserAccount } from '../types/account'
 
-export async function getUserFromAddressSlice(addr: string, appClient: AurallyClient): Promise<UserAccount | undefined> {
+export const getUserFromAddressSlice = async (addr: string, appClient: AurallyClient): Promise<UserAccount | undefined> => {
   const boxes = await appClient.appClient.getBoxValues(
     (name) =>
       !name.name.startsWith('Art') &&
@@ -23,7 +23,7 @@ export async function getUserFromAddressSlice(addr: string, appClient: AurallyCl
   return undefined
 }
 
-export async function getAuraTokenInfo(client: AurallyClient): Promise<AurallyToken | undefined> {
+export const getAuraTokenInfo = async (client: AurallyClient): Promise<AurallyToken | undefined> => {
   const boxes = await client.appClient.getBoxValues((name) => name.name == "aura")
   if (boxes.length > 0) {
     const decoded = AurallyToken(aurallyTokenDecoder.decode(boxes[0].value) as AurallyTokenTupple)
