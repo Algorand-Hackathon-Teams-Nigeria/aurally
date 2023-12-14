@@ -4,49 +4,61 @@ import AudioPlayer from '../../components/AudioPlayer'
 import classes from './musicdetail.module.css'
 import profile from '../../assets/profile.jpg'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import WaveSurfer from 'wavesurfer.js'
 import { modals } from '@mantine/modals'
 import Stat1 from '../../components/General/Stat1'
-import { useAtom } from 'jotai'
 import { SoundNft } from '../../contracts/Aurally'
 import { BoxKeyData, SoundNFTTupple, parseBoxKey, soundNFTDecoder } from '../../utils/encoding'
 import { UserAccount } from '../../types/account'
-import { appClientAtom } from '../../store/contractAtom'
 import { getUserFromAddressSlice } from '../../utils/queries'
 import { microalgosToAlgos } from 'algosdk'
+import { createAppClient } from '../../utils/network/contract-config'
+import { useQuery } from '@tanstack/react-query'
 
 const MusicDetails = () => {
   const [searchParams] = useSearchParams()
-  const [nft, setNft] = useState<SoundNft>()
-  const [keyData, setKeyData] = useState<BoxKeyData>()
-  const [creator, setCreator] = useState<UserAccount>()
-  const [appClient] = useAtom(appClientAtom)
   const [type, setType] = useState(0)
   const bg = (num: number) => (type === num ? '#444' : 'transparent')
 
   const musicId = searchParams.get('assetKey')
 
-  async function getSound() {
-    const res = await appClient?.appClient.getBoxValue(musicId ?? '')
-    if (res) {
-      const val = soundNFTDecoder.decode(res)
-      const soundVal = SoundNft(val as SoundNFTTupple)
-      setNft(soundVal)
-
-      if (appClient) {
-        const user = await getUserFromAddressSlice(soundVal.owner, appClient)
-        setCreator(user)
+  const getData = async (): Promise<{
+    nft: SoundNft | undefined
+    creator: UserAccount | undefined
+    keyData: BoxKeyData | undefined
+  }> => {
+    if (!musicId) {
+      return {
+        nft: undefined,
+        creator: undefined,
+        keyData: undefined,
       }
     }
-
-    const keyVal = parseBoxKey(musicId ?? '')
-    if (keyVal.type == 'Sound') setKeyData(keyVal)
+    const appClient = createAppClient()
+    const res = await appClient?.appClient.getBoxValue(musicId)
+    const val = soundNFTDecoder.decode(res)
+    const nft = SoundNft(val as SoundNFTTupple)
+    const creator = await getUserFromAddressSlice(nft.owner, appClient)
+    const keyVal = parseBoxKey(musicId) as BoxKeyData
+    return {
+      nft,
+      creator,
+      keyData: keyVal.type == 'Art' ? keyVal : undefined,
+    }
   }
 
-  React.useEffect(() => {
-    getSound()
-  }, [])
+  const { data, isLoading } = useQuery({
+    queryKey: ['sound-nft', musicId],
+    queryFn: getData,
+    initialData: {
+      nft: undefined,
+      creator: undefined,
+      keyData: undefined,
+    },
+  })
+
+  const { nft, keyData } = data
 
   const navigate = useNavigate()
   const wavesurferRef = useRef<WaveSurfer | null>(null)
@@ -109,14 +121,14 @@ const MusicDetails = () => {
           </div>
           <div className="flex items-end gap-4 sm:gap-6 self-start">
             <Stat1 title="Price" title2={`${microalgosToAlgos(Number(nft?.price ?? 0))} ALGO`} />
-            <Stat1 title="Streams" title2={nft?.supply.toString() ?? ''} />
-            <Button onClick={openBuyModal} classNames={{ root: classes.btnGet }} size="xl">
+            <Stat1 title="Streams" title2={nft?.supply.toString() ?? '0'} />
+            <Button onClick={openBuyModal} classNames={{ root: classes.btnGet }} size="xl" disabled={isLoading}>
               Get Now
             </Button>
           </div>
         </div>
         <div className="font-bold text-sm text-[#afafaf] mb-1 mt-3.5">Preview</div>
-        <AudioPlayer audioUrl={nft?.full_track_ipfs} wavesurferRef={wavesurferRef} />
+        <AudioPlayer audioUrl={nft?.full_track_ipfs ?? ''} wavesurferRef={wavesurferRef} />
         <div className="gboard mt-6 mb-[90px] min-h-[434px]">
           <div className="flex overflow-x-auto  pb-0.5">
             <Button size="lg" onClick={() => setType(0)} classNames={{ root: classes.greyButton }} bg={bg(0)}>

@@ -5,13 +5,11 @@ import { Icon } from '@iconify/react'
 import inputClasses from '../../styles/textinput.module.css'
 import { useState } from 'react'
 import NftCard, { NftCardLoader } from '../../components/Cards/NftCard'
-import { useAtom } from 'jotai'
-import { appClientAtom } from '../../store/contractAtom'
 import { parseNftBoxData } from '../../utils/parsing'
 import { ArtType, SoundType } from '../../types/assets'
+import { createAppClient } from '../../utils/network/contract-config'
 
 const MarketPlace = () => {
-  const [appClient] = useAtom(appClientAtom)
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
 
@@ -25,7 +23,7 @@ const MarketPlace = () => {
   const toggle = () => setOpened((o) => !o)
 
   const getData = async (): Promise<(SoundType | ArtType)[]> => {
-    const boxes = await appClient?.appClient.getBoxValues((name) => name.name.startsWith('Art') || name.name.startsWith('Sound'))
+    const boxes = await createAppClient()?.appClient.getBoxValues((name) => name.name.startsWith('Art') || name.name.startsWith('Sound'))
     if (boxes) {
       return parseNftBoxData(boxes)
     }
@@ -35,7 +33,6 @@ const MarketPlace = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['nfts'],
     queryFn: getData,
-    enabled: !!appClient,
   })
 
   const filteredNft = data?.filter((item) => {

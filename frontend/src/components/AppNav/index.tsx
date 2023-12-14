@@ -3,10 +3,8 @@ import { Image, LoadingOverlay, Popover, TextInput } from '@mantine/core'
 import { useMediaQuery } from '@mantine/hooks'
 import { modals } from '@mantine/modals'
 import { useQuery } from '@tanstack/react-query'
-import { useAtom } from 'jotai'
 import { useRef, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { appClientAtom } from '../../store/contractAtom'
 import { ArtType, SoundType } from '../../types/assets'
 import { ellipseAddress } from '../../utils/ellipseAddress'
 import { parseNftBoxData } from '../../utils/parsing'
@@ -15,6 +13,7 @@ import ConnectButton from '../General/ConnectButton'
 import NotifcationDrawer from '../NotifcationDrawer'
 import SideDrawer from '../SideDrawer'
 import classes from './appnav.module.css'
+import { createAppClient } from '../../utils/network/contract-config'
 
 const SearchBar = () => {
   const [opened, setOpen] = useState(false)
@@ -25,7 +24,6 @@ const SearchBar = () => {
   const inputRef = useRef<HTMLInputElement>(null)
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
-  const [appClient] = useAtom(appClientAtom)
 
   const type = searchParams.get('type')
 
@@ -54,7 +52,7 @@ const SearchBar = () => {
   )
 
   const getData = async (): Promise<(SoundType | ArtType)[]> => {
-    const boxes = await appClient?.appClient.getBoxValues((name) => name.name.startsWith('Art') || name.name.startsWith('Sound'))
+    const boxes = await createAppClient().appClient.getBoxValues((name) => name.name.startsWith('Art') || name.name.startsWith('Sound'))
     if (boxes) {
       return parseNftBoxData(boxes)
     }
@@ -64,7 +62,6 @@ const SearchBar = () => {
   const { data } = useQuery({
     queryKey: ['nfts'],
     queryFn: getData,
-    enabled: !!appClient,
   })
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
