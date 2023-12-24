@@ -130,7 +130,7 @@
                 }
             ],
             "returns": {
-                "type": "(uint64,string,uint64,string,string,string,uint64,string,uint64,string,string,string,address,bool)"
+                "type": "(uint64,string,uint64,string,string,string,uint64,string,uint64,string,string,string,address,bool,bool)"
             }
         },
         {
@@ -157,10 +157,6 @@
                     "name": "name"
                 },
                 {
-                    "type": "uint64",
-                    "name": "supply"
-                },
-                {
                     "type": "string",
                     "name": "description"
                 },
@@ -182,7 +178,23 @@
                 }
             ],
             "returns": {
-                "type": "(uint64,string,string,string,uint64,string,string,uint64,uint64,address,bool)"
+                "type": "(uint64,string,string,string,string,string,uint64,uint64,address,address,bool,bool)"
+            }
+        },
+        {
+            "name": "claim_created_art",
+            "args": [
+                {
+                    "type": "axfer",
+                    "name": "txn"
+                },
+                {
+                    "type": "string",
+                    "name": "asset_key"
+                }
+            ],
+            "returns": {
+                "type": "(uint64,string,string,string,string,string,uint64,uint64,address,address,bool,bool)"
             }
         },
         {
@@ -250,7 +262,7 @@
                 }
             ],
             "returns": {
-                "type": "(uint64,string,string,string,uint64,string,string,uint64,uint64,address,bool)"
+                "type": "(uint64,string,string,string,string,string,uint64,uint64,address,address,bool,bool)"
             }
         },
         {

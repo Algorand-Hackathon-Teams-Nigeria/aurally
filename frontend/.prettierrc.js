@@ -1,10 +1,14 @@
-module.exports = {
-  singleQuote: true,
+/** @type {import("prettier").Config} */
+const config = {
+  singleQuote: false,
   jsxSingleQuote: false,
-  semi: false,
+  semi: true,
   tabWidth: 2,
-  trailingComma: 'all',
+  trailingComma: "all",
   printWidth: 140,
-  endOfLine: 'lf',
-  arrowParens: 'always',
-}
+  endOfLine: "lf",
+  arrowParens: "always",
+  experimentalTernaries: true
+};
+
+export default config

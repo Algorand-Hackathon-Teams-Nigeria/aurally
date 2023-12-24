@@ -1,23 +1,10 @@
-"""
-Todo: 
-    1. Set aurally admins to string not address
-    2. Create sell nft method to transfer nft from seller to global.app_addr
-    3. Update but nft method to transfer the nft from global.app_addr to buyer
-    4. Update AurallyCreative to contain purchases, sales e.t.c infomation
-"""
-
 import beaker as B
 import pyteal as P
 
 from smart_contracts.aurally.boxes import (
-    ArtNFT,
-    ArtAuctionItem,
-    AurallyCreative,
-    AurallyToken,
     Event,
     EventTicket,
     Proposal,
-    SoundNFT,
 )
 from .states import AppState
 
@@ -40,11 +27,11 @@ def delete() -> P.Expr:
 def promote_to_admin(
     txn: P.abi.PaymentTransaction, acc: P.abi.Account, *, output: P.abi.String
 ):
-    from .subroutines import ensure_sender_is_creator, ensure_zero_payment
+    from .helpers.validators import ensure_zero_payment, ensure_sender_is_app_creator
 
     return P.Seq(
         ensure_zero_payment(txn),
-        ensure_sender_is_creator(txn),
+        ensure_sender_is_app_creator(txn),
         P.Assert(P.Not(app.state.aurally_admins[acc.address()].exists())),
         (is_admin := P.abi.String()).set("True"),
         app.state.aurally_admins[acc.address()].set(is_admin),
@@ -56,11 +43,11 @@ def promote_to_admin(
 def demote_from_admin(
     txn: P.abi.PaymentTransaction, acc: P.abi.Account, *, output: P.abi.String
 ):
-    from .subroutines import ensure_sender_is_creator, ensure_zero_payment
+    from .helpers.validators import ensure_zero_payment, ensure_sender_is_app_creator
 
     return P.Seq(
         ensure_zero_payment(txn),
-        ensure_sender_is_creator(txn),
+        ensure_sender_is_app_creator(txn),
         P.Assert(app.state.aurally_admins[acc.address()].exists()),
         (is_admin := P.abi.String()).set("False"),
         app.state.aurally_admins[acc.address()].set(is_admin),
@@ -68,240 +55,23 @@ def demote_from_admin(
     )
 
 
-@app.external
-def register_creator(
-    txn: P.abi.Transaction,
-    fullname: P.abi.String,
-    username: P.abi.String,
-    *,
-    output: AurallyCreative,
-):
-    from .subroutines import create_nft_owner
-
-    return P.Seq(
-        P.If(
-            P.Not(app.state.aurally_nft_owners[txn.get().sender()].exists()),
-            create_nft_owner(txn, fullname, username),
-        ),
-        output.decode(app.state.aurally_nft_owners[txn.get().sender()].get()),
-    )
-
-
-@app.external(read_only=True)
-def get_registered_creative(addr: P.abi.Address, *, output: AurallyCreative):
-    return P.Seq(
-        P.Assert(
-            app.state.aurally_nft_owners[addr.get()].exists(),
-            comment="This account is not a registred creative",
-        ),
-        output.decode(app.state.aurally_nft_owners[addr.get()].get()),
-    )
-
-
-@app.external
-def create_sound_nft(
-    txn: P.abi.Transaction,
-    nft_name: P.abi.String,
-    asset_key: P.abi.String,
-    title: P.abi.String,
-    label: P.abi.String,
-    artist: P.abi.String,
-    release_date: P.abi.Uint64,
-    genre: P.abi.String,
-    price: P.abi.Uint64,
-    cover_image_ipfs: P.abi.String,
-    audio_sample_ipfs: P.abi.String,
-    full_track_ipfs: P.abi.String,
-    supply: P.abi.Uint64,
-    aura_asset: P.abi.Asset,
-    creator: P.abi.Account,
-    *,
-    output: SoundNFT,
-):
-    from .subroutines import (
-        ensure_registered_creative,
-        increment_creator_nft_count,
-        send_aura_token,
-    )
-
-    opup = P.OpUp(P.OpUpMode.OnCall)
-    return P.Seq(
-        opup.maximize_budget(P.Int(1000)),
-        (creative_type := P.abi.String()).set("music"),
-        ensure_registered_creative(txn, creative_type),
-        P.Assert(P.Not(app.state.sound_nfts[asset_key.get()].exists())),
-        P.InnerTxnBuilder.Execute(
-            {
-                P.TxnField.type_enum: P.TxnType.AssetConfig,
-                P.TxnField.config_asset_name: nft_name.get(),
-                P.TxnField.config_asset_total: supply.get(),
-                P.TxnField.config_asset_url: full_track_ipfs.get(),
-                P.TxnField.config_asset_manager: txn.get().sender(),
-            }
-        ),
-        (asset_id := P.abi.Uint64()).set(P.InnerTxn.created_asset_id()),
-        (owner := P.abi.Address()).set(txn.get().sender()),
-        (for_sale := P.abi.Bool()).set(True),
-        (sound_nft := SoundNFT()).set(
-            asset_id,
-            asset_key,
-            supply,
-            title,
-            label,
-            artist,
-            release_date,
-            genre,
-            price,
-            cover_image_ipfs,
-            audio_sample_ipfs,
-            full_track_ipfs,
-            owner,
-            for_sale,
-        ),
-        app.state.sound_nfts[asset_key.get()].set(sound_nft),
-        increment_creator_nft_count(owner),
-        (aura_amt := P.abi.Uint64()).set(1),
-        send_aura_token(owner, aura_amt),
-        output.decode(app.state.sound_nfts[asset_key.get()].get()),
-    )
-
-
-@app.external
-def create_art_nft(
-    txn: P.abi.PaymentTransaction,
-    asset_key: P.abi.String,
-    nft_name: P.abi.String,
-    title: P.abi.String,
-    name: P.abi.String,
-    supply: P.abi.Uint64,
-    description: P.abi.String,
-    ipfs_location: P.abi.String,
-    price: P.abi.Uint64,
-    aura_asset: P.abi.Asset,
-    creator: P.abi.Account,
-    *,
-    output: ArtNFT,
-):
-    from .subroutines import (
-        ensure_registered_creative,
-        increment_creator_nft_count,
-        ensure_zero_payment,
-        send_aura_token,
-    )
-
-    return P.Seq(
-        ensure_zero_payment(txn),
-        P.Assert(
-            P.Not(app.state.art_nfts[asset_key.get()].exists()),
-            comment="An art NFT with this key already exists",
-        ),
-        (creative_type := P.abi.String()).set("art"),
-        ensure_registered_creative(txn, creative_type),
-        P.InnerTxnBuilder.Execute(
-            {
-                P.TxnField.type_enum: P.TxnType.AssetConfig,
-                P.TxnField.config_asset_name: nft_name.get(),
-                P.TxnField.config_asset_total: supply.get(),
-                P.TxnField.config_asset_url: ipfs_location.get(),
-                P.TxnField.config_asset_manager: txn.get().sender(),
-            }
-        ),
-        (asset_id := P.abi.Uint64()).set(P.InnerTxn.created_asset_id()),
-        (owner := P.abi.Address()).set(txn.get().sender()),
-        (sold_price := P.abi.Uint64()).set(0),
-        (for_sale := P.abi.Bool()).set(True),
-        (art_nft := ArtNFT()).set(
-            asset_id,
-            asset_key,
-            title,
-            name,
-            supply,
-            description,
-            ipfs_location,
-            price,
-            sold_price,
-            owner,
-            for_sale,
-        ),
-        app.state.art_nfts[asset_key.get()].set(art_nft),
-        increment_creator_nft_count(owner),
-        (aura_amt := P.abi.Uint64()).set(1),
-        send_aura_token(owner, aura_amt),
-        output.decode(app.state.art_nfts[asset_key.get()].get()),
-    )
-
-
-@app.external
-def create_art_auction(
-    txn: P.abi.PaymentTransaction,
-    auction_key: P.abi.String,
-    asset_key: P.abi.String,
-    min_bid: P.abi.Uint64,
-    starts_at: P.abi.Uint64,
-    ends_at: P.abi.Uint64,
-    *,
-    output: ArtAuctionItem,
-):
-    from .subroutines import create_art_auction, ensure_zero_payment
-
-    return P.Seq(
-        P.Assert(
-            P.Not(app.state.art_auctions[auction_key.get()].exists()),
-            comment="An auction with this key already exists",
-        ),
-        ensure_zero_payment(txn),
-        P.Assert(
-            starts_at.get() < ends_at.get(),
-            comment="End date must be greater that start date",
-        ),
-        P.Assert(
-            app.state.art_nfts[asset_key.get()].exists(),
-            comment="Art NFT with this key was not found",
-        ),
-        (art_nft := ArtNFT()).decode(app.state.art_nfts[asset_key.get()].get()),
-        (art_nft_owner := P.abi.Address()).set(art_nft.owner),
-        (nft_name := P.abi.String()).set(art_nft.name),
-        P.Assert(
-            art_nft_owner.get() == txn.get().sender(),
-            comment="Only the owner of this NFT can auction it",
-        ),
-        create_art_auction(
-            txn, auction_key, asset_key, nft_name, min_bid, starts_at, ends_at
-        ),
-        output.decode(app.state.art_auctions[auction_key.get()].get()),
-    )
-
-
-@app.external
-def bid_on_art_auction(
-    txn: P.abi.PaymentTransaction,
-    auction_key: P.abi.String,
-    bid_ammount: P.abi.Uint64,
-    *,
-    output: ArtAuctionItem,
-):
-    from .subroutines import perform_auction_bid, ensure_zero_payment
-
-    return P.Seq(
-        ensure_zero_payment(txn),
-        P.Assert(app.state.art_auctions[auction_key.get()].exists()),
-        perform_auction_bid(txn, auction_key, bid_ammount),
-        output.decode(app.state.art_auctions[auction_key.get()].get()),
-    )
+# Todo: Update SoundNFT owner on creation
+# Todo: Update ArtNFT owner on creation
 
 
 @app.external
 def complete_art_auction(
     txn: P.abi.PaymentTransaction, auction_key: P.abi.String, *, output: ArtNFT
 ):
-    from .subroutines import (
-        transfer_art_auction_item_to_highest_bidder,
-        ensure_zero_payment,
-    )
+    from .subroutines import transfer_art_auction_item_to_highest_bidder
+    from .helpers.validators import ensure_zero_payment
 
     return P.Seq(
         ensure_zero_payment(txn),
-        P.Assert(app.state.art_auctions[auction_key.get()].exists()),
+        P.Assert(
+            app.state.art_auctions[auction_key.get()].exists(),
+            comment="art auction with the specified key does not exist",
+        ),
         (auction_item := ArtAuctionItem()).decode(
             app.state.art_auctions[auction_key.get()].get()
         ),
@@ -323,10 +93,10 @@ def place_nft_on_sale(
     from .subroutines import (
         update_sound_nft_sale,
         update_art_nft_sale,
-        ensure_zero_payment,
         validate_sound_nft_owner,
         validate_art_nft_owner,
     )
+    from .helpers.validators import ensure_zero_payment
 
     return P.Seq(
         ensure_zero_payment(txn),
@@ -412,7 +182,7 @@ def create_proposal(
     *,
     output: Proposal,
 ):
-    from .subroutines import (
+    from .helpers.validators import (
         ensure_zero_payment,
         ensure_nft_owner_exists_from_txn,
         ensure_is_admin_or_app_creator,
@@ -452,14 +222,15 @@ def vote_on_proposal(
     *,
     output: Proposal,
 ):
-    from .subroutines import (
+    from .helpers.validators import (
         ensure_has_auras,
-        ensure_zero_payment,
-        set_aura_tokens_frozen,
         ensure_auras_frozen_status,
+        ensure_zero_payment,
         ensure_proposal_exists,
         ensure_nft_owner_exists_from_txn,
     )
+
+    from .helpers.transactions import set_aura_frozen
 
     return P.Seq(
         ensure_nft_owner_exists_from_txn(txn),
@@ -491,7 +262,8 @@ def vote_on_proposal(
         ),
         app.state.dao_proposals[proposal_key.get()].set(proposal),
         auras_frozen_status.set(True),
-        set_aura_tokens_frozen(txn, auras_frozen_status),
+        (voters_address := P.abi.Address()).set(txn.get().sender()),
+        set_aura_frozen(voters_address, auras_frozen_status),
         ensure_auras_frozen_status(txn, auras_frozen_status),
         output.decode(app.state.dao_proposals[proposal_key.get()].get()),
     )
@@ -501,10 +273,10 @@ def vote_on_proposal(
 def end_proposal_voting(
     txn: P.abi.PaymentTransaction, proposal_key: P.abi.String, *, output: Proposal
 ):
-    from .subroutines import (
+    from .helpers.validators import (
+        ensure_zero_payment,
         ensure_is_admin_or_app_creator,
         ensure_proposal_exists,
-        ensure_zero_payment,
     )
 
     return P.Seq(
@@ -522,11 +294,8 @@ def end_proposal_voting(
 def unfreeze_auras(
     txn: P.abi.PaymentTransaction, aura: P.abi.Asset, acc: P.abi.Account
 ):
-    from .subroutines import (
-        set_aura_tokens_frozen,
-        ensure_auras_frozen_status,
-        ensure_zero_payment,
-    )
+    from .helpers.validators import ensure_auras_frozen_status, ensure_zero_payment
+    from .helpers.transactions import set_aura_frozen
 
     return P.Seq(
         ensure_zero_payment(txn),
@@ -535,26 +304,9 @@ def unfreeze_auras(
             comment="Cannot unfreeze while a proposal is still active",
         ),
         (auras_frozen_status := P.abi.Bool()).set(False),
-        set_aura_tokens_frozen(txn, auras_frozen_status),
+        (address := P.abi.Address()).set(txn.get().sender()),
+        set_aura_frozen(address, auras_frozen_status),
         ensure_auras_frozen_status(txn, auras_frozen_status),
-    )
-
-
-@app.external
-def create_aura_tokens(*, output: AurallyToken):
-    from .subroutines import bootstrap_token
-
-    return P.Seq(
-        (token_key := P.abi.String()).set("aura"),
-        P.If(
-            P.Not(app.state.registered_asa[token_key.get()].exists()),
-            P.Seq(
-                (total := P.abi.Uint64()).set(1000000000000),
-                bootstrap_token(token_key, total),
-                P.Assert(app.state.registered_asa[token_key.get()].exists()),
-            ),
-        ),
-        output.decode(app.state.registered_asa[token_key.get()].get()),
     )
 
 
@@ -570,7 +322,7 @@ def create_event(
     *,
     output: Event,
 ):
-    from .subroutines import ensure_zero_payment
+    from .helpers.validators import ensure_zero_payment
 
     return P.Seq(
         ensure_zero_payment(txn),
@@ -610,7 +362,8 @@ def purchase_event_ticket(
     *,
     output: EventTicket,
 ):
-    from .subroutines import ensure_event_exists, pay_95_percent
+    from .helpers.transactions import pay_95_percent
+    from .helpers.validators import ensure_event_exists
 
     return P.Seq(
         P.Assert(

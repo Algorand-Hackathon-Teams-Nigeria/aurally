@@ -1,4 +1,7 @@
 from pathlib import Path
+from typing import List
+from beaker import localnet
+from beaker.localnet import LocalAccount
 
 import pytest
 from algokit_utils import (
@@ -7,6 +10,16 @@ from algokit_utils import (
 )
 from algosdk.v2client.algod import AlgodClient
 from dotenv import load_dotenv
+
+
+@pytest.fixture(scope="session")
+def test_accounts() -> List[LocalAccount]:
+    return localnet.kmd.get_accounts()
+
+
+@pytest.fixture(scope="session")
+def test_account(test_accounts: List[LocalAccount]) -> LocalAccount:
+    return test_accounts.pop()
 
 
 @pytest.fixture(autouse=True, scope="session")

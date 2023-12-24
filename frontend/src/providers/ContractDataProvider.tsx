@@ -5,7 +5,6 @@ import { useWallet } from '@txnlab/use-wallet'
 import { createAppClient, getAlgodClient } from '../utils/network/contract-config'
 import { getAuraTokenInfo, getUserFromAddressSlice } from '../utils/queries'
 import { WalletAccountType } from '../types/account'
-// import { createAuraTokens } from '../utils/mutations'
 
 interface AppDataProviderProps {
   children: React.ReactNode
