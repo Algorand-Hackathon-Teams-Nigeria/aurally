@@ -4,30 +4,21 @@ import { EventCarousel } from '../../components/Carousels/EventCarousel'
 import { useQuery } from '@tanstack/react-query'
 import { parseEventBoxData } from '../../utils/parsing'
 import { EventType } from '../../types/assets'
-import { appClientAtom } from '../../store/contractAtom'
-import { useAtom } from 'jotai'
-import { useEffect } from 'react'
+import { createAppClient } from '../../utils/network/contract-config'
 
 const Events = () => {
-  const [appClient] = useAtom(appClientAtom)
-
   const getData = async (): Promise<EventType[]> => {
-    const boxes = await appClient?.appClient.getBoxValues((name) => name.name.startsWith('Event'))
+    const boxes = await createAppClient().appClient.getBoxValues((name) => name.name.startsWith('Event'))
     if (boxes) {
       return parseEventBoxData(boxes)
     }
     return []
   }
 
-  const { data, isPending, isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['events'],
     queryFn: getData,
-    enabled: !!appClient,
   })
-
-  useEffect(() => {
-    getData()
-  }, [appClient])
 
   return (
     <div className="routePage mb-32">
@@ -39,15 +30,15 @@ const Events = () => {
       </div>
       <div>
         <div className="headTag">Upcoming Events</div>
-        <EventCarousel isLoading={isLoading || isPending} data={data} />
+        <EventCarousel isLoading={isLoading} data={data} />
       </div>
       <div className="my-8">
         <div className="headTag">Free Events</div>
-        <EventCarousel isLoading={isLoading || isPending} data={data} />
+        <EventCarousel isLoading={isLoading} data={data} />
       </div>
       <div>
         <div className="headTag">Paid Events</div>
-        <EventCarousel isLoading={isLoading || isPending} data={data} />
+        <EventCarousel isLoading={isLoading} data={data} />
       </div>
     </div>
   )

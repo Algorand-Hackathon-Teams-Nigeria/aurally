@@ -4,10 +4,9 @@ import { Link } from 'react-router-dom'
 import carouselClasses from '../../styles/carousel.module.css'
 import { Carousel } from '@mantine/carousel'
 import { useQuery } from '@tanstack/react-query'
-import { useAtom } from 'jotai'
 import { ProposalType } from '../../types/assets'
-import { appClientAtom } from '../../store/contractAtom'
 import { parseProposalBoxData } from '../../utils/parsing'
+import { createAppClient } from '../../utils/network/contract-config'
 
 type Prop = {
   title: string
@@ -37,15 +36,13 @@ const DaoGrid = ({ title, data }: Prop) => {
 }
 
 const DAO = () => {
-  const [appClient] = useAtom(appClientAtom)
-
   const { data } = useQuery({
     queryKey: ['proposals'],
     queryFn: getProposals,
   })
 
   async function getProposals(): Promise<ProposalType[]> {
-    const boxes = await appClient?.appClient.getBoxValues((name) => name.name.startsWith('Proposal'))
+    const boxes = await createAppClient().appClient.getBoxValues((name) => name.name.startsWith('Proposal'))
     if (boxes) {
       return parseProposalBoxData(boxes)
     }

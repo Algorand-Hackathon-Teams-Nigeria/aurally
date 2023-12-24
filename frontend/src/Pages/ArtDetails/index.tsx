@@ -6,15 +6,16 @@ import { Icon } from '@iconify/react'
 import { useSearchParams } from 'react-router-dom'
 import { useAtom } from 'jotai'
 import { ArtNft } from '../../contracts/Aurally'
-import { appClientAtom, appRefAtom, auraTokenAtom } from '../../store/contractAtom'
+import { appRefAtom, auraTokenAtom } from '../../store/contractAtom'
 import { ArtNFTTupple, BoxKeyData, artNFTDecoder, encodeText, parseBoxKey } from '../../utils/encoding'
 import { getUserFromAddressSlice } from '../../utils/queries'
 import { UserAccount } from '../../types/account'
 import { ellipseAddress } from '../../utils/ellipseAddress'
 import algosdk, { microalgosToAlgos } from 'algosdk'
 import { useWallet } from '@txnlab/use-wallet'
-import { getAlgodClient } from '../../utils/network/contract-config'
+import { createAppClient, getAlgodClient } from '../../utils/network/contract-config'
 import { toast } from 'react-hot-toast'
+import { useQuery } from '@tanstack/react-query'
 
 const activity = Array.from({ length: 2 }, (_, i) => ({
   id: i,
@@ -28,40 +29,57 @@ const activity = Array.from({ length: 2 }, (_, i) => ({
 const ArtDetails = () => {
   const [searchParams] = useSearchParams()
   const [type, setType] = useState(0)
-  const [nft, setNft] = useState<ArtNft>()
-  const [keyData, setKeyData] = useState<BoxKeyData>()
-  const [creator, setCreator] = useState<UserAccount>()
-  const [appClient] = useAtom(appClientAtom)
   const [appRef] = useAtom(appRefAtom)
   const [auraToken] = useAtom(auraTokenAtom)
   const [purchasing, setPurchasing] = React.useState(false)
-  const { activeAddress } = useWallet()
+  const { activeAddress, signer } = useWallet()
 
   const bg = (num: number) => (type === num ? '#444' : 'transparent')
 
   const artId = searchParams.get('assetKey')
-  async function getArt() {
-    const res = await appClient?.appClient.getBoxValue(artId ?? '')
-    if (res) {
-      const val = artNFTDecoder.decode(res)
-      const artVal = ArtNft(val as ArtNFTTupple)
-      setNft(artVal)
 
-      if (appClient) {
-        const user = await getUserFromAddressSlice(artVal.owner, appClient)
-        setCreator(user)
+  const getData = async (): Promise<{
+    nft: ArtNft | undefined
+    creator: UserAccount | undefined
+    keyData: BoxKeyData | undefined
+  }> => {
+    if (!artId) {
+      return {
+        nft: undefined,
+        creator: undefined,
+        keyData: undefined,
       }
     }
-
-    const keyVal = parseBoxKey(artId ?? '')
-    if (keyVal.type == 'Art') setKeyData(keyVal)
+    const appClient = createAppClient()
+    const res = await appClient?.appClient.getBoxValue(artId ?? '')
+    const val = artNFTDecoder.decode(res)
+    const nft = ArtNft(val as ArtNFTTupple)
+    const creator = await getUserFromAddressSlice(nft.owner, appClient)
+    const keyVal = parseBoxKey(artId ?? '') as BoxKeyData
+    return {
+      nft,
+      creator,
+      keyData: keyVal.type == 'Art' ? keyVal : undefined,
+    }
   }
 
-  React.useEffect(() => {
-    getArt()
-  }, [])
+  const { data } = useQuery({
+    queryKey: ['art-nft', artId],
+    queryFn: getData,
+    initialData: {
+      nft: undefined,
+      creator: undefined,
+      keyData: undefined,
+    },
+  })
+
+  const { nft, creator, keyData } = data
 
   async function purchaseNft() {
+    if (!activeAddress) {
+      toast.error('Please connect your wallet')
+      return
+    }
     setPurchasing(true)
     const sp = await getAlgodClient().getTransactionParams().do()
     const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
@@ -85,7 +103,7 @@ const ArtDetails = () => {
       assetIndex: Number(auraToken?.asset_id ?? 0),
     })
     try {
-      await appClient?.purchaseNft(
+      await createAppClient({ signer, addr: activeAddress })?.purchaseNft(
         {
           txn,
           optin_txn: optInTxn,
@@ -151,8 +169,8 @@ const ArtDetails = () => {
             <div className="flex flex-wrap gap-5 sm:gap-20">
               <Stat1 title="GENRES" title2="RnB" />
               <Stat1 title="Date Created" title2={new Date(keyData?.dateCreated ?? '').toDateString()} />
-              <Stat1 title="Total Voume" title2={`${nft?.supply}`} />
-              <Stat1 title="Current Owner" title2={ellipseAddress(creator?.address)} />
+              <Stat1 title="Total Volume" title2={`${nft?.supply || 0}`} />
+              <Stat1 title="Current Owner" title2={ellipseAddress(creator?.address) || '...'} />
             </div>
           </div>
         ) : activity.length > 0 ? (

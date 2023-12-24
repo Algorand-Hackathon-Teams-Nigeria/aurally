@@ -6,7 +6,7 @@ import { useAtom } from 'jotai'
 import { appClientAtom, appRefAtom, auraTokenAtom, aurallyCreativeAtom } from '../../store/contractAtom'
 import { useWallet } from '@txnlab/use-wallet'
 import { toast } from 'react-hot-toast'
-import classes from "../../styles/textinput.module.css"
+import classes from '../../styles/textinput.module.css'
 
 export default function RegistrationForm() {
   const [appClient] = useAtom(appClientAtom)

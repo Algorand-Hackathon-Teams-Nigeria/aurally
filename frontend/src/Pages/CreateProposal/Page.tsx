@@ -59,13 +59,15 @@ const Page = () => {
     form.reset()
   }
 
-  const { isPending, isError, mutateAsync } = useMutation({
+  const { isLoading, isError, mutateAsync } = useMutation({
     mutationFn: createProposal,
     onSuccess: () => {
       toast.success(`Proposal was created successfully`)
     },
     onError: (error) => {
-      toast.error(error.message)
+      if (error instanceof Error) {
+        toast.error(error.message)
+      }
     },
   })
 
@@ -89,7 +91,7 @@ const Page = () => {
         />
         <DateInput label="Closing Date" {...form.getInputProps('date')} classNames={classes} placeholder="Date input" required />
       </div>
-      <Button fullWidth size="lg" loading={isPending && !isError} onClick={create} radius={'md'} mt={32}>
+      <Button fullWidth size="lg" loading={isLoading && !isError} onClick={create} radius={'md'} mt={32}>
         Create
       </Button>
     </div>

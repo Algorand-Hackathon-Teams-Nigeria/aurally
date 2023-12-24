@@ -13,7 +13,7 @@ const data = [
   { link: '/dapp/dao', label: 'DAO', icon: 'material-symbols-light:chess-outline' },
   { link: '/dapp/events', label: 'Events', icon: 'tabler:ticket' },
   { link: '/dapp/nfts', label: 'My Nfts', icon: 'solar:play-broken' },
-  { link: '/dapp/communities', label: 'Communities', icon: 'fluent:people-community-16-regular' },
+  // { link: '/dapp/communities', label: 'Communities', icon: 'fluent:people-community-16-regular' },
   { link: '/dapp/profile', label: 'Profile', icon: 'line-md:account' },
 ]
 

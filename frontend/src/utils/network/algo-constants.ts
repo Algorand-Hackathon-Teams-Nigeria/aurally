@@ -1,6 +1,7 @@
 import { AlgoViteClientConfig, AlgoViteKMDConfig } from '../../interfaces/network'
 import type { AppRefrence } from '../../interfaces/application'
 import { AurallyToken } from '../../contracts/Aurally'
+import { AppMetadata, AppReference } from '@algorandfoundation/algokit-utils/types/app'
 
 export function getAppRefrenceFromViteEnvironment(): AppRefrence {
   if (!import.meta.env.VITE_APPLICATION_ID) {
@@ -59,7 +60,12 @@ export const deployParams = {
 } as const
 
 export const auraToken = {
-  asset_id: 497913686n,
+  asset_id: 504800855n,
   asset_key: 'aura',
-  asset_total: 100000000000n,
+  asset_total: 999999999997n,
 } as AurallyToken
+
+export const newAppRef = {
+  appId: 504786048,
+  appAddress: 'Z3OFRYXAQWK43T3BJTU5GXPY65Z36SUYZNS6ELYZBVNMUURWWAOZDP74ZY',
+} as AppReference | AppMetadata

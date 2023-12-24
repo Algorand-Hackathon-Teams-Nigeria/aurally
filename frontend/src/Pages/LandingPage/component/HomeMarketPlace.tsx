@@ -34,7 +34,7 @@ const HomeMarketPlace = () => {
     return []
   }
 
-  const { data, isPending, isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['nfts'],
     queryFn: getData,
   })
@@ -56,7 +56,7 @@ const HomeMarketPlace = () => {
           </Button>
         ))}
       </div>
-      <NftCarousel isLoading={isLoading || isPending} data={filteredNft} />
+      <NftCarousel isLoading={isLoading} data={filteredNft} />
       <Link to="/dapp/marketplace" className={`${classes.getBtn} flex w-max mx-auto mt-20`}>
         Explore Marketplace
       </Link>

@@ -3,8 +3,7 @@ declare global {
     webkitAudioContext: typeof AudioContext
   }
 }
-import { ActionIcon, Avatar, Image, Button } from '@mantine/core'
-import { useAtom } from 'jotai'
+import { ActionIcon, Image, Button } from '@mantine/core'
 import { Icon } from '@iconify/react'
 import { Carousel } from '@mantine/carousel'
 import '@mantine/carousel/styles.css'
@@ -13,9 +12,9 @@ import classes from '../home.module.css'
 import { Link } from 'react-router-dom'
 import Autoplay from 'embla-carousel-autoplay'
 import { ArtType, SoundType } from '../../../types/assets'
-import { appClientAtom } from '../../../store/contractAtom'
 import { parseNftBoxData } from '../../../utils/parsing'
 import { useQuery } from '@tanstack/react-query'
+import { createAppClient } from '../../../utils/network/contract-config'
 
 type Prop1 = {
   audioRef: React.MutableRefObject<HTMLAudioElement | null>
@@ -88,13 +87,12 @@ const CoverSection = ({
           <div className="">
             <div className={classes.title}>{title}</div>
             <div className="flex flex-wrap items-center gap-2">
-              <Avatar size="sm" radius="xl" />
               <div className="flex items-center gap-2">
                 {artist}
                 {isVerified && <Icon icon="codicon:verified-filled" color="#0075FF" />}
               </div>
+              <div className="w-max text-xs py-1 px-2 bg-black/40 rounded-xl mt-2">{minted} minted</div>
             </div>
-            <div className="w-max text-xs py-1 px-2 bg-black/40 rounded-xl mt-2">{minted} minted</div>
           </div>
         </div>
         <Link to={`/dapp/marketplace/music?assetKey=${asset_key}`}>
@@ -110,20 +108,18 @@ const CoverSection = ({
 const MusicPlayerCarousel = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const autoplay = useRef(Autoplay({ delay: 5000 }))
-  const [appClient] = useAtom(appClientAtom)
 
   const getData = async (): Promise<(SoundType | ArtType)[]> => {
-    const boxes = await appClient?.appClient.getBoxValues((name) => name.name.startsWith('Art') || name.name.startsWith('Sound'))
+    const boxes = await createAppClient().appClient.getBoxValues((name) => name.name.startsWith('Art') || name.name.startsWith('Sound'))
     if (boxes) {
       return parseNftBoxData(boxes)
     }
     return []
   }
 
-  const { data, isPending, isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['nfts'],
     queryFn: getData,
-    enabled: !!appClient,
   })
 
   const filteredNft = data?.filter((item) => item.type === 'sound') as SoundType[]
@@ -136,8 +132,8 @@ const MusicPlayerCarousel = () => {
   const { isPlaying } = audioState
 
   return (
-    <div className={`${isPending && isLoading ? 'bg-[#1e1e1e]' : ''} sm:h-[25vw] min-h-[250px] sm:min-h-[300px] sm:max-h-[500px] relative`}>
-      {!isPending && !isLoading && (
+    <div className={`${isLoading ? 'bg-[#1e1e1e]' : ''} sm:h-[25vw] min-h-[250px] sm:min-h-[300px] sm:max-h-[500px] relative`}>
+      {!isLoading && (
         <>
           <audio ref={audioRef} className="hidden" />
           <Carousel

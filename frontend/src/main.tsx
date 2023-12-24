@@ -18,7 +18,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />
+        <ReactQueryDevtools initialIsOpen={false} position="bottom-left" />
         <ColorSchemeScript forceColorScheme="dark" />
         <MantineProvider forceColorScheme="dark" theme={theme} cssVariablesResolver={resolver}>
           <Toaster toastOptions={toastTheme} position="top-right" />

@@ -1,24 +1,22 @@
 import { Tabs } from '@mantine/core'
-import { useAtom } from 'jotai'
 import noActiviy from '../../assets/no-activity.svg'
 import tabClass from '../../styles/tab.module.css'
 import NftCard from '../../components/Cards/NftCard'
-import { appClientAtom } from '../../store/contractAtom'
-import React from 'react'
+import { useEffect, useState } from 'react'
 import { filterByKeyCreator } from '../../utils/encoding'
 import { useWallet } from '@txnlab/use-wallet'
 import { ArtType, SoundType } from '../../types/assets'
 import { parseNftBoxData } from '../../utils/parsing'
+import { createAppClient } from '../../utils/network/contract-config'
 
 const TYPES = ['Created', 'Purchased', 'Sold', 'Activity']
 
 export default function ProfileTab() {
-  const [appClient] = useAtom(appClientAtom)
-  const [nfts, setNfts] = React.useState<(SoundType | ArtType)[]>([])
+  const [nfts, setNfts] = useState<(SoundType | ArtType)[]>([])
   const { activeAddress } = useWallet()
 
   const getNames = async () => {
-    const boxes = await appClient?.appClient.getBoxValues(
+    const boxes = await createAppClient()?.appClient.getBoxValues(
       (name) => filterByKeyCreator(name.name, activeAddress ?? '') && (name.name.startsWith('Art') || name.name.startsWith('Sound')),
     )
     // console.log(boxes)
@@ -29,7 +27,7 @@ export default function ProfileTab() {
     }
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (activeAddress) {
       getNames()
     }

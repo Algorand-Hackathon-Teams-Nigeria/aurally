@@ -25,6 +25,7 @@ export const ContractDataProvider = ({ children }: AppDataProviderProps) => {
         const newAppClient = createAppClient({ addr: activeAddress, signer })
         const account = await algodClient.accountInformation(activeAccount.address).do()
         const newAppRef = await newAppClient.appClient.getAppReference()
+        console.log(newAppRef)
 
         // await createAuraTokens(newAppClient, Number(newAppRef.appId))
         setAppClient(newAppClient)
@@ -40,6 +41,9 @@ export const ContractDataProvider = ({ children }: AppDataProviderProps) => {
       } else {
         const newAppClient = createAppClient()
         setAppClient(newAppClient)
+        const newAppRef = await newAppClient.appClient.getAppReference()
+        const auras = await getAuraTokenInfo(newAppClient)
+        console.log(newAppRef,auras)
       }
     }
     getGlobalAppState()

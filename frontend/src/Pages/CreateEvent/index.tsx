@@ -77,7 +77,7 @@ const CreateEvent = () => {
     form.reset()
   }
 
-  const { isPending, isError, mutateAsync } = useMutation({
+  const { isLoading, isError, mutateAsync } = useMutation({
     mutationFn: createEventCall,
     onSuccess: () => {
       modals.openContextModal({
@@ -92,7 +92,9 @@ const CreateEvent = () => {
       })
     },
     onError: (error) => {
-      toast.error(error.message)
+      if (error instanceof Error) {
+        toast.error(error.message)
+      }
     },
   })
 
@@ -154,7 +156,7 @@ const CreateEvent = () => {
           />
           <DateInput {...form.getInputProps('endDate')} classNames={classes} required label="End Date" placeholder="December 10, 2023" />
         </div>
-        <Button fullWidth size="lg" radius={'md'} mt={32} loading={isPending && !isError} onClick={create}>
+        <Button fullWidth size="lg" radius={'md'} mt={32} loading={isLoading && !isError} onClick={create}>
           Create
         </Button>
       </fieldset>
