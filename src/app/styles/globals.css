@@ -1,0 +1,45 @@
+@layer base {
+  @import url("./reset.css");
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --Primary: #8a2be2;
+  --Dark-01: #111111;
+  --Border-colour: #444444;
+  --Sub-Background: #1e1e1e;
+  --Grey-02: #afafaf;
+  --Grey-04: #ebebeb;
+}
+
+*::-webkit-scrollbar {
+  display: none;
+  width: 0;
+}
+
+* {
+  scrollbar-width: 0;
+  -ms-overflow-style: none;
+}
+
+body {
+  background: none !important;
+  @apply bg-none;
+}
+
+body:before {
+  content: "";
+  @apply bg-[#111] inset-0 fixed z-[-2];
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}

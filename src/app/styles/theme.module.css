@@ -1,0 +1,6 @@
+.btn_root {
+  &[data-variant='primary-full-sm'] {
+    width: 100%;
+    border-radius: 8px;
+  }
+}
