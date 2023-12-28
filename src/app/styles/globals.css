@@ -25,6 +25,10 @@
   -ms-overflow-style: none;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: none !important;
   @apply bg-none;

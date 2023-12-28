@@ -1,9 +1,10 @@
-import { AspectRatio, Button, Image } from "@mantine/core";
+import { Button } from "@mantine/core";
 import { microalgosToAlgos } from "algosdk";
 import { UserAccount, getCreator } from "@/utils/queries";
 import { ArtType, SoundType } from "@/types/assets";
 import Link from "next/link";
 import { Suspense } from "react";
+import Image from "next/image";
 
 type Prop = {
   data: SoundType | ArtType;
@@ -48,7 +49,7 @@ export const NftCard = ({ data }: Prop) => {
   const creator_promise = getCreator(data.data.owner);
   return (
     <div className="h-max rounded-lg bg-[#1e1e1e] border-[0.5px] border-[#444] overflow-hidden flex-1 shadow-md">
-      <AspectRatio ratio={4 / 3} classNames={{ root: "overflow-hidden" }}>
+      <div className="w-full h-max pt-[75%] relative overflow-hidden">
         <Image
           src={
             data.type == "sound"
@@ -57,8 +58,10 @@ export const NftCard = ({ data }: Prop) => {
           }
           className="object-cover object-top"
           alt="Norway"
+          fill
+          sizes="100%"
         />
-      </AspectRatio>
+      </div>
       <div className="px-4 pb-3">
         <div className="flex justify-between items-center gap-1 mt-2.5 mb-1.5">
           <div className="text-[14.5px] font-bold truncate">
