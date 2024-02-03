@@ -1,10 +1,8 @@
 import { Button } from "@mantine/core";
-import { microalgosToAlgos } from "algosdk";
-import { UserAccount, getCreator } from "@/utils/queries";
-import { ArtType, SoundType } from "@/types/assets";
 import Link from "next/link";
 import { Suspense } from "react";
 import Image from "next/image";
+import { getCreator } from "@/app/services/queries";
 
 type Prop = {
   data: SoundType | ArtType;
@@ -36,25 +34,21 @@ export const NftCardLoader = () => {
   );
 };
 
-const CreatorName = async ({
-  creator,
-}: {
-  creator: Promise<UserAccount | undefined>;
-}) => {
+const CreatorName = async ({ creator }: { creator: Promise<string> }) => {
   const data = await creator;
-  return `@${data?.data.username.toLowerCase()}`;
+  return `@${data}`;
 };
 
 export const NftCard = ({ data }: Prop) => {
-  const creator_promise = getCreator(data.data.owner);
+  const creator_promise = getCreator(data.data.creatorAddress);
   return (
     <div className="h-max rounded-lg bg-[#1e1e1e] border-[0.5px] border-[#444] overflow-hidden flex-1 shadow-md">
       <div className="w-full h-max pt-[75%] relative overflow-hidden">
         <Image
           src={
             data.type == "sound"
-              ? data.data.cover_image_ipfs
-              : data.data.ipfs_location
+              ? data.data.coverImageIpfs
+              : data.data.ipfsLocation
           }
           className="object-cover object-top"
           alt="Norway"
@@ -79,16 +73,16 @@ export const NftCard = ({ data }: Prop) => {
             </div>
           </div>
           <div className="text-sm text-[#afafaf] shrink-0 font-[500]">
-            {microalgosToAlgos(Number(data.data.price))} ALGO
+            {Number(data.data.price)} ALGO
           </div>
         </div>
         <Link
-          href={`https://dapp.aurally.xyz/marketplace/${
+          href={`https://app.aurally.xyz/marketplace/${
             data.type === "art" ? "art" : "music"
-          }?assetKey=${data.data.asset_key}&c=${
+          }?assetKey=${data.data.assetKey}&c=${
             data.type === "sound"
-              ? data.data.cover_image_ipfs.split("ipfs/")[1]
-              : data.data.ipfs_location.split("ipfs/")[1]
+              ? data.data.coverImageIpfs.split("ipfs/")[1]
+              : data.data.ipfsLocation.split("ipfs/")[1]
           }`}
         >
           <Button variant="primary-full-sm" size="sm">

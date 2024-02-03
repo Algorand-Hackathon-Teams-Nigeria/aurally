@@ -7,7 +7,7 @@ import classes from "../../styles/landing.module.css";
 const Features = () => {
   return (
     <div
-      className="rounded-[20px] bg-[#111] border border-primary px-[5%] sm:px-9 py-12 sm:py-14"
+      className="rounded-[20px] bg-[#111] border border-primary px-[5%] sm:px-9 py-12 sm:py-14 relative z-[5]"
       id="features"
     >
       <h2

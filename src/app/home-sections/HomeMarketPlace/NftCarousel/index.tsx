@@ -1,10 +1,8 @@
 "use client";
-import { Carousel, CarouselSlide, Embla } from "@mantine/carousel";
+import { Carousel, CarouselSlide } from "@mantine/carousel";
 import { NftCardLoader, NftCard } from "../NftCard";
-import { ArtType, SoundType } from "@/types/assets";
-import { useState } from "react";
-import { Portal } from "@mantine/core";
-import ScrollButton from "../../../component/ScrollButton";
+import { Dispatch, SetStateAction } from "react";
+import { EmblaCarouselType } from "embla-carousel-react";
 
 export const NftCarouselLoader = () => {
   return (
@@ -22,35 +20,29 @@ export const NftCarouselLoader = () => {
 
 type NftCarouselProps = {
   data?: (ArtType | SoundType)[];
+  setEmbla: Dispatch<SetStateAction<EmblaCarouselType | null>>;
 };
 
-export const NftCarousel = ({ data = [] }: NftCarouselProps) => {
-  const [embla, setEmbla] = useState<Embla | null>(null);
-
+export const NftCarousel = ({ data = [], setEmbla }: NftCarouselProps) => {
   return (
-    <>
-      <Portal target="#home-carousel">
-        <ScrollButton embla={embla} />
-      </Portal>
-      <Carousel
-        classNames={{
-          root:"w-full",
-          slide: "max-w-[calc(100%-20px)] min-[320px]:max-w-[285px]",
-        }}
-        getEmblaApi={setEmbla}
-        containScroll="trimSnaps"
-        slideSize="285px"
-        slideGap={{ base: 12, sm: 16 }}
-        slidesToScroll={"auto"}
-        align="end"
-        withControls={false}
-      >
-        {data.map((item) => (
-          <CarouselSlide key={Number(item.data.asset_id ?? 0)}>
-            <NftCard data={item} />
-          </CarouselSlide>
-        ))}
-      </Carousel>
-    </>
+    <Carousel
+      classNames={{
+        root: "w-full",
+        slide: "max-w-[calc(100%-20px)] min-[320px]:max-w-[285px]",
+      }}
+      getEmblaApi={setEmbla}
+      containScroll="trimSnaps"
+      slideSize="285px"
+      slideGap={{ base: 12, sm: 16 }}
+      slidesToScroll={"auto"}
+      align="end"
+      withControls={false}
+    >
+      {data.map((item) => (
+        <CarouselSlide key={Number(item.data.assetId ?? 0)}>
+          <NftCard data={item} />
+        </CarouselSlide>
+      ))}
+    </Carousel>
   );
 };

@@ -6,7 +6,8 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <div className="">
+    <div className="relative">
+      <BallGradient topOrBottom="bottom-[74px]" leftOrRight="left-[-222px]" />
       {/* community */}
       <div className="bg-primary rounded-3xl py-[70px] px-4 overflow-hidden relative">
         <div className=" absolute -top-20 -left-20 h-56 w-56 rounded-full bg-[#6500764D]" />
@@ -47,7 +48,6 @@ const Footer = () => {
           <div>© 2023 Aurally All rights reserved</div>
           <div>Terms & Conditions</div>
         </div>
-        <BallGradient topOrBottom="bottom-[74px]" leftOrRight="left-[-222px]" />
       </div>
     </div>
   );

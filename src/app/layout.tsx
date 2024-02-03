@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import { resolver, theme } from "@/app/theme";
+import { ApolloWrapper } from "./provider/ApolloWrapper";
 
 const space = Space_Grotesk({
   subsets: ["latin"],
@@ -29,13 +30,15 @@ export default function RootLayout({
         <ColorSchemeScript forceColorScheme="dark" />
       </head>
       <body className={`${space.variable} font-space`}>
-        <MantineProvider
-          forceColorScheme="dark"
-          theme={theme}
-          cssVariablesResolver={resolver}
-        >
-          {children}
-        </MantineProvider>
+        <ApolloWrapper>
+          <MantineProvider
+            forceColorScheme="dark"
+            theme={theme}
+            cssVariablesResolver={resolver}
+          >
+            {children}
+          </MantineProvider>
+        </ApolloWrapper>
       </body>
     </html>
   );

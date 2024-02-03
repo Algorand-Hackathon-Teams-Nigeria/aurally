@@ -7,7 +7,7 @@ import classes from "../../styles/landing.module.css";
 import { useHeadroom, useWindowScroll } from "@mantine/hooks";
 
 const NavBar = () => {
-  const pinned = useHeadroom({ fixedAt: 120 });
+  const pinned = useHeadroom({ fixedAt: 200 });
   const [s] = useWindowScroll();
   return (
     <nav
@@ -16,8 +16,8 @@ const NavBar = () => {
       }`}
     >
       <div
-        className="absolute inset-0 z-[-1] bg-[#111] transition-opacity duration-300 "
-        style={{ opacity: `${Math.min(100, s.y * 0.833)}%` }}
+        className="absolute inset-0 z-[-1] bg-[#111] transition-opacity duration-300"
+        style={{ opacity: s.y < 5 ? "0%" : "100%" }}
       ></div>
       <BigLogo to="/" className="w-28 lg:w-max" />
       <div className="hidden lg:flex gap-14 hover:font-medium">

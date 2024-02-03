@@ -7,11 +7,11 @@ const RoadMap = () => {
     <div className="mb-36 relative" id="road">
       <BallGradient topOrBottom="top-1/2 -translate-y-1/2" leftOrRight="left-1/2 -translate-x-1/2" />
       <h2
-        className={`text-center text-3xl md:text-4xl lg:text-5xl xl:text-[4rem] font-bold mb-10 ${classes.txt_grd}`}
+        className={`text-center text-3xl md:text-4xl lg:text-5xl xl:text-[4rem] font-bold mb-10 relative z-[5] ${classes.txt_grd}`}
       >
         Roadmap
       </h2>
-      <div className="hidden md:block">
+      <div className="hidden md:block relative z-[5]">
         <div className="grid grid-cols-roadmap items-center">
           <div className="pt-14" />
           <div
@@ -75,7 +75,7 @@ const RoadMap = () => {
           />
         </div>
       </div>
-      <div className="w-full grid md:hidden grid-cols-roadmap-sm items-center pt-12">
+      <div className="w-full grid md:hidden grid-cols-roadmap-sm items-center pt-12 relative z-[5]">
         <div className="h-[calc(100%+80px)] bg-primary roadmap relative" />
         <div className="w-full space-y-8">
           {roadmaps.map(({ title, desc }, index) => (

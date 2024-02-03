@@ -74,7 +74,7 @@ const SideBar = () => {
           </a>
           <Link
             onClick={onClick}
-            href="https://dapp.aurally.xyz"
+            href="https://app.aurally.xyz"
             className={`${classes.getBtn} flex pointer-events-auto`}
           >
             Get Started

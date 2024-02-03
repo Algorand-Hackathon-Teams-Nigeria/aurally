@@ -26,16 +26,16 @@ const HeroSection = () => {
           alt=""
         />
       </div>
-      <div className="text-center relative pt-[189px] pb-[135px] lg:pt-[300px] lg:pb-[150px]">
+      <div className="text-center relative z-[5] pt-[189px] pb-[135px] lg:pt-[300px] lg:pb-[150px]">
         <h1 className="text-4xl lg:text-5xl xl:text-[4rem] font-bold max-w-[902px]">
           Discover, <span className={classes.txt_grd}>Stream</span> and collect
-          the <span className={classes.txt_grd}>Rarest Nfts</span>
+          the <span className={classes.txt_grd}>Rarest NFTs</span>
         </h1>
         <div className="text-sm min-[420px]:text-base md:text-lg xl:text-xl mt-7">
           The No 1. NFT Marketplace.
         </div>
         <Link
-          href="https://dapp.aurally.xyz"
+          href="https://app.aurally.xyz"
           className={`${classes.getBtn} flex max-w-[163px] mt-12 mx-auto`}
         >
           Get Started
