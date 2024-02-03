@@ -25,10 +25,10 @@ const NavBar = () => {
         <a href="#features">Features</a>
         <a href="#works">How it works</a>
         <a href="#road">Roadmap</a>
-        <Link href="/blog">Blog</Link>
+        {/* <Link href="/blog">Blog</Link> */}
       </div>
       <Link
-        href="https://dapp.aurally.xyz"
+        href="https://app.aurally.xyz"
         className={`${classes.getBtn} hidden lg:flex`}
       >
         Launch App

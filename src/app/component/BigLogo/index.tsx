@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export const BigLogo = ({
   className,
-  to = "/dapp",
+  to = "/",
 }: {
   className?: string;
   to?: string;

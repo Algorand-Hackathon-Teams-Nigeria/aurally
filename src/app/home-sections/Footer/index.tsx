@@ -17,7 +17,7 @@ const Footer = () => {
             Join Our Community
           </div>
           <Link
-            href="/dapp"
+            href="https://app.aurally.xyz"
             className="w-max block px-8 py-4 rounded-[40px] bg-white text-[#1C51FE] mx-auto"
           >
             Get Started

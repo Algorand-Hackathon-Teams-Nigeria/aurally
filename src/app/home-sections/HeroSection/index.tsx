@@ -3,7 +3,7 @@ import Image from "next/image";
 import BallGradient from "../../component/BallGradient";
 import classes from "../../styles/landing.module.css";
 import Link from "next/link";
-import Group from "../../assets/Group.png"
+import Group from "../../assets/Group.png";
 
 const HeroSection = () => {
   return (
@@ -32,7 +32,7 @@ const HeroSection = () => {
           the <span className={classes.txt_grd}>Rarest NFTs</span>
         </h1>
         <div className="text-sm min-[420px]:text-base md:text-lg xl:text-xl mt-7">
-          The No 1. NFT Marketplace.
+          No 1 NFT marketplace to Streaming on Crypto
         </div>
         <Link
           href="https://app.aurally.xyz"
