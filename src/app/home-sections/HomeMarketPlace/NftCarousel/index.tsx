@@ -19,7 +19,7 @@ export const NftCarouselLoader = () => {
 };
 
 type NftCarouselProps = {
-  data?: (ArtType | SoundType)[];
+  data?: SoundCardType[];
   setEmbla: Dispatch<SetStateAction<EmblaCarouselType | null>>;
 };
 
@@ -39,7 +39,7 @@ export const NftCarousel = ({ data = [], setEmbla }: NftCarouselProps) => {
       withControls={false}
     >
       {data.map((item) => (
-        <CarouselSlide key={Number(item.data.assetId ?? 0)}>
+        <CarouselSlide key={Number(item.assetId ?? 0)}>
           <NftCard data={item} />
         </CarouselSlide>
       ))}

@@ -5,7 +5,7 @@ import Image from "next/image";
 import { getCreator } from "@/app/services/queries";
 
 type Prop = {
-  data: SoundType | ArtType;
+  data: SoundCardType;
 };
 
 export const NftCardLoader = () => {
@@ -40,16 +40,12 @@ const CreatorName = async ({ creator }: { creator: Promise<string> }) => {
 };
 
 export const NftCard = ({ data }: Prop) => {
-  const creator_promise = getCreator(data.data.creatorAddress);
+  const creator_promise = getCreator(data.creator.username ?? "");
   return (
     <div className="h-max rounded-lg bg-[#1e1e1e] border-[0.5px] border-[#444] overflow-hidden flex-1 shadow-md">
       <div className="w-full h-max pt-[75%] relative overflow-hidden">
         <Image
-          src={
-            data.type == "sound"
-              ? data.data.coverImageIpfs
-              : data.data.ipfsLocation
-          }
+          src={data.coverImageUrl}
           className="object-cover object-top"
           alt="Norway"
           fill
@@ -58,9 +54,7 @@ export const NftCard = ({ data }: Prop) => {
       </div>
       <div className="px-4 pb-3">
         <div className="flex justify-between items-center gap-1 mt-2.5 mb-1.5">
-          <div className="text-[14.5px] font-bold truncate">
-            {data.data.title}
-          </div>
+          <div className="text-[14.5px] font-bold truncate">{data.title}</div>
           <div className="text-[11px] text-[#afafaf] shrink-0">Bid</div>
         </div>
 
@@ -73,20 +67,12 @@ export const NftCard = ({ data }: Prop) => {
             </div>
           </div>
           <div className="text-sm text-[#afafaf] shrink-0 font-[500]">
-            {Number(data.data.price)} ALGO
+            {Number(data.price)} ALGO
           </div>
         </div>
-        <Link
-          href={`https://app.aurally.xyz/marketplace/${
-            data.type === "art" ? "art" : "music"
-          }?assetKey=${data.data.assetKey}&c=${
-            data.type === "sound"
-              ? data.data.coverImageIpfs.split("ipfs/")[1]
-              : data.data.ipfsLocation.split("ipfs/")[1]
-          }`}
-        >
+        <Link href={`https://app.aurally.xyz/single/${data.assetKey}`}>
           <Button variant="primary-full-sm" size="sm">
-            {data.type === "sound" ? "Stream and Buy" : "Buy"}
+            Stream and Buy
           </Button>
         </Link>
       </div>

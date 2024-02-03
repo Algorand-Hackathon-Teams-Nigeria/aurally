@@ -12,7 +12,7 @@ import {
 // have a function to create a client for you
 function makeClient() {
   const httpLink = new HttpLink({
-    uri: "https://aurallybackend-production.up.railway.app/graphql",
+    uri: "https://aurally.photoneum.xyz/graphql",
     fetchOptions: { cache: "no-store" },
   });
 

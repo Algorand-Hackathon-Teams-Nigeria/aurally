@@ -13,10 +13,30 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'plum-payable-lynx-315.mypinata.cloud',
+        hostname: 'yellow-calm-mink-490.mypinata.cloud',
         port: '',
         pathname: '/ipfs/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'img.freepik.com',
+        port: '',
+        pathname: '**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.pixabay.com',
+        port: '',
+        pathname: '**',
+      }, {
+        protocol: 'https',
+        hostname: "placehold.co", port: '',
+        pathname: '**',
+      }, {
+        protocol: 'https',
+        hostname: "images.unsplash.com", port: '',
+        pathname: '**',
+      }
     ]
   },
 }

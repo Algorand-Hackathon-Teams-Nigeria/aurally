@@ -3,20 +3,18 @@ import { gql } from "@apollo/client";
 export const a = gql`
   query GetNfts {
     soundNfts {
-      title
-      price
-      creatorAddress
-      coverImageIpfs
+      artist
       assetId
       assetKey
-    }
-    artNfts {
-      title
+      coverImageUrl
+      creator {
+        address
+        username
+        imageUrl
+      }
+      dateAdded
       price
-      creatorsAddress
-      ipfsLocation
-      assetId
-      assetKey
+      title
     }
   }
 `;

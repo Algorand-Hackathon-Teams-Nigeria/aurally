@@ -3,7 +3,7 @@ import {
   NftCarousel,
   NftCarouselLoader,
 } from "@/app/home-sections/HomeMarketPlace/NftCarousel";
-import { TYPES } from "../../data";
+// import { TYPES } from "../../data";
 import Link from "next/link";
 import BallGradient from "@/app/component/BallGradient";
 import classes from "../../styles/landing.module.css";
@@ -14,24 +14,9 @@ import { Embla } from "@mantine/carousel";
 import ScrollButton from "@/app/component/ScrollButton";
 
 const HomeMarketPlace = () => {
-  const [type, setType] = useState("all");
+  // const [type, setType] = useState("all");
   const [embla, setEmbla] = useState<Embla | null>(null);
   const { data, loading } = useGetNftsQuery();
-
-  const joined =
-    data?.artNfts && data.soundNfts
-      ? [...data?.artNfts, ...data?.soundNfts]
-      : [];
-
-  const reconstruct = joined.map((item) => {
-    const { __typename, ...rest } = item;
-    const type = __typename === "SoundNFTType" ? "sound" : "art";
-    return { data: { ...rest }, type } as SoundType | ArtType;
-  });
-
-  const filteredNft = reconstruct?.filter((item) =>
-    type === "all" ? true : item.type === type
-  );
 
   return (
     <div className="relative">
@@ -48,7 +33,10 @@ const HomeMarketPlace = () => {
           </div>
         </div>
         <div className="flex gap-4 mb-4 w-full h-[42px] overflow-x-auto">
-          {TYPES.map((item) => (
+          <Button variant={"filled"} radius="xl">
+            Music
+          </Button>
+          {/* {TYPES.map((item) => (
             <Button
               key={item.label}
               variant={item.value === type ? "filled" : "outline"}
@@ -57,12 +45,12 @@ const HomeMarketPlace = () => {
             >
               {item.label}
             </Button>
-          ))}
+          ))} */}
         </div>
         {loading ? (
           <NftCarouselLoader />
         ) : (
-          <NftCarousel setEmbla={setEmbla} data={filteredNft} />
+          <NftCarousel setEmbla={setEmbla} data={data?.soundNfts} />
         )}
         <Link
           href="https://app.aurally.xyz/marketplace"

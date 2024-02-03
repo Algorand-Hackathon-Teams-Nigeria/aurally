@@ -1,25 +1,13 @@
-
-type SoundType = {
-  type: "sound";
-  data: {
-    assetId: number;
-    assetKey: string;
-    title: string;
-    artist: string;
-    price: number;
-    coverImageIpfs: string;
-    creatorAddress: string;
-  };
-};
-
-type ArtType = {
-  type: "art";
-  data: {
-    assetId: number;
-    assetKey: string;
-    title: string;
-    ipfsLocation: string;
-    price: number;
-    creatorAddress: string;
+type SoundCardType = {
+  __typename?: "SoundNFTType" | undefined;
+  title: string;
+  price: number;
+  coverImageUrl: string;
+  assetId: string;
+  assetKey: string;
+  creator: {
+    __typename?: "AurallyCreativeType" | undefined;
+    username?: string | null;
+    imageUrl?: string | null;
   };
 };
