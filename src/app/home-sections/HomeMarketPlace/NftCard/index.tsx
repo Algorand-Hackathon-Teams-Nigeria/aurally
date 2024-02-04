@@ -1,7 +1,6 @@
-import { Button } from "@mantine/core";
+import { Button, Image } from "@mantine/core";
 import Link from "next/link";
 import { Suspense } from "react";
-import Image from "next/image";
 import { getCreator } from "@/app/services/queries";
 
 type Prop = {
@@ -46,10 +45,9 @@ export const NftCard = ({ data }: Prop) => {
       <div className="w-full h-max pt-[75%] relative overflow-hidden">
         <Image
           src={data.coverImageUrl}
-          className="object-cover object-top"
-          alt="Norway"
-          fill
-          sizes="100%"
+          className="object-cover object-top absolute inset-0 w-full h-full"
+          alt={data.title}
+          fit={"cover"}
         />
       </div>
       <div className="px-4 pb-3">

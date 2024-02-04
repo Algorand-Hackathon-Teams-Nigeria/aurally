@@ -12,7 +12,7 @@ import {
 // have a function to create a client for you
 function makeClient() {
   const httpLink = new HttpLink({
-    uri: "https://aurally.photoneum.xyz/graphql",
+    uri: `${process.env.NEXT_PUBLIC_GRAPHQL_URL}/graphql`,
     fetchOptions: { cache: "no-store" },
   });
 
