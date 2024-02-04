@@ -61,9 +61,9 @@ export const works = [
 
 export const roadmaps = [
   {
-    title: "2023 Q4: Full Launch at MI Music Festival",
+    title: "2023 Q4: Full Launch at IMF (Incredible Music Festival) 2024",
     desc: [
-      "Official platform launch with complete functionalities on December 31st 2023.",
+      "Official platform launch on February 2023.",
     ],
   },
   {

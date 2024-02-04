@@ -28,7 +28,7 @@ const HeroSection = () => {
       </div>
       <div className="text-center relative z-[5] pt-[189px] pb-[135px] lg:pt-[300px] lg:pb-[150px]">
         <h1 className="text-4xl lg:text-5xl xl:text-[4rem] font-bold max-w-[902px]">
-          Discover, <span className={classes.txt_grd}>Stream</span> and collect
+          Discover, <span className={classes.txt_grd}>Stream</span> and Collect
           the <span className={classes.txt_grd}>Rarest NFTs</span>
         </h1>
         <div className="text-sm min-[420px]:text-base md:text-lg xl:text-xl mt-7">
