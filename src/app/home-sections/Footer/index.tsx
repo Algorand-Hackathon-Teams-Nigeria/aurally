@@ -14,13 +14,13 @@ const Footer = () => {
         <div className=" absolute -bottom-20 -right-20 h-80 w-80 rounded-full bg-[#6500764D]" />
         <div className=" relative">
           <div className="text-[28px] sm:text-4xl lg:text-5xl font-bold text-center mb-9">
-            Join Our Community
+            Join Our Socials
           </div>
           <Link
-            href="https://app.aurally.xyz"
+            href="#"
             className="w-max block px-8 py-4 rounded-[40px] bg-white text-[#1C51FE] mx-auto"
           >
-            Get Started
+            Coming Soon
           </Link>
         </div>
         <div />

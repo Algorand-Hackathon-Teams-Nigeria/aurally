@@ -35,10 +35,10 @@ const HeroSection = () => {
           No 1 NFT marketplace to Streaming on Crypto
         </div>
         <Link
-          href="https://app.aurally.xyz"
+          href="#"
           className={`${classes.getBtn} flex max-w-[163px] mt-12 mx-auto`}
         >
-          Get Started
+          Coming Soon
         </Link>
       </div>
     </div>

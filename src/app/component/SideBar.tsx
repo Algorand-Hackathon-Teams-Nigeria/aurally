@@ -47,10 +47,10 @@ const SideBar = () => {
           </a>
           <Link
             onClick={onClick}
-            href="https://app.aurally.xyz"
+            href="#"
             className={`${classes.getBtn} flex pointer-events-auto`}
           >
-            Get Started
+            Coming Soon
           </Link>
         </div>
       </Drawer>

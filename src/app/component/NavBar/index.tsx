@@ -28,10 +28,10 @@ const NavBar = () => {
         {/* <Link href="/blog">Blog</Link> */}
       </div>
       <Link
-        href="https://app.aurally.xyz"
+        href="#"
         className={`${classes.getBtn} hidden lg:flex`}
       >
-        Launch App
+        Coming Soon
       </Link>
       <SideBar />
     </nav>
