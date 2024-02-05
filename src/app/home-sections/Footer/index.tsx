@@ -1,6 +1,7 @@
 import BallGradient from "@/app/component/BallGradient";
 import { BigLogo } from "@/app/component/BigLogo";
 import { IconWrapper } from "@/app/component/Icon";
+import { FOOTER_LINKS } from "@/app/constants/links/socials";
 import Link from "next/link";
 import React from "react";
 
@@ -29,19 +30,11 @@ const Footer = () => {
       <div className="mt-32 flex flex-col items-center relative">
         <BigLogo to="#" />
         <div className="flex gap-5 mt-10 mb-12">
-          <div className="h-10 w-10 rounded-[10px] bg-[#3434444D] grid place-items-center">
-            <IconWrapper icon="ic:round-facebook" color="white" fontSize={22} />
-          </div>
-          <div className="h-10 w-10 rounded-[10px] bg-[#3434444D] grid place-items-center">
-            <IconWrapper icon="mdi:twitter" color="white" fontSize={22} />
-          </div>
-          <div className="h-10 w-10 rounded-[10px] bg-[#3434444D] grid place-items-center">
-            <IconWrapper
-              icon="ic:baseline-discord"
-              color="white"
-              fontSize={22}
-            />
-          </div>
+          {FOOTER_LINKS.map(link => (
+            <Link href={link.href} key={link.name} title={link.name} className="h-10 w-10 rounded-[10px] bg-[#3434444D] grid place-items-center">
+              <IconWrapper icon={link.icon} color="white" fontSize={22} />
+            </Link>
+          ))}
         </div>
         <div className="h-[0.5px] w-full bg-[#8A8AA0] mb-5" />
         <div className="flex flex-col sm:flex-row gap-5 items-center justify-between mb-16 sm:mb-24">

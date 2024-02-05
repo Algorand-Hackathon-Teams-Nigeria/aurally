@@ -31,8 +31,8 @@ const HeroSection = () => {
           Discover, <span className={classes.txt_grd}>Stream</span> and Collect
           the <span className={classes.txt_grd}>Rarest NFTs</span>
         </h1>
-        <div className="text-sm min-[420px]:text-base md:text-lg xl:text-xl mt-7">
-          No 1 NFT marketplace to Streaming on Crypto
+        <div className="font-semibold min-[420px]:text-lg md:text-xl xl:text-2xl mt-7">
+          The Opulus NFT Marketplace
         </div>
         <Link
           href="#"
