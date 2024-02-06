@@ -54,8 +54,7 @@ body:before {
   box-shadow: 0 0 0px 400px rgba(138, 43, 226, 0.5);
 }
 
-
-.shimmer:after {
+/* .shimmer:after {
   content: "";
   position: absolute;
   inset: 0;
@@ -75,5 +74,32 @@ body:before {
   }
   50%,100% {
     background-position-x: -10%;
+  }
+} */
+
+.shimmer:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    transparent,
+    #fafafa20 50%,
+    transparent
+  );
+  animation-name: shimmer;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease;
+  transform: translateX(-100%);
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  66%,
+  100% {
+    transform: translateX(100%);
   }
 }

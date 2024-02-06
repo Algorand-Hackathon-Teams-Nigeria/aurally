@@ -47,7 +47,7 @@ const HomeMarketPlace = () => {
             </Button>
           ))} */}
         </div>
-        {loading ? (
+        {!loading ? (
           <NftCarouselLoader />
         ) : (
           <NftCarousel setEmbla={setEmbla} data={data?.soundNfts} />
