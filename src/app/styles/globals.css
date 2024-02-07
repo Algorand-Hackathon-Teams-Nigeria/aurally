@@ -49,7 +49,57 @@ body:before {
   scrollbar-width: none; /* Firefox */
 }
 
-.fra{
+.fra {
   /* box-shadow: inset 0 0 0 280px rgba(255,255,255,0.1); */
-  box-shadow: 0 0 0px 400px  rgba(138,43,226,0.5);
+  box-shadow: 0 0 0px 400px rgba(138, 43, 226, 0.5);
+}
+
+/* .shimmer:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, transparent 30%, #fafafa20 50%, transparent 70%);
+  background-size: 300%;
+  background-position-x: 110%;
+  animation-name: shimmer;
+  animation-duration: 3s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+@keyframes shimmer {
+  0% {
+     background-position-x: 110%;
+  }
+  50%,100% {
+    background-position-x: -10%;
+  }
+} */
+
+.shimmer:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    transparent,
+    #fafafa20 50%,
+    transparent
+  );
+  animation-name: shimmer;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease;
+  transform: translateX(-100%);
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  66%,
+  100% {
+    transform: translateX(100%);
+  }
 }

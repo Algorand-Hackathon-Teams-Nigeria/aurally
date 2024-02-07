@@ -9,25 +9,24 @@ type Prop = {
 
 export const NftCardLoader = () => {
   return (
-    <div className="h-max rounded-lg bg-[#1e1e1e] border-[0.5px] border-[#444] overflow-hidden flex-1 shadow-md">
+    <div className="h-max rounded-lg bg-[#1e1e1e] border-[0.5px] border-[#444] overflow-hidden flex-1 shadow-md relative">
       <div className="w-full h-max pt-[75%] relative overflow-hidden">
-        <div className="absolute inset-0 bg-white/[0.03] w-full  h-full" />
+        <div className="absolute inset-0 bg-white/[0.03] w-full  h-full shimmer" />
       </div>
       <div className="px-4 pb-3">
         <div className="flex justify-between items-center gap-1 mt-2.5 mb-3">
-          <div className=" w-7/12 rounded-xl h-3.5 bg-white/[0.03]" />
-          <div className=" w-2/12 rounded-xl h-[11px] bg-white/[0.03]" />
+          <div className=" w-7/12 rounded-xl h-3.5 bg-white/[0.03] relative shimmer overflow-hidden" />
+          <div className=" w-2/12 rounded-xl h-[11px] bg-white/[0.03] relative shimmer overflow-hidden" />
         </div>
 
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-1 w-max">
-            <div className="w-3.5 h-3.5 bg-white/[0.03] rounded-full shrink-0" />
-            <div className=" w-14 rounded-xl h-2.5 bg-white/[0.03]" />
+            <div className="w-3.5 h-3.5 bg-white/[0.03] rounded-full shrink-0 relative shimmer overflow-hidden" />
+            <div className=" w-14 rounded-xl h-2.5 bg-white/[0.03] relative shimmer overflow-hidden" />
           </div>
-          <div className=" w-3/12 rounded-xl h-3.5 bg-white/[0.03]" />
+          <div className=" w-3/12 rounded-xl h-3.5 bg-white/[0.03] relative shimmer overflow-hidden" />
         </div>
-
-        <div className="w-full h-9 rounded-lg bg-white/[0.03]" />
+        <div className="w-full h-9 rounded-lg bg-white/[0.03] relative shimmer overflow-hidden" />
       </div>
     </div>
   );
