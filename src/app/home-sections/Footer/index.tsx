@@ -38,7 +38,7 @@ const Footer = () => {
         </div>
         <div className="h-[0.5px] w-full bg-[#8A8AA0] mb-5" />
         <div className="flex flex-col sm:flex-row gap-5 items-center justify-between mb-16 sm:mb-24">
-          <div>© 2023 Aurally All rights reserved</div>
+          <div>© {new Date().getFullYear()} Aurally All rights reserved</div>
           <div>Terms & Conditions</div>
         </div>
       </div>
