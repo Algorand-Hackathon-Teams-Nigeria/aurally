@@ -32,7 +32,7 @@ const HeroSection = () => {
           the <span className={classes.txt_grd}>Rarest NFTs</span>
         </h1>
         <div className="font-semibold min-[420px]:text-lg md:text-xl xl:text-2xl mt-7">
-          The Opulus NFT Marketplace
+          The NFT Marketplace for Creatives and Fans
         </div>
         <Link
           href="#"
