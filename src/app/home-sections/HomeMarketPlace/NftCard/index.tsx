@@ -67,7 +67,11 @@ export const NftCard = ({ data }: Prop) => {
             {Number(data.price)} ALGO
           </div>
         </div>
-        <Link href={`https://devapp.aurally.xyz/single/${data.assetId}`}>
+        <Link
+          href={`https://devapp.aurally.xyz/single/${data.assetKey}`}
+          target="_blank"
+          className="pointer-events-auto"
+        >
           <Button variant="primary-full-sm" size="sm">
             Stream and Buy
           </Button>
