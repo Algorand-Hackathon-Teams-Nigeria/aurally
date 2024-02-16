@@ -68,7 +68,7 @@ export const NftCard = ({ data }: Prop) => {
           </div>
         </div>
         <Link
-          href={`https://devapp.aurally.xyz/single/${data.assetKey}`}
+          href={`https://app.aurally.xyz/single/${data.assetKey}`}
           target="_blank"
           className="pointer-events-auto"
         >
