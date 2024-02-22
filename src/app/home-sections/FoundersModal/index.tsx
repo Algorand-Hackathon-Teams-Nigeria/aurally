@@ -21,6 +21,31 @@ const FoundersModal = () => {
   return (
     <Modal opened={opened} onClose={close} size="auto">
       <div className="flex flex-col md:flex-row gap-8 max-w-5xl lg:pl-6 lg:pr-20 pb-10 border-b border-borderColor">
+        <div className="p-4 rounded-lg bg-primary/50 shrink-0  h-max max-w-max">
+          <Image src={Meshach} alt="" />
+          <div className="mt-3 text-3xl font-bold">
+            <div className={`${classes.txt_grd2}`}>CEO/Co-Founder</div>
+            <div className="text-grey-04"> Meshach Ishaya</div>
+          </div>
+        </div>
+        <div className="max-w-[512px]">
+          <div className="text-3xl font-bold">Technopreneur</div>
+          <div className="font-roboto mt-3">
+            Meshach Ishaga is a visionary leader and technology expert, serving
+            as the CEO of Ashinity Synergy Limited and a Senior Consultant at
+            Deep Learning Science Ltd. His expertise spans DevOps, Networking,
+            Blockchain Development, AI, and ML, making him a multi-faceted
+            leader in the tech industry. Meshach&apos;s leadership at Ashinity
+            has driven transformative solutions, fostering collaboration between
+            public and private sectors for societal benefit. His role as CTO at
+            Jamborow Ltd. underscores his commitment to financial inclusion and
+            empowerment in Africa. Meshach&apos;s career reflects his unwavering
+            dedication to excellence, innovation, and leveraging technology for
+            societal advancement.
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-col md:flex-row gap-8 max-w-5xl lg:pl-6 lg:pr-20 py-10 border-b border-borderColor">
         <div className="p-4 rounded-lg bg-primary/50 shrink-0 h-max max-w-max">
           <Image src={MI} alt="" />
           <div className="mt-3 text-3xl font-bold">
@@ -45,33 +70,6 @@ const FoundersModal = () => {
             global opportunities, blending his passion for music with innovative
             technology. His dynamic career exemplifies the fusion of music and
             tech, embodying the ethos of Aurally&apos;s mission.
-          </div>
-        </div>
-      </div>
-      <div className="flex flex-col md:flex-row gap-8 max-w-5xl lg:pl-6 lg:pr-20 py-10 border-b border-borderColor">
-        <div className="p-4 rounded-lg bg-primary/50 shrink-0  h-max max-w-max">
-          <Image src={Meshach} alt="" />
-          <div className="mt-3 text-3xl font-bold">
-            <div className={`${classes.txt_grd2}`}>CEO/Co-Founder</div>
-            <div className="text-grey-04"> Meshack Ishaya</div>
-          </div>
-        </div>
-        <div className="max-w-[512px]">
-          <div className="text-3xl font-bold">
-            CEO of Ashinity Synergy Limited and Senior Technology Consultant
-          </div>
-          <div className="font-roboto mt-3">
-            Meshach Ishaga is a visionary leader and technology expert, serving
-            as the CEO of Ashinity Synergy Limited and a Senior Consultant at
-            Deep Learning Science Ltd. His expertise spans DevOps, Networking,
-            Blockchain Development, AI, and ML, making him a multi-faceted
-            leader in the tech industry. Meshach&apos;s leadership at Ashinity
-            has driven transformative solutions, fostering collaboration between
-            public and private sectors for societal benefit. His role as CTO at
-            Jamborow Ltd. underscores his commitment to financial inclusion and
-            empowerment in Africa. Meshach&apos;s career reflects his unwavering
-            dedication to excellence, innovation, and leveraging technology for
-            societal advancement.
           </div>
         </div>
       </div>

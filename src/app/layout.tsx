@@ -6,6 +6,7 @@ import { Roboto, Space_Grotesk } from "next/font/google";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import { resolver, theme } from "@/app/theme";
 import { ApolloWrapper } from "./provider/ApolloWrapper";
+import { AtomProvider } from "./provider/AtomProvider";
 
 const space = Space_Grotesk({
   subsets: ["latin"],
@@ -39,13 +40,15 @@ export default function RootLayout({
       </head>
       <body className={`${space.variable} ${roboto.variable} font-space`}>
         <ApolloWrapper>
-          <MantineProvider
-            forceColorScheme="dark"
-            theme={theme}
-            cssVariablesResolver={resolver}
-          >
-            {children}
-          </MantineProvider>
+          <AtomProvider>
+            <MantineProvider
+              forceColorScheme="dark"
+              theme={theme}
+              cssVariablesResolver={resolver}
+            >
+              {children}
+            </MantineProvider>
+          </AtomProvider>
         </ApolloWrapper>
       </body>
     </html>
