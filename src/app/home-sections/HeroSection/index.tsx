@@ -1,46 +1,34 @@
 import React from "react";
 import Image from "next/image";
-import BallGradient from "../../component/BallGradient";
 import classes from "../../styles/landing.module.css";
 import Link from "next/link";
-import Group from "../../assets/Group.png";
+import heroImage from "../../assets/heroImage.png";
 
 const HeroSection = () => {
   return (
-    <div className="w-full px-[4%] relative grid place-items-center overflow-hidden">
-      <BallGradient topOrBottom="top-[-43px]" leftOrRight="left-[-79px]" />
-      <BallGradient
-        topOrBottom="bottom-[-250px]"
-        leftOrRight="left-1/2 -translate-x-1/2"
-      />
-      <BallGradient
-        topOrBottom="bottom-[-350px]"
-        leftOrRight="right-[-200px]"
-      />
-      <div className="absolute inset-0 pt-40 flex justify-end">
-        <Image
-          src={Group}
-          className="object-right min-w-[834px] h-max"
-          width={1551}
-          height={1700}
-          alt=""
-        />
-      </div>
-      <div className="text-center relative z-[5] pt-[189px] pb-[135px] lg:pt-[300px] lg:pb-[150px]">
-        <h1 className="text-4xl lg:text-5xl xl:text-[4rem] font-bold max-w-[902px]">
-          Discover, <span className={classes.txt_grd}>Stream</span> and Collect
-          the <span className={classes.txt_grd}>Rarest NFTs</span>
-        </h1>
-        <div className="font-semibold min-[420px]:text-lg md:text-xl xl:text-2xl mt-7">
-          The NFT Marketplace for Creatives and Fans
+    <div
+      className={`${classes.herosection} w-full h-max lg:min-h-[100vh] lg:flex items-end overflow-hidden bg-[#8A2BE2]/70`}
+    >
+      <div className="lg:min-h-[87lvh] flex items-center justify-center px-[4.5%] md:px-0">
+        <div className="relative z-[1] lg:right-[-20%] text-center lg:text-start pt-40 pb-0 lg:pb-24">
+          <h1 className="text-[3.5rem] xl:text-[5rem] leading-[110%] font-bold max-w-[600px] lg:max-w-[500px] xl:max-w-[635px]">
+            Discover, <span className={"text-[#E22BCC]"}>Stream</span> and
+            collect the <span className={classes.txt_grd}>Rarest NFTs</span>
+          </h1>
+          <Link
+            href="https://app.aurally.xyz/explore"
+            target="_blank"
+            className={`${classes.getBtn} flex w-[163px] mt-8 lg:mt-12 mx-auto lg:mx-0`}
+          >
+            Explore
+          </Link>
         </div>
-        <Link
-          href="#"
-          className={`${classes.getBtn} flex max-w-[163px] mt-12 mx-auto`}
-        >
-          Coming Soon
-        </Link>
       </div>
+      <Image
+        src={heroImage}
+        alt=""
+        className="lg:hidden mx-auto max-h-[100vw] bg-contain bg-bottom"
+      />
     </div>
   );
 };

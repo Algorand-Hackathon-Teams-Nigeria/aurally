@@ -1,11 +1,14 @@
+.herosection {
+  background-size: auto 90vh;
+  background-position: right bottom;
+  background-repeat: no-repeat;
+  @apply lg:bg-[url('/heroImage.png')];
+}
+
 .getBtn {
   border-radius: 8px;
   border: 1px solid var(--Primary, #8a2be2);
-  background: linear-gradient(
-    180deg,
-    #8a2be2 -14.29%,
-    rgba(138, 43, 226, 0) 80.36%
-  );
+  background: linear-gradient(180deg, #e22bcc 0%, #fbb03b 95%);
   height: 56px;
   padding: 12px 18px 12px 20px;
   justify-content: center;
@@ -13,9 +16,17 @@
 }
 
 .txt_grd {
+  background: var(--Gradient, linear-gradient(180deg, #8a2be2 0%, #fbb03b 70%));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.2;
+}
+
+.txt_grd2 {
   background: var(
     --Gradient,
-    linear-gradient(180deg, #8a2be2 44.27%, #fbb03b 100%)
+    linear-gradient(180deg, #E22BCC 44.27%, #fbb03b 100%)
   );
   background-clip: text;
   -webkit-background-clip: text;

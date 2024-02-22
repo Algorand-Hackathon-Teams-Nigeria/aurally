@@ -17,6 +17,43 @@ export type Scalars = {
   Float: { input: number; output: number; }
   DateTime: { input: any; output: any; }
   Upload: { input: any; output: any; }
+  Void: { input: any; output: any; }
+};
+
+export type AlbumFilter = {
+  creator?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type AlbumFilterPaginated = {
+  filter?: InputMaybe<AlbumFilter>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type AlbumInput = {
+  coverPhotoUrl?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type AlbumType = {
+  __typename?: 'AlbumType';
+  coverPhotoUrl?: Maybe<Scalars['String']['output']>;
+  creator: AurallyCreativeType;
+  dateAdded: Scalars['DateTime']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  featuredArtists: Array<AurallyCreativeType>;
+  id: Scalars['Int']['output'];
+  lastUpdated: Scalars['DateTime']['output'];
+  name?: Maybe<Scalars['String']['output']>;
+  sounds: Array<SoundNftType>;
+};
+
+
+export type AlbumTypeSoundsArgs = {
+  opts?: InputMaybe<SoundNftFilterPaginated>;
 };
 
 export type AllNftInput = {
@@ -108,6 +145,7 @@ export type ArtNftType = {
   dateAdded: Scalars['DateTime']['output'];
   description?: Maybe<Scalars['String']['output']>;
   forSale: Scalars['Boolean']['output'];
+  id?: Maybe<Scalars['Int']['output']>;
   imageUrl: Scalars['String']['output'];
   lastUpdated: Scalars['DateTime']['output'];
   metadataHash: Scalars['String']['output'];
@@ -121,6 +159,8 @@ export type ArtNftTypeSoundNftType = ArtNftType | SoundNftType;
 
 export type AurallyCreativeInput = {
   address: Scalars['String']['input'];
+  bio?: InputMaybe<Scalars['String']['input']>;
+  coverPhotoUrl?: InputMaybe<Scalars['String']['input']>;
   dNftId?: InputMaybe<Scalars['Int']['input']>;
   fullname?: InputMaybe<Scalars['String']['input']>;
   imageUrl?: InputMaybe<Scalars['String']['input']>;
@@ -133,8 +173,11 @@ export type AurallyCreativeInput = {
 export type AurallyCreativeType = {
   __typename?: 'AurallyCreativeType';
   address: Scalars['String']['output'];
+  bio?: Maybe<Scalars['String']['output']>;
+  coverImageUrl?: Maybe<Scalars['String']['output']>;
   dNftId?: Maybe<Scalars['Int']['output']>;
   fullname?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
   imageUrl?: Maybe<Scalars['String']['output']>;
   library: LibraryType;
   minted?: Maybe<Scalars['Int']['output']>;
@@ -150,15 +193,59 @@ export type AuthInput = {
 
 export type AuthTokenType = {
   __typename?: 'AuthTokenType';
+  id: Scalars['String']['output'];
   refreshToken: Scalars['String']['output'];
   token: Scalars['String']['output'];
   user: AurallyCreativeType;
 };
 
+export type CommentFilter = {
+  assetKey: Scalars['String']['input'];
+  commentType: CommentItem;
+};
+
+export type CommentFilterPaginated = {
+  filter?: InputMaybe<CommentFilter>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type CommentInput = {
+  assetKey: Scalars['String']['input'];
+  commentType: CommentItem;
+  content: Scalars['String']['input'];
+};
+
+export enum CommentItem {
+  Art = 'ART',
+  Sound = 'SOUND'
+}
+
+export type CommentType = {
+  __typename?: 'CommentType';
+  artNft?: Maybe<ArtNftType>;
+  author: AurallyCreativeType;
+  content: Scalars['String']['output'];
+  dateAdded: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  soundNft?: Maybe<SoundNftType>;
+};
+
+export type EmailPasswordLoginInput = {
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+};
+
 export type LibraryType = {
   __typename?: 'LibraryType';
+  albums: Array<AlbumType>;
   sounds: Array<SoundNftType>;
   user: AurallyCreativeType;
+};
+
+
+export type LibraryTypeAlbumsArgs = {
+  opts: NoneTypePaginated;
 };
 
 
@@ -168,21 +255,51 @@ export type LibraryTypeSoundsArgs = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addSoundToPlaylist: PlaylistType;
   /** @deprecated Is not needed since library is updated automagically. It's still here for insurance purposes */
   addSoundToUserLibrary: LibraryType;
+  addSoundsToAlbum: AlbumType;
+  createAlbum: AlbumType;
   createArtAuction: ArtAuctionType;
   createArtNft: ArtNftType;
   createSoundNft: SoundNftType;
+  createUpdatePlaylist: PlaylistType;
+  incrementStreamCount: Scalars['Int']['output'];
+  likeAndUnlikeSoundNft: SoundNftType;
+  newComment: CommentType;
   newNftPurchase: NftTxnType;
   refreshToken: AuthTokenType;
+  registerAdmin: StaffType;
+  removeSoundsFromAlbum: AlbumType;
   saveAurallyCreative: AurallyCreativeType;
   signIn: AuthTokenType;
   signOut: Scalars['Boolean']['output'];
+  staffSignIn: AuthTokenType;
+  updateSoundApprovedStatus: SoundNftType;
+  updateStaffRole: StaffType;
+  uploadFileToIpfs: Scalars['String']['output'];
+};
+
+
+export type MutationAddSoundToPlaylistArgs = {
+  playlistId: Scalars['Int']['input'];
+  soundNftAssetId: Scalars['String']['input'];
 };
 
 
 export type MutationAddSoundToUserLibraryArgs = {
   assetId: Scalars['String']['input'];
+};
+
+
+export type MutationAddSoundsToAlbumArgs = {
+  albumId: Scalars['Int']['input'];
+  assetKeys: Array<Scalars['String']['input']>;
+};
+
+
+export type MutationCreateAlbumArgs = {
+  input: AlbumInput;
 };
 
 
@@ -201,6 +318,27 @@ export type MutationCreateSoundNftArgs = {
 };
 
 
+export type MutationCreateUpdatePlaylistArgs = {
+  input: PlaylistInput;
+};
+
+
+export type MutationIncrementStreamCountArgs = {
+  assetId: Scalars['String']['input'];
+  net: NetworkType;
+};
+
+
+export type MutationLikeAndUnlikeSoundNftArgs = {
+  assetKey: Scalars['String']['input'];
+};
+
+
+export type MutationNewCommentArgs = {
+  input: CommentInput;
+};
+
+
 export type MutationNewNftPurchaseArgs = {
   input: NftTxnInput;
 };
@@ -208,6 +346,17 @@ export type MutationNewNftPurchaseArgs = {
 
 export type MutationRefreshTokenArgs = {
   refreshToken: Scalars['String']['input'];
+};
+
+
+export type MutationRegisterAdminArgs = {
+  input: RegisterStaffInput;
+};
+
+
+export type MutationRemoveSoundsFromAlbumArgs = {
+  albumId: Scalars['Int']['input'];
+  assetKeys: Array<Scalars['String']['input']>;
 };
 
 
@@ -220,10 +369,31 @@ export type MutationSignInArgs = {
   input: AuthInput;
 };
 
+
+export type MutationStaffSignInArgs = {
+  input: EmailPasswordLoginInput;
+};
+
+
+export type MutationUpdateSoundApprovedStatusArgs = {
+  approved: Scalars['Boolean']['input'];
+  assetKey: Scalars['String']['input'];
+};
+
+
+export type MutationUpdateStaffRoleArgs = {
+  input: UpdateStaffRoleInput;
+};
+
+
+export type MutationUploadFileToIpfsArgs = {
+  file: Scalars['Upload']['input'];
+};
+
 export type NftTxnFilter = {
   assetId?: InputMaybe<Scalars['Int']['input']>;
   nftType?: InputMaybe<NftType>;
-  usersAddress: Scalars['String']['input'];
+  usersAddress?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type NftTxnFilterPaginated = {
@@ -233,7 +403,7 @@ export type NftTxnFilterPaginated = {
 };
 
 export type NftTxnInput = {
-  assetId: Scalars['Int']['input'];
+  assetId: Scalars['String']['input'];
   buyersAddress: Scalars['String']['input'];
   dateAdded: Scalars['DateTime']['input'];
   nftType: NftType;
@@ -244,7 +414,7 @@ export type NftTxnInput = {
 export type NftTxnType = {
   __typename?: 'NFTTxnType';
   asset: ArtNftTypeSoundNftType;
-  assetId: Scalars['Int']['output'];
+  assetId: Scalars['String']['output'];
   buyer: AurallyCreativeType;
   dateAdded: Scalars['DateTime']['output'];
   nftType: NftType;
@@ -263,17 +433,69 @@ export enum NetworkType {
   Testnet = 'TESTNET'
 }
 
+export type NoneTypePaginated = {
+  filter?: InputMaybe<Scalars['Void']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type PlaylistInput = {
+  coverImageUrl: Scalars['String']['input'];
+  description?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  name: Scalars['String']['input'];
+};
+
+export type PlaylistType = {
+  __typename?: 'PlaylistType';
+  coverImageUrl?: Maybe<Scalars['String']['output']>;
+  creator: AurallyCreativeType;
+  dateAdded: Scalars['DateTime']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  id: Scalars['Int']['output'];
+  lastUpdated: Scalars['DateTime']['output'];
+  name: Scalars['String']['output'];
+  soundNfts: Array<SoundNftType>;
+};
+
+
+export type PlaylistTypeSoundNftsArgs = {
+  opts?: InputMaybe<SoundNftFilterPaginated>;
+};
+
 export type Query = {
   __typename?: 'Query';
+  album: AlbumType;
+  albums: Array<AlbumType>;
   allNfts: Array<ArtNftTypeSoundNftType>;
   artAuctions: Array<ArtAuctionType>;
   artNft?: Maybe<ArtNftType>;
   artNfts: Array<ArtNftType>;
+  assetHoldings: Scalars['String']['output'];
+  creative?: Maybe<AurallyCreativeType>;
+  getComments: Array<CommentType>;
+  /** Get a single playlist */
+  getPlaylist: PlaylistType;
+  getPlaylistSounds: Array<SoundNftType>;
+  /** Get all playlists */
+  getPlaylists: Array<PlaylistType>;
+  hasUserLikedSoundNft: Scalars['Boolean']['output'];
   me?: Maybe<AurallyCreativeType>;
   nftTransactions: Array<NftTxnType>;
   soundNft?: Maybe<SoundNftType>;
+  soundNftStatistics?: Maybe<SoundNftStatisticsType>;
   soundNfts: Array<SoundNftType>;
   version: Scalars['String']['output'];
+};
+
+
+export type QueryAlbumArgs = {
+  albumId: Scalars['Int']['input'];
+};
+
+
+export type QueryAlbumsArgs = {
+  opts?: InputMaybe<AlbumFilterPaginated>;
 };
 
 
@@ -297,6 +519,37 @@ export type QueryArtNftsArgs = {
 };
 
 
+export type QueryAssetHoldingsArgs = {
+  address: Scalars['String']['input'];
+  net: NetworkType;
+};
+
+
+export type QueryCreativeArgs = {
+  address: Scalars['String']['input'];
+};
+
+
+export type QueryGetCommentsArgs = {
+  input: CommentFilterPaginated;
+};
+
+
+export type QueryGetPlaylistArgs = {
+  playlistId: Scalars['Int']['input'];
+};
+
+
+export type QueryGetPlaylistSoundsArgs = {
+  playlistId: Scalars['Int']['input'];
+};
+
+
+export type QueryHasUserLikedSoundNftArgs = {
+  assetKey: Scalars['String']['input'];
+};
+
+
 export type QueryNftTransactionsArgs = {
   opts: NftTxnFilterPaginated;
 };
@@ -307,11 +560,24 @@ export type QuerySoundNftArgs = {
 };
 
 
+export type QuerySoundNftStatisticsArgs = {
+  assetKey: Scalars['String']['input'];
+};
+
+
 export type QuerySoundNftsArgs = {
   opts?: InputMaybe<SoundNftFilterPaginated>;
 };
 
+export type RegisterStaffInput = {
+  email: Scalars['String']['input'];
+  password1: Scalars['String']['input'];
+  password2: Scalars['String']['input'];
+};
+
 export type SoundNftFilter = {
+  afterPeriod?: InputMaybe<Scalars['DateTime']['input']>;
+  approved?: InputMaybe<Scalars['Boolean']['input']>;
   artist?: InputMaybe<Scalars['String']['input']>;
   creator?: InputMaybe<Scalars['String']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
@@ -348,8 +614,16 @@ export type SoundNftInput = {
   title: Scalars['String']['input'];
 };
 
+export type SoundNftStatisticsType = {
+  __typename?: 'SoundNFTStatisticsType';
+  assetId: Scalars['String']['output'];
+  likesCount: Scalars['Int']['output'];
+  streamCount: Scalars['Int']['output'];
+};
+
 export type SoundNftType = {
   __typename?: 'SoundNFTType';
+  approved: Scalars['Boolean']['output'];
   artist: Scalars['String']['output'];
   assetId: Scalars['String']['output'];
   assetKey: Scalars['String']['output'];
@@ -360,29 +634,60 @@ export type SoundNftType = {
   description?: Maybe<Scalars['String']['output']>;
   forSale: Scalars['Boolean']['output'];
   genre: Scalars['String']['output'];
+  id?: Maybe<Scalars['Int']['output']>;
   label: Scalars['String']['output'];
   lastUpdated: Scalars['DateTime']['output'];
+  likesCount: Scalars['Int']['output'];
   metadataHash: Scalars['String']['output'];
   price: Scalars['Float']['output'];
+  purchased?: Maybe<Scalars['Boolean']['output']>;
   releaseDate: Scalars['DateTime']['output'];
+  streamCount: Scalars['Int']['output'];
   supply: Scalars['Int']['output'];
   title: Scalars['String']['output'];
+};
+
+export enum StaffRoleEnum {
+  ArtModerator = 'ART_MODERATOR',
+  SoundModerator = 'SOUND_MODERATOR',
+  Superadmin = 'SUPERADMIN'
+}
+
+export type StaffType = {
+  __typename?: 'StaffType';
+  email: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  roles: Array<StaffRoleEnum>;
+};
+
+export enum UpdateRoleAction {
+  Add = 'ADD',
+  Remove = 'REMOVE'
+}
+
+export type UpdateStaffRoleInput = {
+  action: UpdateRoleAction;
+  roles: Array<StaffRoleEnum>;
+  staffId: Scalars['Int']['input'];
+  superSecretPassword?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type GetNftsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetNftsQuery = { __typename?: 'Query', soundNfts: Array<{ __typename?: 'SoundNFTType', artist: string, assetId: string, assetKey: string, coverImageUrl: string, dateAdded: any, price: number, title: string, creator: { __typename?: 'AurallyCreativeType', address: string, username?: string | null, imageUrl?: string | null } }> };
+export type GetNftsQuery = { __typename?: 'Query', soundNfts: Array<{ __typename?: 'SoundNFTType', id?: number | null, artist: string, assetId: string, assetKey: string, coverImageUrl: string, dateAdded: any, price: number, title: string, creator: { __typename?: 'AurallyCreativeType', id?: number | null, address: string, username?: string | null, imageUrl?: string | null } }> };
 
 
 export const GetNftsDocument = gql`
     query GetNfts {
-  soundNfts {
+  soundNfts(opts: {limit: 10, offset: 0}) {
+    id
     artist
     assetId
     assetKey
     coverImageUrl
     creator {
+      id
       address
       username
       imageUrl

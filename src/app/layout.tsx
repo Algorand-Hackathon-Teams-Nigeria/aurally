@@ -2,7 +2,7 @@ import "./styles/globals.css";
 import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
 import type { Metadata } from "next";
-import { Space_Grotesk } from "next/font/google";
+import { Roboto, Space_Grotesk } from "next/font/google";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import { resolver, theme } from "@/app/theme";
 import { ApolloWrapper } from "./provider/ApolloWrapper";
@@ -10,7 +10,15 @@ import { ApolloWrapper } from "./provider/ApolloWrapper";
 const space = Space_Grotesk({
   subsets: ["latin"],
   display: "swap",
+  weight: ["400", "500", "600", "700"],
   variable: "--font-space",
+});
+
+const roboto = Roboto({
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["400", "500", "700"],
+  variable: "--font-roboto",
 });
 
 export const metadata: Metadata = {
@@ -29,7 +37,7 @@ export default function RootLayout({
       <head>
         <ColorSchemeScript forceColorScheme="dark" />
       </head>
-      <body className={`${space.variable} font-space`}>
+      <body className={`${space.variable} ${roboto.variable} font-space`}>
         <ApolloWrapper>
           <MantineProvider
             forceColorScheme="dark"

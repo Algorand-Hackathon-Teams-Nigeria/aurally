@@ -38,32 +38,32 @@ export const features = [
 
 export const works = [
   {
-    title: "Connect your wallet",
+    title: "Launching the DApps:",
     icon: "ph:wallet-thin",
-    desc: "Start by seamlessly connecting your digital wallet to the platform. Our application supports various blockchain networks, ensuring compatibility with popular cryptocurrencies. Your wallet is your secure gateway to the world of NFTs.",
+    desc: "Access Aurally's decentralized applications (DApps) on compatible devices via your browser",
   },
   {
-    title: "Browse marketplace",
+    title: "Connecting Your Wallet:",
     icon: "iconamoon:search-thin",
-    desc: "Explore a dynamic marketplace filled with unique digital assets. From stunning artworks to exclusive collectibles, our curated marketplace showcases a diverse range of NFTs. Discover new releases, trending items, and hidden gems.",
+    desc: "Connect your Algoran-supported wallet to Aurally for seamless transactions and rewards.",
   },
   {
-    title: "Purchase Art/Music",
+    title: "Enjoy The Experience:",
     icon: "ph:wallet-thin",
-    desc: "Once you've found the perfect NFT, collecting it is a breeze. Make it yours with a simple click. . Immerse yourself in the world of digital creativity like never before.",
+    desc: "Explore, discover, and enjoy a curated selection of music from emerging and established artists on Aurally.",
   },
   {
     title: "Start streaming",
     icon: "ph:play-thin",
-    desc: "But we go beyond just ownership - our platform allows you to seamlessly stream digital contents associated with your NFTs",
+    desc: "But we go beyond just ownership – our platform allows you to seamlessly stream digital content associated with your NFTs",
   },
 ];
 
 export const roadmaps = [
   {
-    title: "2023 Q4: Full Launch at IMF (Incredible Music Festival) 2024",
+    title: "2023 Q4: Full Launch at MI Music Festival",
     desc: [
-      "Official platform launch on February 2023.",
+      "Official platform launch with complete functionalities on December 31st 2023.",
     ],
   },
   {
@@ -71,6 +71,7 @@ export const roadmaps = [
     desc: [
       "Develop and integrate a crypto-token based rewards system.",
       "Incorporate user feedback to refine the rewards mechanism.",
+      "Mobile application ( Andriod and IOS)",
     ],
   },
   {
@@ -79,6 +80,7 @@ export const roadmaps = [
       "Expand platform capabilities and add new features based on user feedback.",
       "Enhance user interface for a more engaging experience.",
       "Explore partnerships for market reach and cross-chain functionalities.",
+      "Metaverse intergration",
     ],
   },
 ];

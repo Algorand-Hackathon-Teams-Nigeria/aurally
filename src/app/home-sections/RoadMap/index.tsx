@@ -7,9 +7,9 @@ const RoadMap = () => {
     <div className="mb-36 relative" id="road">
       <BallGradient topOrBottom="top-1/2 -translate-y-1/2" leftOrRight="left-1/2 -translate-x-1/2" />
       <h2
-        className={`text-center text-3xl md:text-4xl lg:text-5xl xl:text-[4rem] font-bold mb-10 relative z-[5] ${classes.txt_grd}`}
+        className={`text-center text-3xl md:text-4xl lg:text-5xl xl:text-[4rem] font-bold mb-10 relative z-[5] ${classes.txt_grd2}`}
       >
-        Roadmap
+        Our Roadmap
       </h2>
       <div className="hidden md:block relative z-[5]">
         <div className="grid grid-cols-roadmap items-center">
@@ -32,7 +32,7 @@ const RoadMap = () => {
                   index % 2 !== 0 ? "justify-start" : "justify-end"
                 }`}
               >
-                {index % 2 !== 0 && <div className={classes.arrow_left} />}
+                {index % 2 !== 0 && <div className={classes.arrow_right} />}
                 <div className="flex items-center">
                   {index % 2 === 0 && (
                     <div className="bg-primary w-10 h-10 lg:w-12 lg:h-12 rounded-l-full grid place-items-center shrink-0">

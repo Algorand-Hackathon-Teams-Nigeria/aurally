@@ -17,7 +17,7 @@ const BallGradient = ({
 }: Prop) => {
   return (
     <div
-      className={`opacity-60 lg:opacity-100 absolute bg-[#8A2BE2B2] max-w-[100vw] max-h-[100vw] ${rounded} ${w} ${h} ${blur} ${leftOrRight} ${topOrBottom}`}
+      className={`gradient-ball ${leftOrRight} ${topOrBottom}`}
     />
   );
 };

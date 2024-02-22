@@ -11,6 +11,7 @@ const config: Config = {
       gridTemplateColumns: {
         "music-card": "repeat(auto-fill, minmax(238px, auto))",
         "music-card-sm": "repeat(auto-fill, minmax(180px, auto))",
+        "landing-card-1": "repeat(3, 230px)",
         roadmap: "1fr 4px 1fr",
         "roadmap-sm": "4px 1fr",
       },
@@ -24,10 +25,15 @@ const config: Config = {
       },
       fontFamily: {
         space: ["var(--font-space)"],
+        roboto: ["var(--font-roboto)"],
       },
       colors: {
         primary: "#8A2BE2",
         borderColor: "#444444",
+        yellow:"#FBB03B",
+        "grey-02": "#AFAFAF",
+        dark: "#111111",
+        "grey-04": "#EBEBEB",
       },
     },
   },

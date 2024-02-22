@@ -32,7 +32,7 @@ html {
 
 body {
   background: none !important;
-  @apply bg-none;
+  @apply bg-none font-space;
 }
 
 body:before {
@@ -102,4 +102,16 @@ body:before {
   100% {
     transform: translateX(100%);
   }
+}
+
+.gradient-ball {
+  position: absolute;
+  width: 471px;
+  height: 471px;
+  max-width: 90vw;
+  max-height: 90vw;
+  background: rgba(138, 43, 226, 0.7);
+  opacity: 0.5;
+  /* filter: blur(247px); */
+  @apply blur-[90vw] min-[471px]:blur-[247px] rounded-full;
 }

@@ -1,8 +1,11 @@
 "use client";
 import { Drawer, Burger } from "@mantine/core";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import classes from "../styles/landing.module.css";
+import { NAVS } from "./NavBar";
+import { useSetAtom } from "jotai";
+import { modalAtom } from "../home-sections/FoundersModal";
 
 const MenuBar = ({
   isOpen,
@@ -16,6 +19,24 @@ const MenuBar = ({
 
 const SideBar = () => {
   const [open, setOpen] = useState(false);
+  const [activeHash, setActiveHash] = useState("");
+  const setModal = useSetAtom(modalAtom);
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      setActiveHash(
+        !window.location.hash ? NAVS[0].link : window.location.hash
+      );
+      console.log(window.location.hash);
+    };
+    handleHashChange();
+    window.addEventListener("hashchange", handleHashChange);
+
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange);
+    };
+  }, []);
+
   const toggle = () => {
     setOpen((prev) => !prev);
   };
@@ -24,33 +45,36 @@ const SideBar = () => {
     setOpen(false);
   };
 
+  const openModal = () => {
+    setModal(() => true);
+    onClick()
+  };
+
   return (
-    <div className="lg:hidden">
+    <div className="xl:hidden">
       <MenuBar isOpen={open} onClick={toggle} />
       <Drawer opened={open} onClose={toggle} position="right">
         <div className="flex flex-col gap-14 px-5 mt-10">
-          <a href="/" onClick={onClick} className=" pointer-events-auto">
-            Home
-          </a>
-          <a
-            href="#features"
-            onClick={onClick}
-            className=" pointer-events-auto"
-          >
-            Features
-          </a>
-          <a href="#works" onClick={onClick} className=" pointer-events-auto">
-            How it works
-          </a>
-          <a href="#road" onClick={onClick} className=" pointer-events-auto">
-            Roadmap
-          </a>
+          {NAVS.map((item) => (
+            <a
+              href={item.link}
+              key={item.link}
+              onClick={onClick}
+              className={`pointer-events-auto ${
+                activeHash === item.link ? "text-yellow" : ""
+              }`}
+            >
+              {item.label}
+            </a>
+          ))}
+          <div onClick={openModal} className="lg:cursor-pointer">Founders</div>
           <Link
             onClick={onClick}
-            href="#"
+            href="https://app.aurally.xyz"
+            target="_blank"
             className={`${classes.getBtn} flex pointer-events-auto`}
           >
-            Coming Soon
+            Launch App
           </Link>
         </div>
       </Drawer>
