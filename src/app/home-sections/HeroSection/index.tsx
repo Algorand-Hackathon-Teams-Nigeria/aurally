@@ -8,6 +8,7 @@ const HeroSection = () => {
   return (
     <div
       className={`${classes.herosection} w-full h-max lg:min-h-[100vh] lg:flex items-end overflow-hidden bg-[#8A2BE2]/70`}
+      id="home"
     >
       <div className="lg:min-h-[87lvh] flex items-center justify-center px-[4.5%] md:px-0">
         <div className="relative z-[1] lg:right-[-20%] text-center lg:text-start pt-40 pb-0 lg:pb-24">
