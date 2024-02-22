@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 
 export const a = gql`
   query GetNfts {
-    soundNfts(opts: { limit: 10, offset: 0 }) {
+    soundNfts(opts: { limit: 10, offset: 0,filter: {approved: true} }) {
       id
       artist
       assetId

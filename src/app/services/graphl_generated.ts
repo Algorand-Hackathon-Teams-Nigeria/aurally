@@ -269,7 +269,7 @@ export type Mutation = {
   newComment: CommentType;
   newNftPurchase: NftTxnType;
   refreshToken: AuthTokenType;
-  registerAdmin: StaffType;
+  registerStaff: StaffType;
   removeSoundsFromAlbum: AlbumType;
   saveAurallyCreative: AurallyCreativeType;
   signIn: AuthTokenType;
@@ -349,7 +349,7 @@ export type MutationRefreshTokenArgs = {
 };
 
 
-export type MutationRegisterAdminArgs = {
+export type MutationRegisterStaffArgs = {
   input: RegisterStaffInput;
 };
 
@@ -637,7 +637,7 @@ export type SoundNftType = {
   id?: Maybe<Scalars['Int']['output']>;
   label: Scalars['String']['output'];
   lastUpdated: Scalars['DateTime']['output'];
-  likesCount: Scalars['Int']['output'];
+  likeCount: Scalars['Int']['output'];
   metadataHash: Scalars['String']['output'];
   price: Scalars['Float']['output'];
   purchased?: Maybe<Scalars['Boolean']['output']>;
@@ -680,7 +680,7 @@ export type GetNftsQuery = { __typename?: 'Query', soundNfts: Array<{ __typename
 
 export const GetNftsDocument = gql`
     query GetNfts {
-  soundNfts(opts: {limit: 10, offset: 0}) {
+  soundNfts(opts: {limit: 10, offset: 0, filter: {approved: true}}) {
     id
     artist
     assetId

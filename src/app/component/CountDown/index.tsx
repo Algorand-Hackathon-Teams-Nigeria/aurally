@@ -28,6 +28,12 @@ const getTimeLeft = (timerInterval?: NodeJS.Timeout) => {
   if (distance < 0) {
     clearInterval(timerInterval);
     console.log("Countdown finished!");
+    return {
+      days:'00',
+      hours:'00',
+      minutes:'00',
+      seconds:'00',
+    };
   }
 
   return {
