@@ -51,13 +51,13 @@ const CountDown = () => {
   const secsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const timerInterval = setInterval(() => {
-      const time = getTimeLeft(timerInterval);
-      daysRef.current && (daysRef.current.textContent = time.days);
-      hrsRef.current && (hrsRef.current.textContent = time.hours);
-      minsRef.current && (minsRef.current.textContent = time.minutes);
-      secsRef.current && (secsRef.current.textContent = time.seconds);
-    }, 1000);
+    // const timerInterval = setInterval(() => {
+    //   const time = getTimeLeft(timerInterval);
+    //   daysRef.current && (daysRef.current.textContent = time.days);
+    //   hrsRef.current && (hrsRef.current.textContent = time.hours);
+    //   minsRef.current && (minsRef.current.textContent = time.minutes);
+    //   secsRef.current && (secsRef.current.textContent = time.seconds);
+    // }, 1000);
 
     return () => {};
   }, []);
