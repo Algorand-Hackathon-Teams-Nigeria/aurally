@@ -6,20 +6,20 @@ import Meshach from "../../assets/Frame 1000008049-1.png";
 import MI from "../../assets/Frame 1000008049.png";
 import Image from "next/image";
 import classes from "../../styles/landing.module.css";
-import { useMediaQuery } from "@mantine/hooks";
+// import { useMediaQuery } from "@mantine/hooks";
 
 export const modalAtom = atom(false);
 
 const FoundersModal = () => {
   const [opened, setModal] = useAtom(modalAtom);
-  const matched = useMediaQuery("(min-width:640px)");
+  // const matched = useMediaQuery("(min-width:640px)");
 
   const close = () => {
     setModal(() => false);
   };
 
   return (
-    <Modal opened={opened} onClose={close} size="auto" fullScreen={!matched}>
+    <Modal opened={opened} onClose={close} size="auto">
       <div className="flex flex-col md:flex-row gap-8 max-w-5xl lg:pl-6 lg:pr-20 pb-10 border-b border-borderColor">
         <div className="p-4 rounded-lg bg-primary/50 shrink-0 h-max max-w-max">
           <Image src={MI} alt="" />

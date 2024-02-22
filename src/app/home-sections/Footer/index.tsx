@@ -17,17 +17,18 @@ const Footer = () => {
             Join Our Socials
           </div>
           <Link
-            href="#"
+            href="https:aurally.xyz"
+            target="_blank"
             className="w-max block px-8 py-4 rounded-[40px] bg-white text-[#1C51FE] mx-auto"
           >
-            Coming Soon
+            Get Started
           </Link>
         </div>
         <div />
       </div>
       {/* Footer */}
       <div className="mt-32 flex flex-col items-center relative">
-        <BigLogo to="#" />
+        <BigLogo to="/" />
         <div className="flex gap-5 mt-10 mb-12">
           {FOOTER_LINKS.map(link => (
             <Link href={link.href} key={link.name} title={link.name} className="h-10 w-10 rounded-[10px] bg-[#3434444D] grid place-items-center">
