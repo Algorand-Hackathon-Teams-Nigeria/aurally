@@ -88,9 +88,19 @@ const CountDown = () => {
             To Aurally Launch @
           </div>
         </div>
-        <Image src={IMF} alt="" className="translate-x-[20%] hidden md:block" />
+        <Image
+          src={IMF}
+          alt=""
+          className="translate-x-[20%] hidden md:block"
+          priority
+        />
       </div>
-      <Image src={IMF} alt="" className="-translate-y-24 min-[350px]:-translate-y-20 md:hidden" />
+      <Image
+        src={IMF}
+        alt=""
+        className="-translate-y-24 min-[350px]:-translate-y-20 md:hidden"
+        priority
+      />
     </div>
   );
 };

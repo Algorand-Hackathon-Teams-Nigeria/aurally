@@ -28,6 +28,7 @@ const HeroSection = () => {
         src={heroImage}
         alt=""
         className="lg:hidden mx-auto max-h-[100vw] bg-contain bg-bottom"
+        priority
       />
     </div>
   );

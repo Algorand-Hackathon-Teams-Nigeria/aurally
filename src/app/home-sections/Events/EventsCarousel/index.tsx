@@ -25,7 +25,7 @@ const EventsCarousel = () => {
         {eventdata.map((item, index) => (
           <CarouselSlide key={index}>
             <div className="rounded-[10px] overflow-hidden">
-              <Image src={item} alt="" />
+              <Image src={item} alt="" loading="lazy" placeholder="blur" />
             </div>
           </CarouselSlide>
         ))}
