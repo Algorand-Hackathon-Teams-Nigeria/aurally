@@ -3,7 +3,7 @@ import Image from "next/image";
 import React, { useEffect, useRef } from "react";
 import IMF from "../../assets/IMF logo.png";
 
-const futureDate = new Date("February 22, 2024 12:00:00 GMT+0100").getTime();
+const futureDate = new Date("February 22, 2024 14:30:00 GMT+0100").getTime();
 const HOURS = 1000 * 60 * 60;
 
 const getTimeLeft = (timerInterval?: NodeJS.Timeout) => {
