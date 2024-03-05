@@ -22,10 +22,24 @@ const roboto = Roboto({
   variable: "--font-roboto",
 });
 
-export const metadata: Metadata = {
+const details = {
   title: "Aurally",
   description:
     "The Largest NFTs Marketplace. Automatic and truly unique digital creation. Signed and issued by the creator, made possible by Algorand blockchain technology",
+} as const;
+
+export const metadata: Metadata = {
+  ...details,
+  openGraph: {
+    ...details,
+    images: ["/aurally-image.jpeg"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    ...details,
+    images: ["/aurally-image.jpeg"],
+  },
+  keywords: ["NFT", "Algorand", "Marketplace"],
 };
 
 export default function RootLayout({
