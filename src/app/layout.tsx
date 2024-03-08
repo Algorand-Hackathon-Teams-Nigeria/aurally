@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     ...details,
     images: ["/aurally-image.jpeg"],
   },
-  keywords: ["NFT", "Algorand", "Marketplace"],
+  keywords: ["NFT", "Algorand", "Marketplace", "Aurally"],
 };
 
 export default function RootLayout({

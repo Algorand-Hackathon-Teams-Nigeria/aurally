@@ -1,7 +1,5 @@
 import { Button, Image } from "@mantine/core";
 import Link from "next/link";
-import { Suspense } from "react";
-import { getCreator } from "@/app/services/queries";
 
 type Prop = {
   data: SoundCardType;
@@ -32,13 +30,7 @@ export const NftCardLoader = () => {
   );
 };
 
-const CreatorName = async ({ creator }: { creator: Promise<string> }) => {
-  const data = await creator;
-  return `@${data}`;
-};
-
 export const NftCard = ({ data }: Prop) => {
-  const creator_promise = getCreator(data.creator.username ?? "");
   return (
     <div className="h-max rounded-lg bg-[#1e1e1e] border-[0.5px] border-[#444] overflow-hidden flex-1 shadow-md">
       <div className="w-full h-max pt-[75%] relative overflow-hidden">
@@ -58,9 +50,7 @@ export const NftCard = ({ data }: Prop) => {
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-1 min-w-0 flex-1">
             <div className="text-[11px] text-[#afafaf] truncate font-sans">
-              <Suspense fallback={<span>@</span>}>
-                <CreatorName creator={creator_promise} />
-              </Suspense>
+              <span>@{data.creator.username}</span>
             </div>
           </div>
           <div className="text-sm text-[#afafaf] shrink-0 font-[500]">
