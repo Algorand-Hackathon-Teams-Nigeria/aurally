@@ -32,14 +32,14 @@ export const metadata: Metadata = {
   ...details,
   openGraph: {
     ...details,
-    images: ["/aurally-image.jpeg"],
+    images: ["https://app.aurally.xyz/aurally-image.jpeg"],
   },
   twitter: {
     card: "summary_large_image",
     ...details,
-    images: ["/aurally-image.jpeg"],
+    images: ["https://app.aurally.xyz/aurally-image.jpeg"],
   },
-  keywords: ["NFT", "Algorand", "Marketplace", "Aurally"],
+  keywords: ["NFT", "Algorand", "Marketplace", "Aurally", "Music", "Videos"],
 };
 
 export default function RootLayout({
