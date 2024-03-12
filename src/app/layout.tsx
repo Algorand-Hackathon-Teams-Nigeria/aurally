@@ -54,19 +54,6 @@ export const metadata: Metadata = {
     description: details.description,
     images: details.image,
   },
-  robots: {
-    index: false,
-    follow: true,
-    nocache: true,
-    googleBot: {
-      index: true,
-      follow: false,
-      noimageindex: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  } as const,
   keywords: [
     "NFT",
     "nft",
