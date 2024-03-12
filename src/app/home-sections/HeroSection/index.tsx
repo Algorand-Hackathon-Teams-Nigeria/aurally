@@ -17,6 +17,7 @@ const HeroSection = () => {
             collect the <span className={classes.txt_grd}>Rarest NFTs</span>
           </h1>
           <Link
+            title="Marketplace"
             href="https://app.aurally.xyz/explore"
             target="_blank"
             className={`${classes.getBtn} flex w-[163px] mt-8 lg:mt-12 mx-auto lg:mx-0`}

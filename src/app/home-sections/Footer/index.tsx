@@ -17,7 +17,8 @@ const Footer = () => {
             Join Our Socials
           </div>
           <Link
-            href="https:aurally.xyz"
+          title="Aurally App"
+            href="https://app.aurally.xyz"
             target="_blank"
             className="w-max block px-8 py-4 rounded-[40px] bg-white text-[#1C51FE] mx-auto"
           >

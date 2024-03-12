@@ -87,7 +87,7 @@ const NavBar = () => {
         ))}
         <div onClick={openModal} className="lg:cursor-pointer">Founders</div>
       </div>
-      <Link href="https://app.aurally.xyz" className={`${classes.getBtn} hidden xl:flex`}>
+      <Link title="Aurally App" href="https://app.aurally.xyz" className={`${classes.getBtn} hidden xl:flex`}>
         Launch App
       </Link>
       <SideBar />

@@ -53,6 +53,7 @@ const HomeMarketPlace = () => {
           <NftCarousel setEmbla={setEmbla} data={data?.soundNfts} />
         )}
         <Link
+        title="Marketplace"
           href="https://app.aurally.xyz/explore"
           target="_blank"
           className={`${classes.getBtn} flex w-max mx-auto mt-20`}

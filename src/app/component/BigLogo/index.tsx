@@ -10,7 +10,7 @@ export const BigLogo = ({
   color?: string;
 }) => {
   return (
-    <Link href={to}>
+    <Link href={to} title="Home">
       <svg
         className={className + " transition-colors"}
         width="167"

@@ -47,7 +47,7 @@ const SideBar = () => {
 
   const openModal = () => {
     setModal(() => true);
-    onClick()
+    onClick();
   };
 
   return (
@@ -57,6 +57,7 @@ const SideBar = () => {
         <div className="flex flex-col gap-14 px-5 mt-10">
           {NAVS.map((item) => (
             <a
+            title={item.label}
               href={item.link}
               key={item.link}
               onClick={onClick}
@@ -67,8 +68,11 @@ const SideBar = () => {
               {item.label}
             </a>
           ))}
-          <div onClick={openModal} className="lg:cursor-pointer">Founders</div>
+          <div onClick={openModal} className="lg:cursor-pointer">
+            Founders
+          </div>
           <Link
+            title="Aurally App"
             onClick={onClick}
             href="https://app.aurally.xyz"
             target="_blank"

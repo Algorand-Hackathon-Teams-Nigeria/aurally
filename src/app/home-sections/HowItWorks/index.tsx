@@ -18,12 +18,15 @@ const HowItWorks = () => {
         />
         {works.map(({ title, desc }, index) => (
           <div key={index} className="relative z-[5] text-center sm:text-start">
-            <div className="text-xl lg:text-2xl mb-3 sm:mb-7 font-bold">{title}</div>
+            <div className="text-xl lg:text-2xl mb-3 sm:mb-7 font-bold">
+              {title}
+            </div>
             <div className="text-xs md:text-sm leading-normal">{desc}</div>
           </div>
         ))}
       </div>
       <Link
+        title="Aurally App"
         href="https://app.aurally.xyz"
         target="_blank"
         className={`${classes.getBtn} flex w-[163px] mt-8 lg:mt-12 mx-auto lg:mx-0`}
