@@ -23,23 +23,64 @@ const roboto = Roboto({
 });
 
 const details = {
-  title: "Aurally",
   description:
     "The Largest NFTs Marketplace. Automatic and truly unique digital creation. Signed and issued by the creator, made possible by Algorand blockchain technology",
-} as const;
+  image: [
+    {
+      url: "https://aurally.xyz/aurally-image.jpeg",
+      width: 1000,
+      height: 1000,
+    },
+  ],
+};
 
 export const metadata: Metadata = {
-  ...details,
+  title: "Aurally",
+  description: details.description,
+  icons: ["https://aurally.xyz/logo.svg"],
+  metadataBase: new URL("https://aurally.xyz"),
   openGraph: {
-    ...details,
-    images: ["https://app.aurally.xyz/aurally-image.jpeg"],
+    title: "Aurally",
+    description: details.description,
+    images: details.image,
+    siteName: "Aurally",
+    url: "https://aurally.xyz",
+    type: "website",
+    locale: "en_US",
   },
   twitter: {
+    title: "Aurally",
     card: "summary_large_image",
-    ...details,
-    images: ["https://app.aurally.xyz/aurally-image.jpeg"],
+    description: details.description,
+    images: details.image,
   },
-  keywords: ["NFT", "Algorand", "Marketplace", "Aurally", "Music", "Videos"],
+  robots: {
+    index: false,
+    follow: true,
+    nocache: true,
+    googleBot: {
+      index: true,
+      follow: false,
+      noimageindex: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  } as const,
+  keywords: [
+    "NFT",
+    "nft",
+    "Algorand",
+    "Marketplace",
+    "Aurally",
+    "aurally",
+    "art",
+    "song",
+    "sounds",
+    "audio",
+    "Music",
+    "Videos",
+  ] as string[],
 };
 
 export default function RootLayout({
