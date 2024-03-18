@@ -24,10 +24,10 @@ const roboto = Roboto({
 
 const details = {
   description:
-    "The Largest NFTs Marketplace. Automatic and truly unique digital creation. Signed and issued by the creator, made possible by Algorand blockchain technology",
+    "Stream and buy music. Buy NFTs art using crypto and fiat currency. Built on the algorand blockchain. Web3 music streaming platform. Discover new artists, stream your favorite songs and earn instant rewards. Buy NFTs",
   image: [
     {
-      url: "https://aurally.xyz/aurally-image.jpeg",
+      url: "/aurally-image.jpeg",
       width: 1000,
       height: 1000,
     },
@@ -35,9 +35,9 @@ const details = {
 };
 
 export const metadata: Metadata = {
-  title: "Aurally",
+  title: "The Best NFT and Music Streaming platform",
   description: details.description,
-  icons: ["https://aurally.xyz/logo.svg"],
+  icons: ["/logo.svg"],
   metadataBase: new URL("https://aurally.xyz"),
   openGraph: {
     title: "Aurally",
