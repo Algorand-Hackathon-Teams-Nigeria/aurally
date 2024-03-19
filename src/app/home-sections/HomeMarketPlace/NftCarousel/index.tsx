@@ -29,6 +29,7 @@ export const NftCarousel = ({ data = [], setEmbla }: NftCarouselProps) => {
       classNames={{
         root: "w-full",
         slide: "max-w-[calc(100%-20px)] min-[320px]:max-w-[285px]",
+        container: "gap-4"
       }}
       getEmblaApi={setEmbla}
       containScroll="trimSnaps"

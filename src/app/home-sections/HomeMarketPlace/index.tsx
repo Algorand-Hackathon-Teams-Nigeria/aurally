@@ -36,16 +36,6 @@ const HomeMarketPlace = () => {
           <Button variant={"filled"} radius="xl">
             Music
           </Button>
-          {/* {TYPES.map((item) => (
-            <Button
-              key={item.label}
-              variant={item.value === type ? "filled" : "outline"}
-              radius="xl"
-              onClick={() => setType(item.value)}
-            >
-              {item.label}
-            </Button>
-          ))} */}
         </div>
         {loading ? (
           <NftCarouselLoader />
@@ -53,7 +43,7 @@ const HomeMarketPlace = () => {
           <NftCarousel setEmbla={setEmbla} data={data?.soundNfts} />
         )}
         <Link
-        title="Marketplace"
+          title="Marketplace"
           href="https://app.aurally.xyz/explore"
           target="_blank"
           className={`${classes.getBtn} flex w-max mx-auto mt-20`}
