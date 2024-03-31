@@ -34,6 +34,24 @@
       ],
       "@atoms/*": [
         "./src/app/components/atoms/*"
+      ],
+      "@constants/*": [
+        "./src/app/constants/*"
+      ],
+      "@styles/*": [
+        "./src/app/styles/*"
+      ],
+      "@assets/*": [
+        "./src/app/assets/*"
+      ],
+      "@organisms/*": [
+        "./src/app/components/organisms/*"
+      ],
+      "@page-sections/*": [
+        "./src/app/components/page-sections/*"
+      ],
+      "@molecules/*": [
+        "./src/app/components/molecules/*"
       ]
     }
   },

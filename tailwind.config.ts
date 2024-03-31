@@ -32,6 +32,7 @@ const config: Config = {
         secondaryPink: "#E22BCC",
         secondaryYellow: "#FBB03B",
         subBackground: "#140425",
+        dark01: "#0A0212",
         borderColor: "#444444",
         yellow: "#FBB03B",
         "grey-02": "#AFAFAF",
