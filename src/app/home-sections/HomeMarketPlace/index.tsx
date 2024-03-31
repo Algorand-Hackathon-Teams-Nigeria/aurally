@@ -1,17 +1,16 @@
 "use client";
+import Link from "next/link";
+import { useState } from "react";
+import { Button } from "@mantine/core";
+import { Embla } from "@mantine/carousel";
+import BallGradient from "@components/BallGradient";
+import ScrollButton from "@components/ScrollButton";
+import classes from "../../styles/landing.module.css";
+import { useGetNftsQuery } from "@services/graphl_generated";
 import {
   NftCarousel,
   NftCarouselLoader,
 } from "@/app/home-sections/HomeMarketPlace/NftCarousel";
-// import { TYPES } from "../../data";
-import Link from "next/link";
-import BallGradient from "@/app/component/BallGradient";
-import classes from "../../styles/landing.module.css";
-import { useGetNftsQuery } from "@/app/services/graphl_generated";
-import { useState } from "react";
-import { Button } from "@mantine/core";
-import { Embla } from "@mantine/carousel";
-import ScrollButton from "@/app/component/ScrollButton";
 
 const HomeMarketPlace = () => {
   // const [type, setType] = useState("all");
@@ -19,7 +18,7 @@ const HomeMarketPlace = () => {
   const { data, loading } = useGetNftsQuery();
 
   return (
-    <div className="relative">
+    <section id="marketplace" className="relative">
       <BallGradient topOrBottom="top-40" leftOrRight="left-[calc(-9vw)]" />
       <BallGradient
         topOrBottom="bottom-[-125%]"
@@ -37,11 +36,9 @@ const HomeMarketPlace = () => {
             Music
           </Button>
         </div>
-        {loading ? (
-          <NftCarouselLoader />
-        ) : (
-          <NftCarousel setEmbla={setEmbla} data={data?.soundNfts} />
-        )}
+        {loading
+          ? <NftCarouselLoader />
+          : <NftCarousel setEmbla={setEmbla} data={data?.soundNfts} />}
         <Link
           title="Marketplace"
           href="https://app.aurally.xyz/explore"
@@ -51,7 +48,7 @@ const HomeMarketPlace = () => {
           Explore Marketplace
         </Link>
       </div>
-    </div>
+    </section>
   );
 };
 

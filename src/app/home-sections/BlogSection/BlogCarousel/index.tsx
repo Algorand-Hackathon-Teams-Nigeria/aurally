@@ -4,7 +4,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import musicFest from "../../../assets/music-festiival.png";
 import { Portal } from "@mantine/core";
-import ScrollButton from "@/app/component/ScrollButton";
+import ScrollButton from "@/app/components/ScrollButton";
 
 const eventdata = [musicFest];
 

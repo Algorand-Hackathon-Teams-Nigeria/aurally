@@ -1,11 +1,14 @@
 import { roadmaps } from "@/app/data";
 import classes from "../../styles/landing.module.css";
-import BallGradient from "@/app/component/BallGradient";
+import BallGradient from "@/app/components/BallGradient";
 
 const RoadMap = () => {
   return (
     <div className="mb-36 relative" id="road">
-      <BallGradient topOrBottom="top-1/2 -translate-y-1/2" leftOrRight="left-1/2 -translate-x-1/2" />
+      <BallGradient
+        topOrBottom="top-1/2 -translate-y-1/2"
+        leftOrRight="left-1/2 -translate-x-1/2"
+      />
       <h2
         className={`text-center text-3xl md:text-4xl lg:text-5xl xl:text-[4rem] font-bold mb-10 relative z-[5] ${classes.txt_grd2}`}
       >
@@ -44,9 +47,7 @@ const RoadMap = () => {
                   <div className="border border-borderColor p-4 rounded-[10px] max-w-[420px]">
                     <div className="font-bold mb-4">{title}</div>
                     <ul className="text-[13px] font-medium space-y-3 purple-disc list-disc marker:text-primary">
-                      {desc.map((item, index) => (
-                        <li key={index}>{item}</li>
-                      ))}
+                      {desc.map((item, index) => <li key={index}>{item}</li>)}
                     </ul>
                   </div>
                   {index % 2 !== 0 && (
@@ -88,9 +89,7 @@ const RoadMap = () => {
               <div className="border border-borderColor p-4 rounded-[10px] max-w-[420px]">
                 <div className="font-bold mb-4">{title}</div>
                 <ul className="text-xs font-medium space-y-2">
-                  {desc.map((item, index) => (
-                    <li key={index}>{item}</li>
-                  ))}
+                  {desc.map((item, index) => <li key={index}>{item}</li>)}
                 </ul>
               </div>
             </div>

@@ -1,7 +1,7 @@
 import { features } from "@/app/data";
 import Image from "next/image";
 import chat from "@/app/assets/chat-circle.svg";
-import { IconWrapper } from "@/app/component/Icon";
+import { IconWrapper } from "@/app/components/Icon";
 import classes from "../../styles/landing.module.css";
 
 const Features = () => {
@@ -21,18 +21,20 @@ const Features = () => {
             key={index}
             className=" md:odd:border-r border-primary pb-12 md:odd:pr-6 md:even:pl-4 lg:odd:pr-16 lg:even:pl-16 flex gap-4 items-center sm:items-start"
           >
-            {index === 3 ? (
-              <Image
-                alt="features"
-                src={chat}
-                className="max-w-[11.5vw] sm:max-w-[5rem] lg:max-w-[6.2rem] h-max"
-              />
-            ) : (
-              <IconWrapper
-                icon={icon}
-                wrapperClassName="text-[12.5vw] sm:text-[5rem] lg:text-[6.5rem] text-primary shrink-0"
-              />
-            )}
+            {index === 3
+              ? (
+                <Image
+                  alt="features"
+                  src={chat}
+                  className="max-w-[11.5vw] sm:max-w-[5rem] lg:max-w-[6.2rem] h-max"
+                />
+              )
+              : (
+                <IconWrapper
+                  icon={icon}
+                  wrapperClassName="text-[12.5vw] sm:text-[5rem] lg:text-[6.5rem] text-primary shrink-0"
+                />
+              )}
             <div>
               <div className="text-lg md:text-xl lg:text-2xl mb-7 font-bold">
                 {title}

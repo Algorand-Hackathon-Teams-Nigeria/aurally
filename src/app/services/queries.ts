@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
-export const a = gql`
+export const SOUND_NFTS = gql`
   query GetNfts {
-    soundNfts(opts: { limit: 10, offset: 0,filter: {approved: true} }) {
+    soundNfts(opts: { limit: 20, offset: 0,filter: {approved: true} }) {
       id
       artist
       assetId
@@ -21,6 +21,14 @@ export const a = gql`
   }
 `;
 
-export const getCreator = (owner: string): Promise<string> => {
-  return new Promise((resolve) => setTimeout(() => resolve("Brahm"), 1000));
-};
+export const APP_STATISTICS = gql`
+  query AppStatistics {
+    appStatistics {
+      totalArtNfts
+      totalPurchases
+      totalRegisteredUsers
+      totalSoundNfts
+      totalCreators
+    }
+  }
+`;

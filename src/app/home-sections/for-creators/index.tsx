@@ -4,11 +4,11 @@ import Image from "next/image";
 import StockMarket from "../../assets/icon-park-outline_stock-market.png";
 import ArtistIcon from "../../assets/material-symbols-light_artist-outline.png";
 import AurallyFoster from "../../assets/material-symbols-light_artist-outline-1.png";
-import BallGradient from "@/app/component/BallGradient";
+import BallGradient from "@/app/components/BallGradient";
 
 const ForCreators = () => {
   return (
-    <div>
+    <section id="for-creators">
       <Image src={ForCreatorsHero} alt="" id="creators" className="mb-14" />
       <div className="grid lg:grid-cols-2 justify-between relative">
         <BallGradient topOrBottom="top-0" leftOrRight="right-0" />
@@ -58,7 +58,7 @@ const ForCreators = () => {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

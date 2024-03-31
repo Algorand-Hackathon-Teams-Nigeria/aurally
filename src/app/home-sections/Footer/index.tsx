@@ -1,6 +1,6 @@
-import BallGradient from "@/app/component/BallGradient";
-import { BigLogo } from "@/app/component/BigLogo";
-import { IconWrapper } from "@/app/component/Icon";
+import BallGradient from "@/app/components/BallGradient";
+import { BigLogo } from "@/app/components/BigLogo";
+import { IconWrapper } from "@/app/components/Icon";
 import { FOOTER_LINKS } from "@/app/constants/links/socials";
 import Link from "next/link";
 import React from "react";
@@ -17,7 +17,7 @@ const Footer = () => {
             Join Our Socials
           </div>
           <Link
-          title="Aurally App"
+            title="Aurally App"
             href="https://app.aurally.xyz"
             target="_blank"
             className="w-max block px-8 py-4 rounded-[40px] bg-white text-[#1C51FE] mx-auto"
@@ -31,8 +31,13 @@ const Footer = () => {
       <div className="mt-32 flex flex-col items-center relative">
         <BigLogo to="/" />
         <div className="flex gap-5 mt-10 mb-12">
-          {FOOTER_LINKS.map(link => (
-            <Link href={link.href} key={link.name} title={link.name} className="h-10 w-10 rounded-[10px] bg-[#3434444D] grid place-items-center">
+          {FOOTER_LINKS.map((link) => (
+            <Link
+              href={link.href}
+              key={link.name}
+              title={link.name}
+              className="h-10 w-10 rounded-[10px] bg-[#3434444D] grid place-items-center"
+            >
               <IconWrapper icon={link.icon} color="white" fontSize={22} />
             </Link>
           ))}

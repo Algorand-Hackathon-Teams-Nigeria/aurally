@@ -1,6 +1,6 @@
 import { works } from "@/app/data";
 import classes from "@/app/styles/landing.module.css";
-import BallGradient from "@/app/component/BallGradient";
+import BallGradient from "@/app/components/BallGradient";
 import Link from "next/link";
 
 const HowItWorks = () => {

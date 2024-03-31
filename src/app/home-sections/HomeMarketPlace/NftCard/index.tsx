@@ -1,4 +1,4 @@
-import { IconWrapper } from "@/app/component/Icon";
+import { IconWrapper } from "@/app/components/Icon";
 import { Button } from "@mantine/core";
 import Image from "next/image";
 import Link from "next/link";
@@ -44,7 +44,9 @@ export const NftCard = ({ data }: Prop) => {
         alt={data.title}
       />
       <div className="absolute text-white/90 gap-2 flex bottom-2 left-2 w-full flex-col">
-        <h4 className="font-bold bg-black/40 text-2xl p-1 px-4 max-w-[95%] text-ellipsis overflow-hidden w-fit rounded-full">{data.title}</h4>
+        <h4 className="font-bold bg-black/40 text-2xl p-1 px-4 max-w-[95%] text-ellipsis overflow-hidden w-fit rounded-full">
+          {data.title}
+        </h4>
         <span className="flex items-center gap-2 font-bold bg-black/40 p-0.5 px-2 max-w-[95%] text-ellipsis overflow-hidden w-fit rounded-full">
           <IconWrapper icon="cryptocurrency:algo" />
           <span>

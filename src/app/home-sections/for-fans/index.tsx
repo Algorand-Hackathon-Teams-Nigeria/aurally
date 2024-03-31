@@ -4,7 +4,7 @@ import Image from "next/image";
 import StockMarket from "../../assets/icon-park-outline_stock-market.png";
 import ArtistIcon from "../../assets/material-symbols-light_artist-outline.png";
 import AurallyFoster from "../../assets/material-symbols-light_artist-outline-1.png";
-import BallGradient from "@/app/component/BallGradient";
+import BallGradient from "@/app/components/BallGradient";
 
 const ForFans = () => {
   return (
