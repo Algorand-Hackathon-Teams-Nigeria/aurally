@@ -9,6 +9,7 @@ RUN npm run build
 FROM node:20.11.0-bullseye AS runner
 WORKDIR /app
 RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
+RUN chown -R nextjs:nodejs /app
 COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
