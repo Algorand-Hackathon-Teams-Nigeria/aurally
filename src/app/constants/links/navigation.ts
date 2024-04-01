@@ -1,15 +1,15 @@
 export const NAVS = [
   {
     label: "Home",
-    link: "/#home",
+    link: "/",
   },
   {
     label: "About Us",
     link: "/about",
   },
   {
-    label: "For Creators",
-    link: "#creators",
+    label: "Products",
+    link: "/products",
   },
   {
     label: "For Fans",

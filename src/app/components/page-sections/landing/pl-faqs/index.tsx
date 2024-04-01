@@ -61,9 +61,9 @@ const FAQS = () => {
   ));
 
   return (
-    <div id="faqs">
+    <section id="faqs">
       <h2
-        className={`text-center text-3xl md:text-4xl lg:text-5xl xl:text-[4rem] font-bold relative z-[5] ${classes.txt_grd2}`}
+        className={`text-3xl md:text-4xl lg:text-5xl xl:text-[4rem] font-bold relative z-[5] ${classes.txt_grd2}`}
       >
         Frequently Asked Questions
       </h2>
@@ -83,7 +83,7 @@ const FAQS = () => {
           {items2}
         </Accordion>
       </div>
-    </div>
+    </section>
   );
 };
 

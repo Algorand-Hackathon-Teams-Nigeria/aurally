@@ -1,37 +1,23 @@
 "use client";
+import React from "react";
 import Link from "next/link";
-import { useSetAtom } from "jotai";
-import React, { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { useHeadroom, useWindowScroll } from "@mantine/hooks";
 import SideBar from "@atoms/a-sidebar";
 import { BigLogo } from "@atoms/a-big-logo";
 import classes from "@styles/landing.module.css";
 import { NAVS } from "@constants/links/navigation";
-import { modalAtom } from "@page-sections/landing/pl-founders-modal";
 
 const NavBar = () => {
+  const pathname = usePathname();
   const pinned = useHeadroom({ fixedAt: 200 });
   const [s] = useWindowScroll();
-  const [activeHash, setActiveHash] = useState("");
-  const setModal = useSetAtom(modalAtom);
 
-  useEffect(() => {
-    const handleHashChange = () => {
-      setActiveHash(
-        !window.location.hash ? NAVS[0].link : window.location.hash,
-      );
-      console.log(window.location.hash);
-    };
-    handleHashChange();
-    window.addEventListener("hashchange", handleHashChange);
-
-    return () => {
-      window.removeEventListener("hashchange", handleHashChange);
-    };
-  }, []);
-
-  const openModal = () => {
-    setModal(() => true);
+  const isActive = (href: string): boolean => {
+    if (href === "/") {
+      return pathname === href;
+    }
+    return pathname.startsWith(href);
   };
 
   return (
@@ -50,12 +36,11 @@ const NavBar = () => {
           <a
             key={item.link}
             href={item.link}
-            className={activeHash === item.link ? "text-yellow" : ""}
+            className={isActive(item.link) ? "text-yellow" : ""}
           >
             {item.label}
           </a>
         ))}
-        <div onClick={openModal} className="lg:cursor-pointer">Founders</div>
       </div>
       <Link
         title="Aurally App"

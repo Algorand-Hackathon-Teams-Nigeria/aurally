@@ -1,11 +1,9 @@
-import NavBar from "@molecules/m-navbar";
+import Page from "@atoms/a-page";
 import Landing from "@page-sections/landing";
-import Footer from "@components/molecules/m-footer";
 
 export default function LandingPage() {
   return (
-    <main className={`relative overflow-hidden font-space`}>
-      <NavBar />
+    <Page className="mt-0">
       <Landing.HeroSection />
       <Landing.AppStatistics />
       <div className="px-[4.5%] max-w-[calc(1200px+9%)] mx-auto space-y-20 sm:space-y-32 md:space-y-36">
@@ -16,12 +14,10 @@ export default function LandingPage() {
         <Landing.ForFans />
         <Landing.Features />
         <Landing.HowItWorks />
-        <Landing.FAQS />
         <Landing.RoadMap />
         <Landing.Events />
-        <Footer />
-        <Landing.FoundersModal />
+        <Landing.Community />
       </div>
-    </main>
+    </Page>
   );
 }

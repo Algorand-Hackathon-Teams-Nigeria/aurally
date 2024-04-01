@@ -1,11 +1,9 @@
 "use client";
+import React from "react";
 import Link from "next/link";
-import { useSetAtom } from "jotai";
-import { useEffect, useState } from "react";
 import { Burger, Drawer } from "@mantine/core";
 import classes from "@styles/landing.module.css";
 import { NAVS } from "@constants/links/navigation";
-import { modalAtom } from "@page-sections/landing/pl-founders-modal";
 
 const MenuBar = ({
   isOpen,
@@ -18,11 +16,10 @@ const MenuBar = ({
 };
 
 const SideBar = () => {
-  const [open, setOpen] = useState(false);
-  const [activeHash, setActiveHash] = useState("");
-  const setModal = useSetAtom(modalAtom);
+  const [open, setOpen] = React.useState(false);
+  const [activeHash, setActiveHash] = React.useState("");
 
-  useEffect(() => {
+  React.useEffect(() => {
     const handleHashChange = () => {
       setActiveHash(
         !window.location.hash ? NAVS[0].link : window.location.hash,
@@ -45,11 +42,6 @@ const SideBar = () => {
     setOpen(false);
   };
 
-  const openModal = () => {
-    setModal(() => true);
-    onClick();
-  };
-
   return (
     <div className="xl:hidden">
       <MenuBar isOpen={open} onClick={toggle} />
@@ -67,9 +59,6 @@ const SideBar = () => {
               {item.label}
             </a>
           ))}
-          <div onClick={openModal} className="lg:cursor-pointer">
-            Founders
-          </div>
           <Link
             title="Aurally App"
             onClick={onClick}

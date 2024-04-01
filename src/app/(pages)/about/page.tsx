@@ -1,10 +1,24 @@
+import Page from "@atoms/a-page";
+import About from "@page-sections/about";
+import Landing from "@page-sections/landing";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About Aurally",
+  description:
+    "Our platform is designed to empower musicians, artists, and creators to reclaim ownership of their work and monetize in real time.",
+};
+
 const AboutPage = () => {
   return (
-    <div>
-      <h2 className="bg-gradient-to-b from-secondaryPink to-secondaryYellow text-4xl font-bold text-transparent bg-clip-text">
-        Background
-      </h2>
-    </div>
+    <Page>
+      <About.Background />
+      <About.MissionVision />
+      <About.MeetTheFounders />
+      <Landing.RoadMap />
+      <Landing.FAQS />
+      <Landing.Community />
+    </Page>
   );
 };
 
