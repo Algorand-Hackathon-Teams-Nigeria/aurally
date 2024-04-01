@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { IconWrapper } from "@/app/components/Icon";
+import Link from "next/link";
 
 type Prop = {
   data: SoundCardType;
@@ -32,26 +33,31 @@ export const NftCardLoader = () => {
 
 export const NftCard = ({ data }: Prop) => {
   return (
-    <div className="h-max relative min-h-80 overflow-hidden flex-1 shadow-md">
+    <div
+      title={data.title}
+      className="h-max relative min-h-80 overflow-hidden flex-1 shadow-md"
+    >
       {/* <div className="w-full h-max pt-[75%] relative overflow-hidden"> */}
-      <Image
-        width={570}
-        height={610}
-        src={data.coverImageUrl}
-        className="object-cover rounded-[10px] absolute inset-0 w-full h-full"
-        alt={data.title}
-      />
-      <div className="absolute text-white/90 gap-2 flex bottom-2 left-2 w-full flex-col">
-        <h4 className="font-bold bg-black/40 text-2xl p-1 px-4 max-w-[95%] text-ellipsis overflow-hidden w-fit rounded-full">
-          {data.title}
-        </h4>
-        <span className="flex items-center gap-2 font-bold bg-black/40 p-0.5 px-2 max-w-[95%] text-ellipsis overflow-hidden w-fit rounded-full">
-          <IconWrapper icon="cryptocurrency:algo" />
-          <span>
-            {data.price}
+      <Link href={`${process.env.NEXT_PUBLIC_APP_URL}/single/${data.assetKey}`}>
+        <Image
+          width={570}
+          height={610}
+          src={data.coverImageUrl}
+          className="object-cover rounded-[10px] absolute inset-0 w-full h-full"
+          alt={data.title}
+        />
+        <div className="absolute text-white/90 gap-2 flex bottom-2 left-2 w-full flex-col">
+          <h4 className="font-bold bg-black/40 text-2xl p-1 px-4 max-w-[95%] text-ellipsis overflow-hidden w-fit rounded-full">
+            {data.title}
+          </h4>
+          <span className="flex items-center gap-2 font-bold bg-black/40 p-0.5 px-2 max-w-[95%] text-ellipsis overflow-hidden w-fit rounded-full">
+            <IconWrapper icon="cryptocurrency:algo" />
+            <span>
+              {data.price}
+            </span>
           </span>
-        </span>
-      </div>
+        </div>
+      </Link>
     </div>
   );
 };
