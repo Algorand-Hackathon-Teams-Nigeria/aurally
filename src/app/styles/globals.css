@@ -6,13 +6,60 @@
 @tailwind components;
 @tailwind utilities;
 
+
+/* Shadcn */
+@layer base {
+  :root {
+    --background: 270 80% 4%;
+    --foreground: 0 0% 100%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+
+    --primary: 271 76% 53%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 27%;
+    --input: 240 5.9% 90%;
+    --ring: 240 10% 3.9%;
+
+    --radius: 0.5rem;
+  }
+}
+
 :root {
+  /* Mantine */
   --Primary: #8a2be2;
   --Dark-01: #111111;
   --Border-colour: #444444;
   --Sub-Background: #1e1e1e;
   --Grey-02: #afafaf;
   --Grey-04: #ebebeb;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
 }
 
 *::-webkit-scrollbar {
@@ -30,23 +77,15 @@ html {
   scroll-padding-top: 100px;
 }
 
-body {
-  background: none !important;
-  @apply bg-none font-space;
-}
-
-body:before {
-  content: "";
-  @apply bg-[#111] inset-0 fixed z-[-2];
-}
-
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
 
 .scrollbar-hide {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 .fra {
@@ -54,39 +93,14 @@ body:before {
   box-shadow: 0 0 0px 400px rgba(138, 43, 226, 0.5);
 }
 
-/* .shimmer:after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to right, transparent 30%, #fafafa20 50%, transparent 70%);
-  background-size: 300%;
-  background-position-x: 110%;
-  animation-name: shimmer;
-  animation-duration: 3s;
-  animation-fill-mode: forwards;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-}
-
-@keyframes shimmer {
-  0% {
-     background-position-x: 110%;
-  }
-  50%,100% {
-    background-position-x: -10%;
-  }
-} */
-
 .shimmer:before {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to right,
-    transparent,
-    #fafafa20 50%,
-    transparent
-  );
+  background: linear-gradient(to right,
+      transparent,
+      #fafafa20 50%,
+      transparent);
   animation-name: shimmer;
   animation-duration: 3s;
   animation-iteration-count: infinite;
@@ -98,6 +112,7 @@ body:before {
   0% {
     transform: translateX(-100%);
   }
+
   66%,
   100% {
     transform: translateX(100%);

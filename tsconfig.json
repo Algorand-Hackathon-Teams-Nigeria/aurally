@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES2020",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -19,9 +23,48 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ],
+      "@lib/*": [
+        "./src/app/lib/*"
+      ],
+      "@components/*": [
+        "./src/app/components/*"
+      ],
+      "@services/*": [
+        "./src/app/services/*"
+      ],
+      "@atoms/*": [
+        "./src/app/components/atoms/*"
+      ],
+      "@constants/*": [
+        "./src/app/constants/*"
+      ],
+      "@styles/*": [
+        "./src/app/styles/*"
+      ],
+      "@assets/*": [
+        "./src/app/assets/*"
+      ],
+      "@organisms/*": [
+        "./src/app/components/organisms/*"
+      ],
+      "@page-sections/*": [
+        "./src/app/components/page-sections/*"
+      ],
+      "@molecules/*": [
+        "./src/app/components/molecules/*"
+      ]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

@@ -20,6 +20,15 @@ export type Scalars = {
   Void: { input: any; output: any; }
 };
 
+export type AdminNftStatisticsType = {
+  __typename?: 'AdminNFTStatisticsType';
+  assetId: Scalars['String']['output'];
+  creatorUsername: Scalars['String']['output'];
+  likesCount: Scalars['Int']['output'];
+  sampleTrackStreamCount: Scalars['Int']['output'];
+  streamCount: Scalars['Int']['output'];
+};
+
 export type AlbumFilter = {
   creator?: InputMaybe<Scalars['String']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
@@ -45,8 +54,8 @@ export type AlbumType = {
   dateAdded: Scalars['DateTime']['output'];
   description?: Maybe<Scalars['String']['output']>;
   featuredArtists: Array<AurallyCreativeType>;
-  id: Scalars['Int']['output'];
-  lastUpdated: Scalars['DateTime']['output'];
+  id?: Maybe<Scalars['Int']['output']>;
+  lastUpdated?: Maybe<Scalars['DateTime']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   sounds: Array<SoundNftType>;
 };
@@ -59,6 +68,15 @@ export type AlbumTypeSoundsArgs = {
 export type AllNftInput = {
   artOpts?: InputMaybe<ArtNftFilterPaginated>;
   soundOpts?: InputMaybe<SoundNftFilterPaginated>;
+};
+
+export type ApplicationStatisticsType = {
+  __typename?: 'ApplicationStatisticsType';
+  totalArtNfts: Scalars['Int']['output'];
+  totalCreators: Scalars['Int']['output'];
+  totalPurchases: Scalars['Int']['output'];
+  totalRegisteredUsers: Scalars['Int']['output'];
+  totalSoundNfts: Scalars['Int']['output'];
 };
 
 export type ArtAuctionFilter = {
@@ -157,6 +175,24 @@ export type ArtNftType = {
 
 export type ArtNftTypeSoundNftType = ArtNftType | SoundNftType;
 
+export type AssetBalanceType = {
+  __typename?: 'AssetBalanceType';
+  amount?: Maybe<Scalars['Int']['output']>;
+  assetId?: Maybe<Scalars['Int']['output']>;
+  isFrozen?: Maybe<Scalars['Boolean']['output']>;
+};
+
+export type AssetHolding = {
+  __typename?: 'AssetHolding';
+  address: Scalars['String']['output'];
+  asset: AssetBalanceType;
+};
+
+export type AssetIdUpdateInput = {
+  assetId: Scalars['String']['input'];
+  assetKey: Scalars['String']['input'];
+};
+
 export type AurallyCreativeInput = {
   address: Scalars['String']['input'];
   bio?: InputMaybe<Scalars['String']['input']>;
@@ -183,11 +219,21 @@ export type AurallyCreativeType = {
   minted?: Maybe<Scalars['Int']['output']>;
   purchased?: Maybe<Scalars['Int']['output']>;
   sold?: Maybe<Scalars['Int']['output']>;
+  syncedWithContract: Scalars['Boolean']['output'];
   username?: Maybe<Scalars['String']['output']>;
 };
 
+export type AurallyCreativeTypeSoundNftTypePlaylistTypeAlbumType = AlbumType | AurallyCreativeType | PlaylistType | SoundNftType;
+
+export type AurallyNftType = {
+  __typename?: 'AurallyNFTType';
+  art?: Maybe<ArtNftType>;
+  sound?: Maybe<SoundNftType>;
+  video?: Maybe<VideoNftType>;
+};
+
 export type AuthInput = {
-  net: NetworkType;
+  net: NetworkTypeEnum;
   txnId: Scalars['String']['input'];
 };
 
@@ -214,11 +260,13 @@ export type CommentInput = {
   assetKey: Scalars['String']['input'];
   commentType: CommentItem;
   content: Scalars['String']['input'];
+  datetimeAdded: Scalars['DateTime']['input'];
 };
 
 export enum CommentItem {
   Art = 'ART',
-  Sound = 'SOUND'
+  Sound = 'SOUND',
+  Video = 'VIDEO'
 }
 
 export type CommentType = {
@@ -229,6 +277,14 @@ export type CommentType = {
   dateAdded: Scalars['DateTime']['output'];
   id: Scalars['Int']['output'];
   soundNft?: Maybe<SoundNftType>;
+};
+
+export type EasyShareTransactionInput = {
+  amountPaid: Scalars['Float']['input'];
+  amountReceived: Scalars['Float']['input'];
+  orderId: Scalars['String']['input'];
+  receiveCurrency: Scalars['String']['input'];
+  txReference: Scalars['String']['input'];
 };
 
 export type EmailPasswordLoginInput = {
@@ -253,21 +309,39 @@ export type LibraryTypeSoundsArgs = {
   opts?: InputMaybe<SoundNftFilterPaginated>;
 };
 
+export type MetadataArgs = {
+  albumId?: InputMaybe<Scalars['Int']['input']>;
+  assetKey?: InputMaybe<Scalars['String']['input']>;
+  playlistId?: InputMaybe<Scalars['Int']['input']>;
+  userAddress?: InputMaybe<Scalars['String']['input']>;
+};
+
+export enum MetadataChoices {
+  Album = 'ALBUM',
+  Creative = 'CREATIVE',
+  Playlist = 'PLAYLIST',
+  Sound = 'SOUND'
+}
+
 export type Mutation = {
   __typename?: 'Mutation';
   addSoundToPlaylist: PlaylistType;
   /** @deprecated Is not needed since library is updated automagically. It's still here for insurance purposes */
   addSoundToUserLibrary: LibraryType;
   addSoundsToAlbum: AlbumType;
+  bulkCreatePendingAppPayment: Array<PendingAppPaymentType>;
+  bulkSyncAssetsWithContract?: Maybe<Scalars['Void']['output']>;
   createAlbum: AlbumType;
   createArtAuction: ArtAuctionType;
   createArtNft: ArtNftType;
   createSoundNft: SoundNftType;
   createUpdatePlaylist: PlaylistType;
-  incrementStreamCount: Scalars['Int']['output'];
-  likeAndUnlikeSoundNft: SoundNftType;
+  createVideoNft: VideoNftType;
+  likeAndUnlikeNft: AurallyNftType;
   newComment: CommentType;
   newNftPurchase: NftTxnType;
+  recordEasyshareTransaction: RecordEasyShareTransactionStatusType;
+  refreshAssets?: Maybe<Scalars['Void']['output']>;
   refreshToken: AuthTokenType;
   registerStaff: StaffType;
   removeSoundsFromAlbum: AlbumType;
@@ -298,6 +372,16 @@ export type MutationAddSoundsToAlbumArgs = {
 };
 
 
+export type MutationBulkCreatePendingAppPaymentArgs = {
+  input: Array<PendingAppPaymentInput>;
+};
+
+
+export type MutationBulkSyncAssetsWithContractArgs = {
+  input: Array<AssetIdUpdateInput>;
+};
+
+
 export type MutationCreateAlbumArgs = {
   input: AlbumInput;
 };
@@ -323,14 +407,14 @@ export type MutationCreateUpdatePlaylistArgs = {
 };
 
 
-export type MutationIncrementStreamCountArgs = {
-  assetId: Scalars['String']['input'];
-  net: NetworkType;
+export type MutationCreateVideoNftArgs = {
+  input: VideoNftInput;
 };
 
 
-export type MutationLikeAndUnlikeSoundNftArgs = {
+export type MutationLikeAndUnlikeNftArgs = {
   assetKey: Scalars['String']['input'];
+  nftType?: NftType;
 };
 
 
@@ -341,6 +425,17 @@ export type MutationNewCommentArgs = {
 
 export type MutationNewNftPurchaseArgs = {
   input: NftTxnInput;
+};
+
+
+export type MutationRecordEasyshareTransactionArgs = {
+  input: EasyShareTransactionInput;
+};
+
+
+export type MutationRefreshAssetsArgs = {
+  address: Scalars['String']['input'];
+  net: NetworkTypeEnum;
 };
 
 
@@ -390,6 +485,13 @@ export type MutationUploadFileToIpfsArgs = {
   file: Scalars['Upload']['input'];
 };
 
+export type NftStatisticsType = {
+  __typename?: 'NFTStatisticsType';
+  assetId: Scalars['String']['output'];
+  likesCount: Scalars['Int']['output'];
+  streamCount: Scalars['Int']['output'];
+};
+
 export type NftTxnFilter = {
   assetId?: InputMaybe<Scalars['Int']['input']>;
   nftType?: InputMaybe<NftType>;
@@ -413,7 +515,7 @@ export type NftTxnInput = {
 
 export type NftTxnType = {
   __typename?: 'NFTTxnType';
-  asset: ArtNftTypeSoundNftType;
+  asset: AurallyNftType;
   assetId: Scalars['String']['output'];
   buyer: AurallyCreativeType;
   dateAdded: Scalars['DateTime']['output'];
@@ -424,10 +526,11 @@ export type NftTxnType = {
 
 export enum NftType {
   Art = 'ART',
-  Sound = 'SOUND'
+  Sound = 'SOUND',
+  Video = 'VIDEO'
 }
 
-export enum NetworkType {
+export enum NetworkTypeEnum {
   Betanet = 'BETANET',
   Mainnet = 'MAINNET',
   Testnet = 'TESTNET'
@@ -437,6 +540,20 @@ export type NoneTypePaginated = {
   filter?: InputMaybe<Scalars['Void']['input']>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type PendingAppPaymentInput = {
+  amount: Scalars['Int']['input'];
+  assetId: Scalars['String']['input'];
+  userAddress: Scalars['String']['input'];
+};
+
+export type PendingAppPaymentType = {
+  __typename?: 'PendingAppPaymentType';
+  amount: Scalars['Int']['output'];
+  assetId: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  user: AurallyCreativeType;
 };
 
 export type PlaylistInput = {
@@ -452,8 +569,8 @@ export type PlaylistType = {
   creator: AurallyCreativeType;
   dateAdded: Scalars['DateTime']['output'];
   description?: Maybe<Scalars['String']['output']>;
-  id: Scalars['Int']['output'];
-  lastUpdated: Scalars['DateTime']['output'];
+  id?: Maybe<Scalars['Int']['output']>;
+  lastUpdated?: Maybe<Scalars['DateTime']['output']>;
   name: Scalars['String']['output'];
   soundNfts: Array<SoundNftType>;
 };
@@ -465,27 +582,46 @@ export type PlaylistTypeSoundNftsArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  adminNftStatistics: AdminNftStatisticsType;
   album: AlbumType;
   albums: Array<AlbumType>;
   allNfts: Array<ArtNftTypeSoundNftType>;
+  /** Get Aurally statistics information */
+  appStatistics: ApplicationStatisticsType;
   artAuctions: Array<ArtAuctionType>;
   artNft?: Maybe<ArtNftType>;
   artNfts: Array<ArtNftType>;
   assetHoldings: Scalars['String']['output'];
   creative?: Maybe<AurallyCreativeType>;
+  currentContractVersion: Scalars['Int']['output'];
   getComments: Array<CommentType>;
+  /** Get metadata (minimal info data) for a creative, sound, playlist or album */
+  getMetadata: AurallyCreativeTypeSoundNftTypePlaylistTypeAlbumType;
   /** Get a single playlist */
   getPlaylist: PlaylistType;
   getPlaylistSounds: Array<SoundNftType>;
   /** Get all playlists */
   getPlaylists: Array<PlaylistType>;
-  hasUserLikedSoundNft: Scalars['Boolean']['output'];
+  hasUnsyncedSounds: Scalars['Boolean']['output'];
+  hasUserLikedNft: Scalars['Boolean']['output'];
   me?: Maybe<AurallyCreativeType>;
+  nftStatistics?: Maybe<NftStatisticsType>;
   nftTransactions: Array<NftTxnType>;
   soundNft?: Maybe<SoundNftType>;
-  soundNftStatistics?: Maybe<SoundNftStatisticsType>;
   soundNfts: Array<SoundNftType>;
+  staffList: Array<StaffType>;
+  trendingSounds: Array<SoundNftType>;
+  unsyncedSounds: Array<SoundNftType>;
+  userAssetHoldings: Array<AssetHolding>;
+  /** This is a test query, would be removed soon */
+  userAssetsBalance: Scalars['Int']['output'];
   version: Scalars['String']['output'];
+};
+
+
+export type QueryAdminNftStatisticsArgs = {
+  assetKey: Scalars['String']['input'];
+  nftType?: NftType;
 };
 
 
@@ -521,7 +657,7 @@ export type QueryArtNftsArgs = {
 
 export type QueryAssetHoldingsArgs = {
   address: Scalars['String']['input'];
-  net: NetworkType;
+  net: NetworkTypeEnum;
 };
 
 
@@ -535,6 +671,12 @@ export type QueryGetCommentsArgs = {
 };
 
 
+export type QueryGetMetadataArgs = {
+  args: MetadataArgs;
+  choices: MetadataChoices;
+};
+
+
 export type QueryGetPlaylistArgs = {
   playlistId: Scalars['Int']['input'];
 };
@@ -545,8 +687,15 @@ export type QueryGetPlaylistSoundsArgs = {
 };
 
 
-export type QueryHasUserLikedSoundNftArgs = {
+export type QueryHasUserLikedNftArgs = {
   assetKey: Scalars['String']['input'];
+  nftType?: NftType;
+};
+
+
+export type QueryNftStatisticsArgs = {
+  assetKey: Scalars['String']['input'];
+  nftType?: StatisticsItem;
 };
 
 
@@ -560,13 +709,44 @@ export type QuerySoundNftArgs = {
 };
 
 
-export type QuerySoundNftStatisticsArgs = {
-  assetKey: Scalars['String']['input'];
+export type QuerySoundNftsArgs = {
+  opts?: InputMaybe<SoundNftFilterPaginated>;
 };
 
 
-export type QuerySoundNftsArgs = {
+export type QueryStaffListArgs = {
+  opts?: InputMaybe<NoneTypePaginated>;
+};
+
+
+export type QueryTrendingSoundsArgs = {
+  milliseconds?: InputMaybe<Scalars['String']['input']>;
   opts?: InputMaybe<SoundNftFilterPaginated>;
+};
+
+
+export type QueryUnsyncedSoundsArgs = {
+  opts?: InputMaybe<SoundNftFilterPaginated>;
+};
+
+
+export type QueryUserAssetHoldingsArgs = {
+  assetId: Scalars['Int']['input'];
+  net: NetworkTypeEnum;
+  opts?: InputMaybe<NoneTypePaginated>;
+};
+
+
+export type QueryUserAssetsBalanceArgs = {
+  address: Scalars['String']['input'];
+  assetId: Scalars['String']['input'];
+  net: NetworkTypeEnum;
+};
+
+export type RecordEasyShareTransactionStatusType = {
+  __typename?: 'RecordEasyShareTransactionStatusType';
+  message: Scalars['String']['output'];
+  success: Scalars['Boolean']['output'];
 };
 
 export type RegisterStaffInput = {
@@ -583,7 +763,7 @@ export type SoundNftFilter = {
   description?: InputMaybe<Scalars['String']['input']>;
   genre?: InputMaybe<Scalars['String']['input']>;
   label?: InputMaybe<Scalars['String']['input']>;
-  minSupply?: InputMaybe<Scalars['Int']['input']>;
+  minSupply?: InputMaybe<Scalars['String']['input']>;
   price?: InputMaybe<Scalars['Int']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
 };
@@ -610,20 +790,13 @@ export type SoundNftInput = {
   metadataHash: Scalars['String']['input'];
   price: Scalars['Float']['input'];
   releaseDate: Scalars['DateTime']['input'];
-  supply: Scalars['Int']['input'];
+  supply: Scalars['String']['input'];
   title: Scalars['String']['input'];
-};
-
-export type SoundNftStatisticsType = {
-  __typename?: 'SoundNFTStatisticsType';
-  assetId: Scalars['String']['output'];
-  likesCount: Scalars['Int']['output'];
-  streamCount: Scalars['Int']['output'];
 };
 
 export type SoundNftType = {
   __typename?: 'SoundNFTType';
-  approved: Scalars['Boolean']['output'];
+  approved?: Maybe<Scalars['Boolean']['output']>;
   artist: Scalars['String']['output'];
   assetId: Scalars['String']['output'];
   assetKey: Scalars['String']['output'];
@@ -638,12 +811,13 @@ export type SoundNftType = {
   label: Scalars['String']['output'];
   lastUpdated: Scalars['DateTime']['output'];
   likeCount: Scalars['Int']['output'];
-  metadataHash: Scalars['String']['output'];
+  metadataHash?: Maybe<Scalars['String']['output']>;
   price: Scalars['Float']['output'];
   purchased?: Maybe<Scalars['Boolean']['output']>;
   releaseDate: Scalars['DateTime']['output'];
   streamCount: Scalars['Int']['output'];
-  supply: Scalars['Int']['output'];
+  supply: Scalars['String']['output'];
+  syncedWithContract?: Maybe<Scalars['Boolean']['output']>;
   title: Scalars['String']['output'];
 };
 
@@ -660,6 +834,11 @@ export type StaffType = {
   roles: Array<StaffRoleEnum>;
 };
 
+export enum StatisticsItem {
+  Sound = 'SOUND',
+  Video = 'VIDEO'
+}
+
 export enum UpdateRoleAction {
   Add = 'ADD',
   Remove = 'REMOVE'
@@ -672,15 +851,64 @@ export type UpdateStaffRoleInput = {
   superSecretPassword?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type VideoNftInput = {
+  assetId: Scalars['String']['input'];
+  assetKey: Scalars['String']['input'];
+  category?: InputMaybe<Scalars['String']['input']>;
+  claimed?: Scalars['Boolean']['input'];
+  coverImageUrl: Scalars['String']['input'];
+  creator: Scalars['String']['input'];
+  description?: InputMaybe<Scalars['String']['input']>;
+  forSale?: InputMaybe<Scalars['Boolean']['input']>;
+  genre?: InputMaybe<Scalars['String']['input']>;
+  metadataHash: Scalars['String']['input'];
+  price: Scalars['Float']['input'];
+  releaseDate: Scalars['DateTime']['input'];
+  supply: Scalars['String']['input'];
+  title: Scalars['String']['input'];
+  trailerFile: Scalars['Upload']['input'];
+  videoFile: Scalars['Upload']['input'];
+  videoType: Scalars['String']['input'];
+};
+
+export type VideoNftType = {
+  __typename?: 'VideoNFTType';
+  approved?: Maybe<Scalars['Boolean']['output']>;
+  assetId: Scalars['String']['output'];
+  assetKey: Scalars['String']['output'];
+  category?: Maybe<Scalars['String']['output']>;
+  claimed: Scalars['Boolean']['output'];
+  coverImageUrl: Scalars['String']['output'];
+  creator: AurallyCreativeType;
+  dateAdded: Scalars['DateTime']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  forSale: Scalars['Boolean']['output'];
+  genre?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+  lastUpdated: Scalars['DateTime']['output'];
+  likeCount: Scalars['Int']['output'];
+  metadataHash?: Maybe<Scalars['String']['output']>;
+  price: Scalars['Float']['output'];
+  purchased?: Maybe<Scalars['Boolean']['output']>;
+  syncedWithContract?: Maybe<Scalars['Boolean']['output']>;
+  title: Scalars['String']['output'];
+  videoType: Scalars['String']['output'];
+};
+
 export type GetNftsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetNftsQuery = { __typename?: 'Query', soundNfts: Array<{ __typename?: 'SoundNFTType', id?: number | null, artist: string, assetId: string, assetKey: string, coverImageUrl: string, dateAdded: any, price: number, title: string, creator: { __typename?: 'AurallyCreativeType', id?: number | null, address: string, username?: string | null, imageUrl?: string | null } }> };
 
+export type AppStatisticsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AppStatisticsQuery = { __typename?: 'Query', appStatistics: { __typename?: 'ApplicationStatisticsType', totalArtNfts: number, totalPurchases: number, totalRegisteredUsers: number, totalSoundNfts: number, totalCreators: number } };
+
 
 export const GetNftsDocument = gql`
     query GetNfts {
-  soundNfts(opts: {limit: 10, offset: 0, filter: {approved: true}}) {
+  soundNfts(opts: {limit: 20, offset: 0, filter: {approved: true}}) {
     id
     artist
     assetId
@@ -730,3 +958,46 @@ export type GetNftsQueryHookResult = ReturnType<typeof useGetNftsQuery>;
 export type GetNftsLazyQueryHookResult = ReturnType<typeof useGetNftsLazyQuery>;
 export type GetNftsSuspenseQueryHookResult = ReturnType<typeof useGetNftsSuspenseQuery>;
 export type GetNftsQueryResult = Apollo.QueryResult<GetNftsQuery, GetNftsQueryVariables>;
+export const AppStatisticsDocument = gql`
+    query AppStatistics {
+  appStatistics {
+    totalArtNfts
+    totalPurchases
+    totalRegisteredUsers
+    totalSoundNfts
+    totalCreators
+  }
+}
+    `;
+
+/**
+ * __useAppStatisticsQuery__
+ *
+ * To run a query within a React component, call `useAppStatisticsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAppStatisticsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAppStatisticsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAppStatisticsQuery(baseOptions?: Apollo.QueryHookOptions<AppStatisticsQuery, AppStatisticsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AppStatisticsQuery, AppStatisticsQueryVariables>(AppStatisticsDocument, options);
+      }
+export function useAppStatisticsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AppStatisticsQuery, AppStatisticsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AppStatisticsQuery, AppStatisticsQueryVariables>(AppStatisticsDocument, options);
+        }
+export function useAppStatisticsSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<AppStatisticsQuery, AppStatisticsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<AppStatisticsQuery, AppStatisticsQueryVariables>(AppStatisticsDocument, options);
+        }
+export type AppStatisticsQueryHookResult = ReturnType<typeof useAppStatisticsQuery>;
+export type AppStatisticsLazyQueryHookResult = ReturnType<typeof useAppStatisticsLazyQuery>;
+export type AppStatisticsSuspenseQueryHookResult = ReturnType<typeof useAppStatisticsSuspenseQuery>;
+export type AppStatisticsQueryResult = Apollo.QueryResult<AppStatisticsQuery, AppStatisticsQueryVariables>;
