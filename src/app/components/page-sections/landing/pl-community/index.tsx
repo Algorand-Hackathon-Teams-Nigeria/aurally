@@ -6,7 +6,7 @@ const Community = () => {
     <PrimaryCirclesCard>
       <div>
         <div className="text-[28px] sm:text-4xl lg:text-5xl font-bold text-center mb-9">
-          Join Our Socials
+          Join Our Community
         </div>
         <Link
           title="Aurally App"

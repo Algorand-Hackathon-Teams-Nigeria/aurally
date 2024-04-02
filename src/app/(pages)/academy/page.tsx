@@ -1,7 +1,12 @@
+import { Metadata } from "next";
 import Page from "@atoms/a-page";
 import Landing from "@page-sections/landing";
 import Academy from "@page-sections/academy";
 import BallGradient from "@/app/components/BallGradient";
+
+export const metadata: Metadata = {
+  title: "Academy | Aurally",
+};
 
 const AcademyPage = () => {
   return (

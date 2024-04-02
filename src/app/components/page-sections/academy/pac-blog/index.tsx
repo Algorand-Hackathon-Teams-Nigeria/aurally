@@ -39,7 +39,7 @@ const Blog = () => {
           ))}
         </ul>
       </div>
-      <div className="flex-[0.4] flex flex-col gap-12">
+      <div className="flex-[0.4] hidden xl:flex flex-col gap-12">
         <Landing.AppStatistics mini />
         <ul className="flex flex-col gap-8">
           {COMMUNITY.map((item) => (

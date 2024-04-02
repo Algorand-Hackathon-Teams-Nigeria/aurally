@@ -24,9 +24,10 @@ const roundStat = (stat: number, suffix?: string): string => {
 
 interface Props {
   mini?: boolean;
+  withGap?: boolean;
 }
 
-const AppStatistics: React.FC<Props> = ({ mini }) => {
+const AppStatistics: React.FC<Props> = ({ mini, withGap = true }) => {
   const { data } = useAppStatisticsQuery();
 
   if (mini) {
@@ -63,7 +64,8 @@ const AppStatistics: React.FC<Props> = ({ mini }) => {
   return (
     <section
       id="app-statistics"
-      className="w-full flex items-center p-4 md:p-0 justify-center mb-36"
+      className={`w-full flex items-center p-4 md:p-0 justify-center ${withGap ? "mb-36" : ""
+        }`}
     >
       <div className="flex items-center w-full flex-wrap rounded-md md:hidden gap-6 flex-col -translate-y-10 p-6 border-neutral-500/30 justify-evenly border bg-subBackground">
         <div className="flex items-center w-full justify-evenly">
