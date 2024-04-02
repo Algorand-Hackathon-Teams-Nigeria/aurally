@@ -12,8 +12,8 @@ export const NAVS = [
     link: "/products",
   },
   {
-    label: "For Fans",
-    link: "#fans",
+    label: "Academy",
+    link: "/academy",
   },
   {
     label: "FAQs",
