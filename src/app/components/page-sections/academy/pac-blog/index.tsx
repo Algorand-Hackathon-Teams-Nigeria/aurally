@@ -48,7 +48,13 @@ const Blog = () => {
               className="relative flex flex-col items-center gap-3 bg-primary rounded-3xl p-12"
             >
               <h4 className="font-bold text-3xl">{item.title}</h4>
-              <Image src={item.img} alt={item.title} width={215} height={188} />
+              <img
+                loading="lazy"
+                src={item.img}
+                alt={item.title}
+                width={215}
+                height={188}
+              />
               <Link
                 className="bg-gradient-to-b font-medium from-secondaryPink to-secondaryYellow p-2 px-3 rounded-md shadow absolute bottom-4"
                 href={item.href}
