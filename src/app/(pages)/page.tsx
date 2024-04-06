@@ -12,10 +12,7 @@ export default function LandingPage() {
         <Landing.HomeMarketPlace />
         <Landing.ForCreators />
         <Landing.ForFans />
-        <Landing.Features />
         <Landing.HowItWorks />
-        <Landing.RoadMap />
-        <Landing.Events />
         <Landing.Community />
       </div>
     </Page>

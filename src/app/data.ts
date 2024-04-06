@@ -51,7 +51,7 @@ export const WORKS = [
     title: "Connecting Your Wallet:",
     img: "/images/connect_wallet.svg",
     desc:
-      "Connect your Algoran-supported wallet to Aurally for seamless transactions and rewards.",
+      "Connect your Algorand-supported wallet to Aurally for seamless transactions and rewards.",
   },
   {
     title: "Enjoy The Experience:",

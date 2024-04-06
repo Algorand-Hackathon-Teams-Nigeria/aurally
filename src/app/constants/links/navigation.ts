@@ -12,16 +12,12 @@ export const NAVS = [
     link: "/products",
   },
   {
-    label: "For Fans",
-    link: "#fans",
+    label: "Academy",
+    link: "/academy",
   },
   {
-    label: "FAQs",
-    link: "#faqs",
-  },
-  {
-    label: "Features",
-    link: "#features",
+    label: "News & Events",
+    link: "/news-and-events",
   },
   // {
   //   label: "Founders",

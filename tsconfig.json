@@ -47,6 +47,9 @@
       "@assets/*": [
         "./src/app/assets/*"
       ],
+      "@graphics/*": [
+        "./src/app/components/graphics/*"
+      ],
       "@organisms/*": [
         "./src/app/components/organisms/*"
       ],

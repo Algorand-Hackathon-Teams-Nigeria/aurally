@@ -13,6 +13,12 @@ const nextConfig = {
       },
       {
         protocol: "https",
+        hostname: "miro.medium.com",
+        port: "",
+        pathname: "**",
+      },
+      {
+        protocol: "https",
         hostname: "gateway.pinata.cloud",
         port: "",
         pathname: "/ipfs/**",

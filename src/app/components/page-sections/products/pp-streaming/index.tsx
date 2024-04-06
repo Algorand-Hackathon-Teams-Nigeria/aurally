@@ -12,10 +12,8 @@ const Streaming = () => {
         link={`${process.env.NEXT_PUBLIC_APP_URL}/create/sound`}
       >
         <p>
-          Start by seamlessly connecting your digital wallet to the platform.
-          Our application supports various blockchain networks, ensuring
-          compatibility with popular cryptocurrencies. Your wallet is your
-          secure gateway to the world of NFTs.
+          Stream high quality music and videos from top and fast rising
+          artists/creators worldwide across diverse genres on Aurally
         </p>
       </ProductPromotion>
     </section>
