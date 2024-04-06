@@ -7,8 +7,7 @@ export interface BlogPost {
 
 const BLOG_POSTS: BlogPost[] = [
   {
-    img:
-      "https://miro.medium.com/v2/resize:fit:720/format:webp/1*_UqWoztB6_I4AUQlqA6hFw@2x.jpeg",
+    img: "/images/we_are_live.webp",
     title:
       "Aurally: The No. 1 NFT Marketplace for Creatives and Fans is Now Live!",
     desc:
@@ -17,8 +16,7 @@ const BLOG_POSTS: BlogPost[] = [
       "https://aurally.medium.com/aurally-the-no-1-nft-marketplace-for-creatives-and-fans-is-now-live-fc0a51e79534",
   },
   {
-    img:
-      "https://miro.medium.com/v2/resize:fit:720/format:webp/1*1AnCMaxD0_svFtaxoGqTUA@2x.jpeg",
+    img: "/images/join_and_earn.webp",
     title: "All you need to know about Aurally’s native token – Aura",
     desc:
       "Are you ready to embark on a journey where music meets innovation, and creativity knows no bounds? Welcome to Aurally, the next frontier in the creator-verse where every beat and every melody sings of endless potential. At the heart of this revolution lies the Aura token – the key to unlocking a world of rewards, opportunities, and boundless imagination.",

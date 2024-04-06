@@ -14,10 +14,8 @@ const StreamAndEarn = () => {
         link={`${process.env.NEXT_PUBLIC_APP_URL}/explore`}
       >
         <p>
-          Start by seamlessly connecting your digital wallet to the platform.
-          Our application supports various blockchain networks, ensuring
-          compatibility with popular cryptocurrencies. Your wallet is your
-          secure gateway to the world of NFTs.
+          Stream your favorite song/videos and earn rewards in cryptocurrency
+          and NFTs.
         </p>
       </ProductPromotion>
     </section>

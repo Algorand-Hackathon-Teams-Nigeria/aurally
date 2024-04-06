@@ -43,7 +43,7 @@ export const NftCard = ({ data }: Prop) => {
           width={570}
           height={610}
           src={data.coverImageUrl}
-          className="object-cover rounded-[10px] absolute inset-0 w-full h-full"
+          className="object-cover min-h-[320px] min-w-[273px] rounded-[10px] absolute inset-0 w-full h-full"
           alt={data.title}
         />
         <div className="absolute text-white/90 gap-2 flex bottom-2 left-2 w-full flex-col">
