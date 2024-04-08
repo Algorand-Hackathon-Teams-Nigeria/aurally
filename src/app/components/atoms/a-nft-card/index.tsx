@@ -42,6 +42,7 @@ export const NftCard = ({ data }: Prop) => {
         <Image
           width={570}
           height={610}
+          unoptimized
           src={data.coverImageUrl}
           className="object-cover min-h-[320px] min-w-[273px] rounded-[10px] absolute inset-0 w-full h-full"
           alt={data.title}
