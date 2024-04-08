@@ -5,7 +5,7 @@ COPY package.json package-lock.json ./
 RUN  npm install
 COPY . .
 RUN npm run build
-
+# RUN rm -rf .env.local
 FROM node:20.11.0-bullseye AS runner
 WORKDIR /app
 RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
