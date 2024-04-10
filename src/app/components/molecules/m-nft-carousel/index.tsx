@@ -26,7 +26,7 @@ export const NftCarousel = ({ data = [] }: NftCarouselProps) => {
     <Carousel className="w-full" opts={{ loop: true, align: "start" }}>
       <CarouselContent>
         {data.map((item) => (
-          <CarouselItem className="sm:basis-1/2 lg:basis-1/3 xl:basis-1/4" key={Number(item.assetId ?? 0)}>
+          <CarouselItem className="sm:basis-1/2 h-full lg:basis-1/3 xl:basis-1/4" key={Number(item.assetId ?? 0)}>
             <NftCard data={item} />
           </CarouselItem>
         ))}

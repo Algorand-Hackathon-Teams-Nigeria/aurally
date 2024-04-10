@@ -36,10 +36,9 @@ export const NftCard = ({ data }: Prop) => {
   return (
     <div
       title={data.title}
-      className="h-max relative min-h-80 overflow-hidden flex-1 shadow-md"
+      className="h-max relative min-h-80 flex-1 shadow-md"
     >
-      {/* <div className="w-full h-max pt-[75%] relative overflow-hidden"> */}
-      <Link href={`${process.env.NEXT_PUBLIC_APP_URL}/single/${data.assetKey}`}>
+      <Link className="h-full" href={`${process.env.NEXT_PUBLIC_APP_URL}/single/${data.assetKey}`}>
         <Image
           width={570}
           height={610}

@@ -16,7 +16,7 @@ const HomeMarketPlace = () => {
         topOrBottom="bottom-[-125%]"
         leftOrRight="right-[calc(-9vw-50px)]"
       />
-      <div className="relative z-[5]">
+      <div className="">
         <div className="flex justify-between items-center  mt-14 mb-6">
           <div className="text-3xl md:text-4xl font-bold">Marketplace</div>
         </div>
