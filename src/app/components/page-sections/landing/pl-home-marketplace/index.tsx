@@ -1,16 +1,12 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
 import { Button } from "@mantine/core";
-import { Embla } from "@mantine/carousel";
 import classes from "@styles/landing.module.css";
 import BallGradient from "@components/BallGradient";
-import ScrollButton from "@components/ScrollButton";
 import { useGetNftsQuery } from "@services/graphl_generated";
 import { NftCarousel, NftCarouselLoader } from "@molecules/m-nft-carousel";
 
 const HomeMarketPlace = () => {
-  const [embla, setEmbla] = useState<Embla | null>(null);
   const { data, loading } = useGetNftsQuery();
 
   return (
@@ -23,9 +19,6 @@ const HomeMarketPlace = () => {
       <div className="relative z-[5]">
         <div className="flex justify-between items-center  mt-14 mb-6">
           <div className="text-3xl md:text-4xl font-bold">Marketplace</div>
-          <div className="flex gap-5 sm:gap-6">
-            <ScrollButton embla={embla} />
-          </div>
         </div>
         <div className="flex gap-4 mb-4 w-full h-[42px] overflow-x-auto">
           <Button variant={"filled"} radius="xl">
@@ -34,7 +27,7 @@ const HomeMarketPlace = () => {
         </div>
         {loading
           ? <NftCarouselLoader />
-          : <NftCarousel setEmbla={setEmbla} data={data?.soundNfts} />}
+          : <NftCarousel data={data?.soundNfts} />}
         <Link
           title="Marketplace"
           href="https://app.aurally.xyz/explore"

@@ -1,9 +1,10 @@
 import Image from "next/image";
 import { IconWrapper } from "@/app/components/Icon";
 import Link from "next/link";
+import { GetNftsQuery } from "@/app/services/graphl_generated";
 
 type Prop = {
-  data: SoundCardType;
+  data: GetNftsQuery["soundNfts"][number];
 };
 
 export const NftCardLoader = () => {
