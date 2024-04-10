@@ -35,10 +35,13 @@ export const NftCardLoader = () => {
 export const NftCard = ({ data }: Prop) => {
   return (
     <div
+      style={{ minHeight: 320 }}
       title={data.title}
       className="h-max relative min-h-80 flex-1 shadow-md"
     >
-      <Link className="h-full min-h-80" href={`${process.env.NEXT_PUBLIC_APP_URL}/single/${data.assetKey}`}>
+      <Link
+        style={{ minHeight: 320 }}
+        className="h-full min-h-80" href={`${process.env.NEXT_PUBLIC_APP_URL}/single/${data.assetKey}`}>
         <Image
           width={570}
           height={610}
