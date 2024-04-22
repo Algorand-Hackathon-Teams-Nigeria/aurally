@@ -12,9 +12,9 @@ const ForCreators = () => {
       <Image src={ForCreatorsHero} alt="" id="creators" className="mb-14" />
       <div className="grid lg:grid-cols-2 justify-between relative">
         <BallGradient topOrBottom="top-0" leftOrRight="right-0" />
-        <h1 className="text-[3.5rem] xl:text-[5rem] leading-[110%] font-bold max-w-[635px] relative">
+        <h2 className="text-[3.5rem] xl:text-[5rem] leading-[110%] font-bold max-w-[635px] relative">
           Empowering Creatives to Thrive
-        </h1>
+        </h2>
         <div className="overflow-x-scroll relative">
           <div className="grid grid-cols-landing-card-1 lg:grid-cols-1 gap-4 font-roboto mt-8 lg:mt-0">
             <div className="flex items-center gap-2 h-full">
