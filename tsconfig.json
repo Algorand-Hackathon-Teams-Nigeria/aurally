@@ -29,6 +29,9 @@
       "@lib/*": [
         "./src/app/lib/*"
       ],
+      "@ui/*": [
+        "./src/app/components/ui/*"
+      ],
       "@components/*": [
         "./src/app/components/*"
       ],

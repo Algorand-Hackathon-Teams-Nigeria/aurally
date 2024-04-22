@@ -37,7 +37,7 @@ const details = {
 export const metadata: Metadata = {
   title: "The Best NFT and Music Streaming platform",
   description: details.description,
-  icons: ["/logo.svg"],
+  icons: ["/icon.svg"],
   metadataBase: new URL("https://aurally.xyz"),
   openGraph: {
     title: "Aurally",

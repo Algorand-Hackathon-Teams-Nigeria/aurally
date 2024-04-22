@@ -1,9 +1,10 @@
 import Image from "next/image";
 import { IconWrapper } from "@/app/components/Icon";
 import Link from "next/link";
+import { GetNftsQuery } from "@/app/services/graphl_generated";
 
 type Prop = {
-  data: SoundCardType;
+  data: GetNftsQuery["soundNfts"][number];
 };
 
 export const NftCardLoader = () => {
@@ -34,14 +35,17 @@ export const NftCardLoader = () => {
 export const NftCard = ({ data }: Prop) => {
   return (
     <div
+      style={{ minHeight: 320 }}
       title={data.title}
-      className="h-max relative min-h-80 overflow-hidden flex-1 shadow-md"
+      className="h-max relative min-h-80 flex-1 shadow-md"
     >
-      {/* <div className="w-full h-max pt-[75%] relative overflow-hidden"> */}
-      <Link href={`${process.env.NEXT_PUBLIC_APP_URL}/single/${data.assetKey}`}>
+      <Link
+        style={{ minHeight: 320 }}
+        className="h-full min-h-80" href={`${process.env.NEXT_PUBLIC_APP_URL}/single/${data.assetKey}`}>
         <Image
           width={570}
           height={610}
+          unoptimized
           src={data.coverImageUrl}
           className="object-cover min-h-[320px] min-w-[273px] rounded-[10px] absolute inset-0 w-full h-full"
           alt={data.title}

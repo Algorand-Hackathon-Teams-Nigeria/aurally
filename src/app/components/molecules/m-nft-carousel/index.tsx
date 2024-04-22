@@ -1,8 +1,7 @@
 "use client";
-import { Dispatch, SetStateAction } from "react";
-import { EmblaCarouselType } from "embla-carousel-react";
-import { Carousel, CarouselSlide } from "@mantine/carousel";
 import { NftCard, NftCardLoader } from "@atoms/a-nft-card";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@ui/carousel";
+import { GetNftsQuery } from "@/app/services/graphl_generated";
 
 export const NftCarouselLoader = () => {
   return (
@@ -19,31 +18,21 @@ export const NftCarouselLoader = () => {
 };
 
 type NftCarouselProps = {
-  data?: SoundCardType[];
-  setEmbla: Dispatch<SetStateAction<EmblaCarouselType | null>>;
+  data?: GetNftsQuery["soundNfts"];
 };
 
-export const NftCarousel = ({ data = [], setEmbla }: NftCarouselProps) => {
+export const NftCarousel = ({ data = [] }: NftCarouselProps) => {
   return (
-    <Carousel
-      classNames={{
-        root: "w-full",
-        slide: "max-w-[calc(100%-20px)] min-[320px]:max-w-[285px]",
-        container: "gap-4",
-      }}
-      getEmblaApi={setEmbla}
-      containScroll="trimSnaps"
-      slideSize="285px"
-      slideGap={{ base: 12, sm: 16 }}
-      slidesToScroll={"auto"}
-      align="end"
-      withControls={false}
-    >
-      {data.map((item) => (
-        <CarouselSlide key={Number(item.assetId ?? 0)}>
-          <NftCard data={item} />
-        </CarouselSlide>
-      ))}
+    <Carousel className="w-full" opts={{ loop: true, align: "start" }}>
+      <CarouselContent>
+        {data.map((item) => (
+          <CarouselItem className="sm:basis-1/2 min-h-80 h-full lg:basis-1/3 xl:basis-1/4" key={Number(item.assetId ?? 0)}>
+            <NftCard data={item} />
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+      <CarouselPrevious />
+      <CarouselNext />
     </Carousel>
   );
 };
