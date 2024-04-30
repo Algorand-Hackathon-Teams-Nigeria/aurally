@@ -9,7 +9,7 @@ export const UPCOMING_FEATURES: readonly Feature[] = [
   {
     title: "Fractional NFTs",
     desc:
-      "Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.",
+      "Creators can tokenize their project(art, music or videos) allowing fans purchase fractions of it and earn royalties from the project sales.",
     img: "/images/fractional_nfts.svg",
     link: "#",
   },
@@ -17,14 +17,14 @@ export const UPCOMING_FEATURES: readonly Feature[] = [
     title: "P2P Integration",
     img: "/images/p2p.svg",
     desc:
-      "Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.",
+      "Seamlessly top up your Algo balance with our Peer-to-Peer feature.",
     link: "#",
   },
   {
     title: "Video Streaming",
     img: "/images/video_streaming.svg",
     desc:
-      "Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.",
+      "Stream high quality videos for top and fast rising creators across diverse genres.",
     link: "#",
   },
 ] as const;
