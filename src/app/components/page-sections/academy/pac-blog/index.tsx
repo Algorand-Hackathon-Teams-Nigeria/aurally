@@ -9,12 +9,12 @@ const COMMUNITY = [
   {
     title: "For Creatives",
     img: "/images/man_learning.svg",
-    href: "#",
+    href: "https://aurally.medium.com",
   },
   {
     title: "For Fans",
     img: "/images/man_learning.svg",
-    href: "#",
+    href: "https://aurally.medium.com",
   },
 ];
 
@@ -32,10 +32,7 @@ const Blog = () => {
         </h3>
         <ul className="flex flex-col gap-16 mt-16">
           {BLOG_POSTS.map((post) => (
-            <BlogPostCard
-              key={post.link}
-              post={post}
-            />
+            <BlogPostCard key={post.link} post={post} />
           ))}
         </ul>
       </div>
