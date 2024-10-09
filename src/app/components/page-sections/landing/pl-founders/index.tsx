@@ -3,7 +3,7 @@
 import Image from "next/image";
 import MI from "@assets/Frame 1000008049.png";
 import classes from "@styles/landing.module.css";
-import Meshach from "@assets/Frame 1000008049-1.png";
+import Meshach from "@assets/MeshachIshaya.jpeg";
 import BallGradient from "@/app/components/BallGradient";
 
 const FOUNDERS = [
@@ -13,7 +13,7 @@ const FOUNDERS = [
     profession: "Technopreneur",
     image: Meshach,
     desc:
-      "Meshach Ishaga is a visionary leader and technology expert, serving as the CEO of Ashinity Synergy Limited and a Senior Consultant at Deep Learning Science Ltd. His expertise spans DevOps, Networking, Blockchain Development, AI, and ML, making him a multi-faceted leader in the tech industry. Meshach&apos;s leadership at Ashinity has driven transformative solutions, fostering collaboration between public and private sectors for societal benefit. His role as CTO at Jamborow Ltd. underscores his commitment to financial inclusion and empowerment in Africa. Meshach&apos;s career reflects his unwavering dedication to excellence, innovation, and leveraging technology for societal advancement.",
+      "Meshach Ishaya is a visionary leader and technology expert, serving as the CEO of Ashinity Synergy Limited. His expertise spans DevOps, Networking, Blockchain Development, AI, and ML, making him a multi-faceted leader in the tech industry. Meshach’s leadership at Ashinity has driven transformative solutions, fostering collaboration between public and private sectors for societal benefit. His career reflects his unwavering dedication to excellence, innovation, and leveraging technology for societal advancement.",
   },
   {
     name: "MI Abaga",
