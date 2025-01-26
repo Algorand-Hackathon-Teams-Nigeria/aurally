@@ -12,6 +12,12 @@ import Founders from "./pl-founders";
 import AppStatistics from "./pl-app-statistics";
 import HomeMarketPlace from "./pl-home-marketplace";
 import UpComingFeatures from "./pl-upcoming-features";
+import HomePage from "./new-fans/pl-for-fans copy";
+import AboutUsNew from "./new-fans/pl-about-us copy";
+import LandingSection from "./new-fans/pl-for-fans copy/forfans_banner";
+import ForCreatorsNew from "./new-fans/pl-for-creators copy";
+import How_it_works from "./new-fans/pl-community how-it-works/how_it_works"
+import NewCommunity from "./new-fans/pl-community how-it-works"
 
 const Landing = {
   FAQS,
@@ -28,6 +34,12 @@ const Landing = {
   AppStatistics,
   HomeMarketPlace,
   UpComingFeatures,
+  HomePage,
+  AboutUsNew,
+  LandingSection,
+  ForCreatorsNew,
+  How_it_works,
+  NewCommunity,
 };
 
 export default Landing;
