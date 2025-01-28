@@ -1,9 +1,7 @@
-"use client";
-
 import Image from "next/image";
-import MI from "@assets/Frame 1000008049.png";
+import MI from "@assets/Mi.png";
 import classes from "@styles/landing.module.css";
-import Meshach from "@assets/MeshachIshaya.jpeg";
+import Meshach from "@assets/Meshach.png";
 import BallGradient from "@/app/components/BallGradient";
 
 const FOUNDERS = [
@@ -21,54 +19,64 @@ const FOUNDERS = [
     profession: "Music Icon and Tech Enthusiast",
     image: MI,
     desc:
-      "M.I Abaga, the renowned Nigerian rapper, singer, and record producer, has been a dominant force in African hip hop for over two decades. Rising to fame with hits like &quot;Crowd Mentality&quot; and &quot;Action film,&quot; he&apos;s earned accolades such as Best Hip Hop at the MTV Africa Music Awards. As music exec and CEO of Chocolate City Music from 2015 to 2019, he showcased his exceptional entrepreneurial spirit, leading the label to greater heights. Beyond music, M.I is a tech enthusiast, founding Tasck in 2019 and Incredible Music in 2020 to groom and connectAfrican creatives with global opportunities, blending his passion for music with innovative technology. His dynamic career exemplifies the fusion of music and tech, embodying the ethos of Aurally&apos;s mission.",
+      "M.I Abaga, the renowned Nigerian rapper, singer, and record producer, has been a dominant force in African hip hop for over two decades. Rising to fame with hits like &quot;Crowd Mentality&quot; and &quot;Action film,&quot; he&apos;s earned accolades such as Best Hip Hop at the MTV Africa Music Awards. As music exec and CEO of Chocolate City Music from 2015 to 2019, he showcased his exceptional entrepreneurial spirit, leading the label to greater heights. Beyond music, M.I is a tech enthusiast, founding Tasck in 2019 and Incredible Music in 2020 to groom and connect African creatives with global opportunities, blending his passion for music with innovative technology. His dynamic career exemplifies the fusion of music and tech, embodying the ethos of Aurally&apos;s mission.",
   },
 ];
 
 const Founders = () => {
   return (
-    <div className="flex flex-col gap-32">
+    <div className="flex flex-col gap-32 translate-y-[-205px] lg:translate-y-[-370px]">
       <div className="border px-4 overflow-hidden relative lg:px-10 rounded-3xl lg:rounded-[2rem] border-border/60">
         <BallGradient topOrBottom="top-[30%]" leftOrRight="right-0" />
-        {FOUNDERS.map((founder, id) => (
-          <div
-            key={founder.name}
-            className={`flex flex-col py-8 lg:py-16 items-center md:flex-row gap-8 w-full border-border/60 ${id !== FOUNDERS.length - 1 ? "border-b" : ""
-              }`}
-          >
-            <div className="flex-[0.4]">
-              <div className="p-8 w-fit rounded-3xl bg-primary/20 bg-aural-waves bg-cover">
-                <Image
-                  src={founder.image}
-                  alt={founder.name.concat(" ").concat(founder.role)}
-                  className="rounded-3xl"
-                />
-                <div className="mt-6 text-3xl font-bold flex flex-col gap-2">
-                  <p className={`${classes.txt_grd2}`}>{founder.role}</p>
-                  <p className="text-grey-04">{founder.name}</p>
-                </div>
+        
+        <div className="flex flex-col py-8 lg:py-16 gap-8 items-center md:flex-row w-full border-border/60">
+          {/* Mobile: Stack images and text */}
+          <div className="w-full flex flex-col items-center gap-8 lg:flex-row lg:gap-4">
+            {/* Meshach's Image */}
+            <div className="p-4 w-full lg:max-w-[250px] rounded-3xl bg-primary/20 bg-aural-waves bg-cover h-full">
+              <Image
+                src={Meshach}
+                alt="Meshach Ishaya CEO"
+                className="rounded-3xl object-cover w-full h-full"
+                width={200}  // Set image width
+                height={200} // Set image height
+              />
+              <div className="mt-6 text-2xl font-bold flex flex-col gap-2">
+                <p className={`${classes.txt_grd2}`}>CEO/Co-Founder</p>
+                <p className="text-grey-04">Meshach Ishaya</p>
               </div>
             </div>
-            <div className=" flex-1">
-              <h3 className="text-4xl font-bold">{founder.profession}</h3>
-              <p
-                className="font-roboto text-justify text-lg mt-3"
-                dangerouslySetInnerHTML={{ __html: founder.desc }}
-              >
+
+            {/* MI's Image */}
+            <div className="p-4 w-full lg:max-w-[250px] rounded-3xl bg-primary/20 bg-aural-waves bg-cover h-full">
+              <Image
+                src={MI}
+                alt="MI Abaga CMO"
+                className="rounded-3xl object-cover w-full h-full"
+                width={200}  // Set image width
+                height={200} // Set image height
+              />
+              <div className="mt-6 text-2xl font-bold flex flex-col gap-2">
+                <p className={`${classes.txt_grd2}`}>CMO/Co-Founder</p>
+                <p className="text-grey-04">MI Abaga</p>
+              </div>
+            </div>
+
+            {/* Text Description */}
+            <div className="flex-1 text-lg font-roboto text-justify mt-3">
+              <p>
+                Together, Meshach and M.I represent the perfect synergy of music and
+                technology, bringing a wealth of experience and innovation to Aurally.
+                As co-founders, they are dedicated to revolutionizing the music industry
+                and empowering artists through the transformative power of blockchain
+                technology. With their combined expertise and vision, Aurally is poised
+                to redefine the future of music streaming and create unparalleled
+                opportunities for artists and listeners alike.
               </p>
             </div>
           </div>
-        ))}
+        </div>
       </div>
-      <p className="max-w-4xl self-center text-center text-xl">
-        Together, Meshach and M.I represent the perfect synergy of music and
-        technology, bringing a wealth of experience and innovation to Aurally.
-        As co-founders, they are dedicated to revolutionizing the music industry
-        and empowering artists through the transformative power of blockchain
-        technology. With their combined expertise and vision, Aurally is poised
-        to redefine the future of music streaming and create unparalleled
-        opportunities for artists and listeners alike.
-      </p>
     </div>
   );
 };

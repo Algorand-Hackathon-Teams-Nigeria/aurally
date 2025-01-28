@@ -3,7 +3,7 @@ import PrimaryCirclesCard from "@/app/components/atoms/a-primary-circles-card";
 
 const MissionVision = () => {
   return (
-    <section className="relative" id="mission-vision">
+    <section className="relative  translate-y-[-205px] lg:translate-y-[-370px]" id="mission-vision">
       <PrimaryCirclesCard>
         <div className="w-full px-4 lg:px-14 lg:py-4 items-center flex flex-col gap-14 lg:flex-row justify-evenly">
           <div>

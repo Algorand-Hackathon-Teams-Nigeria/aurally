@@ -1,13 +1,20 @@
+"use client"; 
 import React from "react";
 import Link from "next/link";
 import { BigLogo } from "@atoms/a-big-logo";
 import { IconWrapper } from "@components/Icon";
 import { FOOTER_LINKS } from "@constants/links/socials";
-
+import { usePathname } from "next/navigation"; 
 const Footer = () => {
+  const pathname = usePathname();
+  const isAboutPage = pathname === "/about"; 
+
   return (
     <div className="relative">
-      <div className="mt-32 flex flex-col items-center relative">
+      <div
+        className={`mt-32 flex flex-col items-center relative ${
+          isAboutPage ? "translate-y-[-300px]" : ""}`}
+      >
         <BigLogo to="/" />
         <div className="flex gap-5 mt-10 mb-12">
           {FOOTER_LINKS.map((link) => (

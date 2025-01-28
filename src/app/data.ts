@@ -92,3 +92,30 @@ export const roadmaps = [
     ],
   },
 ];
+
+
+export const mobileRoadmaps = [
+  {
+    title: "2023 Q4: Full Launch at MI Music Festival",
+    desc: [
+      "Official platform launch with complete functionalities on December 31st 2023.",
+    ],
+  },
+  {
+    title: "2024 Q1: Rewards System Implementation",
+    desc: [
+      "Develop and integrate a crypto-token based rewards system.",
+      "Incorporate user feedback to refine the rewards mechanism.",
+      "Mobile application (Android and iOS)",
+    ],
+  },
+  {
+    title: "2024 Q2-Q4: Expansion and Feature Enhancement",
+    desc: [
+      "Expand platform capabilities and add new features based on user feedback.",
+      "Enhance user interface for a more engaging experience.",
+      "Explore partnerships for market reach and cross-chain functionalities.",
+      "Metaverse integration",
+    ],
+  },
+];

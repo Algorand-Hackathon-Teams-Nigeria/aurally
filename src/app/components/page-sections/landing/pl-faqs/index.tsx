@@ -61,7 +61,7 @@ const FAQS = () => {
   ));
 
   return (
-    <section id="faqs">
+    <section id="faqs" className="translate-y-[-205px] lg:translate-y-[-490px]">
       <h2
         className={`text-3xl md:text-4xl lg:text-5xl xl:text-[4rem] font-bold relative z-[5] ${classes.txt_grd2}`}
       >
