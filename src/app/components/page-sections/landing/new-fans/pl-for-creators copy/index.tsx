@@ -12,10 +12,10 @@ const HeroText = ({
   mainTitle = "Discover, Stream and collect the Rarest NFTs",
   subtitle = (
     <>
-      <span className="block">Aurally's decentralized marketplace model allows creatives to sell their music,</span>
-      <span className="block">artwork, and creative content directly to fans and collectors.</span>
-      <span className="block">This eliminates intermediaries</span>
-      <span className="block">and ensures that creatives retain control over their work and earnings.</span>
+      <span className="block">Aurally makes it effortless to directly support your favourite artists.</span>
+      <span className="block">with seamless Web3 payment options, including popular crytocurrencies, you can back</span>
+      <span className="block">creators from all around the globe. Empower your connection to music and creativity in a </span>
+      <span className="block">way that's is truly yours. </span>
     </>
   ),
 }) => (
