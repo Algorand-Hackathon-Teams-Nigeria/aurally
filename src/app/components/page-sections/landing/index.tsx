@@ -27,6 +27,8 @@ import ForCreatives from "./new-creatives/pl-for-creators copy";
 import CreativeWorks from "./new-creatives/pl-community how-it-works/how_it_works"
 import CreativeCommunity from "./new-creatives/pl-community how-it-works"
 
+import ArtistsPage from "./pl-new-artists";
+
 const Landing = {
   FAQS,
   Events,
@@ -55,6 +57,7 @@ const Landing = {
   ForCreatives,
   CreativeWorks,
   CreativeCommunity,
+  ArtistsPage,
 };
 
 export default Landing;

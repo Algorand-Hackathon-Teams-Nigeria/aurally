@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const CreativeCommunity = () => {
   return (
-    <div className="relative w-full flex justify-center mb-9 lg:translate-y-[0px] translate-y-[190px] ">
+    <div className="relative w-full flex justify-center mb-9 lg:translate-y-[0px] translate-y-[100px] ">
      
       <Image
         src="/guy with headphones.png"

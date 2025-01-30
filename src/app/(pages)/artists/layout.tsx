@@ -132,7 +132,7 @@ export default Navbar;*/
 
 
 
-import NavBar from "@molecules/m-navbar fans";
+import NavBar from "@molecules/m-navbar artists";
 import Footer from "@components/molecules/m-footer";
 
 interface Props {
@@ -145,7 +145,7 @@ const Layout: React.FC<Props> = ({ children }) => {
       <div className="min-h-screen">
         {children}
       </div>
-      
+    
     </div>
   );
 };

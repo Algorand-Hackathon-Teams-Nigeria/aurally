@@ -16,7 +16,7 @@ const HeroText = ({
   ),
 }) => (
   <div
-    className="hero-text-container left-0 w-screen min-h-screen translate-y-[290px] lg:translate-y-[100px] lg:translate-x-[-90px] translate-x-[-27px]"
+    className="hero-text-container left-0 w-screen min-h-screen translate-y-[190px] lg:translate-y-[100px] lg:translate-x-[-90px] translate-x-[-27px]"
     style={{
       backgroundImage: "url('/concert 1.png')",
       backgroundSize: "cover",
@@ -92,11 +92,11 @@ const ForCreatives = () => {
       id="for-creators"
       className="sm:mt-8 sm:mb-8 lg:mt-0 lg:mb-0" 
     >
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 translate-y-[200px] lg:translate-y-[-80px]">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 translate-y-[100px] lg:translate-y-[-80px]">
         {/* Left Column */}
         <div className="flex flex-col justify-start gap-8">
           <h2 className="text-[2rem] xl:text-[3rem] leading-[110%] font-bold max-w-[635px]">
-          <span className="hidden sm:inline text-[#E22BCC]">Empowering </span> Creatives to {" "}Thrive
+          <span className="sm:inline text-[#E22BCC]">Empowering </span> Creatives to {" "}Thrive
           </h2>
 
           <div className="flex items-center gap-2 h-full">

@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState } from "react";
 import { usePathname } from "next/navigation";
 import { useHeadroom } from "@mantine/hooks";
@@ -66,32 +65,6 @@ const Navbar: React.FC<NavbarProps> = ({
         </div>
       </div>
 
-
-      <div className="xl:flex gap-10 items-center hidden">
-        {NAVS.map((item) => {
-          if (item.link === "/" && excludedPages.includes(pathname)) {
-            return null;
-          }
-          return (
-            <div
-              key={item.link}
-              className="flex gap-0 items-center font-space-grotesk text-sm font-medium tracking-wide leading-5 cursor-pointer"
-            >
-              <a
-                href={item.link}
-                className={isActive(item.link) ? "text-yellow" : "text-gray-400"}
-              >
-                {item.label}
-              </a>
-              <img
-                src="https://dashboard.codeparrot.ai/api/image/Z5pD_oIayXWIU-JO/chevron.png"
-                alt="chevron"
-                className="w-3 h-3"
-              />
-            </div>
-          );
-        })}
-      </div>
 
       <div className="xl:flex gap-4 items-center hidden">
         <span
