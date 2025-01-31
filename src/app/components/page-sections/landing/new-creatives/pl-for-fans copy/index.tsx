@@ -90,11 +90,11 @@ const HomeCreatives = () => (
       {/* Right Column - Enlarged Image */}
       <div className="col-span-12 sm:col-span-6 flex justify-center items-center">
         <Image
-          src="/girl with guitar.png"
+          src="/images/girl-guitar.svg"
           alt="Girl with Guitar"
-          width={700}   
-          height={800}  
-          className="w-full max-w-[600px] sm:max-w-[700px] object-contain"
+          className="w-full max-w-[600px] sm:max-w-[700px]"
+          width={700} // specify width
+          height={700} // specify height
         />
       </div>
     </main>

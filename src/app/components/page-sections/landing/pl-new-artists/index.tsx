@@ -88,6 +88,7 @@ const ArtistsPage = () => (
           backgroundImage: "url('/landing_background 1.png')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
           height: '100%',
         }}
       >

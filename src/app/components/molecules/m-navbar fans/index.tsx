@@ -17,9 +17,9 @@ interface NavbarProps {
 }
 
 const Navbar: React.FC<NavbarProps> = ({
-  onLoginClick = () => { },
-  onSignupClick = () => { },
-  onLaunchAppClick = () => { },
+  onLoginClick = () => {},
+  onSignupClick = () => {},
+  onLaunchAppClick = () => {},
 }) => {
   const pathname = usePathname();
   const pinned = useHeadroom({ fixedAt: 200 });
@@ -40,23 +40,25 @@ const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <nav
-      className={`w-full px-[4.5%] pt-4 xl:pt-6 pb-3 flex justify-between items-center fixed top-0 left-0 z-10 transform-gpu transition-transform duration-300 ${pinned ? "translate-y-0" : "-translate-y-full"}`}
+      className={`w-full px-[4.5%] pt-6 xl:pt-8 pb-4 flex justify-between items-center fixed top-0 left-0 z-10 transform-gpu transition-transform duration-300 ${
+        pinned ? "translate-y-0" : "-translate-y-full"
+      }`}
     >
-      <div className="flex gap-9 items-center">
+      <div className="flex gap-6 items-center">
         <BigLogo to="/" className="w-28 xl:w-max" color={"#EBEBEB"} />
-        <div className="flex gap-4 items-center">
+        <div className="flex gap-6 items-center">
           <span
-            className="font-space-grotesk text-sm font-medium tracking-wide leading-5 cursor-pointer hidden xl:block"
+            className="font-space-grotesk text-base font-medium tracking-wide leading-6 cursor-pointer hidden xl:block"
             style={{ color: getTextColor("/fans") }}
           >
             <a href="/fans">For Fans</a>
           </span>
 
           {/* Vertical divider */}
-          <div className="w-px h-6 bg-[#7A7A7A] hidden xl:block"></div>
+          <div className="w-px h-8 bg-[#7A7A7A] hidden xl:block"></div>
 
           <span
-            className="font-space-grotesk text-sm font-medium tracking-wide leading-5 cursor-pointer hidden xl:block"
+            className="font-space-grotesk text-base font-medium tracking-wide leading-6 cursor-pointer hidden xl:block"
             style={{ color: getTextColor("/creatives") }}
           >
             <a href="/creatives">For Artists</a>
@@ -64,7 +66,7 @@ const Navbar: React.FC<NavbarProps> = ({
         </div>
       </div>
 
-      <div className="xl:flex gap-10 items-center hidden">
+      <div className="xl:flex gap-6 items-center hidden">
         {NAVS.map((item) => {
           if (item.link === "/" && excludedPages.includes(pathname)) {
             return null;
@@ -72,7 +74,7 @@ const Navbar: React.FC<NavbarProps> = ({
           return (
             <div
               key={item.link}
-              className="flex gap-0 items-center font-space-grotesk text-sm font-medium tracking-wide leading-5 cursor-pointer"
+              className="flex gap-2 items-center font-space-grotesk text-base font-medium tracking-wide leading-6 cursor-pointer"
             >
               <a
                 href={item.link}
@@ -83,47 +85,29 @@ const Navbar: React.FC<NavbarProps> = ({
               <Image
                 src="/chevron-down.png"
                 alt="chevron"
-                width={12}
-                height={12}
+                width={14}
+                height={14}
               />
             </div>
           );
         })}
       </div>
 
-      <div className="xl:flex gap-4 items-center hidden">
-        <span
-          className="font-space-grotesk text-sm font-medium tracking-wide leading-5 text-gray-400 cursor-pointer"
-          onClick={onLoginClick}
-        >
-          Login
-        </span>
-
-        {/* Vertical divider */}
-        <div className="w-px h-6 bg-[#7A7A7A]"></div>
-
-        <button
-          className="px-2.5 py-1 rounded-full border border-gray-400 bg-none text-gray-400 font-space-grotesk text-sm font-medium tracking-wide leading-5 hover:bg-gray-50"
-          onClick={onSignupClick}
-        >
-          Signup
-        </button>
-
+      <div className="xl:flex gap-6 items-center hidden">
         <a
           href="https://app.aurally.xyz"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex gap-0.5 items-center cursor-pointer bg-gradient-to-b from-[#E22BCC] to-[#FBB03B] bg-clip-text text-transparent font-space-grotesk text-sm font-bold tracking-wide leading-5"
+          className="flex gap-1 items-center cursor-pointer bg-gradient-to-b from-[#E22BCC] to-[#FBB03B] bg-clip-text text-transparent font-space-grotesk text-base font-semibold tracking-wide leading-6"
         >
-          <span>Launch App</span>
+          <span>Get started</span>
           <Image
             src="/rocket.png"
             alt="rocket"
-            width={16}
-            height={16}
+            width={18}
+            height={18}
           />
         </a>
-
       </div>
 
       <SideBar />

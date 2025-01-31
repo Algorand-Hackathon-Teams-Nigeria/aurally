@@ -43,19 +43,19 @@ const Navbar: React.FC<NavbarProps> = ({
     >
       <div className="flex gap-9 items-center">
         <BigLogo to="/" className="w-28 xl:w-max" color={"#EBEBEB"} />
-        <div className="flex gap-4 items-center">
+        <div className="flex gap-6 items-center">
           <span
-            className="font-space-grotesk text-sm font-medium tracking-wide leading-5 cursor-pointer hidden xl:block"
+            className="font-space-grotesk text-base font-medium tracking-wide leading-6 cursor-pointer hidden xl:block"
             style={{ color: getTextColor("/fans") }}
           >
             <a href="/fans">For Fans</a>
           </span>
 
-          {/* Vertical divider with the color #7A7A7A */}
-          <div className="w-px h-6 bg-[#7A7A7A] hidden xl:block"></div>
+          {/* Vertical divider */}
+          <div className="w-px h-8 bg-[#7A7A7A] hidden xl:block"></div>
 
           <span
-            className="font-space-grotesk text-sm font-medium tracking-wide leading-5 cursor-pointer hidden xl:block"
+            className="font-space-grotesk text-base font-medium tracking-wide leading-6 cursor-pointer hidden xl:block"
             style={{ color: getTextColor("/creatives") }}
           >
             <a href="/creatives">For Artists</a>
@@ -63,40 +63,22 @@ const Navbar: React.FC<NavbarProps> = ({
         </div>
       </div>
 
-      <div className="xl:flex gap-4 items-center hidden">
-        <span
-          className="font-space-grotesk text-sm font-medium tracking-wide leading-5 text-gray-400 cursor-pointer"
-          onClick={onLoginClick}
-        >
-          Login
-        </span>
-
-        {/* Vertical divider with the color #7A7A7A */}
-        <div className="w-px h-6 bg-[#7A7A7A]"></div>
-
-        <button
-          className="px-2.5 py-1 rounded-full border border-gray-400 bg-none text-gray-400 font-space-grotesk text-sm font-medium tracking-wide leading-5 hover:bg-gray-50"
-          onClick={onSignupClick}
-        >
-          Signup
-        </button>
-
-        <a
-          href="https://app.aurally.xyz"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex gap-0.5 items-center cursor-pointer bg-gradient-to-b from-[#E22BCC] to-[#FBB03B] bg-clip-text text-transparent font-space-grotesk text-sm font-bold tracking-wide leading-5"
-        >
-          <span>Launch App</span>
-          <Image
-            src="/rocket.png"
-            alt="rocket"
-            width={16}
-            height={16}
-          />
-        </a>
-      </div>
-
+      <div className="xl:flex gap-6 items-center hidden">
+              <a
+                href="https://app.aurally.xyz"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex gap-1 items-center cursor-pointer bg-gradient-to-b from-[#E22BCC] to-[#FBB03B] bg-clip-text text-transparent font-space-grotesk text-base font-semibold tracking-wide leading-6"
+              >
+                <span>Get started</span>
+                <Image
+                  src="/rocket.png"
+                  alt="rocket"
+                  width={18}
+                  height={18}
+                />
+              </a>
+            </div>
       <SideBar />
     </nav>
   );
