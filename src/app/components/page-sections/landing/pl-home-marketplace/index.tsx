@@ -65,7 +65,7 @@ const HomeMarketPlace: React.FC = () => {
             onMouseOut={(e) => (e.currentTarget.style.transform = 'scale(1)')}
           >
             <img
-              src="https://dashboard.codeparrot.ai/api/image/Z5mlY3k7M7P7g8K8/arrow-ci.png"
+              src="/images/arrow-circle-left.png"
               alt="Previous"
               className="w-full h-full"
             />
@@ -77,7 +77,7 @@ const HomeMarketPlace: React.FC = () => {
             onMouseOut={(e) => (e.currentTarget.style.transform = 'scale(1)')}
           >
             <img
-              src="https://dashboard.codeparrot.ai/api/image/Z5mlY3k7M7P7g8K8/arrow-ci-2.png"
+              src="/images/arrow-circle-right.png"
               alt="Next"
               className="w-full h-full"
             />
@@ -124,11 +124,11 @@ const HomeMarketPlace: React.FC = () => {
     price?: string;
     creatorImage?: string;
   }> = ({
-    image = 'https://dashboard.codeparrot.ai/api/image/Z5mlY3k7M7P7g8K8/frame-19.png',
+    image = '/images/astro.png',
     title = 'Beat the flow',
     creator = 'Tyler Faye',
     price = '0.25 ETH',
-    creatorImage = 'https://dashboard.codeparrot.ai/api/image/Z5mlY3k7M7P7g8K8/ellipse.png',
+    creatorImage = '/images/Ellipse 8.png',
   }) => {
     return (
       <div className="max-w-[265px] min-w-[200px] h-[290px] bg-[#140425] rounded-lg overflow-hidden flex flex-col border border-[#444444] mx-auto">
@@ -179,10 +179,10 @@ const HomeMarketPlace: React.FC = () => {
 
   // Product items (example)
   const products = [
-    { image: 'https://dashboard.codeparrot.ai/api/image/Z5mlY3k7M7P7g8K8/frame-19.png', title: 'Beat the flow', creator: 'Tyler Faye', price: '0.25 ETH' },
-    { image: 'https://dashboard.codeparrot.ai/api/image/Z5mlY3k7M7P7g8K8/frame-19-2.png', title: 'Deep Dive', creator: 'Anna Belle', price: '0.30 ETH' },
-    { image: 'https://dashboard.codeparrot.ai/api/image/Z5mlY3k7M7P7g8K8/frame-19-3.png', title: 'Artistic Dreams', creator: 'Liam Red', price: '0.40 ETH' },
-    { image: 'https://dashboard.codeparrot.ai/api/image/Z5mlY3k7M7P7g8K8/frame-19-4.png', title: 'Future Beats', creator: 'Jade Smith', price: '0.50 ETH' },
+    { image: '/images/astro.png', title: 'Beat the flow', creator: 'Tyler Faye', price: '0.25 ETH' },
+    { image: '/images/ring-head.png', title: 'Deep Dive', creator: 'Tyler Faye', price: '0.30 ETH' },
+    { image: '/images/robot-hat.png', title: 'Future Beats', creator: 'Tyler Faye', price: '0.40 ETH' },
+    { image: '/images/robot-hat.png', title: 'Future Beats', creator: 'Tyler Faye', price: '0.50 ETH' },
   ];
 
   // Handle next and previous actions

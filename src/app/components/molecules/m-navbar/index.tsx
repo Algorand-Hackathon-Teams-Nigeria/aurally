@@ -110,7 +110,7 @@ const NavBar = () => {
                 {item.label}
               </a>
               <img
-                src="https://dashboard.codeparrot.ai/api/image/Z5pD_oIayXWIU-JO/chevron.png"
+                src="/chevron-down.png"
                 alt="chevron"
                 className="w-3 h-3"
               />

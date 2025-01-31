@@ -90,7 +90,7 @@ const Navbar: React.FC<NavbarProps> = ({
         >
           <span>Launch App</span>
           <img
-            src="https://dashboard.codeparrot.ai/api/image/Z5pD_oIayXWIU-JO/material.png"
+            src="/rocket.png"
             alt="rocket"
             className="w-4 h-4"
           />
