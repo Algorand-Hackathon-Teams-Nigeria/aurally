@@ -17,9 +17,9 @@ interface NavbarProps {
 }
 
 const Navbar: React.FC<NavbarProps> = ({
-  onLoginClick = () => {},
-  onSignupClick = () => {},
-  onLaunchAppClick = () => {},
+  onLoginClick = () => { },
+  onSignupClick = () => { },
+  onLaunchAppClick = () => { },
 }) => {
   const pathname = usePathname();
   const pinned = useHeadroom({ fixedAt: 200 });
@@ -109,9 +109,11 @@ const Navbar: React.FC<NavbarProps> = ({
           Signup
         </button>
 
-        <div
+        <a
+          href="https://app.aurally.xyz"
+          target="_blank"
+          rel="noopener noreferrer"
           className="flex gap-0.5 items-center cursor-pointer bg-gradient-to-b from-[#E22BCC] to-[#FBB03B] bg-clip-text text-transparent font-space-grotesk text-sm font-bold tracking-wide leading-5"
-          onClick={onLaunchAppClick}
         >
           <span>Launch App</span>
           <Image
@@ -120,7 +122,8 @@ const Navbar: React.FC<NavbarProps> = ({
             width={16}
             height={16}
           />
-        </div>
+        </a>
+
       </div>
 
       <SideBar />

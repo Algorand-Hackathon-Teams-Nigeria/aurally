@@ -66,10 +66,11 @@ const HeroButtons = ({
       </button>
       <button
         className="flex items-center justify-center px-4 py-3 border border-[#c6c6c6] text-[#c6c6c6] text-base font-bold rounded-full min-w-[121px] transition-all duration-300 ease-in-out hover:border-[#8a2be2] hover:text-[#8a2be2]"
-        onClick={onExplore}
+        onClick={() => window.location.href = 'https://app.aurally.xyz/explore'}
       >
         <span>Explore</span>
       </button>
+
     </div>
   </div>
 );
