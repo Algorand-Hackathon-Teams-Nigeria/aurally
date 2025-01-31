@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 import { useHeadroom } from "@mantine/hooks";
 import { NAVS } from "@constants/links/navigation";
 import { BigLogo } from "@atoms/a-big-logo";
@@ -15,9 +16,9 @@ interface NavbarProps {
 }
 
 const Navbar: React.FC<NavbarProps> = ({
-  onLoginClick = () => { },
-  onSignupClick = () => { },
-  onLaunchAppClick = () => { },
+  onLoginClick = () => {},
+  onSignupClick = () => {},
+  onLaunchAppClick = () => {},
 }) => {
   const pathname = usePathname();
   const pinned = useHeadroom({ fixedAt: 200 });
@@ -33,10 +34,7 @@ const Navbar: React.FC<NavbarProps> = ({
   const excludedPages = ["/fans", "/creatives", "/about"];
 
   const getTextColor = (page: string): string => {
-    if (pathname === page) {
-      return "#FBB03B";
-    }
-    return "white";
+    return pathname === page ? "#FBB03B" : "white";
   };
 
   return (
@@ -65,7 +63,6 @@ const Navbar: React.FC<NavbarProps> = ({
         </div>
       </div>
 
-
       <div className="xl:flex gap-4 items-center hidden">
         <span
           className="font-space-grotesk text-sm font-medium tracking-wide leading-5 text-gray-400 cursor-pointer"
@@ -89,14 +86,14 @@ const Navbar: React.FC<NavbarProps> = ({
           onClick={onLaunchAppClick}
         >
           <span>Launch App</span>
-          <img
+          <Image
             src="/rocket.png"
             alt="rocket"
-            className="w-4 h-4"
+            width={16}
+            height={16}
           />
         </div>
       </div>
-
 
       <SideBar />
     </nav>

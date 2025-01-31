@@ -145,7 +145,7 @@ const Layout: React.FC<Props> = ({ children }) => {
       <div className="min-h-screen">
         {children}
       </div>
-      <Footer />
+      
     </div>
   );
 };

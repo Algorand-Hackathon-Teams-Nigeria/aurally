@@ -48,6 +48,7 @@ export default HomeMarketPlace; */
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 
 const HomeMarketPlace: React.FC = () => {
   // MarketplaceHeader
@@ -64,10 +65,11 @@ const HomeMarketPlace: React.FC = () => {
             onMouseOver={(e) => (e.currentTarget.style.transform = 'scale(1.1)')}
             onMouseOut={(e) => (e.currentTarget.style.transform = 'scale(1)')}
           >
-            <img
+            <Image
               src="/images/arrow-circle-left.png"
               alt="Previous"
-              className="w-full h-full"
+              width={34}
+              height={34}
             />
           </button>
           <button
@@ -76,10 +78,11 @@ const HomeMarketPlace: React.FC = () => {
             onMouseOver={(e) => (e.currentTarget.style.transform = 'scale(1.1)')}
             onMouseOut={(e) => (e.currentTarget.style.transform = 'scale(1)')}
           >
-            <img
+            <Image
               src="/images/arrow-circle-right.png"
               alt="Next"
-              className="w-full h-full"
+              width={34}
+              height={34}
             />
           </button>
         </div>
@@ -133,14 +136,20 @@ const HomeMarketPlace: React.FC = () => {
     return (
       <div className="max-w-[265px] min-w-[200px] h-[290px] bg-[#140425] rounded-lg overflow-hidden flex flex-col border border-[#444444] mx-auto">
         <div className="w-full h-[169px] flex-shrink-0">
-          <img src={image} alt={title} className="w-full h-full object-cover" />
+          <Image src={image} alt={title} width={265} height={169} className="w-full h-full object-cover" />
         </div>
         <div className="p-4 flex flex-col gap-3">
           <div className="flex justify-between">
             <div className="flex flex-col gap-3">
               <h3 className="m-0 text-white font-spaceGrotesk text-lg font-bold leading-6">{title}</h3>
               <div className="flex items-center gap-1">
-                <img src={creatorImage} alt="creator" className="w-3 h-3 rounded-full" />
+                <Image
+                  src={creatorImage}
+                  alt="creator"
+                  width={12}
+                  height={12}
+                  className="rounded-full"
+                />
                 <span className="text-[#AFAFAF] text-xs">{creator}</span>
               </div>
             </div>

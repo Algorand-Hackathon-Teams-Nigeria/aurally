@@ -2,10 +2,10 @@
 
 import Head from 'next/head';
 import React from 'react';
-
+import Image from 'next/image';
 
 const artistGroup = {
-  image: '/Artists group.png', 
+  image: '/Artists group.png',
 };
 
 const HeroText = ({
@@ -13,49 +13,51 @@ const HeroText = ({
   subtitle = "Connect Directly with your favourite artists"
 }) => (
   <div className="hero-text-container sm:ml-40 text-center sm:text-left">
-  
-  <h1
-    className="leading-[110%] font-bold text-4xl sm:text-4xl max-w-[635px] mx-auto sm:mx-0 sm:mt-[-330px] translate-y-[20px]"
-  >
-    <span className="block sm:inline">Discover,</span> 
-    <span className="block sm:inline text-[#E22BCC]"> Stream</span> 
-    <span className="block sm:inline"> and collect the <span className="text-yellow">Rarest NFTs</span></span> 
-  </h1>
+    <h1
+      className="leading-[110%] font-bold text-4xl sm:text-4xl max-w-[635px] mx-auto sm:mx-0 sm:mt-[-330px] translate-y-[20px] lg:translate-x-0 translate-x-[90px]"
+    >
+      <span className="">Discover, </span>
+      <span className=" text-transparent bg-clip-text bg-gradient-to-r from-[#E22BCC] to-[#FBB03B]">
+        Stream
+      </span>
 
-  <p className="hero-subtitle mt-2 mx-auto sm:mx-0 translate-y-[20px]">{subtitle}</p>
-</div>
 
+      <span className="block sm:inline"> and {" "}collect the <span className=" block sm:inline text-transparent bg-clip-text bg-gradient-to-r from-[#E22BCC] to-[#FBB03B]">
+        Rarest NFTs
+      </span>
+      </span>
+    </h1>
+    <p className="hero-subtitle mt-2 mx-auto sm:mx-0 translate-y-[20px] lg:translate-x-0 translate-x-[90px]">{subtitle}</p>
+  </div>
 );
 
 const ArtistGroup = ({ artist = artistGroup }) => (
   <div className="flex flex-row gap-6 mt-[-530px] sm:mt-[-770px]">
     <div key="group" className="flex flex-col gap-4 w-full">
-      
-      <img
-        src="/Artists mobile group.png" 
+      <Image
+        src="/Artists mobile group.png"
         alt="Artists Group Mobile"
-        className="w-full h-[350px] sm:hidden rounded-lg object-cover translate-y-[80px]" 
+        width={500}
+        height={350}
+        className="w-full h-[350px] sm:hidden rounded-lg object-cover translate-y-[80px]"
       />
-      <img
-        src={artist.image} 
+      <Image
+        src={artist.image}
         alt="Artists Group"
-        className="hidden sm:block w-full h-72 lg:h-80 rounded-lg object-cover translate-y-[40px]" 
+        width={500}
+        height={300}
+        className="hidden sm:block w-full h-72 lg:h-80 rounded-lg object-cover translate-y-[40px]"
       />
     </div>
   </div>
 );
 
-
-
-
-
-
 const HeroButtons = ({
   onGetStarted = () => console.log('Get Started clicked'),
   onExplore = () => console.log('Explore clicked'),
 }) => (
-  <div className="flex flex-col gap-2.5 mt-8 sm:ml-40 ml-0 sm:mr-0 mr-4 w-full max-w-[500px] mx-auto translate-y-[20px]"> 
-    <div className="flex gap-2.5 justify-center"> 
+  <div className="flex flex-col gap-2.5 mt-8 sm:ml-40 ml-0 sm:mr-0 mr-4 w-full max-w-[500px] mx-auto translate-y-[20px]">
+    <div className="flex gap-2.5 justify-center">
       <button
         className="flex items-center justify-center px-4 py-3 bg-[#8a2be2] text-white text-base font-bold rounded-full min-w-[128px] transition-all duration-300 ease-in-out hover:bg-[#7825c2]"
         onClick={onGetStarted}
@@ -72,7 +74,6 @@ const HeroButtons = ({
   </div>
 );
 
-
 const HomePage = () => (
   <div>
     <Head>
@@ -86,42 +87,42 @@ const HomePage = () => (
       {/* Left Column - HeroText */}
       <div className="col-span-12 sm:col-span-6 flex flex-col justify-center items-start">
         <HeroText />
-        {/* Buttons positioned separately for mobile and desktop */}
+
         <div className="flex sm:hidden mt-4 w-full">
           <HeroButtons />
         </div>
       </div>
 
       {/* Right Column - Phone Image */}
-<div
-  className="col-span-12 sm:col-span-6 flex justify-center items-center sm:mt-[70px] mt-[10px] sm:mb-16 relative" // Increased margin-top for desktop and mobile-specific margin
-  style={{
-    backgroundImage: "url('/landing_background 1.png')", // Default background for larger screens
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    height: '100%',
-  }}
->
-  {/* Mobile background override */}
-  <div
-    className="sm:hidden absolute inset-0" // Mobile background for mobile view only
-    style={{
-      backgroundImage: "url('/mobile-background.png')", // Mobile background image
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      zIndex: -1, // Keep mobile background below the other content
-    }}
-  />
-  
-  {/* Phone Mockup Image */}
-  <img
-    src="/hero phone image 1.png"
-    alt="Phone Mockup"
-    className="w-80 md:w-96 lg:w-full max-h-[85vh] object-contain z-10" // Ensure this image is on top
-  />
-</div>
-
-
+      <div
+        className="col-span-12 sm:col-span-6 flex justify-center items-center sm:mt-[70px] mt-[10px] sm:mb-16 relative"
+        style={{
+          backgroundImage: "url('/landing_background 1.png')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          height: '100%',
+        }}
+      >
+        {/* Mobile background override */}
+        <div
+          className="sm:hidden absolute inset-0"
+          style={{
+            backgroundImage: "url('/mobile-background.png')",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            zIndex: -1,
+          }}
+        />
+        {/* Phone Mockup Image */}
+        <Image
+          src="/hero phone image 1.png"
+          alt="Phone Mockup"
+          width={300}
+          height={600}
+          className="w-80 md:w-96 lg:w-full max-h-[85vh] object-contain z-10"
+        />
+      </div>
 
       {/* Artist Group and Buttons for Desktop */}
       <div className="col-span-12 flex flex-col justify-center items-start sm:mt-8">
@@ -135,4 +136,3 @@ const HomePage = () => (
 );
 
 export default HomePage;
-

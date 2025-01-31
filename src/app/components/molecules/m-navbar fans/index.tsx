@@ -7,6 +7,7 @@ import { NAVS } from "@constants/links/navigation";
 import { BigLogo } from "@atoms/a-big-logo";
 import SideBar from "@atoms/a-sidebar";
 import Link from "next/link";
+import Image from "next/image";
 import classes from "@styles/landing.module.css";
 
 interface NavbarProps {
@@ -16,9 +17,9 @@ interface NavbarProps {
 }
 
 const Navbar: React.FC<NavbarProps> = ({
-  onLoginClick = () => { },
-  onSignupClick = () => { },
-  onLaunchAppClick = () => { },
+  onLoginClick = () => {},
+  onSignupClick = () => {},
+  onLaunchAppClick = () => {},
 }) => {
   const pathname = usePathname();
   const pinned = useHeadroom({ fixedAt: 200 });
@@ -34,10 +35,7 @@ const Navbar: React.FC<NavbarProps> = ({
   const excludedPages = ["/fans", "/creatives", "/about"];
 
   const getTextColor = (page: string): string => {
-    if (pathname === page) {
-      return "#FBB03B";
-    }
-    return "white";
+    return pathname === page ? "#FBB03B" : "white";
   };
 
   return (
@@ -54,7 +52,7 @@ const Navbar: React.FC<NavbarProps> = ({
             <a href="/fans">For Fans</a>
           </span>
 
-          {/* Vertical divider with the color #7A7A7A */}
+          {/* Vertical divider */}
           <div className="w-px h-6 bg-[#7A7A7A] hidden xl:block"></div>
 
           <span
@@ -65,7 +63,6 @@ const Navbar: React.FC<NavbarProps> = ({
           </span>
         </div>
       </div>
-
 
       <div className="xl:flex gap-10 items-center hidden">
         {NAVS.map((item) => {
@@ -83,10 +80,11 @@ const Navbar: React.FC<NavbarProps> = ({
               >
                 {item.label}
               </a>
-              <img
+              <Image
                 src="/chevron-down.png"
                 alt="chevron"
-                className="w-3 h-3"
+                width={12}
+                height={12}
               />
             </div>
           );
@@ -101,7 +99,7 @@ const Navbar: React.FC<NavbarProps> = ({
           Login
         </span>
 
-        {/* Vertical divider with the color #7A7A7A */}
+        {/* Vertical divider */}
         <div className="w-px h-6 bg-[#7A7A7A]"></div>
 
         <button
@@ -116,14 +114,14 @@ const Navbar: React.FC<NavbarProps> = ({
           onClick={onLaunchAppClick}
         >
           <span>Launch App</span>
-          <img
+          <Image
             src="/rocket.png"
             alt="rocket"
-            className="w-4 h-4"
+            width={16}
+            height={16}
           />
         </div>
       </div>
-
 
       <SideBar />
     </nav>

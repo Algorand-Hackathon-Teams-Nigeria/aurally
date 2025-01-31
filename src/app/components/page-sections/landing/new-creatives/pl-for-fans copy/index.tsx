@@ -2,6 +2,7 @@
 
 import Head from "next/head";
 import React from "react";
+import Image from "next/image";
 
 const HeroText = ({
   mainTitle = "Discover, Stream and collect the Rarest NFTs",
@@ -28,25 +29,22 @@ const HeroText = ({
     </h1>
 
     <p className="hero-subtitle mt-2 mx-auto sm:mx-0 translate-y-[-10px]">
-    <span className="hidden sm:inline">Aurally empowers artists to share their music, earn directly </span>
+      <span className="hidden sm:inline">Aurally empowers artists to share their music, earn directly </span>
       <span className="hidden sm:inline">through blockchain technology, and engage with a global</span>
       <span className="hidden sm:inline">audience like never before. </span>
 
-
       <span className="block sm:hidden text-center">
-      Aurally empowers artists to share their music, earn directly
+        Aurally empowers artists to share their music, earn directly
       </span>
       <span className="block sm:hidden text-center">
-      through blockchain technology, and engage with a global
+        through blockchain technology, and engage with a global
       </span>
       <span className="block sm:hidden text-center">
-      audience like never before.
+        audience like never before.
       </span>
     </p>
   </div>
 );
-
-
 
 const HeroButtons = ({
   onGetStarted = () => console.log("Get Started clicked"),
@@ -70,7 +68,6 @@ const HeroButtons = ({
   </div>
 );
 
-
 const HomeCreatives = () => (
   <div>
     <Head>
@@ -92,9 +89,11 @@ const HomeCreatives = () => (
 
       {/* Right Column - Enlarged Image */}
       <div className="col-span-12 sm:col-span-6 flex justify-center items-center">
-        <img
+        <Image
           src="/girl with guitar.png"
           alt="Girl with Guitar"
+          width={700}   
+          height={800}  
           className="w-full max-w-[600px] sm:max-w-[700px] object-contain"
         />
       </div>

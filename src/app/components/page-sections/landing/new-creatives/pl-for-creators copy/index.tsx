@@ -8,10 +8,10 @@ const HeroText = ({
   mainTitle = "Discover, Stream and collect the Rarest NFTs",
   subtitle = (
     <>
-      <span className="block">Aurally makes it effortless to directly support your favourite artists.</span>
+      <span className="block">Aurally&apos;s Web3 platform makes it effortless to directly support your favourite artists.</span>
       <span className="block">With seamless Web3 payment options, including popular cryptocurrencies, you can back</span>
       <span className="block">creators from all around the globe. Empower your connection to music and creativity in a</span>
-      <span className="block">way that's truly yours.</span>
+      <span className="block">way that&apos;s truly yours.</span>
     </>
   ),
 }) => (
@@ -72,25 +72,11 @@ const HeroText = ({
   </div>
 );
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const ForCreatives = () => {
   return (
     <section
       id="for-creators"
-      className="sm:mt-8 sm:mb-8 lg:mt-0 lg:mb-0" 
+      className="sm:mt-8 sm:mb-8 lg:mt-0 lg:mb-0"
     >
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 translate-y-[100px] lg:translate-y-[-80px]">
         {/* Left Column */}

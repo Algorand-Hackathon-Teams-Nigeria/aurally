@@ -1,7 +1,6 @@
 import React from "react";
 import Image from "next/image";
 import BallGradient from "@components/BallGradient";
-import FeatureCircles from "./FeatureCircles";
 
 const AboutUsNew = () => {
   return (
@@ -40,20 +39,25 @@ const AboutUsNew = () => {
             possibilities.
           </div>
           <button className="mt-6 flex items-center justify-center bg-[#8a2be2] rounded-full px-5 py-3 cursor-pointer transition-transform duration-300 hover:scale-105">
-            <img
+            <Image
               src="/Frame_btn.png"
               alt="Launch App Button"
               className="w-full h-full"
+              width={150}   
+              height={50}  
             />
           </button>
         </div>
       </div>
       <div className="relative hidden md:flex items-center" id="about">
         <BallGradient topOrBottom="bottom-0" leftOrRight="right-0" />
-        <img
+        <Image
           src="/Group 1000002693.png"
           alt="Group Image"
           className="w-[450px] h-auto"
+          width={450}  
+          height={300} 
+          layout="intrinsic" 
         />
       </div>
     </section>

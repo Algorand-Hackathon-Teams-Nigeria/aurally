@@ -18,14 +18,15 @@ const AboutUsCreatives = () => {
             <span className="font-space-grotesk text-[64px] font-bold leading-[100%] tracking-[-0.25px] text-[#c6c6c6] m-0">Your Music</span>
           </h1>
           <div className="font-roboto mt-3">
-          <span className=" sm:inline">Aurally's Web3 platform guarantees artists a bigger share of{" "} </span>
-      <span className=" sm:inline">{" "}revenue, redefining music streaming profits.</span>
-      
+            <span className=" sm:inline">Aurally&apos;s Web3 platform guarantees artists a bigger share of{" "} </span>
+            <span className=" sm:inline">{" "}revenue, redefining music streaming profits.</span>
           </div>
           <button className="mt-6 flex items-center justify-center bg-[#8a2be2] rounded-full px-5 py-3 cursor-pointer transition-transform duration-300 hover:scale-105">
-            <img
+            <Image
               src="/Frame_btn.png"
               alt="Launch App Button"
+              width={300}   
+              height={100}  
               className="w-full h-full"
             />
           </button>
@@ -36,9 +37,11 @@ const AboutUsCreatives = () => {
         id="about"
       >
         <BallGradient topOrBottom="bottom-0" leftOrRight="right-0" />
-        <img
+        <Image
           src="/guy with guitar.png"
           alt="Group Image"
+          width={500}   
+          height={600}  
           className="absolute sm:relative transform sm:ml-5 sm:mb-50 sm:translate-x-0 sm:translate-y-0 -translate-x-[80px] translate-y-[50px] w-[500px] sm:w-[450px] h-auto"
         />
       </div>

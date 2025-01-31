@@ -4,7 +4,7 @@ const LandingSection = () => {
   return (
     <div className="relative w-full h-auto">
       {/* Full-Width Container for Image and Overlay */}
-      <div className="relative w-screen h-auto transform sm:translate-y-[-142px] translate-y-[-79px] ml-[-80px]">
+      <div className="relative w-screen h-auto transform sm:translate-y-[-142px] translate-y-[-29px] ml-[-80px]">
         {/* Dark Overlay */}
         <div className="absolute left-[-10vw] right-[-10vw] top-0 bottom-0 bg-black opacity-50 z-10 h-[8vh]" />
 

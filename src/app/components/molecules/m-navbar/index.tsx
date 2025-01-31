@@ -59,6 +59,7 @@ export default NavBar;*/
 "use client";
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useHeadroom, useWindowScroll } from "@mantine/hooks";
 import SideBar from "@atoms/a-sidebar";
@@ -109,10 +110,11 @@ const NavBar = () => {
               >
                 {item.label}
               </a>
-              <img
+              <Image
                 src="/chevron-down.png"
                 alt="chevron"
-                className="w-3 h-3"
+                width={12}
+                height={12}
               />
             </div>
           );

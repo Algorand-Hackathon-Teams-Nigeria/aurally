@@ -2,9 +2,10 @@
 
 import Head from 'next/head';
 import React from 'react';
+import Image from 'next/image';
 
 const artistGroup = {
-  image: '/Artists group.png', 
+  image: '/Artists group.png',
 };
 
 const HeroText = ({
@@ -24,15 +25,19 @@ const HeroText = ({
 const ArtistGroup = ({ artist = artistGroup }) => (
   <div className="flex flex-row gap-6 mt-[-530px] sm:mt-[-770px]">
     <div key="group" className="flex flex-col gap-4 w-full">
-      <img
+      <Image
         src="/Artists mobile group.png" 
         alt="Artists Group Mobile"
-        className="w-full h-[350px] sm:hidden rounded-lg object-cover translate-y-[80px]" 
+        width={500} 
+        height={350}
+        className="w-full sm:hidden rounded-lg object-cover translate-y-[80px]"
       />
-      <img
+      <Image
         src={artist.image} 
         alt="Artists Group"
-        className="hidden sm:block w-full h-72 lg:h-80 rounded-lg object-cover translate-y-[40px]" 
+        width={500}
+        height={400}
+        className="hidden sm:block w-full h-72 lg:h-80 rounded-lg object-cover translate-y-[40px]"
       />
     </div>
   </div>
@@ -95,9 +100,11 @@ const ArtistsPage = () => (
             zIndex: -1,
           }}
         />
-        <img
+        <Image
           src="/phone mockup.png"
           alt="Phone Mockup"
+          width={400} 
+          height={700} 
           className="w-80 md:w-96 lg:w-full max-h-[85vh] object-contain z-10"
         />
       </div>
