@@ -14,7 +14,7 @@ const HeroText = ({
 }) => (
   <div className="hero-text-container sm:ml-40 text-center sm:text-left">
     <h1
-      className="leading-[110%] font-bold text-4xl sm:text-4xl max-w-[635px] mx-auto sm:mx-0 sm:mt-[-330px] translate-y-[20px] lg:translate-x-0 translate-x-[90px]"
+      className="leading-[110%] font-bold text-4xl sm:text-4xl max-w-[635px] mx-auto sm:mx-0 sm:mt-[-330px] translate-y-[20px] lg:translate-x-0 translate-x-[50px]"
     >
       <span className="">Discover, </span>
       <span className=" text-transparent bg-clip-text bg-gradient-to-r from-[#E22BCC] to-[#FBB03B]">
@@ -27,7 +27,7 @@ const HeroText = ({
       </span>
       </span>
     </h1>
-    <p className="hero-subtitle mt-2 mx-auto sm:mx-0 translate-y-[20px] lg:translate-x-0 translate-x-[90px]">{subtitle}</p>
+    <p className="hero-subtitle mt-2 mx-auto sm:mx-0 translate-y-[20px] lg:translate-x-0 translate-x-[40px]">{subtitle}</p>
   </div>
 );
 

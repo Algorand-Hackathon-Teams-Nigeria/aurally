@@ -7,7 +7,7 @@ const NewCommunity = () => {
       <Image
         src="/guy with headphones.png"
         alt="Guy with headphones"
-        width={1400}
+        width={5400}
         height={800} 
         className="object-cover w-full"
       />

@@ -26,7 +26,7 @@ const AboutUsNew = () => {
             <Image
               src="/About us content.png"
               alt="More For Creatives"
-              className="mt-4 mx-auto transform -translate-x-8"
+              className="mt-4 mx-auto transform lg:translate-x-[-30px] translate-x-[-5px]"
               width={500}
               height={150}
               priority
