@@ -25,7 +25,7 @@ const AboutUsCreatives = () => {
             <Image
               src="/Frame_btn.png"
               alt="Launch App Button"
-              width={300}   
+              width={3000}   
               height={100}  
               className="w-full h-full"
             />

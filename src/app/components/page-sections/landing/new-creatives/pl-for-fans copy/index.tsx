@@ -8,7 +8,7 @@ const HeroText = ({
   mainTitle = "Discover, Stream and collect the Rarest NFTs",
   subtitle = "Aurally empowers artists to share their music, earn"
 }) => (
-  <div className="flex flex-col justify-center items-start gap-6 pr-4 sm:pr-16 sm:translate-x-[60px] mx-auto sm:mx-0 w-full max-w-[500px] ml-8">
+  <div className="flex flex-col justify-center items-start gap-6 pr-4 sm:pr-16 sm:translate-x-[60px] mx-auto sm:mx-0 w-full max-w-[500px] ml-8 lg:translate-y-[0px] translate-y-[30px] lg:translate-y-[0px] translate-x-[-20px]">
     <h1 className="leading-[110%] font-bold text-3xl sm:text-6xl max-w-[635px] mx-auto sm:mx-0">
       {/* Mobile View - Centered Text */}
       <span className="block sm:hidden text-center">
@@ -28,21 +28,11 @@ const HeroText = ({
       <span className="hidden sm:inline text-yellow">Connection</span>
     </h1>
 
-    <p className="hero-subtitle mt-2 mx-auto sm:mx-0 translate-y-[-10px]">
-      <span className="hidden sm:inline">Aurally empowers artists to share their music, earn directly </span>
-      <span className="hidden sm:inline">through blockchain technology, and engage with a global</span>
-      <span className="hidden sm:inline">audience like never before. </span>
-
-      <span className="block sm:hidden text-center">
-        Aurally empowers artists to share their music, earn directly
-      </span>
-      <span className="block sm:hidden text-center">
-        through blockchain technology, and engage with a global
-      </span>
-      <span className="block sm:hidden text-center">
-        audience like never before.
-      </span>
+    <p className="hero-subtitle mt-2 mx-auto sm:mx-0 translate-y-[-10px] ">
+      Aurally empowers artists to share their music, earn directly through blockchain technology,
+      and engage with a global audience like never before.
     </p>
+
   </div>
 );
 
@@ -93,8 +83,8 @@ const HomeCreatives = () => (
           src="/images/girl-guitar.svg"
           alt="Girl with Guitar"
           className="w-full max-w-[600px] sm:max-w-[700px]"
-          width={700} // specify width
-          height={700} // specify height
+          width={700} 
+          height={700} 
         />
       </div>
     </main>

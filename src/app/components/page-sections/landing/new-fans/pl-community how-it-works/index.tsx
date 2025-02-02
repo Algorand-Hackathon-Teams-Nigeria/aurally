@@ -4,13 +4,14 @@ const NewCommunity = () => {
   return (
     <div className="relative w-full flex justify-center mb-9">
      
-      <Image
-        src="/guy with headphones.png"
-        alt="Guy with headphones"
-        width={5400}
-        height={800} 
-        className="object-cover w-full"
-      />
+     <Image
+  src="/guy with headphones.png"
+  alt="Guy with headphones"
+  width={5400}
+  height={800}
+  className="object-cover w-full h-[35vh] sm:h-[70vh] lg:h-[90vh]"
+/>
+
 
       {/* Overlay Content */}
       <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white">

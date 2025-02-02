@@ -25,7 +25,7 @@ const HeroText = ({
     }}
   >
     <div className="ml-[-7px] pt-[50px] sm:pt-[80px] md:pt-[100px] lg:pt-[120px]">
-      <h1 className="leading-[110%] font-bold text-4xl max-w-[635px] lg:translate-x-[510px] translate-x-[140px] translate-x-0 lg:translate-y-[0px] translate-y-[-30px]">
+      <h1 className="leading-[110%] font-bold text-4xl max-w-[635px] lg:translate-x-[510px] translate-x-[60px] translate-x-0 lg:translate-y-[0px] translate-y-[-30px]">
         More For Creatives
       </h1>
     </div>

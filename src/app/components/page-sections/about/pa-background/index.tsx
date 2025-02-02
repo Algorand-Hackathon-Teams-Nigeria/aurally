@@ -102,7 +102,7 @@ const Background = () => (
       </div>
 
       {/* Right Column */}
-      <div className="col-span-12 sm:col-span-6 flex justify-center items-center translate-x-[-270px] lg:translate-x-90 translate-y-[-205px] lg:translate-y-[-270px]">
+      <div className="col-span-12 sm:col-span-6 flex justify-center items-center lg:translate-x-[-300px] translate-x-[-100px] translate-y-[-140px] lg:translate-y-[-270px]">
         <Image
           src="/headphones-about.png"
           alt="Girl with Guitar"
