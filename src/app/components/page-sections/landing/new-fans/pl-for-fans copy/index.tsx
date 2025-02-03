@@ -3,10 +3,7 @@
 import Head from 'next/head';
 import React from 'react';
 import Image from 'next/image';
-
-const artistGroup = {
-  image: '/Artists group.png',
-};
+import EmblaCarousel from '@ui/EmblaCarousel';
 
 const HeroText = ({
   mainTitle = "Discover, Stream and collect the Rarest NFTs",
@@ -20,35 +17,12 @@ const HeroText = ({
       <span className=" text-transparent bg-clip-text bg-gradient-to-r from-[#E22BCC] to-[#FBB03B]">
         Stream
       </span>
-
-
       <span className="block sm:inline"> and {" "}collect the <span className=" block sm:inline text-transparent bg-clip-text bg-gradient-to-r from-[#E22BCC] to-[#FBB03B]">
         Rarest NFTs
       </span>
       </span>
     </h1>
     <p className="hero-subtitle mt-2 mx-auto sm:mx-0 translate-y-[20px] lg:translate-x-0 translate-x-[40px]">{subtitle}</p>
-  </div>
-);
-
-const ArtistGroup = ({ artist = artistGroup }) => (
-  <div className="flex flex-row gap-6 mt-[-530px] sm:mt-[-770px]">
-    <div key="group" className="flex flex-col gap-4 w-full">
-      <Image
-        src="/Artists mobile group.png"
-        alt="Artists Group Mobile"
-        width={500}
-        height={350}
-        className="w-full h-[350px] sm:hidden rounded-lg object-cover translate-y-[80px]"
-      />
-      <Image
-        src={artist.image}
-        alt="Artists Group"
-        width={500}
-        height={300}
-        className="hidden sm:block w-full h-72 lg:h-80 rounded-lg object-cover translate-y-[40px]"
-      />
-    </div>
   </div>
 );
 
@@ -70,7 +44,6 @@ const HeroButtons = ({
       >
         <span>Explore</span>
       </button>
-
     </div>
   </div>
 );
@@ -117,7 +90,7 @@ const HomePage = () => (
         />
         {/* Phone Mockup Image */}
         <Image
-          src="/hero phone image 1.png"
+          src="/images/hero phone image 1.svg"
           alt="Phone Mockup"
           width={300}
           height={600}
@@ -125,9 +98,13 @@ const HomePage = () => (
         />
       </div>
 
-      {/* Artist Group and Buttons for Desktop */}
+      {/* Embla Carousel and Buttons for Desktop */}
       <div className="col-span-12 flex flex-col justify-center items-start sm:mt-8">
-        <ArtistGroup />
+        <div className="flex flex-row gap-6 mt-[-530px] sm:mt-[-770px]">
+          <div key="carousel" className="flex flex-col gap-4 w-full">
+            <EmblaCarousel />
+          </div>
+        </div>
         <div className="hidden sm:flex mt-4">
           <HeroButtons />
         </div>
