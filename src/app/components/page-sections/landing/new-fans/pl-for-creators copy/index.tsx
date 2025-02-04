@@ -3,6 +3,7 @@ import Image from "next/image";
 import ArtistIcon from "@assets/material-symbols-light_artist-outline.png";
 import StockMarket from "@assets/icon-park-outline_stock-market.png";
 import AurallyFoster from "@assets/material-symbols-light_artist-outline-1.png";
+import InfiniteCarousel from "@ui/newcarousel";
 
 const HeroText = ({
   mainTitle = "Discover, Stream and collect the Rarest NFTs",
@@ -19,26 +20,20 @@ const HeroText = ({
     <div className="ml-[-7px]">
       <h1 className="leading-[110%] font-bold text-4xl max-w-[635px]">
         Support Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#E22BCC] to-[#FBB03B]">
-  Faves,
-</span>
-{" "}
+          Faves,
+        </span>
         <span className="block">Your Way.</span>
       </h1>
       <p className="hero-subtitle mt-2">{subtitle}</p>
     </div>
     
     <div className="mt-6 w-screen overflow-hidden">
-      <Image
-        src="/Frame 1000008326.png"
-        alt="Hero Supporting Image"
-        width={1920} 
-        height={400} 
-        className="object-cover w-full" 
-        priority 
-      />
+      <InfiniteCarousel />
     </div>
   </div>
 );
+
+
 
 const ForCreatorsNew = () => {
   return (

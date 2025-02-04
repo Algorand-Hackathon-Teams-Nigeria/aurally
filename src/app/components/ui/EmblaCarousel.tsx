@@ -50,7 +50,7 @@ export default function InfiniteCarousel() {
         .animate-scroll {
           display: flex;
           white-space: nowrap;
-          animation: scroll 15s linear infinite; /* Adjust speed */
+          animation: scroll 25s linear infinite; /* Adjust speed */
         }
         
         /* Importing the Space Grotesk font */
