@@ -15,36 +15,36 @@ const ForCreatorsNew = () => {
             Discover New Sounds, connect with your favs
           </h2>
 
-          {/* First Flex Row: Image + Text */}
+          {/* First Flex Row */}
           <div className="flex items-center gap-4">
             <Image
               src={ArtistIcon}
               alt="Artist"
-              className="w-8 h-8 lg:w-12 lg:h-12" // Increased size for desktop
+              className="w-8 h-8 lg:w-12 lg:h-12" 
             />
-            <div className="rounded-[10px] p-2 lg:text-[1.25rem]"> {/* Increased font size for desktop */}
+            <div className="rounded-[10px] p-2 lg:text-[1.25rem]"> 
               Aurally curates diverse music.
             </div>
           </div>
 
-          {/* Second Flex Row: Image + Text */}
+          {/* Second Flex Row */}
           <div className="flex items-center gap-4">
             <Image
               src={StockMarket}
               alt="Stock Market"
-              className="w-8 h-8 lg:w-12 lg:h-12" // Increased size for desktop
+              className="w-8 h-8 lg:w-12 lg:h-12" 
             />
             <div className="rounded-[10px] p-2 lg:text-[1.25rem]">
               Stream-to-Earn rewards loyalty.
             </div>
           </div>
 
-          {/* Third Flex Row: Image + Text */}
+          {/* Third Flex Row */}
           <div className="flex items-center gap-4">
             <Image
               src={AurallyFoster}
               alt="Aurally Foster"
-              className="w-8 h-8 lg:w-12 lg:h-12" // Increased size for desktop
+              className="w-8 h-8 lg:w-12 lg:h-12"
             />
             <div className="rounded-[10px] p-2 lg:text-[1.25rem]">
               Fans access exclusive interactions.

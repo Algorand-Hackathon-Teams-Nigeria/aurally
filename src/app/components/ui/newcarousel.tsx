@@ -38,15 +38,16 @@ const carouselImages = [
 
 const InfiniteCarousel = () => {
   return (
-    <div className="w-full overflow-hidden relative">
-      <div className="flex gap-4 animate-scroll">
+    <div className="relative w-full overflow-hidden">
+     
+      <div className="flex gap-4 animate-scroll w-[200%] sm:w-[300%]">
         {carouselImages.concat(carouselImages).map((image, index) => (
-          <div key={index} className="min-w-[300px] relative">
+          <div key={index} className="min-w-[250px] sm:min-w-[300px] lg:min-w-[350px] relative">
             <Card isFooterBlurred className="border-none w-full" radius="lg">
               <div className="relative">
                 <Image
                   alt={`Carousel Image ${index + 1}`}
-                  className="object-cover w-full h-[300px]"
+                  className="object-cover w-full h-[250px] sm:h-[300px]"
                   src={image.src}
                   width={600}
                   height={300}
@@ -69,6 +70,7 @@ const InfiniteCarousel = () => {
         ))}
       </div>
 
+     
       <style jsx>{`
         @keyframes scroll {
           0% {
@@ -78,10 +80,26 @@ const InfiniteCarousel = () => {
             transform: translateX(-50%);
           }
         }
+        
         .animate-scroll {
           display: flex;
           white-space: nowrap;
-          animation: scroll 15s linear infinite;
+          animation: scroll 20s linear infinite;
+          will-change: transform;
+        }
+
+        @media (max-width: 768px) {
+          .animate-scroll {
+            animation-duration: 25s;
+            width: 400%; /* Increase width to fit images */
+          }
+        }
+
+        @media (max-width: 480px) {
+          .animate-scroll {
+            animation-duration: 30s;
+            width: 500%; /* Ensure mobile has enough width */
+          }
         }
       `}</style>
     </div>

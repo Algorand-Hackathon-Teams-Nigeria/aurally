@@ -29,7 +29,7 @@ const artists = [
   },
 ];
 
-// 🔹 Duplicate slides for a seamless infinite effect
+
 const duplicatedArtists = [...artists, ...artists];
 
 export default function InfiniteCarousel() {
@@ -41,18 +41,18 @@ export default function InfiniteCarousel() {
             <Card isFooterBlurred className="border-none w-full" radius="lg">
               <Image
                 alt={artist.name}
-                className="object-cover w-[250px] h-[200px]" // Make the image smaller
+                className="object-cover w-[250px] h-[200px]" 
                 src={artist.image}
-                width={250} // Use same width and height to make it proportional
+                width={250} 
                 height={200}
               />
               {/* Song Title and Artist Name */}
               <div className="mt-2">
-                {/* Song Title with larger font size and white color */}
+                
                 <p className="font-space-grotesk text-white text-lg font-bold">
                   {artist.songTitle}
                 </p>
-                {/* Artist Name with grey color, smaller font size, and space between words */}
+                
                 <div className="text-gray-400 font-medium">
                   {artist.name.split(" ").map((word, i) => (
                     <span

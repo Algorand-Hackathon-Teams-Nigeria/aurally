@@ -78,7 +78,7 @@ const HomePage = () => (
 					height: "100%",
 				}}
 			>
-				{/* Mobile background override */}
+				
 				<div
 					className="sm:hidden absolute inset-0"
 					style={{
