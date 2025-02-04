@@ -130,3 +130,18 @@ html {
   /* filter: blur(247px); */
   @apply blur-[90vw] min-[471px]:blur-[247px] rounded-full;
 }
+
+
+.embla {
+  overflow: hidden;
+}
+
+.embla__container {
+  display: flex;
+  gap: 16px;
+}
+
+.embla__slide {
+  min-width: 300px;
+}
+

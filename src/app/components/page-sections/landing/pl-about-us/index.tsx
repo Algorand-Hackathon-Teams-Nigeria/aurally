@@ -24,7 +24,7 @@ const AboutUs = () => {
           </div>
         </div>
       </div>
-      <div className="relative hidden md:flex items-center" id="about">
+      <div className="relative hidden md:flex items-center" id="about ">
         <BallGradient topOrBottom="bottom-0" leftOrRight="right-0" />
         <Image
           width={594}

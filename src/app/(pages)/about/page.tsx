@@ -17,7 +17,10 @@ const AboutPage = () => {
       <About.MeetTheFounders />
       <Landing.RoadMap />
       <Landing.FAQS />
-      <Landing.Community />
+      <div className="translate-y-[-205px] lg:translate-y-[-370px]">
+  <Landing.NewCommunity />
+</div>
+
     </Page>
   );
 };

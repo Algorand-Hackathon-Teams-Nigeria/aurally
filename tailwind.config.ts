@@ -24,6 +24,16 @@ const config = {
         roadmap: "1fr 4px 1fr",
         "roadmap-sm": "4px 1fr",
       },
+      maxWidth: {
+        containerXs: "20rem",
+        containerSm: "36rem",
+        containerMd: "48rem",
+        containerLg: "60rem",
+        containerXl: "72rem",
+        container2xl: "84rem",
+        container3xl: "96rem",
+        containerFull: "100%",
+      },
       backgroundImage: {
         "aural-waves": "url('/images/aural_waves.svg')",
         "shadow-gradient":
