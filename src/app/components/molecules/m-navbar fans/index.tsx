@@ -117,7 +117,6 @@ const Navbar: React.FC<NavbarProps> = ({
 
 export default Navbar;*/
 
-
 "use client";
 
 import React, { useState } from "react";
@@ -143,9 +142,9 @@ interface NavItem {
 }
 
 const Navbar: React.FC<NavbarProps> = ({
-  onLoginClick = () => { },
-  onSignupClick = () => { },
-  onLaunchAppClick = () => { },
+  onLoginClick = () => {},
+  onSignupClick = () => {},
+  onLaunchAppClick = () => {},
 }) => {
   const pathname = usePathname();
   const pinned = useHeadroom({ fixedAt: 200 });
@@ -159,10 +158,8 @@ const Navbar: React.FC<NavbarProps> = ({
     return pathname.startsWith(href);
   };
 
-  const excludedPages = ["/fans", "/creatives", "/about"];
-
   const getTextColor = (page: string): string => {
-    return pathname === page ? "#FBB03B" : "white";
+    return pathname === page || (page === "/" && pathname === "/") ? "#FBB03B" : "white";
   };
 
   return (
@@ -175,9 +172,9 @@ const Navbar: React.FC<NavbarProps> = ({
         <div className="flex gap-6 items-center">
           <span
             className="font-space-grotesk text-base font-medium tracking-wide leading-6 cursor-pointer hidden xl:block"
-            style={{ color: getTextColor("/fans") }}
+            style={{ color: getTextColor("/") }}
           >
-            <a href="/fans">For Fans</a>
+            <a href="/">For Fans</a>
           </span>
 
           {/* Vertical divider */}
@@ -194,11 +191,7 @@ const Navbar: React.FC<NavbarProps> = ({
 
       {/* Main Menu */}
       <div className="xl:flex gap-6 items-center hidden">
-        {NAVS.map((item: NavItem) => {
-          if (item.link === "/" && excludedPages.includes(pathname)) {
-            return null;
-          }
-
+        {NAVS.filter((item: NavItem) => item.link !== "/").map((item: NavItem) => {
           const hasSubmenu = item.submenu && item.submenu.length > 0; // Check both existence and length of submenu
           const isDropdownOpen = openDropdown === item.label;
 
@@ -263,4 +256,3 @@ const Navbar: React.FC<NavbarProps> = ({
 };
 
 export default Navbar;
-
