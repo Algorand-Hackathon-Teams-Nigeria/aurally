@@ -19,6 +19,7 @@ import LandingSection from "./new-fans/pl-for-fans copy/forfans_banner";
 import ForCreatorsNew from "./new-fans/pl-for-creators copy";
 import How_it_works from "./new-fans/pl-community how-it-works/how_it_works"
 import NewCommunity from "./new-fans/pl-community how-it-works"
+import SupportText from "./new-fans/pl-for-fans copy/support-favs";
 
 import HomeCreatives from "./new-creatives/pl-for-fans copy";
 import AboutUsCreatives from "./new-creatives/pl-about-us copy";
@@ -50,6 +51,7 @@ const Landing = {
   ForCreatorsNew,
   How_it_works,
   NewCommunity,
+  SupportText,
   /* creatives */
   HomeCreatives,
   AboutUsCreatives,

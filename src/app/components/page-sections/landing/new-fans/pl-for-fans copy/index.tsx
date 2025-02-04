@@ -9,7 +9,7 @@ const HeroText = ({
   mainTitle = "Discover, Stream and collect the Rarest NFTs",
   subtitle = "Connect Directly with your favourite artists"
 }) => (
-  <div className="hero-text-container sm:ml-40 text-center sm:text-left">
+  <div className="hero-text-container sm:ml-40 text-center sm:text-left lg:translate-y-[100px]">
     <h1
       className="leading-[110%] font-bold text-4xl sm:text-4xl max-w-[635px] mx-auto sm:mx-0 sm:mt-[-330px] translate-y-[20px] lg:translate-x-0 translate-x-[50px]"
     >
@@ -68,49 +68,49 @@ const HomePage = () => (
       </div>
 
       {/* Right Column - Phone Image */}
-      <div
-        className="col-span-12 sm:col-span-6 flex justify-center items-center sm:mt-[70px] mt-[10px] sm:mb-16 relative"
-        style={{
-          backgroundImage: "url('/landing_background 1.png')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          height: '100%',
-        }}
-      >
-        {/* Mobile background override */}
-        <div
-          className="sm:hidden absolute inset-0"
-          style={{
-            backgroundImage: "url('/mobile-background.png')",
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            zIndex: -1,
-          }}
-        />
-        {/* Phone Mockup Image */}
-        <Image
-          src="/images/hero phone image 1.svg"
-          alt="Phone Mockup"
-          width={300}
-          height={600}
-          className="w-80 md:w-96 lg:w-full max-h-[85vh] object-contain z-10"
-        />
-      </div>
+			<div
+				className="col-span-12 sm:col-span-6 flex justify-center items-center sm:mt-[70px] mt-[10px] sm:mb-16 relative"
+				style={{
+					backgroundImage: "url('/landing_background 1.png')",
+					backgroundSize: "cover",
+					backgroundPosition: "center",
+					backgroundRepeat: "no-repeat",
+					height: "100%",
+				}}
+			>
+				{/* Mobile background override */}
+				<div
+					className="sm:hidden absolute inset-0"
+					style={{
+						backgroundImage: "url('/mobile-background.png')",
+						backgroundSize: "cover",
+						backgroundPosition: "center",
+						zIndex: -1,
+					}}
+				/>
+				{/* Phone Mockup Image */}
+				<Image
+					src="/images/hero phone image 1.svg"
+					alt="Phone Mockup"
+					width={300}
+					height={600}
+					className="w-80 md:w-96 lg:w-full max-h-[65vh] object-contain z-10"
+				/>
+			</div>
 
-      {/* Embla Carousel and Buttons for Desktop */}
-      <div className="col-span-12 flex flex-col justify-center items-start sm:mt-8">
-        <div className="flex flex-row gap-6 mt-[-530px] sm:mt-[-770px]">
-          <div key="carousel" className="flex flex-col gap-4 w-full">
-            <EmblaCarousel />
-          </div>
-        </div>
-        <div className="hidden sm:flex mt-4">
-          <HeroButtons />
-        </div>
-      </div>
-    </main>
-  </div>
+     {/* Embla Carousel and Buttons for Desktop */}
+			<div className="col-span-12 flex flex-col justify-center items-start sm:mt-8 ">
+				<div className="flex flex-row gap-6 mt-[-530px] sm:mt-[-770px]">
+					<div key="carousel" className="flex flex-col gap-4 w-full opacity-30 lg:mb-[-530px]">
+						<EmblaCarousel />
+					</div>
+				</div>
+				<div className="hidden sm:flex mt-4 lg:translate-y-[250px]">
+					<HeroButtons />
+				</div>
+			</div>
+		</main>
+	</div>
 );
 
 export default HomePage;

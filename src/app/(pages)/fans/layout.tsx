@@ -142,12 +142,13 @@ const Layout: React.FC<Props> = ({ children }) => {
   return (
     <div className="relative overflow-hidden font-space bg-dark01">
       <NavBar />
-      <div className="min-h-screen">
+      <div className="min-h-screen flex flex-col">
         {children}
+        
       </div>
-      
     </div>
   );
+  
 };
 
 export default Layout;
