@@ -144,7 +144,7 @@ const Layout: React.FC<Props> = ({ children }) => {
       <NavBar />
       <div className="min-h-screen flex flex-col">
         {children}
-        
+        <Footer />
       </div>
     </div>
   );
