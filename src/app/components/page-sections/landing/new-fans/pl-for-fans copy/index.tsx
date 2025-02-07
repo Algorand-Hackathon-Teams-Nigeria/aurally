@@ -8,7 +8,7 @@ const HeroText = ({
   mainTitle = "Discover, Stream and collect the Rarest NFTs",
   subtitle = "Connect Directly with your favourite artists",
 }) => (
-  <div className="hero-text-container sm:ml-40 text-center sm:text-left lg:translate-y-[170px] mx-auto">
+  <div className="hero-text-container sm:ml-40 text-center sm:text-left lg:translate-y-[240px] mx-auto ">
     <h1 className="leading-[110%] font-bold text-4xl sm:text-4xl max-w-[635px] mx-auto sm:mx-0 sm:mt-[-400px] translate-y-[-50px] lg:translate-x-0 translate-x-[10px]">
       <span className="">Discover, </span>
       <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#E22BCC] to-[#FBB03B]">
@@ -32,7 +32,7 @@ const HeroButtons = ({
   onGetStarted = () => console.log("Get Started clicked"),
   onExplore = () => console.log("Explore clicked"),
 }) => (
-  <div className="flex flex-col gap-2.5 mt-8 sm:ml-40 ml-0 sm:mr-0 mr-4 w-full max-w-[500px] mx-auto lg:translate-y-[350px]">
+  <div className="flex flex-col gap-2.5 mt-8 sm:ml-40 ml-0 sm:mr-0 mr-4 w-full max-w-[500px] mx-auto lg:translate-y-[420px] 2xl:translate-y-[400px] translate-y-[-50px]">
     <div className="flex gap-2.5 justify-center">
       <button
         className="flex items-center justify-center px-4 py-3 bg-[#8a2be2] text-white text-base font-bold rounded-full min-w-[128px] transition-all duration-300 ease-in-out hover:bg-[#7825c2]"
@@ -62,9 +62,14 @@ const HomePage = () => (
       />
     </Head>
     <main
-      className="grid grid-cols-12 gap-8 px-4 pt-16 sm:pt-[100px] bg-cover bg-center h-screen sm:min-h-[calc(100vh+50px)] "
-      style={{ backgroundImage: "url('/Black & White 1 1.png')" }}
-    >
+  className="grid grid-cols-12 gap-8 px-4 pt-16 sm:pt-[100px] bg-cover bg-center"
+  style={{
+    backgroundImage: "url('/Black & White 1 1.png')",
+    height: "100vh",
+    width: "100vw",
+  }}
+>
+
       {/* Left Column - HeroText */}
       <div className="col-span-12 sm:col-span-6 flex flex-col justify-center items-start">
         <HeroText />
@@ -78,7 +83,7 @@ const HomePage = () => (
 
       {/* Right Column - Phone Image and Carousel (Mobile), Carousel Background (Desktop) */}
       <div
-        className="col-span-12 sm:col-span-6 flex justify-center items-center sm:mt-[-60px] mt-[20px] sm:mb-16 relative lg:translate-y-[10px] "
+        className="col-span-12 sm:col-span-6 flex justify-center items-center sm:mt-[-60px] mt-[20px] sm:mb-16 relative lg:translate-y-[60px] 2xl:translate-y-[60px] 2xl:translate-x-[30px] translate-y-[-45px] translate-x-[10px] w-full"
         style={{
           backgroundImage: "url('/landing_background 1.png')",
           backgroundSize: "cover",
@@ -112,7 +117,7 @@ const HomePage = () => (
             <div className="sm:hidden opacity-40">
               <EmblaCarousel />
             </div>
-            <div className="hidden sm:flex opacity-30">
+            <div className="hidden sm:flex opacity-30 2xl:translate-x-[-390px]">
                <EmblaCarousel />
             </div>
         </div>
