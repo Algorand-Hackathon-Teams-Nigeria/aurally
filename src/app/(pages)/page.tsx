@@ -10,22 +10,23 @@ const FansPage = () => {
 	return (
 		<Page className="mt-0 px-0 lg:px-0 p-0 lg:py-0 gap-0 lg:gap-0">
 			<div className="flex flex-col items-center lg:mt-[0px] mt-[0px]">
-				<img src="/Black & White 1 1.png" alt="Black and White" className="w-full h-[200px] lg:h-[300px]" />
+				<img src="/Black & White 1 1.png" alt="Black and White" className="w-full h-[200px] lg:h-[300px] 2xl:h-[100px]" />
 				<Landing.HomePage />
 				<Landing.AppStatistics />
 				<div className="w-full h-auto mx-auto flex flex-col space-y-16 sm:space-y-32 md:space-y-36">
-					<div className="max-w-screen-lg mx-auto pt-[20px]">
+					
 						<Landing.AboutUsNew />
-					</div>
+					
 					<div className="w-full flex justify-center sm:mt-[0px] mt-[40px]">
 						<Landing.LandingSection />
 					</div>
-					<div className="max-w-screen-lg mx-auto pt-[20px]">
+					
 						<Landing.ForCreatorsNew />
-					</div>
+					
 					<Landing.SupportText />
 					<Landing.How_it_works />
-					<Landing.NewCommunity />
+					<div className="w-screen-2xl  mx-auto pt-[20px]">
+					<Landing.NewCommunity /></div>
 				</div>
 			</div>
 		</Page>

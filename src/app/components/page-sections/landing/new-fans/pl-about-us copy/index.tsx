@@ -5,15 +5,17 @@ import BallGradient from "@components/BallGradient";
 const AboutUsNew = () => {
   return (
     <section
-      className="grid md:grid-cols-2 xl:gap-20 h-auto sm:h-[500px] md:h-[550px] lg:h-[600px]"
+      className="grid md:grid-cols-2 xl:gap-20 h-full sm:h-[500px] md:h-[550px] lg:h-[600px]"
       style={{
         backgroundImage: "url('/aboutbg 1.png')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
+        height: "700px",
+        width: "100%",
       }}
     >
-      <div className="relative">
+      <div className="relative 2xl:translate-x-[170px] lg:translate-x-[170px]">
         <BallGradient topOrBottom="top-[-25%]" leftOrRight="left-[-50%]" />
         <div className="relative">
           <div className="pb-4 mb-5 border-b border-borderColor" id="about">
@@ -43,21 +45,21 @@ const AboutUsNew = () => {
               src="/Frame_btn.png"
               alt="Launch App Button"
               className="w-full h-full"
-              width={150}   
-              height={50}  
+              width={150}
+              height={50}
             />
           </button>
         </div>
       </div>
-      <div className="relative hidden md:flex items-center" id="about">
+      <div className="relative hidden md:flex items-center 2xl:translate-x-[200px] 2xl:translate-y-[-150px] lg:translate-x-[170px] lg:translate-y-[-150px]" id="about">
         <BallGradient topOrBottom="bottom-0" leftOrRight="right-0" />
         <Image
           src="/Group 1000002693.png"
           alt="Group Image"
           className="w-[450px] h-auto"
-          width={450}  
-          height={300} 
-          layout="intrinsic" 
+          width={450}
+          height={300}
+          layout="intrinsic"
         />
       </div>
     </section>

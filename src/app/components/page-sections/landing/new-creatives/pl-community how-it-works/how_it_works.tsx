@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const CreativeWorks = () => {
   return (
-    <div className="lg:translate-y-[0px] translate-y-[180px] lg:translate-x-[0px] translate-x-[-27px]">
+    <div className="lg:translate-y-[0px] translate-y-[200px] lg:translate-x-[0px] translate-x-[-27px]">
       <div className="text-[28px] sm:text-4xl lg:text-5xl font-bold text-center mb-9">
         How it works
       </div>

@@ -62,15 +62,14 @@ const HomePage = () => (
       />
     </Head>
     <main
-  className="grid grid-cols-12 gap-8 px-4 pt-16 sm:pt-[100px] bg-cover bg-center"
-  style={{
-    backgroundImage: "url('/Black & White 1 1.png')",
-    height: "100vh",
-    width: "100vw",
-  }}
->
+      className="grid grid-cols-12 gap-8 px-4 pt-16 sm:pt-[100px] bg-cover bg-center"
+      style={{
+        backgroundImage: "url('/Black & White 1 1.png')",
+        height: "100vh",
+        width: "100vw",
+      }}
+    >
 
-      {/* Left Column - HeroText */}
       <div className="col-span-12 sm:col-span-6 flex flex-col justify-center items-start">
         <HeroText />
         <div className="flex sm:hidden mt-4 w-full">
@@ -81,7 +80,6 @@ const HomePage = () => (
         </div>
       </div>
 
-      {/* Right Column - Phone Image and Carousel (Mobile), Carousel Background (Desktop) */}
       <div
         className="col-span-12 sm:col-span-6 flex justify-center items-center sm:mt-[-60px] mt-[20px] sm:mb-16 relative lg:translate-y-[60px] 2xl:translate-y-[60px] 2xl:translate-x-[30px] translate-y-[-45px] translate-x-[10px] w-full"
         style={{
@@ -114,12 +112,12 @@ const HomePage = () => (
           className="absolute inset-0 flex justify-center items-center"
           style={{ zIndex: 0 }}
         >
-            <div className="sm:hidden opacity-40">
-              <EmblaCarousel />
-            </div>
-            <div className="hidden sm:flex opacity-30 2xl:translate-x-[-390px]">
-               <EmblaCarousel />
-            </div>
+          <div className="sm:hidden opacity-40">
+            <EmblaCarousel />
+          </div>
+          <div className="hidden sm:flex opacity-30 2xl:translate-x-[-390px]">
+            <EmblaCarousel />
+          </div>
         </div>
       </div>
 

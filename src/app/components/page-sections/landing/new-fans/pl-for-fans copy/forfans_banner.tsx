@@ -21,7 +21,7 @@ const LandingSection = () => {
   }, []);
 
   return (
-    <div className="relative w-full h-[10vh] overflow-hidden">
+    <div className="relative w-full h-[5vh] lg:h-[10vh]  overflow-hidden 2xl:translate-y-[-150px] lg:translate-y-[-140px] translate-y-[-60px]">
       <div className="absolute inset-0 w-full h-full z-10">
         {/* Dark Overlay */}
         <div className="absolute inset-0 bg-black opacity-50" />
@@ -29,7 +29,7 @@ const LandingSection = () => {
         {/* Carousel Images */}
         <div className="flex animate-scroll">
           {images.concat(images).map((src, index) => (
-            <div key={index} className="min-w-full">
+            <div key={index} className="min-w-full h-[4vh] lg:h-[10vh]">
               <Image
                 src={src}
                 alt={`Landing Frame ${index + 1}`}

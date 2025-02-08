@@ -16,7 +16,7 @@ const HeroText = ({
   ),
 }) => (
   <div
-    className="hero-text-container left-0 w-screen min-h-screen translate-y-[190px] lg:translate-y-[100px] lg:translate-x-[-90px] translate-x-[-27px]"
+    className="hero-text-container left-0 w-screen min-h-screen translate-y-[190px] lg:translate-y-[100px] lg:translate-x-[5px] translate-x-[-5px] 2xl:translate-y-[-20px]"
     style={{
       backgroundImage: "url('/concert 1.png')",
       backgroundSize: "cover",
@@ -25,13 +25,13 @@ const HeroText = ({
     }}
   >
     <div className="ml-[-7px] pt-[50px] sm:pt-[80px] md:pt-[100px] lg:pt-[120px]">
-      <h1 className="leading-[110%] font-bold text-4xl max-w-[635px] lg:translate-x-[510px] translate-x-[60px] translate-x-0 lg:translate-y-[0px] translate-y-[-30px]">
+      <h1 className="leading-[110%] font-bold text-4xl max-w-[635px] lg:translate-x-[510px] translate-x-[60px] translate-x-0 lg:translate-y-[0px] translate-y-[-30px] 2xl:translate-x-[820px] ">
         More For Creatives
       </h1>
     </div>
 
     {/* Desktop View */}
-    <div className="hidden lg:block mt-6 w-screen overflow-hidden lg:translate-x-[150px] translate-x-[3px] translate-x-0 lg:translate-y-[50px] translate-y-[50px]">
+    <div className="hidden lg:block mt-6 w-screen overflow-hidden lg:translate-x-[150px] translate-x-[3px] translate-x-0 lg:translate-y-[50px] translate-y-[50px] 2xl:translate-x-[250px]">
       <Image
         src="/more for creatives.png"
         alt="Hero Supporting Image"
