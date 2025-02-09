@@ -2,16 +2,16 @@ import Image from "next/image";
 
 const CreativeWorks = () => {
   return (
-    <div className="lg:translate-y-[0px] translate-y-[200px] lg:translate-x-[0px] translate-x-[-27px]">
+    <div className="lg:translate-y-[150px] 2xl:translate-y-[70px] translate-y-[160px] lg:translate-x-[0px] translate-x-[-27px]">
       <div className="text-[28px] sm:text-4xl lg:text-5xl font-bold text-center mb-9">
         How it works
       </div>
 
       <div className="w-full flex flex-col items-center mb-9">
-        {/* Desktop View */}
+       
         <div className="hidden md:block w-full">
           <Image
-            src="/how it works.png"
+            src="/images/how it works.svg"
             alt="How it works"
             width={1200}
             height={600}
@@ -19,7 +19,7 @@ const CreativeWorks = () => {
           />
         </div>
 
-        {/* Mobile View */}
+       
         <div className="block md:hidden">
           <Image
             src="/how it works1.png"
@@ -38,7 +38,7 @@ const CreativeWorks = () => {
         </div>
       </div>
 
-      {/* Button */}
+    
       <a
         title="Aurally App"
         href="https://app.aurally.xyz"

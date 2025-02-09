@@ -7,7 +7,7 @@ const AboutUsCreatives = () => {
     <section className="grid md:grid-cols-2 xl:gap-20 h-[650px] sm:h-[900px] md:h-[550px] lg:h-[600px] lg:translate-y-[0px] translate-y-[-100px] lg:translate-x-[0px] translate-x-[0px]">
       <div className="relative">
         <BallGradient topOrBottom="top-[-25%]" leftOrRight="left-[-50%]" />
-        <div className="relative">
+        <div className="relative 2xl:translate-x-[-100px]">
           <div className="pb-4 mb-5 text-yellow" id="about">
             Welcome to Aurally:
           </div>
@@ -33,12 +33,12 @@ const AboutUsCreatives = () => {
         </div>
       </div>
       <div
-        className="relative flex items-center justify-center sm:static"
+        className="relative flex items-center justify-center sm:static lg:translate-y-[-80px]"
         id="about"
       >
         <BallGradient topOrBottom="bottom-0" leftOrRight="right-0" />
         <Image
-          src="/guy with guitar.png"
+          src="/images/guy with guitar.svg"
           alt="Group Image"
           width={500}   
           height={600}  

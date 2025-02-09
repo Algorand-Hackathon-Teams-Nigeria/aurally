@@ -8,7 +8,7 @@ const HeroText = ({
   mainTitle = "Discover, Stream and collect the Rarest NFTs",
   subtitle = "Aurally empowers artists to share their music, earn"
 }) => (
-  <div className="flex flex-col justify-center items-start gap-6 pr-4 sm:pr-16 sm:translate-x-[60px] mx-auto sm:mx-0 w-full max-w-[500px] ml-8 lg:translate-y-[0px] translate-y-[30px] lg:translate-y-[0px] translate-x-[-20px]">
+  <div className="flex flex-col justify-center items-start gap-6 pr-4 sm:pr-16 sm:translate-x-[60px] mx-auto sm:mx-0 w-full max-w-[500px] ml-8 lg:translate-y-[0px] translate-y-[30px] lg:translate-y-[0px] translate-x-[-20px] 2xl:translate-x-[230px]">
     <h1 className="leading-[110%] font-bold text-3xl sm:text-6xl max-w-[635px] mx-auto sm:mx-0">
       {/* Mobile View - Centered Text */}
       <span className="block sm:hidden text-center">
@@ -40,7 +40,7 @@ const HeroButtons = ({
   onGetStarted = () => console.log("Get Started clicked"),
   onExplore = () => console.log("Explore clicked"),
 }) => (
-  <div className="flex flex-col gap-2.5 mt-8 sm:ml-[-65px] ml-0 sm:mr-0 mr-4 w-full max-w-[500px] mx-auto translate-y-[20px]">
+  <div className="flex flex-col gap-2.5 mt-8 sm:ml-[-65px] ml-0 sm:mr-0 mr-4 w-full max-w-[500px] mx-auto translate-y-[20px] 2xl:translate-x-[170px]">
     <div className="flex gap-2.5 justify-center">
       <button
         className="flex items-center justify-center px-4 py-3 bg-[#8a2be2] text-white text-base font-bold rounded-full min-w-[128px] transition-all duration-300 ease-in-out hover:bg-[#7825c2]"

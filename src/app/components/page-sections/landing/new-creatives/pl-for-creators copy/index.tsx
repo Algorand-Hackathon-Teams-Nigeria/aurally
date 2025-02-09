@@ -16,9 +16,9 @@ const HeroText = ({
   ),
 }) => (
   <div
-    className="hero-text-container left-0 w-screen min-h-screen translate-y-[190px] lg:translate-y-[100px] lg:translate-x-[5px] translate-x-[-5px] 2xl:translate-y-[-20px]"
+    className="hero-text-container left-0 w-screen min-h-screen translate-y-[150px] lg:translate-y-[100px] lg:translate-x-[5px] translate-x-[-5px] 2xl:translate-y-[-20px]"
     style={{
-      backgroundImage: "url('/concert 1.png')",
+      backgroundImage: "url('/images/concert 1.svg')",
       backgroundSize: "cover",
       backgroundPosition: "center",
       backgroundRepeat: "no-repeat",
@@ -76,11 +76,11 @@ const ForCreatives = () => {
   return (
     <section
       id="for-creators"
-      className="sm:mt-8 sm:mb-8 lg:mt-0 lg:mb-0"
+      className="sm:mt-8 sm:mb-8 lg:mt-0 lg:mb-0 2xl:translate-y-[70px]"
     >
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 translate-y-[100px] lg:translate-y-[-80px]">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 translate-y-[100px] lg:translate-y-[10px] 2xl:translate-y-[-80px]">
         {/* Left Column */}
-        <div className="flex flex-col justify-start gap-8">
+        <div className="flex flex-col justify-start gap-8 2xl:translate-x-[250px] lg:translate-x-[80px]">
           <h2 className="text-[2rem] xl:text-[3rem] leading-[110%] font-bold max-w-[635px]">
           <span className="sm:inline text-[#E22BCC]">Empowering </span> Creatives to {" "}Thrive
           </h2>
@@ -120,9 +120,9 @@ const ForCreatives = () => {
         </div>
 
         {/* Right Column */}
-        <div className="overflow-x-scroll relative w-full h-[400px] translate-x-[-70px] lg:translate-x-0 pt-[-400px]">
+        <div className="overflow-x-scroll relative w-full h-[400px] translate-x-[-70px] lg:translate-x-0 pt-[-400px] 2xl:translate-x-[-80px]">
           <Image
-            src="/empowered artist 1.png"
+            src="/images/empowered artist 1.svg"
             alt="Frame Image"
             fill
             className="object-contain"

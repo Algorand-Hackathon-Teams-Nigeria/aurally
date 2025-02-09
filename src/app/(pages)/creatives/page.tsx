@@ -22,7 +22,8 @@ const FansPage = () => {
       <Landing.CreativeBanner />
       <Landing.ForCreatives />
       <Landing.CreativeWorks />
-      <Landing.CreativeCommunity />
+      <div className="w-screen-2xl  mx-auto pt-[20px]">
+      <Landing.CreativeCommunity /></div>
     </Page>
   );
 };
