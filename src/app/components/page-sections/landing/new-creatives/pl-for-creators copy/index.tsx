@@ -80,7 +80,7 @@ const ForCreatives = () => {
     >
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 translate-y-[100px] lg:translate-y-[10px] 2xl:translate-y-[-80px]">
         {/* Left Column */}
-        <div className="flex flex-col justify-start gap-8 2xl:translate-x-[250px] lg:translate-x-[60px]">
+        <div className="flex flex-col justify-start gap-8 2xl:translate-x-[250px] lg:translate-x-[0px]">
           <h2 className="text-[2rem] xl:text-[3rem] leading-[110%] font-bold max-w-[635px]">
           <span className="sm:inline text-[#E22BCC]">Empowering </span> Creatives to {" "}Thrive
           </h2>
