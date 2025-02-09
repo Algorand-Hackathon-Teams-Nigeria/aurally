@@ -8,7 +8,7 @@ const HeroText = ({
   mainTitle = "Discover, Stream and collect the Rarest NFTs",
   subtitle = "Aurally empowers artists to share their music, earn"
 }) => (
-  <div className="flex flex-col justify-center items-start gap-6 pr-4 sm:pr-16 sm:translate-x-[60px] mx-auto sm:mx-0 w-full max-w-[500px] ml-8 lg:translate-y-[0px] translate-y-[30px] lg:translate-y-[0px] translate-x-[-20px] 2xl:translate-x-[230px] lg:translate-x-[0px]">
+  <div className="flex flex-col justify-center items-start gap-6 pr-4 sm:pr-16 sm:translate-x-[60px] mx-auto sm:mx-0 w-full max-w-[500px] ml-8 lg:translate-y-[0px] translate-y-[30px] lg:translate-y-[0px] translate-x-[-20px] 2xl:translate-x-[230px] lg:translate-x-[60px]">
     <h1 className="leading-[110%] font-bold text-3xl sm:text-6xl max-w-[635px] mx-auto sm:mx-0">
       {/* Mobile View - Centered Text */}
       <span className="block sm:hidden text-center">
