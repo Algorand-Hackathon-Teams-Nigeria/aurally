@@ -21,7 +21,7 @@ const LandingSection = () => {
   }, []);
 
   return (
-    <div className="relative w-full h-[5vh] lg:h-[10vh]  overflow-hidden 2xl:translate-y-[-150px] lg:translate-y-[-140px] translate-y-[-60px]">
+    <div className="relative w-full h-[5vh] lg:h-[10vh]  overflow-hidden 2xl:translate-y-[-150px] lg:translate-y-[-140px] translate-y-[-60px] pointer-events-none">
       <div className="absolute inset-0 w-full h-full z-10">
         {/* Dark Overlay */}
         <div className="absolute inset-0 bg-black opacity-50" />

@@ -44,10 +44,13 @@ const HeroButtons = ({
     <div className="flex gap-2.5 justify-center">
       <button
         className="flex items-center justify-center px-4 py-3 bg-[#8a2be2] text-white text-base font-bold rounded-full min-w-[128px] transition-all duration-300 ease-in-out hover:bg-[#7825c2]"
-        onClick={onGetStarted}
+        onClick={() => {
+          window.location.href = "https://app.aurally.xyz";
+        }}
       >
         <span>Get Started</span>
       </button>
+
       <button
         className="flex items-center justify-center px-4 py-3 border border-[#c6c6c6] text-[#c6c6c6] text-base font-bold rounded-full min-w-[121px] transition-all duration-300 ease-in-out hover:border-[#8a2be2] hover:text-[#8a2be2]"
         onClick={onExplore}
@@ -83,8 +86,8 @@ const HomeCreatives = () => (
           src="/images/girl-guitar.svg"
           alt="Girl with Guitar"
           className="w-full max-w-[600px] sm:max-w-[700px]"
-          width={700} 
-          height={700} 
+          width={700}
+          height={700}
         />
       </div>
     </main>

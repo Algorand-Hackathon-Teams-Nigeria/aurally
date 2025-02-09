@@ -36,10 +36,13 @@ const HeroButtons = ({
     <div className="flex gap-2.5 justify-center">
       <button
         className="flex items-center justify-center px-4 py-3 bg-[#8a2be2] text-white text-base font-bold rounded-full min-w-[128px] transition-all duration-300 ease-in-out hover:bg-[#7825c2]"
-        onClick={onGetStarted}
+        onClick={() => {
+          window.location.href = "https://app.aurally.xyz";
+        }}
       >
         <span>Get Started</span>
       </button>
+
       <button
         className="flex items-center justify-center px-4 py-3 border border-[#c6c6c6] text-[#c6c6c6] text-base font-bold rounded-full min-w-[121px] transition-all duration-300 ease-in-out hover:border-[#8a2be2] hover:text-[#8a2be2]"
         onClick={() =>
@@ -81,7 +84,7 @@ const HomePage = () => (
       </div>
 
       <div
-        className="col-span-12 sm:col-span-6 flex justify-center items-center sm:mt-[-60px] mt-[20px] sm:mb-16 relative lg:translate-y-[60px] 2xl:translate-y-[60px] 2xl:translate-x-[30px] translate-y-[-45px] translate-x-[10px] w-full"
+        className="col-span-12 sm:col-span-6 flex justify-center items-center sm:mt-[-60px] mt-[20px] sm:mb-16 relative lg:translate-y-[60px] 2xl:translate-y-[60px] 2xl:translate-x-[30px] translate-y-[-45px] translate-x-[10px] w-full pointer-events-none"
         style={{
           backgroundImage: "url('/landing_background 1.png')",
           backgroundSize: "cover",
@@ -91,7 +94,7 @@ const HomePage = () => (
         }}
       >
         <div
-          className="sm:hidden absolute inset-0"
+          className="sm:hidden absolute inset-0 pointer-events-none"
           style={{
             backgroundImage: "url('/mobile-background.png')",
             backgroundSize: "cover",
@@ -105,17 +108,17 @@ const HomePage = () => (
           alt="Phone Mockup"
           width={300}
           height={600}
-          className="w-80 md:w-96 lg:w-full max-h-[50vh] md:max-h-[55vh] lg:max-h-[60vh] xl:max-h-[85vh] 2xl:max-h-[70vh] 4xl:max-h-[30vh] object-contain z-10"
+          className="w-80 md:w-96 lg:w-full max-h-[50vh] md:max-h-[55vh] lg:max-h-[60vh] xl:max-h-[85vh] 2xl:max-h-[70vh] 4xl:max-h-[30vh] object-contain z-10 pointer-events-none"
         />
 
         <div
           className="absolute inset-0 flex justify-center items-center"
           style={{ zIndex: 0 }}
         >
-          <div className="sm:hidden opacity-40">
+          <div className="sm:hidden opacity-40 pointer-events-none">
             <EmblaCarousel />
           </div>
-          <div className="hidden sm:flex opacity-30 2xl:translate-x-[-390px]">
+          <div className="hidden sm:flex opacity-30 2xl:translate-x-[-390px] pointer-events-none">
             <EmblaCarousel />
           </div>
         </div>

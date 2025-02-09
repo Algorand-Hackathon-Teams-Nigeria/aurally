@@ -19,7 +19,7 @@ const ForCreatorsNew = () => {
             <Image
               src={ArtistIcon}
               alt="Artist"
-              className="w-8 h-8 lg:w-12 lg:h-12"
+              className="w-8 h-8 lg:w-12 lg:h-12 pointer-events-none"
             />
             <div className="rounded-[10px] p-2 lg:text-[1.25rem]">
               Aurally curates diverse music.
@@ -31,7 +31,7 @@ const ForCreatorsNew = () => {
             <Image
               src={StockMarket}
               alt="Stock Market"
-              className="w-8 h-8 lg:w-12 lg:h-12"
+              className="w-8 h-8 lg:w-12 lg:h-12 pointer-events-none"
             />
             <div className="rounded-[10px] p-2 lg:text-[1.25rem]">
               Stream-to-Earn rewards loyalty.
@@ -42,7 +42,7 @@ const ForCreatorsNew = () => {
             <Image
               src={AurallyFoster}
               alt="Aurally Foster"
-              className="w-8 h-8 lg:w-12 lg:h-12"
+              className="w-8 h-8 lg:w-12 lg:h-12 pointer-events-none"
             />
             <div className="rounded-[10px] p-2 lg:text-[1.25rem]">
               Fans access exclusive interactions.
@@ -50,7 +50,7 @@ const ForCreatorsNew = () => {
           </div>
         </div>
 
-        <div className="overflow-x-scroll relative w-full h-[600px] lg:h-[450px] 2xl:h-[600px] lg:block hidden 2xl:translate-y-[-100px] lg:translate-y-[-100px]">
+        <div className="overflow-x-scroll relative w-full h-[600px] lg:h-[450px] 2xl:h-[600px] lg:block hidden 2xl:translate-y-[-100px] lg:translate-y-[-100px] pointer-events-none">
           <Image
             src="/images/discoverimage 2.svg"
             alt="Frame Image"

@@ -28,7 +28,7 @@ const AboutUsNew = () => {
             <Image
               src="/About us content.png"
               alt="More For Creatives"
-              className="mt-4  transform "
+              className="mt-4  transform pointer-events-none"
               width={500}
               height={150}
               priority
@@ -56,7 +56,7 @@ const AboutUsNew = () => {
         <Image
           src="/Group 1000002693.png"
           alt="Group Image"
-          className="w-[450px] h-auto"
+          className="w-[450px] h-auto pointer-events-none"
           width={450}
           height={300}
           layout="intrinsic"

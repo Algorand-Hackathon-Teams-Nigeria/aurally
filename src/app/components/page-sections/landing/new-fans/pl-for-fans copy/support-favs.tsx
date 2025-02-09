@@ -23,7 +23,7 @@ const SupportText = ({
       <p className="hero-subtitle mt-2">{subtitle}</p>
     </div>
     
-    <div className="mt-6 w-screen overflow-hidden">
+    <div className="mt-6 w-screen overflow-hidden pointer-events-none">
       <InfiniteCarousel />
     </div>
   </div>

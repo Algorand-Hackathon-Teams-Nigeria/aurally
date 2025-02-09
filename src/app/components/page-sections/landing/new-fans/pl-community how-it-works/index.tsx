@@ -10,7 +10,7 @@ const NewCommunity = () => {
         alt="Guy with headphones (Mobile)"
         width={5400}
         height={800}
-        className="object-cover w-full h-[35vh] block sm:hidden"
+        className="object-cover w-full h-[35vh] block sm:hidden pointer-events-none"
         style={{ maxWidth: '100%', height: 'auto' }}
       />
 
@@ -19,7 +19,7 @@ const NewCommunity = () => {
         alt="Guy with headphones (Desktop)"
         width={5400}
         height={800}
-        className="object-cover w-full h-[35vh] sm:h-[70vh] lg:h-[90vh] sm:w-1/2 lg:w-3/4 xl:w-full hidden sm:block"
+        className="object-cover w-full h-[35vh] sm:h-[70vh] lg:h-[90vh] sm:w-1/2 lg:w-3/4 xl:w-full hidden sm:block pointer-events-none"
         style={{ maxWidth: '100%', height: 'auto' }}
       />
 

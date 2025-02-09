@@ -19,7 +19,7 @@ const How_it_works = () => {
               alt="How it works"
               width={1200}
               height={600}
-              className="object-contain mx-auto"
+              className="object-contain mx-auto pointer-events-none"
             />
           </div>
 
@@ -30,14 +30,14 @@ const How_it_works = () => {
               alt="How it works - part 1"
               width={300} 
               height={200}
-              className="object-contain mx-auto"
+              className="object-contain mx-auto pointer-events-none"
             />
             <Image
               src="/how it works2.png"
               alt="How it works - part 2"
               width={300} 
               height={200}
-              className="object-contain mx-auto mt-4"
+              className="object-contain mx-auto mt-4 pointer-events-none"
             />
           </div>
         </div>
