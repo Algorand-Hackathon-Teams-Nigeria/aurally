@@ -67,7 +67,7 @@ const AppStatistics: React.FC<Props> = ({ mini, withGap = true }) => {
       className={`w-full flex items-center p-4 md:p-0 justify-center ${withGap ? "mb-36" : ""
         }`}
     >
-      <div className="flex items-center w-full flex-wrap rounded-md md:hidden gap-6 flex-col -translate-y-10 p-6 border-neutral-500/30 justify-evenly border bg-subBackground">
+      <div className="flex items-center w-full 2xl:w-[1000px] flex-wrap rounded-md md:hidden gap-6 flex-col -translate-y-10 p-6 border-neutral-500/30 justify-evenly border bg-subBackground">
         <div className="flex items-center w-full justify-evenly">
           <StatisticItem
             stat={roundStat(data?.appStatistics.totalRegisteredUsers ?? 0)}
@@ -97,10 +97,14 @@ const AppStatistics: React.FC<Props> = ({ mini, withGap = true }) => {
           stat={roundStat(data?.appStatistics.totalRegisteredUsers ?? 0)}
           desc="SIGNUPS"
         />
+        <div className="hidden md:flex lg:h-20 2xl:h-24 w-[1px] bg-[#EBEBEB]/40"></div>
+
         <StatisticItem
           stat={roundStat(data?.appStatistics.totalCreators ?? 0)}
           desc="CREATORS"
         />
+        <div className="hidden md:flex lg:h-20 2xl:h-24 w-[1px] bg-[#EBEBEB]/40"></div>
+
         <StatisticItem
           stat={roundStat(
             (data?.appStatistics.totalSoundNfts ?? 0) +
@@ -108,9 +112,11 @@ const AppStatistics: React.FC<Props> = ({ mini, withGap = true }) => {
           )}
           desc="MINTED/PURCHASED NFTs"
         />
+        <div className="hidden md:flex lg:h-20 2xl:h-24 w-[1px] bg-[#EBEBEB]/40"></div>
+
         <StatisticItem
           stat={roundStat(data?.appStatistics.totalPurchases ?? 0)}
-          desc="TOTAL TRANSACTIONS"
+          desc="TOTAL EARNINGS"
         />
       </div>
     </section>

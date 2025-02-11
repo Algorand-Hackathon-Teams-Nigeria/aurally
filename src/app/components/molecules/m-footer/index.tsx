@@ -1,10 +1,11 @@
-"use client"; 
+"use client";
 import React from "react";
 import Link from "next/link";
 import { BigLogo } from "@atoms/a-big-logo";
 import { IconWrapper } from "@components/Icon";
 import { FOOTER_LINKS } from "@constants/links/socials";
 import { usePathname } from "next/navigation"; 
+
 const Footer = () => {
   const pathname = usePathname();
   const isAboutPage = pathname === "/about"; 
@@ -13,7 +14,8 @@ const Footer = () => {
     <div className="relative">
       <div
         className={`mt-32 flex flex-col items-center relative ${
-          isAboutPage ? "translate-y-[-300px]" : ""}`}
+          isAboutPage ? "translate-y-[-300px]" : ""
+        }`}
       >
         <BigLogo to="/" />
         <div className="flex gap-5 mt-10 mb-12">
@@ -28,10 +30,24 @@ const Footer = () => {
             </Link>
           ))}
         </div>
-        <div className="h-[0.5px] w-full bg-[#8A8AA0] mb-5" />
-        <div className="flex flex-col sm:flex-row gap-5 items-center justify-between mb-16 sm:mb-24">
-          <div>© {new Date().getFullYear()} Aurally All rights reserved</div>
-          <div>Terms & Conditions</div>
+
+        <div className="h-[0.5px] w-full max-w-[90%] sm:max-w-screen-lg bg-[#8A8AA0] bg-opacity-40 mb-5 mx-auto"></div>
+
+        <div className="w-full max-w-screen-lg flex flex-col sm:flex-row gap-5 items-center justify-between mb-16 sm:mb-24 mx-auto">
+          <div className="hidden sm:block text-left">
+            © {new Date().getFullYear()} Aurally. All rights reserved
+          </div>
+
+          <div className="flex gap-6 text-right hidden sm:flex">
+            <Link href="/privacy-policy">Privacy Policy</Link>
+            <Link href="/terms-and-conditions">Terms & Conditions</Link>
+          </div>
+
+          <div className="flex flex-col items-center sm:hidden text-center gap-1">
+            <Link href="/privacy-policy">Privacy Policy</Link>
+            <Link href="/terms-and-conditions">Terms & Conditions</Link>
+            <div className="mt-7">© {new Date().getFullYear()} Aurally. All rights reserved</div>
+          </div>
         </div>
       </div>
     </div>

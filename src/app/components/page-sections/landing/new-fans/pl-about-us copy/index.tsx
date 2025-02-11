@@ -34,12 +34,11 @@ const AboutUsNew = () => {
               priority
             />
           </h1>
-          <div className="font-roboto mt-3">
-            Aurally is the leading Web3 platform for streaming music online,
-            watching high-quality videos, earning crypto, collecting and
-            minting NFTs, and using your creativity to create endless
-            possibilities.
+          <div className="font-roboto mt-3 text-2xl max-w-[45ch] sm:max-w-[55ch] md:max-w-[65ch] lg:max-w-[85ch] xl:max-w-[60ch] 2xl:max-w-[60ch] break-words whitespace-normal">
+            Aurally is the leading Web3 platform for streaming music online, watching high-quality videos, earning crypto, collecting and minting NFTs, and using your creativity to create endless possibilities.
           </div>
+
+
           <button className="mt-6 flex items-center justify-center bg-[#8a2be2] rounded-full px-5 py-3 cursor-pointer transition-transform duration-300 hover:scale-105">
             <Image
               src="/Frame_btn.png"

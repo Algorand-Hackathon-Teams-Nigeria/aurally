@@ -32,7 +32,7 @@ const HeroButtons = ({
   onGetStarted = () => console.log("Get Started clicked"),
   onExplore = () => console.log("Explore clicked"),
 }) => (
-  <div className="flex flex-col gap-2.5 mt-8 sm:ml-40 ml-0 sm:mr-0 mr-4 w-full max-w-[500px] mx-auto lg:translate-y-[420px] 2xl:translate-y-[400px] translate-y-[-50px]">
+  <div className="flex flex-col gap-2.5 mt-8 sm:ml-40 ml-0 sm:mr-0 mr-4 w-full max-w-[500px] mx-auto lg:translate-y-[420px] 2xl:translate-y-[450px] translate-y-[-50px]">
     <div className="flex gap-2.5 justify-center">
       <button
         className="flex items-center justify-center px-4 py-3 bg-[#8a2be2] text-white text-base font-bold rounded-full min-w-[128px] transition-all duration-300 ease-in-out hover:bg-[#7825c2]"
