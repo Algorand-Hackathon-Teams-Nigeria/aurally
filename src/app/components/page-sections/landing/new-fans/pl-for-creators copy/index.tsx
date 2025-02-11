@@ -7,7 +7,7 @@ import AurallyFoster from "@assets/material-symbols-light_artist-outline-1.png";
 
 const ForCreatorsNew = () => {
   return (
-    <section id="for-creators">
+    <section id="for-creators" className="px-5 sm:px-10 lg:px-0">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 translate-y-0 lg:translate-y-[-40px]">
 
         <div className="flex flex-col justify-start gap-4 lg:gap-6 2xl:translate-x-[170px] lg:translate-x-[170px]">

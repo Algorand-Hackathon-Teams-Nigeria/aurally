@@ -1,3 +1,4 @@
+'use client';
 import Image from "next/image";
 
 
@@ -24,17 +25,17 @@ const NewCommunity = () => {
       />
 
       <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white">
-        <div className="text-[28px] sm:text-4xl lg:text-5xl font-bold mb-6 lg:translate-y-[70px] 2xl:translate-y-[70px] translate-y-[70px] translate-x-[-70px] lg:translate-x-[0px]">
+        <div className="text-[28px] sm:text-4xl lg:text-5xl font-bold mb-6 lg:translate-y-[70px] 2xl:translate-y-[70px] translate-y-[70px] translate-x-[-45px] lg:translate-x-[0px]">
           Join Our Community
         </div>
-        <a
-          title="Aurally App"
-          href="https://app.aurally.xyz"
-          target="_blank"
-          className="px-8 py-2 rounded-[40px] mb-10 bg-white text-[#1C51FE] text-lg font-semibold lg:translate-y-[120px] 2xl:translate-y-[100px] translate-y-[70px] translate-x-[-100px] lg:translate-y-[00px] 2xl:translate-x-[-10px] lg:translate-x-[-10px]"
-        >
-          Get Started
-        </a>
+        <button
+        onClick={() => {
+          window.location.href = "https://app.aurally.xyz";
+        }}
+        className="bg-[#ebebeb] text-purple-700 font-comfortaa text-[16px] md:text-[20px] font-bold px-[10px] md:px-[13.42px] py-[6px] md:py-[8.95px] rounded-full cursor-pointer transition-transform duration-200 hover:scale-105 lg:translate-y-[100px] translate-y-[70px]"
+      >
+        Get Started
+      </button>
       </div>
     </div>
   );

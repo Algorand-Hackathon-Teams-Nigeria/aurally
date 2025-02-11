@@ -3,6 +3,9 @@ import Image from "next/image";
 import ArtistIcon from "@assets/material-symbols-light_artist-outline.png";
 import StockMarket from "@assets/icon-park-outline_stock-market.png";
 import AurallyFoster from "@assets/material-symbols-light_artist-outline-1.png";
+import Profit from "@assets/game-icons_profit.svg";
+import Team from "@assets/Vector.svg";
+import Wallet from "@assets/game-icons_wallet.svg";
 
 const HeroText = ({
   mainTitle = "Discover, Stream and collect the Rarest NFTs",
@@ -16,7 +19,7 @@ const HeroText = ({
   ),
 }) => (
   <div
-    className="hero-text-container left-0 w-screen min-h-screen translate-y-[150px] lg:translate-y-[100px] lg:translate-x-[5px] translate-x-[-5px] 2xl:translate-y-[-20px]"
+    className="hero-text-container left-0 w-screen min-h-screen translate-y-[150px] lg:translate-y-[100px] lg:translate-x-[5px] translate-x-[-5px] 2xl:translate-y-[-20px]  translate-x-[-19px]"
     style={{
       backgroundImage: "url('/images/concert 1.svg')",
       backgroundSize: "cover",
@@ -30,45 +33,50 @@ const HeroText = ({
       </h1>
     </div>
 
-    {/* Desktop View */}
-    <div className="hidden lg:block mt-6 w-screen overflow-hidden lg:translate-x-[150px] translate-x-[3px] translate-x-0 lg:translate-y-[50px] translate-y-[50px] 2xl:translate-x-[250px]">
-      <Image
-        src="/more for creatives.png"
-        alt="Hero Supporting Image"
-        width={1920}
-        height={400}
-        className="object-cover w-full lg:w-[75%] lg:h-auto"
-        priority
-      />
+    <div className="grid grid-cols-1 gap-8 sm:grid-cols-1 md:grid-cols-3 md:gap-5 p-5 w-full max-w-6xl mx-auto lg:translate-y-[50px] lg:translate-x-[0px] 2xl:translate-x-[0px] translate-x-[-1px]">
+      {/* Maximize Earnings Card */}
+      <div className="order-1 bg-[#140425] rounded-lg border border-gray-700 p-10 hover:shadow-lg hover:-translate-y-1 transition-transform">
+        <div className="flex flex-col gap-5">
+          <div className="flex gap-5 items-center">
+            <Image src={Profit} width={56} height={56} alt="Profit icon" />
+            <h2 className="text-2xl font-bold text-white">Maximize Your Earnings</h2>
+          </div>
+          <hr className="w-full border-t border-white/20" />
+          <p className="text-lg text-gray-400">
+          Aurally&apos;s Web3 platform ensures artists receive a fair share of revenue, surpassing traditional streaming services.
+          </p>
+        </div>
+      </div>
+
+      {/* Fan Engagement Card */}
+      <div className="order-2 bg-[#140425] rounded-lg border border-gray-700 p-10 hover:shadow-lg hover:-translate-y-1 transition-transform">
+        <div className="flex flex-col gap-5">
+          <div className="flex gap-5 items-center">
+            <Image src={Team} width={56} height={56} alt="Engagement icon" />
+            <h2 className="text-2xl font-bold text-white">Direct Fan Engagement</h2>
+          </div>
+          <hr className="w-full border-t border-white/20" />
+          <p className="text-lg text-gray-400">
+            Connect with your audience through comments, likes, and exclusive content, fostering a loyal fanbase.
+          </p>
+        </div>
+      </div>
+
+      {/* Innovative Monetization Card */}
+      <div className="order-3 bg-[#140425] rounded-lg border border-gray-700 p-10 hover:shadow-lg hover:-translate-y-1 transition-transform">
+        <div className="flex flex-col gap-5">
+          <div className="flex gap-5 items-center">
+            <Image src={Wallet} width={56} height={56} alt="Wallet icon" />
+            <h2 className="text-2xl font-bold text-white">Innovative Monetization</h2>
+          </div>
+          <hr className="w-full border-t border-white/20" />
+          <p className="text-lg text-gray-400">
+            Leverage NFTs and blockchain technology to offer unique experiences and products to your fans.
+          </p>
+        </div>
+      </div>
     </div>
 
-    {/* Mobile View */}
-    <div className="block lg:hidden mt-6 space-y-6 px-4">
-      <Image
-        src="/maximize-earn.png"
-        alt="Mobile Image 1"
-        width={300}
-        height={200}
-        className="object-cover max-w-[80%] mx-auto h-auto"
-        priority
-      />
-      <Image
-        src="/direct-fan.png"
-        alt="Mobile Image 2"
-        width={300}
-        height={200}
-        className="object-cover max-w-[80%] mx-auto h-auto"
-        priority
-      />
-      <Image
-        src="/innovative.png"
-        alt="Mobile Image 3"
-        width={300}
-        height={200}
-        className="object-cover max-w-[80%] mx-auto h-auto"
-        priority
-      />
-    </div>
   </div>
 );
 
@@ -76,43 +84,31 @@ const ForCreatives = () => {
   return (
     <section
       id="for-creators"
-      className="sm:mt-8 sm:mb-8 lg:mt-0 lg:mb-0 2xl:translate-y-[70px]"
+      className="sm:mt-8 sm:mb-8 lg:mt-0 lg:mb-0 2xl:translate-y-[70px] px-5 sm:px-10 lg:px-0"
     >
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 translate-y-[100px] lg:translate-y-[10px] 2xl:translate-y-[-80px]">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 translate-y-[100px] lg:translate-y-[10px] 2xl:translate-y-[-80px] max-w-screen-xl mx-auto">
         {/* Left Column */}
-        <div className="flex flex-col justify-start gap-8 2xl:translate-x-[250px] lg:translate-x-[60px]">
+        <div className="flex flex-col justify-start gap-8 2xl:translate-x-[-50px] lg:translate-x-[40px]">
           <h2 className="text-[2rem] xl:text-[3rem] leading-[110%] font-bold max-w-[635px]">
-          <span className="sm:inline text-[#E22BCC]">Empowering </span> Creatives to {" "}Thrive
+            <span className="sm:inline text-[#E22BCC]">Empowering </span> Creatives to {" "}Thrive
           </h2>
 
           <div className="flex items-center gap-2 h-full">
-            <Image
-              src={ArtistIcon}
-              alt="Artist"
-              className="w-8 h-8 "
-            />
+            <Image src={ArtistIcon} alt="Artist" className="w-8 h-8" />
             <div className="rounded-[10px] p-2 h-full lg:pt-7">
-             Share Creativity, Gain Recognition
+              Share Creativity, Gain Recognition
             </div>
           </div>
 
           <div className="flex items-center gap-2 h-full">
-            <Image
-              src={StockMarket}
-              alt="Stock Market"
-              className="w-8 h-8"
-            />
+            <Image src={StockMarket} alt="Stock Market" className="w-8 h-8" />
             <div className="rounded-[10px] p-2 h-full lg:pt-7">
               Sell Directly, Keep Earnings.
             </div>
           </div>
 
           <div className="flex items-center gap-2 flex-1 h-full">
-            <Image
-              src={AurallyFoster}
-              alt="Aurally Foster"
-              className="w-8 h-8"
-            />
+            <Image src={AurallyFoster} alt="Aurally Foster" className="w-8 h-8" />
             <div className="rounded-[10px] p-2 h-full">
               Connect, Engage, Build Community
             </div>
@@ -120,7 +116,7 @@ const ForCreatives = () => {
         </div>
 
         {/* Right Column */}
-        <div className="overflow-x-scroll relative w-full h-[400px] translate-x-[-70px] lg:translate-x-0 pt-[-400px] 2xl:translate-x-[-80px]">
+        <div className="overflow-x-scroll relative w-full h-[400px] translate-x-[-30px] lg:translate-x-0 pt-0 2xl:translate-x-[50px]">
           <Image
             src="/images/empowered artist 1.svg"
             alt="Frame Image"

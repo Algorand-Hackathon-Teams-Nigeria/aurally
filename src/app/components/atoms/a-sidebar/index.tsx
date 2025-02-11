@@ -87,7 +87,7 @@ const SideBar = () => {
             target="_blank"
             className={`${classes.getBtn} flex pointer-events-auto`}
           >
-            Launch App
+            Get Started
           </Link>
         </div>
       </Drawer>
