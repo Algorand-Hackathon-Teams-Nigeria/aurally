@@ -12,18 +12,16 @@ export const metadata: Metadata = {
 const FansPage = () => {
   return (
     <Page className="mt-0 px-0 lg:px-0 p-0 lg:py-0 gap-0 lg:gap-0">
-      {/* Full-width sections */}
       <Landing.HomeCreatives />
       <Landing.AppStatistics />
 
-      {/* Full-width sections (no max-width or padding) */}
       <div className="px-[4.5%] max-w-[calc(1200px+9%)] mx-auto space-y-20 sm:space-y-32 md:space-y-36">
       <Landing.AboutUsCreatives /></div>
       <Landing.CreativeBanner />
       <Landing.ForCreatives />
       <Landing.CreativeWorks />
-      <div className="w-screen-2xl  mx-auto pt-[20px]">
-      <Landing.CreativeCommunity /></div>
+      <div className="w-screen-2xl mx-auto pt-[20px] translate-y-[100px] lg:translate-y-[0px] lg:translate-x-[0px] translate-x-[24px]">
+      <Landing.ProductCommunity /></div>
     </Page>
   );
 };

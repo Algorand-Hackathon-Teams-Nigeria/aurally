@@ -17,8 +17,8 @@ const AboutPage = () => {
       <About.MeetTheFounders />
       <Landing.RoadMap />
       <Landing.FAQS />
-      <div className="translate-y-[-205px] lg:translate-y-[-370px]">
-  <Landing.NewCommunity />
+      <div className="w-screen-2xl mx-auto pt-[20px] translate-y-[-205px] lg:translate-y-[-370px]">
+  <Landing.ProductCommunity />
 </div>
 
     </Page>

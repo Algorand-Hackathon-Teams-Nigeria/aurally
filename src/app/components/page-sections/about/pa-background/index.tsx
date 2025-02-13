@@ -59,29 +59,29 @@ const HeroText = ({
   mainTitle = "Discover, Stream and collect the Rarest NFTs",
   subtitle = "Aurally empowers artists to share their music, earn"
 }) => (
-  <div className="flex flex-col justify-center items-start gap-6 pr-4 sm:pr-16 sm:translate-x-[-30px] mx-auto sm:mx-0 w-full max-w-[500px] sm:ml-1200 ml-[0px] translate-y-[0px] lg:translate-y-[-200px]">
-    <h2 className="bg-gradient-to-b from-secondaryPink to-secondaryYellow text-5xl lg:text-6xl font-bold text-transparent bg-clip-text mb-4">
-      Background
-    </h2>
-    <p className="text-lg">
-      In the digital age, creativity knows no bounds. From music to visual
-      art, creators around the globe are constantly pushing the boundaries
-      of expression and innovation. However, navigating the complexities of
-      the modern creative sector, particularly in the music industry, can be
-      daunting for independent artists seeking recognition and fair
-      compensation for their craft.
-    </p>
-    <p className="text-lg">
-      At Aurally, we believe in championing artistic freedom. Our platform
-      is designed to{" "}
-      <span className="bg-gradient-to-r from-secondaryPink to-secondaryYellow text-transparent bg-clip-text">
-        empower musicians, artists, and creators to reclaim ownership of
-        their work.
-      </span>{" "}
-      With Aurally, creators can manage, share their creations with the
-      world and monetize in real time.
-    </p>
-  </div>
+  <div className="flex flex-col justify-center items-start gap-6 pr-4 sm:pr-16 mx-auto w-full max-w-[500px] sm:ml-0 2xl:max-w-[800px] lg:translate-y-[-100px]">
+  <h2 className="bg-gradient-to-b from-secondaryPink to-secondaryYellow text-5xl lg:text-6xl font-bold text-transparent bg-clip-text mb-4">
+    Background
+  </h2>
+  <p className="text-lg">
+    In the digital age, creativity knows no bounds. From music to visual
+    art, creators around the globe are constantly pushing the boundaries
+    of expression and innovation. However, navigating the complexities of
+    the modern creative sector, particularly in the music industry, can be
+    daunting for independent artists seeking recognition and fair
+    compensation for their craft.
+  </p>
+  <p className="text-lg">
+    At Aurally, we believe in championing artistic freedom. Our platform
+    is designed to{" "}
+    <span className="bg-gradient-to-r from-secondaryPink to-secondaryYellow text-transparent bg-clip-text">
+      empower musicians, artists, and creators to reclaim ownership of
+      their work.
+    </span>{" "}
+    With Aurally, creators can manage, share their creations with the
+    world and monetize in real time.
+  </p>
+</div>
 );
 
 const Background = () => (
@@ -102,13 +102,13 @@ const Background = () => (
       </div>
 
       {/* Right Column */}
-      <div className="col-span-12 sm:col-span-6 flex justify-center items-center lg:translate-x-[-300px] translate-x-[-100px] translate-y-[-140px] lg:translate-y-[-270px]">
+      <div className="col-span-12 sm:col-span-6 flex justify-center items-center lg:translate-x-[-300px] translate-x-[-130px] translate-y-[-140px] lg:translate-y-[-170px] 2xl:translate-y-[-170px]">
         <Image
           src="/headphones-about.png"
           alt="Girl with Guitar"
           width={1500}  
           height={800}   
-          className="max-w-[1200px] sm:max-w-[1500px]"
+          className="max-w-[1200px] sm:max-w-[1500px] 2xl:min-w-[2000px]"
         />
       </div>
     </main>

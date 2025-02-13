@@ -27,6 +27,7 @@ import CreativeBanner from "./new-creatives/pl-for-fans copy/creative_banner";
 import ForCreatives from "./new-creatives/pl-for-creators copy";
 import CreativeWorks from "./new-creatives/pl-community how-it-works/how_it_works"
 import CreativeCommunity from "./new-creatives/pl-community how-it-works"
+import ProductCommunity from "./pl-products/community"
 
 import ArtistsPage from "./pl-new-artists";
 
@@ -60,6 +61,8 @@ const Landing = {
   CreativeWorks,
   CreativeCommunity,
   ArtistsPage,
+
+  ProductCommunity,
 };
 
 export default Landing;

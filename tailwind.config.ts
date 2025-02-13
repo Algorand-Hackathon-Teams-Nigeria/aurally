@@ -113,7 +113,22 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    function (api: any) {
+      const { addUtilities } = api;
+      addUtilities({
+        ".truncate-lines-3": {
+          display: "-webkit-box",
+          "-webkit-line-clamp": "3",
+          "-webkit-box-orient": "vertical",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "normal",
+        },
+      });
+    },
+  ],
 } satisfies Config;
 
 export default config;

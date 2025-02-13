@@ -1,15 +1,15 @@
 import Streaming from "./pp-streaming";
-import AurallyDAO from "./pp-aurally-dao";
+/*import AurallyDAO from "./pp-aurally-dao";
 import P2PExchange from "./pp-p2p-exchange";
 import StreamAndEarn from "./pp-stream-and-earn";
-import FractionalNFTs from "./pp-fractional-nfts";
+import FractionalNFTs from "./pp-fractional-nfts";*/
 
 const Products = {
   Streaming,
-  AurallyDAO,
+  /*AurallyDAO,
   P2PExchange,
   StreamAndEarn,
-  FractionalNFTs,
+  FractionalNFTs,*/
 };
 
 export default Products;

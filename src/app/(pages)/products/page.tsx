@@ -13,11 +13,12 @@ const ProductPage = () => {
     <Page>
       <BallGradient topOrBottom="top-20" leftOrRight="right-[25%]" />
       <Products.Streaming />
-      <Products.StreamAndEarn />
+      {/*<Products.StreamAndEarn />
       <Products.FractionalNFTs />
       <Products.P2PExchange />
-      <Products.AurallyDAO />
-      <Landing.Community />
+      <Products.AurallyDAO />*/}
+      <div className="w-screen-2xl mx-auto pt-[20px]">
+      <Landing.ProductCommunity /></div>
     </Page>
   );
 };
