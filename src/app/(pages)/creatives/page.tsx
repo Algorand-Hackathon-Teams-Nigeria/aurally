@@ -21,7 +21,7 @@ const FansPage = () => {
       <Landing.ForCreatives />
       <Landing.CreativeWorks />
       <div className="w-screen-2xl mx-auto pt-[20px] translate-y-[100px] lg:translate-y-[0px] lg:translate-x-[0px] translate-x-[24px]">
-      <Landing.ProductCommunity /></div>
+      <Landing.CreativeCommunity /></div>
     </Page>
   );
 };

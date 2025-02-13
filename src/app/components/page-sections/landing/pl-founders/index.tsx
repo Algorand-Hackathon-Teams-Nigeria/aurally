@@ -30,7 +30,7 @@ const Founders = () => {
         <BallGradient topOrBottom="top-[30%]" leftOrRight="right-0" />
         
         <div className="flex flex-col py-8 lg:py-16 gap-8 items-center md:flex-row w-full border-border/60">
-          {/* Mobile: Stack images and text */}
+          
           <div className="w-full flex flex-col items-center gap-8 lg:flex-row lg:gap-4">
             {/* Meshach's Image */}
             <div className="p-4 w-full lg:max-w-[250px] rounded-3xl bg-primary/20 bg-aural-waves bg-cover h-full">
@@ -38,8 +38,9 @@ const Founders = () => {
                 src={Meshach}
                 alt="Meshach Ishaya CEO"
                 className="rounded-3xl object-cover w-full h-full"
-                width={200}  // Set image width
-                height={200} // Set image height
+                width={200}  
+                height={200} 
+                style={{ userSelect: "none", pointerEvents: "none" }}
               />
               <div className="mt-6 text-2xl font-bold flex flex-col gap-2">
                 <p className={`${classes.txt_grd2}`}>CEO/Co-Founder</p>
@@ -53,8 +54,9 @@ const Founders = () => {
                 src={MI}
                 alt="MI Abaga CMO"
                 className="rounded-3xl object-cover w-full h-full"
-                width={200}  // Set image width
-                height={200} // Set image height
+                width={200}  
+                height={200} 
+                style={{ userSelect: "none", pointerEvents: "none" }}
               />
               <div className="mt-6 text-2xl font-bold flex flex-col gap-2">
                 <p className={`${classes.txt_grd2}`}>CMO/Co-Founder</p>
@@ -62,7 +64,7 @@ const Founders = () => {
               </div>
             </div>
 
-            {/* Text Description */}
+            
             <div className="flex-1 text-lg font-roboto text-justify mt-3">
               <p>
                 Together, Meshach and M.I represent the perfect synergy of music and

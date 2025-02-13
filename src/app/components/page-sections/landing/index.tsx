@@ -20,6 +20,7 @@ import ForCreatorsNew from "./new-fans/pl-for-creators copy";
 import How_it_works from "./new-fans/pl-community how-it-works/how_it_works"
 import NewCommunity from "./new-fans/pl-community how-it-works"
 import SupportText from "./new-fans/pl-for-fans copy/support-favs";
+import AcademyWorks from "./pl-how-it-works"
 
 import HomeCreatives from "./new-creatives/pl-for-fans copy";
 import AboutUsCreatives from "./new-creatives/pl-about-us copy";
@@ -63,6 +64,7 @@ const Landing = {
   ArtistsPage,
 
   ProductCommunity,
+  AcademyWorks
 };
 
 export default Landing;

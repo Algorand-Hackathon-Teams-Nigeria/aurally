@@ -59,7 +59,7 @@ const HeroText = ({
   mainTitle = "Discover, Stream and collect the Rarest NFTs",
   subtitle = "Aurally empowers artists to share their music, earn"
 }) => (
-  <div className="flex flex-col justify-center items-start gap-6 pr-4 sm:pr-16 mx-auto w-full max-w-[500px] sm:ml-0 2xl:max-w-[800px] lg:translate-y-[-100px]">
+  <div className="flex flex-col justify-center items-start gap-6 pr-4 sm:pr-16 mx-auto w-full max-w-[500px] sm:ml-0 2xl:max-w-[800px] lg:translate-y-[-200px] 2xl:translate-y-[-100px]">
   <h2 className="bg-gradient-to-b from-secondaryPink to-secondaryYellow text-5xl lg:text-6xl font-bold text-transparent bg-clip-text mb-4">
     Background
   </h2>
@@ -102,13 +102,14 @@ const Background = () => (
       </div>
 
       {/* Right Column */}
-      <div className="col-span-12 sm:col-span-6 flex justify-center items-center lg:translate-x-[-300px] translate-x-[-130px] translate-y-[-140px] lg:translate-y-[-170px] 2xl:translate-y-[-170px]">
+      <div className="col-span-12 sm:col-span-6 flex justify-center items-center lg:translate-x-[-300px] translate-x-[-130px] translate-y-[-140px] lg:translate-y-[-200px] 2xl:translate-y-[-170px]">
         <Image
           src="/headphones-about.png"
           alt="Girl with Guitar"
           width={1500}  
           height={800}   
-          className="max-w-[1200px] sm:max-w-[1500px] 2xl:min-w-[2000px]"
+          className="max-w-[1200px] sm:max-w-[500px] 2xl:min-w-[2000px] lg:min-w-[1500px] "
+          style={{ userSelect: "none", pointerEvents: "none" }}
         />
       </div>
     </main>

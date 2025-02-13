@@ -12,7 +12,7 @@ const BlogPostCard: React.FC<Props> = ({ post }) => {
     <div className="flex flex-col sm:flex-row items-center">
       <div>
         <Image
-          className="rounded-2xl"
+          className="rounded-2xl h-[400px] w-[700px]"
           src={post.img}
           alt={post.title}
           width={385}

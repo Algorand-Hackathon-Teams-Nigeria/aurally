@@ -27,6 +27,11 @@ const faqs2 = [
     description:
       "Aurally leverages blockchain technology and encryption measures to protect the rights and integrity of artists' content, ensuring that creatives maintain ownership and control over their work.",
   },
+  {
+    value: "How does Aurally protect the rights of creatives?",
+    description:
+      "Aurally leverages blockchain technology and encryption measures to protect the rights and integrity of artists' content, ensuring that creatives maintain ownership and control over their work.",
+  },
 ];
 
 const FAQS = () => {

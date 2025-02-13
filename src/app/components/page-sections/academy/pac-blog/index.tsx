@@ -7,13 +7,13 @@ import Link from "next/link";
 
 const COMMUNITY = [
   {
-    title: "For Creatives",
-    img: "/images/man_learning.svg",
+    title: "More For Fans",
+    img: "/Group 1000002693.png",
     href: "https://aurally.medium.com",
   },
   {
-    title: "For Fans",
-    img: "/images/man_learning.svg",
+    title: "More For Fans",
+    img: "/images/guy with guitar.svg",
     href: "https://aurally.medium.com",
   },
 ];
@@ -42,16 +42,19 @@ const Blog = () => {
           {COMMUNITY.map((item) => (
             <li
               key={item.title}
-              className="relative flex flex-col items-center gap-3 bg-primary rounded-3xl p-12"
+              className="relative flex flex-col items-center gap-3 bg-[#140425] text-[#C6C6C6] rounded-3xl p-12"
             >
-              <h4 className="font-bold text-3xl">{item.title}</h4>
+              <h4 className="font-bold text-2xl">{item.title}</h4>
               <Image src={item.img} alt={item.title} width={215} height={188} />
-              <Link
-                className="bg-gradient-to-b font-medium from-secondaryPink to-secondaryYellow p-2 px-3 rounded-md shadow absolute bottom-4"
-                href={item.href}
-              >
-                Discover
-              </Link>
+              <button className="mt-6 flex items-center justify-center bg-[#8a2be2] rounded-full px-5 py-3 cursor-pointer transition-transform duration-300 hover:scale-105">
+            <Image
+              src="/Frame_btn.png"
+              alt="Launch App Button"
+              width={3000}   
+              height={100}  
+              className="w-full h-full"
+            />
+          </button>
             </li>
           ))}
         </ul>

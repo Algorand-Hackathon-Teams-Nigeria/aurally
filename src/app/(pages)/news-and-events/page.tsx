@@ -20,9 +20,12 @@ const NewsAndEventPage = () => {
       <Landing.AppStatistics withGap={false} />
       <div className="lg:px-36 px-4 flex flex-col gap-28 lg:gap-52 ">
         <Landing.Events title="Recents Events" />
-        <Landing.FAQS />
-        <Landing.Community />
+        <div className=" pt-[20px] translate-y-[250px] lg:translate-y-[400px] lg:translate-x-[0px] translate-x-[0px]">
+        <Landing.FAQS /></div>
+        
       </div>
+      <div className="w-screen-2xl  mx-auto pt-[20px] translate-y-[45px] lg:translate-y-[-100px] translate-x-[25px]">
+      <Landing.ProductCommunity /></div>
     </Page>
   );
 };
