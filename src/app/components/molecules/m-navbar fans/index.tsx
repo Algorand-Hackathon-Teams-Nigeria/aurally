@@ -148,6 +148,7 @@ const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const pathname = usePathname();
   const pinned = useHeadroom({ fixedAt: 200 });
+  const hideChevron = true;
 
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
@@ -208,7 +209,7 @@ const Navbar: React.FC<NavbarProps> = ({
                   {item.label}
                 </a>
 
-                {hasSubmenu && (
+                {hasSubmenu && !hideChevron && (
                   <Image
                     src="/chevron-down.png"
                     alt="chevron"

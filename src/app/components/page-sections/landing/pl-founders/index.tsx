@@ -26,56 +26,71 @@ const FOUNDERS = [
 const Founders = () => {
   return (
     <div className="flex flex-col gap-32 translate-y-[-205px] lg:translate-y-[-370px]">
-      <div className="border px-4 overflow-hidden relative lg:px-10 rounded-3xl lg:rounded-[2rem] border-border/60">
+      <div className=" relative lg:px-10 ">
         <BallGradient topOrBottom="top-[30%]" leftOrRight="right-0" />
-        
-        <div className="flex flex-col py-8 lg:py-16 gap-8 items-center md:flex-row w-full border-border/60">
-          
-          <div className="w-full flex flex-col items-center gap-8 lg:flex-row lg:gap-4">
-            {/* Meshach's Image */}
+
+        <div className="flex flex-col lg:flex-row py-8 lg:py-16 gap-8 items-center w-full border-border/60">
+          <div className="flex flex-col lg:flex-row w-full lg:w-1/2 2xl:w-[40%] items-center justify-center gap-8 p-4  border border-[#444444] rounded-3xl bg-[#140425]">
             <div className="p-4 w-full lg:max-w-[250px] rounded-3xl bg-primary/20 bg-aural-waves bg-cover h-full">
               <Image
                 src={Meshach}
                 alt="Meshach Ishaya CEO"
                 className="rounded-3xl object-cover w-full h-full"
-                width={200}  
-                height={200} 
+                width={200}
+                height={200}
                 style={{ userSelect: "none", pointerEvents: "none" }}
               />
               <div className="mt-6 text-2xl font-bold flex flex-col gap-2">
-                <p className={`${classes.txt_grd2}`}>CEO/Co-Founder</p>
-                <p className="text-grey-04">Meshach Ishaya</p>
+                <div className="flex items-center justify-between">
+                  <p className={`${classes.txt_grd2}`}>CEO/Co-Founder</p>
+                </div>
+                <div className="flex items-center justify-between">
+                  <p className="text-grey-04">Meshach Ishaya</p>
+                  <Image
+                    src="/Group.png"
+                    alt="Favicon"
+                    width={24}
+                    height={24}
+                    className="ml-2"
+                  />
+                </div>
               </div>
             </div>
 
-            {/* MI's Image */}
+            <div className="w-full lg:w-auto lg:h-[350px] h-2 border-t-2 lg:border-t-0 lg:border-r-2 border-[#919191] opacity-20"></div>
+
+
             <div className="p-4 w-full lg:max-w-[250px] rounded-3xl bg-primary/20 bg-aural-waves bg-cover h-full">
               <Image
                 src={MI}
                 alt="MI Abaga CMO"
                 className="rounded-3xl object-cover w-full h-full"
-                width={200}  
-                height={200} 
+                width={200}
+                height={200}
                 style={{ userSelect: "none", pointerEvents: "none" }}
               />
               <div className="mt-6 text-2xl font-bold flex flex-col gap-2">
-                <p className={`${classes.txt_grd2}`}>CMO/Co-Founder</p>
-                <p className="text-grey-04">MI Abaga</p>
+                <div className="flex items-center justify-between">
+                  <p className={`${classes.txt_grd2}`}>CMO/Co-Founder</p>
+                </div>
+                <div className="flex items-center justify-between">
+                  <p className="text-grey-04">MI Abaga</p>
+                  <Image
+                    src="/Group.png"
+                    alt="Favicon"
+                    width={24}
+                    height={24}
+                    className="ml-2"
+                  />
+                </div>
               </div>
             </div>
+          </div>
 
-            
-            <div className="flex-1 text-lg font-roboto text-justify mt-3">
-              <p>
-                Together, Meshach and M.I represent the perfect synergy of music and
-                technology, bringing a wealth of experience and innovation to Aurally.
-                As co-founders, they are dedicated to revolutionizing the music industry
-                and empowering artists through the transformative power of blockchain
-                technology. With their combined expertise and vision, Aurally is poised
-                to redefine the future of music streaming and create unparalleled
-                opportunities for artists and listeners alike.
-              </p>
-            </div>
+          <div className="flex-1 lg:w-1/2 text-lg 2xl:text-3xl font-roboto text-justify mt-3 max-w-2xl">
+            <p>
+              Together, Meshach and M.I represent the perfect synergy of music and technology, bringing a wealth of experience and innovation to Aurally. As co-founders, they are dedicated to revolutionizing the music industry and empowering artists through the transformative power of blockchain technology. With their combined expertise and vision, Aurally is poised to redefine the future of music streaming and create unparalleled opportunities for artists and listeners alike.
+            </p>
           </div>
         </div>
       </div>
@@ -84,3 +99,4 @@ const Founders = () => {
 };
 
 export default Founders;
+

@@ -5,7 +5,7 @@ import BallGradient from "@components/BallGradient";
 const AboutUsCreatives = () => {
   return (
     <section className="grid md:grid-cols-2 xl:gap-20 h-[650px] sm:h-[900px] md:h-[550px] lg:h-[600px] lg:translate-y-[0px] translate-y-[-100px] lg:translate-x-[0px] translate-x-[0px]">
-      <div className="relative">
+      <div className="relative 2xl:translate-x-[-120px]">
         <BallGradient topOrBottom="top-[-25%]" leftOrRight="left-[-50%]" />
         <div className="relative 2xl:translate-x-[-100px] lg:translate-x-[0px]">
           <div className="pb-4 mb-5 text-yellow" id="about">

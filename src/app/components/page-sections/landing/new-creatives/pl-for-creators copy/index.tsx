@@ -19,7 +19,7 @@ const HeroText = ({
   ),
 }) => (
   <div
-    className="hero-text-container left-0 w-screen min-h-screen translate-y-[150px] lg:translate-y-[100px] lg:translate-x-[5px] translate-x-[-5px] 2xl:translate-y-[-20px]  translate-x-[-19px]"
+    className="hero-text-container left-0 w-screen min-h-screen translate-y-[150px] lg:translate-y-[100px] lg:translate-x-[5px] translate-x-[-5px] 2xl:translate-y-[-20px]  translate-x-[-22px]"
     style={{
       backgroundImage: "url('/images/concert 1.svg')",
       backgroundSize: "cover",
@@ -87,8 +87,7 @@ const ForCreatives = () => {
       className="sm:mt-8 sm:mb-8 lg:mt-0 lg:mb-0 2xl:translate-y-[70px] px-5 sm:px-10 lg:px-0"
     >
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 translate-y-[100px] lg:translate-y-[10px] 2xl:translate-y-[-80px] max-w-screen-xl mx-auto">
-        {/* Left Column */}
-        <div className="flex flex-col justify-start gap-8 2xl:translate-x-[-50px] lg:translate-x-[40px]">
+        <div className="flex flex-col justify-start gap-8 2xl:translate-x-[-170px] lg:translate-x-[40px]">
           <h2 className="text-[2rem] xl:text-[3rem] leading-[110%] font-bold max-w-[635px]">
             <span className="sm:inline text-[#E22BCC]">Empowering </span> Creatives to {" "}Thrive
           </h2>
@@ -114,9 +113,7 @@ const ForCreatives = () => {
             </div>
           </div>
         </div>
-
-        {/* Right Column */}
-        <div className="overflow-x-scroll relative w-full h-[400px] translate-x-[-30px] lg:translate-x-0 pt-0 2xl:translate-x-[50px]">
+        <div className="overflow-x-scroll relative w-full h-[400px] translate-x-[-30px] lg:translate-x-0 pt-0 2xl:translate-x-[50px] ">
           <Image
             src="/images/empowered artist 1.svg"
             alt="Frame Image"
