@@ -1,5 +1,3 @@
-// src/app/(pages)/fans/page.tsx
-
 import { Metadata } from "next";
 import Page from "@atoms/a-page";
 import Landing from "@page-sections/landing";
@@ -15,13 +13,17 @@ const FansPage = () => {
       <Landing.HomeCreatives />
       <Landing.AppStatistics />
 
-      <div className="px-[4.5%] max-w-[calc(1200px+9%)] mx-auto space-y-20 sm:space-y-32 md:space-y-36">
-      <Landing.AboutUsCreatives /></div>
+      <div className="px-[4.5%] max-w-[calc(1200px+9%)] mx-auto space-y-24 sm:space-y-40 md:space-y-48">
+        <Landing.AboutUsCreatives />
+      </div>
       <Landing.CreativeBanner />
-      <Landing.ForCreatives />
-      <Landing.CreativeWorks />
-      <div className="w-screen-2xl mx-auto pt-[20px] translate-y-[100px] lg:translate-y-[0px] lg:translate-x-[0px] translate-x-[24px]">
-      <Landing.CreativeCommunity /></div>
+      <div className="lg:mt-[300px]">
+      <Landing.ForCreatives /></div>
+      <div className="mt-[150px]">
+      <Landing.CreativeWorks /></div>
+      <div className="w-screen-2xl mx-auto pt-[20px] mt-[100px] lg:mt-[200px] lg:translate-x-[0px]">
+        <Landing.CreativeCommunity />
+      </div>
     </Page>
   );
 };

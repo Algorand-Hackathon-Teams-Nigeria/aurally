@@ -19,7 +19,7 @@ const HeroText = ({
   ),
 }) => (
   <div
-    className="hero-text-container left-0 w-screen min-h-screen translate-y-[150px] lg:translate-y-[100px] lg:translate-x-[5px] translate-x-[-5px] 2xl:translate-y-[-20px]  translate-x-[-22px]"
+    className="hero-text-container left-0 w-screen min-h-screen translate-y-[150px] lg:translate-y-[100px] lg:translate-x-[5px] translate-x-[-5px] 2xl:translate-y-[-20px]  translate-x-[-22px] mt-[0px]"
     style={{
       backgroundImage: "url('/images/concert 1.svg')",
       backgroundSize: "cover",
@@ -87,38 +87,37 @@ const ForCreatives = () => {
       className="sm:mt-8 sm:mb-8 lg:mt-0 lg:mb-0 2xl:translate-y-[70px] px-5 sm:px-10 lg:px-0"
     >
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 translate-y-[100px] lg:translate-y-[10px] 2xl:translate-y-[-80px] max-w-screen-xl mx-auto">
+        {/* Left Column */}
         <div className="flex flex-col justify-start gap-8 2xl:translate-x-[-170px] lg:translate-x-[40px]">
           <h2 className="text-[2rem] xl:text-[3rem] leading-[110%] font-bold max-w-[635px]">
-            <span className="sm:inline text-[#E22BCC]">Empowering </span> Creatives to {" "}Thrive
+            <span className="sm:inline text-[#E22BCC]">Empowering </span> Creatives to Thrive
           </h2>
 
-          <div className="flex items-center gap-2 h-full">
-            <Image src={ArtistIcon} alt="Artist" className="w-8 h-8" />
-            <div className="rounded-[10px] p-2 h-full lg:pt-7">
-              Share Creativity, Gain Recognition
-            </div>
+          {/* Icon + Text Blocks */}
+          <div className="flex items-center gap-4"> {/* Adjusted gap */}
+            <Image src={ArtistIcon} alt="Artist" className="w-10 h-10" width={40} height={40} /> {/* Increased icon size, added width/height */}
+            <div className="text-lg">Share Creativity, Gain Recognition</div> {/* Improved text style */}
           </div>
 
-          <div className="flex items-center gap-2 h-full">
-            <Image src={StockMarket} alt="Stock Market" className="w-8 h-8" />
-            <div className="rounded-[10px] p-2 h-full lg:pt-7">
-              Sell Directly, Keep Earnings.
-            </div>
+          <div className="flex items-center gap-4"> {/* Adjusted gap */}
+            <Image src={StockMarket} alt="Stock Market" className="w-10 h-10" width={40} height={40} /> {/* Increased icon size, added width/height */}
+            <div className="text-lg">Sell Directly, Keep Earnings.</div> {/* Improved text style */}
           </div>
 
-          <div className="flex items-center gap-2 flex-1 h-full">
-            <Image src={AurallyFoster} alt="Aurally Foster" className="w-8 h-8" />
-            <div className="rounded-[10px] p-2 h-full">
-              Connect, Engage, Build Community
-            </div>
+          <div className="flex items-center gap-4"> {/* Adjusted gap */}
+            <Image src={AurallyFoster} alt="Aurally Foster" className="w-10 h-10" width={40} height={40} /> {/* Increased icon size, added width/height */}
+            <div className="text-lg">Connect, Engage, Build Community</div> {/* Improved text style */}
           </div>
         </div>
-        <div className="overflow-x-scroll relative w-full h-[400px] translate-x-[-30px] lg:translate-x-0 pt-0 2xl:translate-x-[50px] ">
+
+        {/* Right Column */}
+        <div className="relative h-[400px] lg:h-[900px] lg:h-auto lg:translate-y-[-200px]"> {/* Removed scroll, adjusted height */}
           <Image
             src="/images/empowered artist 1.svg"
-            alt="Frame Image"
+            alt="Empowered Artist"
             fill
-            className="object-contain"
+            style={{ objectFit: "contain" }} // Use style instead of className for objectFit
+            sizes="(max-width: 768px) 100vw, 50vw"  // Add sizes for optimization
           />
         </div>
       </div>
