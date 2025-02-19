@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const CreativeCommunity = () => {
   return (
-    <div className="relative flex justify-center mb-9 lg:translate-y-[-50px] translate-y-[-50px] lg:translate-x-[0px] translate-x-[-24px]">
+    <div className="relative flex justify-center mb-9 lg:translate-y-[-50px] translate-y-[-50px] lg:translate-x-[0px] translate-x-[2px]">
       <div className="sm:hidden w-screen">
         <Image
           src="/images/Group 1835.svg"

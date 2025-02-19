@@ -19,7 +19,7 @@ const HeroText = ({
   ),
 }) => (
   <div
-    className="hero-text-container left-0 w-screen min-h-screen translate-y-[150px] lg:translate-y-[100px] lg:translate-x-[5px] translate-x-[-5px] 2xl:translate-y-[-20px]  translate-x-[-22px] mt-[0px]"
+    className="hero-text-container left-0 w-screen min-h-screen translate-y-[150px] lg:translate-y-[100px] lg:translate-x-[5px] translate-x-[-18px] 2xl:translate-y-[-20px]  translate-x-[-22px] mt-[10px]"
     style={{
       backgroundImage: "url('/images/concert 1.svg')",
       backgroundSize: "cover",
@@ -88,10 +88,13 @@ const ForCreatives = () => {
     >
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 translate-y-[100px] lg:translate-y-[10px] 2xl:translate-y-[-80px] max-w-screen-xl mx-auto">
         {/* Left Column */}
-        <div className="flex flex-col justify-start gap-8 2xl:translate-x-[-170px] lg:translate-x-[40px]">
+        <div className="flex flex-col justify-start gap-8 2xl:translate-x-[-170px] lg:translate-x-[40px] 2xl:translate-y-[100px] lg:translate-y-[-100px]">
           <h2 className="text-[2rem] xl:text-[3rem] leading-[110%] font-bold max-w-[635px]">
             <span className="sm:inline text-[#E22BCC]">Empowering </span> Creatives to Thrive
           </h2>
+
+          <div className="h-[0.5px] w-full max-w-[90%] sm:max-w-screen-lg bg-[#8A8AA0] bg-opacity-40 mb-5 mx-auto"></div>
+
 
           {/* Icon + Text Blocks */}
           <div className="flex items-center gap-4"> {/* Adjusted gap */}
@@ -111,13 +114,13 @@ const ForCreatives = () => {
         </div>
 
         {/* Right Column */}
-        <div className="relative h-[400px] lg:h-[900px] lg:h-auto lg:translate-y-[-200px]"> {/* Removed scroll, adjusted height */}
+        <div className="relative h-[400px] lg:h-[700px] 2xl:h-[700px] lg:h-auto 2xl:translate-y-[-100px] lg:translate-y-[-100px]"> {/* Adjusted height */}
           <Image
             src="/images/empowered artist 1.svg"
             alt="Empowered Artist"
             fill
             style={{ objectFit: "contain" }} // Use style instead of className for objectFit
-            sizes="(max-width: 768px) 100vw, 50vw"  // Add sizes for optimization
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, (max-width: 1536px) 33vw, 25vw"  // Add sizes for optimization
           />
         </div>
       </div>

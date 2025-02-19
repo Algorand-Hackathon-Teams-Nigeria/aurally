@@ -16,12 +16,13 @@ const FansPage = () => {
       <div className="px-[4.5%] max-w-[calc(1200px+9%)] mx-auto space-y-24 sm:space-y-40 md:space-y-48">
         <Landing.AboutUsCreatives />
       </div>
-      <Landing.CreativeBanner />
-      <div className="lg:mt-[300px]">
+      <div className="lg:mt-[100px] mt-[90px]">
+      <Landing.CreativeBanner /></div>
+      <div className="lg:mt-[200px] mt-[120px]">
       <Landing.ForCreatives /></div>
-      <div className="mt-[150px]">
+      <div className="mt-[150px] lg:mt-[200px]">
       <Landing.CreativeWorks /></div>
-      <div className="w-screen-2xl mx-auto pt-[20px] mt-[100px] lg:mt-[200px] lg:translate-x-[0px]">
+      <div className="w-screen-2xl mx-auto pt-[20px] mt-[100px] lg:mt-[200px] lg:translate-x-[0px] mt-[200px] lg:mt-[0px]">
         <Landing.CreativeCommunity />
       </div>
     </Page>
