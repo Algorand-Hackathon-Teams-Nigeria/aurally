@@ -14,7 +14,7 @@ const Footer = () => {
     <div className="relative">
       <div
         className={`mt-32 flex flex-col items-center relative ${
-          isAboutPage ? "translate-y-[-300px]" : ""
+          isAboutPage ? "translate-y-[0px]" : ""
         }`}
       >
         <BigLogo to="/" />

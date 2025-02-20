@@ -56,6 +56,7 @@ const ForCreatorsNew = () => {
             alt="Frame Image"
             fill
             className="object-cover"
+            priority
           />
         </div>
       </div>

@@ -1,8 +1,13 @@
 "use client";
 
-import EmblaCarousel from "@ui/EmblaCarousel";
+import dynamic from "next/dynamic";
 import Head from "next/head";
 import Image from "next/image";
+
+// Dynamically importing EmblaCarousel for lazy loading
+const EmblaCarousel = dynamic(() => import("@ui/EmblaCarousel"), {
+  ssr: false,
+});
 
 const HeroText = ({
   mainTitle = "Discover, Stream and collect the Rarest NFTs",
@@ -63,6 +68,10 @@ const HomePage = () => (
         name="description"
         content="Connect Directly with your favorite artists."
       />
+      <link rel="preload" href="/Black & White 1 1.png" as="image" />
+      <link rel="preload" href="/landing_background 1.png" as="image" />
+      <link rel="preload" href="/mobile-background.png" as="image" />
+      <link rel="preload" href="/images/hero phone image 1.svg" as="image" />
     </Head>
     <main
       className="grid grid-cols-12 gap-8 px-4 pt-16 sm:pt-[100px] bg-cover bg-center"
@@ -72,7 +81,6 @@ const HomePage = () => (
         width: "100vw",
       }}
     >
-
       <div className="col-span-12 sm:col-span-6 flex flex-col justify-center items-start">
         <HeroText />
         <div className="flex sm:hidden mt-4 w-full">
@@ -84,31 +92,24 @@ const HomePage = () => (
       </div>
 
       <div
-        className="col-span-12 sm:col-span-6 flex justify-center items-center sm:mt-[-60px] mt-[20px] sm:mb-16 relative lg:translate-y-[60px] 2xl:translate-y-[60px] 2xl:translate-x-[30px] translate-y-[-45px] translate-x-[10px] w-full pointer-events-none"
-        style={{
-          backgroundImage: "url('/landing_background 1.png')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          height: "100%",
-        }}
+        className="col-span-12 sm:col-span-6 flex justify-center items-center sm:mt-[-60px] mt-[20px] sm:mb-16 relative lg:translate-y-[60px] 2xl:translate-y-[60px] 2xl:translate-x-[30px] translate-y-[-27px] translate-x-[10px] w-full pointer-events-none"
       >
-        <div
-          className="sm:hidden absolute inset-0 pointer-events-none"
-          style={{
-            backgroundImage: "url('/mobile-background.png')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            zIndex: -1,
-            height: "100%",
-          }}
+        <Image
+          src="/landing_background 1.png"
+          alt="Background"
+          fill
+          className="object-cover pointer-events-none"
+          priority 
         />
+
+       
         <Image
           src="/images/hero phone image 1.svg"
           alt="Phone Mockup"
           width={300}
           height={600}
           className="w-80 md:w-96 lg:w-full max-h-[50vh] md:max-h-[55vh] lg:max-h-[60vh] xl:max-h-[85vh] 2xl:max-h-[70vh] 4xl:max-h-[30vh] object-contain z-10 pointer-events-none"
+          priority 
         />
 
         <div
@@ -123,7 +124,6 @@ const HomePage = () => (
           </div>
         </div>
       </div>
-
     </main>
   </div>
 );

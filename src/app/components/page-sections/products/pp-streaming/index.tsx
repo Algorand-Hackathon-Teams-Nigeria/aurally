@@ -42,9 +42,10 @@ const DummyContent = () => {
           <Image
             src="https://assets.aceternity.com/macbook.png"
             alt="Macbook mockup from Aceternity UI"
-            height={500}
             width={500}
+            height={500}
             className="md:w-1/2 md:h-1/2 h-full w-full mx-auto object-contain"
+            priority 
           />
         </div>
       ))}
@@ -59,8 +60,9 @@ const data = [
         src="/images/Frame 1000008356.svg"
         alt="Music Streaming"
         width={200}
-        height={0}
+        height={200}
         style={{ height: "auto", userSelect: "none", pointerEvents: "none" }}
+        priority 
       />
     ),
     title: (
@@ -76,8 +78,9 @@ const data = [
         src="/images/Frame 1000008356(1).svg"
         alt="Music Streaming"
         width={200}
-        height={0}
+        height={200}
         style={{ height: "auto", userSelect: "none", pointerEvents: "none" }}
+        priority 
       />
     ),
     title: (
@@ -93,8 +96,9 @@ const data = [
         src="/images/Frame 1000008356(2).svg"
         alt="Music Streaming"
         width={200}
-        height={0}
+        height={200}
         style={{ height: "auto", userSelect: "none", pointerEvents: "none" }}
+        priority 
       />
     ),
     title: (
@@ -112,8 +116,9 @@ const data = [
         src="/images/Frame 1000008356(3).svg"
         alt="Music Streaming"
         width={200}
-        height={0}
+        height={200}
         style={{ height: "auto", userSelect: "none", pointerEvents: "none" }}
+        priority 
       />
     ),
     title: (
@@ -129,8 +134,9 @@ const data = [
         src="/images/Frame 1000008356(4).svg"
         alt="Music Streaming"
         width={200}
-        height={0}
+        height={200}
         style={{ height: "auto", userSelect: "none", pointerEvents: "none" }}
+        priority 
       />
     ),
     title: (

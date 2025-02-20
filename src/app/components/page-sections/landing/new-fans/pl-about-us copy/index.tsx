@@ -50,17 +50,20 @@ const AboutUsNew = () => {
         </div>
       </div>
 
-      <div className="relative hidden md:flex items-center 2xl:translate-x-[200px] 2xl:translate-y-[-150px] lg:translate-x-[170px] lg:translate-y-[-150px]" id="about">
-        <BallGradient topOrBottom="bottom-0" leftOrRight="right-0" />
-        <Image
-          src="/Group 1000002693.png"
-          alt="Group Image"
-          className="w-[450px] h-auto pointer-events-none"
-          width={450}
-          height={300}
-          layout="intrinsic"
-        />
-      </div>
+      <div
+  className="relative hidden md:flex items-center 2xl:translate-x-[200px] 2xl:translate-y-[-150px] lg:translate-x-[170px] lg:translate-y-[-150px]"
+  id="about"
+>
+  <BallGradient topOrBottom="bottom-0" leftOrRight="right-0" />
+  <Image
+    src="/Group 1000002693.png"
+    alt="Group Image"
+    className="w-[450px] h-auto pointer-events-none"
+    width={450}
+    height={300}
+  />
+</div>
+
     </section>
   );
 };

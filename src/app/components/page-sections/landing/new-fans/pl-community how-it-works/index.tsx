@@ -13,6 +13,7 @@ const NewCommunity = () => {
         height={800}
         className="object-cover w-full h-[35vh] block sm:hidden pointer-events-none"
         style={{ maxWidth: '100%', height: 'auto' }}
+        priority
       />
 
       <Image
@@ -22,6 +23,7 @@ const NewCommunity = () => {
         height={800}
         className="object-cover w-full h-[35vh] sm:h-[70vh] lg:h-[90vh] sm:w-1/2 lg:w-3/4 xl:w-full hidden sm:block pointer-events-none"
         style={{ maxWidth: '100%', height: 'auto' }}
+        priority
       />
 
       <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white">

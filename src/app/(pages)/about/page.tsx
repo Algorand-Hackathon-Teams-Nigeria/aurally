@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 const AboutPage = () => {
   return (
-    <Page>
+    <Page className="mb-[-300px]">
       <About.Background />
       <About.MissionVision />
       <About.MeetTheFounders />
