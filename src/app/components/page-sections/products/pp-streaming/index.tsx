@@ -57,7 +57,7 @@ const data = [
   {
     category: (
       <Image
-        src="/images/Frame 1000008356.svg"
+        src="/images/Frame_1000008356.svg"
         alt="Music Streaming"
         width={200}
         height={200}
@@ -70,13 +70,13 @@ const data = [
         Connect your digital wallet to our multi-blockchain platform for secure NFT access and transactions. Enjoy seamless compatibility with popular cryptocurrencies.
       </p>
     ),
-    src: "/images/Mask group1.svg",
+    src: "https://aurally-images.s3.eu-west-3.amazonaws.com/Mask_group1.svg",
   },
   {
     category: (
       <Image
-        src="/images/Frame 1000008356(1).svg"
-        alt="Music Streaming"
+        src="/images/Frame_1000008356(1).svg"
+        alt="Stream to Earn"
         width={200}
         height={200}
         style={{ height: "auto", userSelect: "none", pointerEvents: "none" }}
@@ -88,13 +88,13 @@ const data = [
         Connect your digital wallet to our multi-blockchain platform for secure, seamless access to NFTs and popular cryptocurrencies.
       </p>
     ),
-    src: "/images/Mask group2.svg",
+    src: "https://aurally-images.s3.eu-west-3.amazonaws.com/Mask_group2.svg",
   },
   {
     category: (
       <Image
-        src="/images/Frame 1000008356(2).svg"
-        alt="Music Streaming"
+        src="/images/Frame_1000008356(2).svg"
+        alt="Fractional Nfts"
         width={200}
         height={200}
         style={{ height: "auto", userSelect: "none", pointerEvents: "none" }}
@@ -108,13 +108,13 @@ const data = [
         <li>Private GoFundMe</li>
       </ul>
     ),
-    src: "/images/Mask group3.svg",
+    src: "https://aurally-images.s3.eu-west-3.amazonaws.com/Mask_group3.svg",
   },
   {
     category: (
       <Image
-        src="/images/Frame 1000008356(3).svg"
-        alt="Music Streaming"
+        src="/images/Frame_1000008356(3).svg"
+        alt="P2P exchange"
         width={200}
         height={200}
         style={{ height: "auto", userSelect: "none", pointerEvents: "none" }}
@@ -126,13 +126,13 @@ const data = [
         Connect your wallet to our multi-blockchain platform for secure, seamless access to NFTs and popular cryptocurrencies.
       </p>
     ),
-    src: "/images/Mask group5.svg",
+    src: "https://aurally-images.s3.eu-west-3.amazonaws.com/Mask_group5.svg",
   },
   {
     category: (
       <Image
-        src="/images/Frame 1000008356(4).svg"
-        alt="Music Streaming"
+        src="/images/Frame_1000008356(4).svg"
+        alt="Aurally Dao"
         width={200}
         height={200}
         style={{ height: "auto", userSelect: "none", pointerEvents: "none" }}
@@ -144,7 +144,7 @@ const data = [
         Join our DAO governance for community-driven decisions and connect your wallet to our multi-blockchain platform, ensuring secure access to NFTs and popular cryptocurrencies.
       </p>
     ),
-    src: "/images/Mask group4.svg",
+    src: "https://aurally-images.s3.eu-west-3.amazonaws.com/Mask_group4.svg",
   },
 ];
 

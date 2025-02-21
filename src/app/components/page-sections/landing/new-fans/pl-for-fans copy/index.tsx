@@ -76,7 +76,7 @@ const HomePage = () => (
     <main
       className="grid grid-cols-12 gap-8 px-4 pt-16 sm:pt-[100px] bg-cover bg-center"
       style={{
-        backgroundImage: "url('/Black & White 1 1.png')",
+        backgroundImage: "url('https://aurally-images.s3.eu-west-3.amazonaws.com/Black & White 1 1.png')",
         height: "100vh",
         width: "100vw",
       }}
