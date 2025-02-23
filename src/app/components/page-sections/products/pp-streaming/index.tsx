@@ -70,7 +70,7 @@ const data = [
         Connect your digital wallet to our multi-blockchain platform for secure NFT access and transactions. Enjoy seamless compatibility with popular cryptocurrencies.
       </p>
     ),
-    src: "https://aurally-images.s3.eu-west-3.amazonaws.com/Mask_group1.svg",
+    src: "https://aurally-images.s3.eu-west-3.amazonaws.com/Mask_group1.webp",
   },
   {
     category: (
@@ -88,7 +88,7 @@ const data = [
         Connect your digital wallet to our multi-blockchain platform for secure, seamless access to NFTs and popular cryptocurrencies.
       </p>
     ),
-    src: "https://aurally-images.s3.eu-west-3.amazonaws.com/Mask_group2.svg",
+    src: "https://aurally-images.s3.eu-west-3.amazonaws.com/Mask_group2.webp",
   },
   {
     category: (
@@ -108,7 +108,7 @@ const data = [
         <li>Private GoFundMe</li>
       </ul>
     ),
-    src: "https://aurally-images.s3.eu-west-3.amazonaws.com/Mask_group3.svg",
+    src: "https://aurally-images.s3.eu-west-3.amazonaws.com/Mask_group3.webp",
   },
   {
     category: (
@@ -126,7 +126,7 @@ const data = [
         Connect your wallet to our multi-blockchain platform for secure, seamless access to NFTs and popular cryptocurrencies.
       </p>
     ),
-    src: "https://aurally-images.s3.eu-west-3.amazonaws.com/Mask_group5.svg",
+    src: "https://aurally-images.s3.eu-west-3.amazonaws.com/Mask_group4.webp",
   },
   {
     category: (
@@ -144,7 +144,7 @@ const data = [
         Join our DAO governance for community-driven decisions and connect your wallet to our multi-blockchain platform, ensuring secure access to NFTs and popular cryptocurrencies.
       </p>
     ),
-    src: "https://aurally-images.s3.eu-west-3.amazonaws.com/Mask_group4.svg",
+    src: "https://aurally-images.s3.eu-west-3.amazonaws.com/Mask_group5.webp",
   },
 ];
 
