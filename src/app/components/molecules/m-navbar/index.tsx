@@ -79,6 +79,7 @@ const NavBar = () => {
     return pathname.startsWith(href);
   };
 
+  
   const excludedPages = ["/fans", "/creatives", "/about", "/artists"];
 
   if (excludedPages.includes(pathname)) {

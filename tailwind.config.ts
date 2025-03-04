@@ -1,11 +1,13 @@
 import type { Config } from "tailwindcss";
 
-const config = {
+const config: Config = {
+  darkMode: ["class"],
   content: [
     "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
+    "*.{js,ts,jsx,tsx,mdx}",
   ],
   prefix: "",
   theme: {
@@ -66,10 +68,15 @@ const config = {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          // Added specific primary color from the first config
+          'spec': '#8a2be2',
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
+          // Added specific secondary color from the first config
+          'spec': '#ebebeb',
+          'foregroundSpec': '#0a0212'
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -78,6 +85,9 @@ const config = {
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
+          // Added specific muted color from the first config
+          'spec': '#d7d7d7',
+          'foregroundSpec': '#595959',
         },
         accent: {
           DEFAULT: "hsl(var(--accent))",

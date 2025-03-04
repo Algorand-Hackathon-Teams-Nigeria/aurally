@@ -21,19 +21,23 @@
     "@mantine/core": "^7.5.1",
     "@mantine/hooks": "^7.5.1",
     "@radix-ui/react-icons": "^1.3.0",
+    "@radix-ui/react-label": "^2.1.2",
     "@radix-ui/react-slot": "^1.0.2",
     "@tabler/icons-react": "^3.30.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
     "embla-carousel-autoplay": "^8.0.0-rc22",
     "embla-carousel-react": "^7.1.0",
     "graphql": "^16.10.0",
     "jotai": "^2.7.1",
-    "motion": "^12.3.1",
+    "lucide-react": "^0.477.0",
+    "motion": "^12.4.7",
     "next": "14.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.4.0",
+    "recharts": "^2.15.1",
     "shadcn": "^2.3.0",
     "styled-components": "^6.1.14",
     "tailwind-merge": "^2.6.0",
@@ -60,5 +64,9 @@
     "tailwindcss": "^3.4.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
+  },
+  "shadcn": {
+    "components": "@/app/components/ui",
+    "css": "src/app/styles/globals.css"
   }
 }

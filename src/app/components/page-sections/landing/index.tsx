@@ -29,6 +29,8 @@ import ForCreatives from "./new-creatives/pl-for-creators copy";
 import CreativeWorks from "./new-creatives/pl-community how-it-works/how_it_works"
 import CreativeCommunity from "./new-creatives/pl-community how-it-works"
 import ProductCommunity from "./pl-products/community"
+import AdminLogin from "./pl-admin"
+import AdminDashboard from "./pl-admin/dashboard"
 
 import ArtistsPage from "./pl-new-artists";
 
@@ -64,7 +66,9 @@ const Landing = {
   ArtistsPage,
 
   ProductCommunity,
-  AcademyWorks
+  AcademyWorks,
+  AdminLogin,
+  AdminDashboard
 };
 
 export default Landing;

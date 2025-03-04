@@ -895,6 +895,40 @@ export type VideoNftType = {
   videoType: Scalars['String']['output'];
 };
 
+export const useRevenueOverTimeQuery = ({ variables }: { variables: { days: number } }) => {
+  const revenueData = Array.from({ length: variables.days }, (_, i) => {
+    const date = new Date()
+    date.setDate(date.getDate() - variables.days + i + 1)
+    return {
+      date: date.toISOString(),
+      amount: Math.floor(Math.random() * 1000),
+    }
+  })
+
+  return {
+    data: {
+      revenueOverTime: revenueData,
+    },
+    loading: false,
+  }
+}
+
+export const useUserStatisticsQuery = () => {
+  return {
+    data: {
+      userStatistics: {
+        totalUsers: 500,
+        newUsers: 50,
+        uploadedSongs: 2000,
+        uploadedVideos: 100,
+        completionRate: 0.75,
+      },
+    },
+    loading: false,
+  }
+}
+
+
 export type GetNftsQueryVariables = Exact<{ [key: string]: never; }>;
 
 

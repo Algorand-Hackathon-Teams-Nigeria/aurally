@@ -182,6 +182,11 @@ const Navbar: React.FC<NavbarProps> = ({
     return pathname.startsWith(href);
   };
 
+  const isAdminPage = pathname.startsWith("/admin");  
+
+  if (isAdminPage) {
+    return null; // Will not render the Navbar on admin pages
+  }
   const getTextColor = (page: string): string => {
     return pathname === page || (page === "/" && pathname === "/") ? "#FBB03B" : "white";
   };

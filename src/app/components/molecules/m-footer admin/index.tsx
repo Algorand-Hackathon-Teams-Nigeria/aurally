@@ -10,11 +10,7 @@ const Footer = () => {
   const pathname = usePathname();
   const isAboutPage = pathname === "/about"; 
 
-  const isAdminPage = pathname.startsWith("/admin");  
-
-  if (isAdminPage) {
-    return null; // Do not render the footer on admin pages
-  }
+  
   return (
     <div className="relative">
       <div
