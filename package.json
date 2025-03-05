@@ -29,6 +29,7 @@
     "date-fns": "^4.1.0",
     "embla-carousel-autoplay": "^8.0.0-rc22",
     "embla-carousel-react": "^7.1.0",
+    "framer-motion": "^12.4.10",
     "graphql": "^16.10.0",
     "jotai": "^2.7.1",
     "lucide-react": "^0.477.0",

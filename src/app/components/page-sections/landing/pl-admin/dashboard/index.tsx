@@ -9,6 +9,9 @@ import { Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Compos
 import { Skeleton } from "@/app/components/ui/admin-dashoard/skeleton"
 import { usePathname, useRouter } from "next/navigation"
 import { BigLogo } from "@atoms/a-big-logo"
+import AdminSideNav from "@atoms/a-sidebar/admin-sidenav";
+import AdminNav from "@atoms/a-sidebar/admin-nav";
+
 
 // Time period options for the graph
 const TIME_PERIODS = {
@@ -140,115 +143,12 @@ export default function Dashboard() {
   return (
     <div className="flex h-screen bg-[#f5f5f5]">
       {/* Sidebar */}
-      <div
-        className={`bg-white border-r border-[#e9e9e9] flex flex-col transition-all duration-300 ${collapsed ? "w-16" : "w-64"
-          }`}
-      >
-        <div className="p-4 flex justify-center">
-          <BigLogo
-            to="/admin"
-            className={`transition-all duration-300 ${collapsed ? "w-8" : "w-68"}`}
-            color="#8a2be2"
-          />
-        </div>
+      <AdminSideNav collapsed={collapsed} toggleSidebar={toggleSidebar} />
 
-        <nav className="px-2 py-2">
-          <div className="space-y-1">
-            {[
-              { title: "Dashboard", icon: LayoutGrid, path: "/" },
-              { title: "Users", icon: Users, path: "/users" },
-              { title: "Transactions", icon: BarChart3, path: "/transactions" },
-              { title: "Settings", icon: Settings, path: "/settings" },
-            ].map((item) => (
-              <Button
-                key={item.path}
-                variant="ghost"
-                className={`w-full justify-start flex items-center ${pathname === item.path ? "text-[#8a2be2] bg-[#eff1fb]" : "text-[#919191]"} font-medium`}
-                onClick={() => {
-                  if (item.title === "Dashboard") {
-                    toggleSidebar()
-                  } else {
-                    router.push(item.path)
-                  }
-                }}
-              >
-                <item.icon className="mr-2 h-5 w-5" />
-                {!collapsed && item.title}
-              </Button>
-            ))}
-
-            {/* Approvals Dropdown */}
-            {!collapsed && (
-              <div>
-                <Button variant="ghost" className="w-full justify-between text-[#919191] font-medium">
-                  <span className="flex items-center">
-                    <FileText className="mr-2 h-5 w-5" />
-                    Approvals
-                  </span>
-                  <ChevronDown className="h-4 w-4" />
-                </Button>
-                <div className="ml-9 mt-1 space-y-1">
-                  {["Music", "Album", "Video", "Art"].map((type) => (
-                    <Button
-                      key={type}
-                      variant="ghost"
-                      className="w-full justify-start text-[#919191] text-sm py-1 h-8"
-                      onClick={() => router.push(`/approvals/${type.toLowerCase()}`)}
-                    >
-                      {type} Approvals
-                    </Button>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </nav>
-      </div>
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <header className="bg-white border-b border-[#e9e9e9] h-16 flex items-center px-6">
-          <div className="flex-1 flex items-center">
-            <div className="relative w-96">
-              <Input className="pl-10 bg-white border-[#e9e9e9] rounded-full" placeholder="Search" />
-              <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#919191]">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
-                    stroke="#919191"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </div>
-            </div>
-          </div>
-          <div className="flex items-center space-x-4">
-            <div className="relative">
-              <Bell className="h-6 w-6 text-[#919191]" />
-              <span className="absolute top-0 right-0 h-2 w-2 bg-[#ff0000] rounded-full"></span>
-            </div>
-            <div className="h-10 w-10 rounded-full bg-[#8a2be2] flex items-center justify-center">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21"
-                  stroke="white"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z"
-                  stroke="white"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-          </div>
-        </header>
+        <AdminNav />
 
         {/* Main Content */}
         <main className="flex-1 overflow-auto p-6">
@@ -256,7 +156,7 @@ export default function Dashboard() {
             {/* Left side content (3/4 width) */}
             <div className="col-span-3">
               {/* First row of statistics cards */}
-              <div className="grid grid-cols-3 gap-6 mb-6">
+              <div className="grid grid-cols-3 gap-6 mb-6 2xl:translate-y-[50px]">
                 {statsLoading
                   ? Array(3)
                     .fill(0)
@@ -269,8 +169,8 @@ export default function Dashboard() {
                     ))
                   : statisticsCards.slice(0, 3).map((card, index) => (
                     <div key={index} className="bg-white rounded-lg p-5 shadow-sm">
-                      <div className="flex items-center mb-4">
-                        <div className={`w-8 h-8 rounded-full ${card.bgColor} flex items-center justify-center mr-3`}>
+                      <div className="mb-4 flex flex-col items-start"> {/* Modified div here */}
+                        <div className={`w-8 h-8 rounded-full ${card.bgColor} flex items-center justify-center mb-2`}> {/* Added mb-2 here for spacing */}
                           {/* Render appropriate icon based on card.icon */}
                           {/* Icon rendering code remains the same */}
                           {card.icon === "dollar" && (
@@ -450,7 +350,7 @@ export default function Dashboard() {
                             </svg>
                           )}
                         </div>
-                        <span className="text-[#919191]">{card.title}</span>
+                        <span className="text-[#483D3D] font-bold">{card.title}</span>
                       </div>
                       <div className="flex items-center justify-between">
                         <div className="text-2xl font-bold">{card.value.toLocaleString()}</div>
@@ -467,9 +367,8 @@ export default function Dashboard() {
               </div>
 
 
-
               {/* Second row of statistics cards */}
-              <div className="grid grid-cols-3 gap-6">
+              <div className="grid grid-cols-3 gap-6 2xl:translate-y-[50px]">
                 {statsLoading
                   ? Array(3)
                     .fill(0)
@@ -482,8 +381,8 @@ export default function Dashboard() {
                     ))
                   : statisticsCards.slice(3).map((card, index) => (
                     <div key={index + 3} className="bg-white rounded-lg p-5 shadow-sm">
-                      <div className="flex items-center mb-4">
-                        <div className={`w-8 h-8 rounded-full ${card.bgColor} flex items-center justify-center mr-3`}>
+                     <div className="mb-4 flex flex-col items-start"> {/* Modified div here */}
+                     <div className={`w-8 h-8 rounded-full ${card.bgColor} flex items-center justify-center mb-2`}> {/* Added mb-2 here for spacing */}
                           {/* Render appropriate icon based on card.icon */}
                           {/* Icon rendering code remains the same */}
                           {card.icon === "dollar" && (
@@ -663,7 +562,7 @@ export default function Dashboard() {
                             </svg>
                           )}
                         </div>
-                        <span className="text-[#919191]">{card.title}</span>
+                        <span className="text-[#483D3D] font-bold">{card.title}</span>
                       </div>
                       <div className="flex items-center justify-between">
                         <div className="text-2xl font-bold">{card.value.toLocaleString()}</div>
@@ -681,7 +580,8 @@ export default function Dashboard() {
 
 
               {/* Revenue Chart */}
-              <div className="bg-white rounded-lg p-5 shadow-sm mb-6">
+              <div className="bg-white rounded-lg p-5 shadow-sm mb-6 2xl:mt-[70px] lg:mt-[30px]">
+
                 <div className="flex justify-between items-center mb-6">
                   <h2 className="text-lg font-medium">Overview</h2>
                   <div className="flex space-x-2">
@@ -701,7 +601,7 @@ export default function Dashboard() {
                 {revenueLoading ? (
                   <Skeleton className="h-[300px] w-full" />
                 ) : (
-                  <div className="h-[300px]">
+                  <div className="h-[300px] 2xl:h-[500px] ">
                     <ResponsiveContainer width="100%" height="100%">
                       <ComposedChart data={chartData}>
                         <defs>
@@ -746,7 +646,7 @@ export default function Dashboard() {
             </div>
 
             {/* Right side content (1/4 width) - User Statistics */}
-            <div className="col-span-1">
+            <div className="col-span-1 w-full max-w-xs 2xl:h-[880px] 2xl:translate-y-[50px]">
               <div className="bg-white rounded-lg p-5 shadow-sm h-full">
                 <h2 className="text-lg font-medium mb-6">Users Statistics</h2>
 
@@ -765,7 +665,7 @@ export default function Dashboard() {
                 ) : (
                   <>
                     <div className="flex justify-center mb-6">
-                      <div className="relative w-40 h-40">
+                      <div className="relative w-40 h-40 overflow-hidden">
                         <svg viewBox="0 0 100 100" className="w-full h-full">
                           <circle cx="50" cy="50" r="45" fill="none" stroke="#e9e9e9" strokeWidth="10" />
                           <circle
@@ -781,7 +681,7 @@ export default function Dashboard() {
                             }
                             transform="rotate(-90 50 50)"
                           />
-                          <text x="50" y="55" textAnchor="middle" fontSize="16" fontWeight="bold">
+                          <text x="50" y="55" textAnchor="middle" fontSize="16" fontWeight="bold" className="truncate">
                             {statsData?.appStatistics?.totalRegisteredUsers.toLocaleString() || 0}
                           </text>
                         </svg>
@@ -794,26 +694,32 @@ export default function Dashboard() {
                         { label: "Total creators", value: statsData?.appStatistics?.totalCreators || 0 },
                         { label: "Uploaded songs", value: statsData?.appStatistics?.totalSoundNfts || 0 },
                         { label: "Purchased songs", value: statsData?.appStatistics?.totalPurchases || 0 },
-                      ].map((stat, index) => (
-                        <div key={index}>
-                          <div className="flex justify-between mb-1">
-                            <span className="text-sm font-medium">{stat.label}</span>
+                      ].map((stat, index) => {
+                        const percentage = ((stat.value / (statsData?.appStatistics?.totalRegisteredUsers || 1)) * 100);
+                        return (
+                          <div key={index}>
+                            <div className="flex justify-between mb-1">
+                              <span className="text-sm font-medium">{stat.label}</span>
+                              <span className="text-sm font-semibold">{stat.value.toLocaleString()}</span>
+                            </div>
+                            <div className="w-full bg-[#e9e9e9] rounded-full h-2">
+                              <div
+                                className="bg-[#8a2be2] h-2 rounded-full"
+                                style={{
+                                  width: `${Math.min(percentage, 100)}%`,
+                                  transition: "width 0.5s ease-in-out"
+                                }}
+                              />
+                            </div>
                           </div>
-                          <div className="w-full bg-[#e9e9e9] rounded-full h-2">
-                            <div
-                              className="bg-[#8a2be2] h-2 rounded-full"
-                              style={{
-                                width: `${(stat.value / (statsData?.appStatistics?.totalRegisteredUsers || 1)) * 100}%`,
-                              }}
-                            />
-                          </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   </>
                 )}
               </div>
             </div>
+
 
           </div>
         </main>
