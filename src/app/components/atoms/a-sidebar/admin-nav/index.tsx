@@ -17,7 +17,7 @@ const AdminNav = () => {
         <header className="bg-white border-b border-[#e9e9e9] h-16 flex items-center px-6">
             {/* Search Bar */}
             <div className="flex-1 flex items-center">
-                <div className="relative w-[500px] 2xl:w-[900px]">
+                <div className="relative w-full md:w-auto md:max-w-lg 2xl:w-[900px]"> {/* Responsive width classes added here */}
                     <Input className="pl-10 bg-white border-[#e9e9e9] rounded-full" placeholder="Search" />
                     <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#919191]">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

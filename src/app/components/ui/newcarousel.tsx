@@ -1,8 +1,8 @@
 'use client';
 
 import React from "react";
-import { Card, Image } from "@heroui/react";
-
+import { Card } from "@heroui/react";
+import Image from "next/image"; 
 const carouselImages = [
   {
     src: "/images/Artist-1.svg",

@@ -1,6 +1,6 @@
 import React from "react";
-import { Card, Image } from "@heroui/react";
-
+import Image from "next/image"; // Use Next.js Image component
+import { Card } from "@heroui/react";
 
 const artists = [
   {
@@ -29,7 +29,6 @@ const artists = [
   },
 ];
 
-
 const duplicatedArtists = [...artists, ...artists];
 
 export default function InfiniteCarousel() {
@@ -39,20 +38,21 @@ export default function InfiniteCarousel() {
         {duplicatedArtists.map((artist, index) => (
           <div key={index} className="w-full min-w-[250px]">
             <Card isFooterBlurred className="border-none w-full" radius="lg">
+              {/* Updated Image Component */}
               <Image
-                alt={artist.name}
-                className="object-cover w-[250px] h-[200px]" 
+                alt={artist.name || "Artist Image"}
+                className="object-cover w-[250px] h-[200px]"
                 src={artist.image}
-                width={250} 
+                width={250}
                 height={200}
+                unoptimized // Prevents unnecessary Next.js optimization for SVGs
               />
+
               {/* Song Title and Artist Name */}
               <div className="mt-2">
-                
                 <p className="font-space-grotesk text-white text-lg font-bold">
                   {artist.songTitle}
                 </p>
-                
                 <div className="text-gray-400 font-medium">
                   {artist.name.split(" ").map((word, i) => (
                     <span
@@ -69,6 +69,7 @@ export default function InfiniteCarousel() {
         ))}
       </div>
 
+      {/* CSS Animations */}
       <style jsx>{`
         @keyframes scroll {
           0% {

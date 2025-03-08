@@ -44,7 +44,7 @@ const AdminSideNav: React.FC<AdminSideNavProps> = ({ collapsed, toggleSidebar })
                         </Button>
 
                         {/* Divider */}
-                        <div className="h-[0.5px] w-[200px] max-w-[90%] sm:max-w-screen-lg bg-[#8A8AA0] bg-opacity-40 mb-5 mx-auto"></div>
+                        <div className="h-[0.5px] w-full max-w-[90%] sm:max-w-screen-lg bg-[#8A8AA0] bg-opacity-40 mb-5 mx-auto"></div>
 
                         {/* Users */}
                         <Button
@@ -57,7 +57,7 @@ const AdminSideNav: React.FC<AdminSideNavProps> = ({ collapsed, toggleSidebar })
                         </Button>
 
                         {/* Divider */}
-                        <div className="h-[0.5px] w-[200px] max-w-[90%] sm:max-w-screen-lg bg-[#8A8AA0] bg-opacity-40 mb-5 mx-auto"></div>
+                        <div className="h-[0.5px] w-full max-w-[90%] sm:max-w-screen-lg bg-[#8A8AA0] bg-opacity-40 mb-5 mx-auto"></div>
 
                         {/* Approvals Dropdown */}
                         {!collapsed && (
@@ -100,7 +100,7 @@ const AdminSideNav: React.FC<AdminSideNavProps> = ({ collapsed, toggleSidebar })
                             </div>
                         )}
 
-                        <div className="h-[0.5px] w-[200px] max-w-[90%] sm:max-w-screen-lg bg-[#8A8AA0] bg-opacity-40 mb-5 mx-auto"></div>
+                        <div className="h-[0.5px] w-full max-w-[90%] sm:max-w-screen-lg bg-[#8A8AA0] bg-opacity-40 mb-5 mx-auto"></div>
 
                         {/* Transactions */}
                         <Button
@@ -113,7 +113,7 @@ const AdminSideNav: React.FC<AdminSideNavProps> = ({ collapsed, toggleSidebar })
                         </Button>
 
                         {/* Divider */}
-                        <div className="h-[0.5px] w-[200px] max-w-[90%] sm:max-w-screen-lg bg-[#8A8AA0] bg-opacity-40 mb-5 mx-auto"></div>
+                        <div className="h-[0.5px] w-full max-w-[90%] sm:max-w-screen-lg bg-[#8A8AA0] bg-opacity-40 mb-5 mx-auto"></div>
 
                         {/* Settings */}
                         <Button
