@@ -435,79 +435,86 @@ export default function Dashboard() {
             </div>
 
             {/* Right side content (1/4 width on medium screens and above) - User Statistics */}
-<div className="md:col-span-1 w-full 2xl:h-[880px] 2xl:translate-y-[50px]"> {/* Modified col-span here for responsiveness */}
-  <div className="bg-white rounded-lg p-5 shadow-sm h-full">
-    <h2 className="text-lg font-medium mb-6">Users Statistics</h2>
+            <div className="md:col-span-1 w-full 2xl:h-[880px] 2xl:translate-y-[50px]"> {/* Modified col-span here for responsiveness */}
+              <div className="bg-white rounded-lg p-5 shadow-sm h-full">
+                <h2 className="text-lg font-medium mb-6">Users Statistics</h2>
 
-    {userStatsLoading ? (
-      <div className="space-y-6 flex flex-col items-center">
-        <Skeleton className="h-64 w-64 rounded-full mb-8" />
-        {Array(4)
-          .fill(0)
-          .map((_, i) => (
-            <div key={i} className="w-full max-w-md">
-              <Skeleton className="h-6 w-40 mb-3" />
-              <Skeleton className="h-4 w-full" />
-            </div>
-          ))}
-      </div>
-    ) : (
-      <>
-        <div className="flex justify-center mb-6">
-          <div className="relative w-72 h-72 overflow-hidden">
-            <svg viewBox="0 0 100 100" className="w-full h-full">
-              <circle cx="50" cy="50" r="45" fill="none" stroke="#e9e9e9" strokeWidth="10" />
-              <circle
-                cx="50"
-                cy="50"
-                r="45"
-                fill="none"
-                stroke="#8a2be2"
-                strokeWidth="10"
-                strokeDasharray={`${2 * Math.PI * 45}`}
-                strokeDashoffset={
-                  2 * Math.PI * 45 * (1 - (statsData?.appStatistics?.totalCreators || 0) / (statsData?.appStatistics?.totalRegisteredUsers || 1))
-                }
-                transform="rotate(-90 50 50)"
-              />
-              <text x="50" y="55" textAnchor="middle" fontSize="18" fontWeight="bold" className="truncate">
-                {statsData?.appStatistics?.totalRegisteredUsers.toLocaleString() || 0}
-              </text>
-            </svg>
-          </div>
-        </div>
+                {userStatsLoading ? (
+                  <div className="space-y-6 flex flex-col items-center">
+                    <Skeleton className="h-64 w-64 rounded-full mb-8" />
+                    {Array(4)
+                      .fill(0)
+                      .map((_, i) => (
+                        <div key={i} className="w-full max-w-md">
+                          <Skeleton className="h-6 w-40 mb-3" />
+                          <Skeleton className="h-4 w-full" />
+                        </div>
+                      ))}
+                  </div>
+                ) : (
+                  <>
+                    <div className="flex justify-center mb-6">
+                      <div className="relative w-72 h-72 overflow-hidden">
+                        <svg viewBox="0 0 100 100" className="w-full h-full">
+                          <circle cx="50" cy="50" r="45" fill="none" stroke="#e9e9e9" strokeWidth="10" />
+                          <circle
+                            cx="50"
+                            cy="50"
+                            r="45"
+                            fill="none"
+                            stroke="#8a2be2"
+                            strokeWidth="10"
+                            strokeDasharray={`${2 * Math.PI * 45}`}
+                            strokeDashoffset={
+                              2 * Math.PI * 45 * (1 - (statsData?.appStatistics?.totalCreators || 0) / (statsData?.appStatistics?.totalRegisteredUsers || 1))
+                            }
+                            transform="rotate(-90 50 50)"
+                          />
+                          <text x="50" y="55" textAnchor="middle" fontSize="18" fontWeight="bold" className="truncate">
+                            {statsData?.appStatistics?.totalRegisteredUsers.toLocaleString() || 0}
+                          </text>
+                        </svg>
+                      </div>
+                    </div>
 
-        <div className="space-y-5">
-          {[
-            { label: "Total users", value: statsData?.appStatistics?.totalRegisteredUsers || 0 },
-            { label: "Total creators", value: statsData?.appStatistics?.totalCreators || 0 },
-            { label: "Uploaded songs", value: statsData?.appStatistics?.totalSoundNfts || 0 },
-            { label: "Purchased songs", value: statsData?.appStatistics?.totalPurchases || 0 },
-          ].map((stat, index) => {
-            const percentage = ((stat.value / (statsData?.appStatistics?.totalRegisteredUsers || 1)) * 100);
-            return (
-              <div key={index}>
-                <div className="flex justify-between mb-1">
-                  <span className="text-sm font-medium">{stat.label}</span>
-                  <span className="text-sm font-semibold">{stat.value.toLocaleString()}</span>
-                </div>
-                <div className="w-full bg-[#e9e9e9] rounded-full h-3">
-                  <div
-                    className="bg-[#8a2be2] h-3 rounded-full"
-                    style={{
-                      width: `${Math.min(percentage, 100)}%`,
-                      transition: "width 0.5s ease-in-out"
-                    }}
-                  />
-                </div>
+                    <div className="space-y-5">
+                      {[
+                        { label: "Total users", value: statsData?.appStatistics?.totalRegisteredUsers || 0 },
+                        { label: "Total creators", value: statsData?.appStatistics?.totalCreators || 0 },
+                        { label: "Uploaded songs", value: statsData?.appStatistics?.totalSoundNfts || 0 },
+                        { label: "Purchased songs", value: statsData?.appStatistics?.totalPurchases || 0 },
+                      ].map((stat, index) => {
+                        const totalSum =
+                          (statsData?.appStatistics?.totalRegisteredUsers || 0) +
+                          (statsData?.appStatistics?.totalCreators || 0) +
+                          (statsData?.appStatistics?.totalSoundNfts || 0) +
+                          (statsData?.appStatistics?.totalPurchases || 0);
+
+                        const percentage = ((stat.value / (totalSum || 1)) * 100);
+
+                        return (
+                          <div key={index}>
+                            <div className="flex justify-between mb-1">
+                              <span className="text-sm font-medium">{stat.label}</span>
+                              <span className="text-sm font-semibold">{stat.value.toLocaleString()}</span>
+                            </div>
+                            <div className="w-full bg-[#e9e9e9] rounded-full h-3">
+                              <div
+                                className="bg-[#8a2be2] h-3 rounded-full"
+                                style={{
+                                  width: `${Math.min(percentage, 100)}%`,
+                                  transition: "width 0.5s ease-in-out"
+                                }}
+                              />
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </>
+                )}
               </div>
-            );
-          })}
-        </div>
-      </>
-    )}
-  </div>
-</div>
+            </div>
 
 
           </div>
