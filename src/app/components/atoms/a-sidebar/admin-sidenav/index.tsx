@@ -33,14 +33,18 @@ const AdminSideNav: React.FC<AdminSideNavProps> = ({ collapsed, toggleSidebar })
                 {/* Navigation */}
                 <nav className="px-2 py-2 2xl:translate-y-[50px]">
                     <div className="space-y-1">
-                        {/* Dashboard */}
                         <Button
                             variant="ghost"
                             className={`w-full justify-start flex items-center ${pathname === "/" ? "text-[#8a2be2] bg-[#eff1fb]" : "text-[#919191]"} font-medium`}
-                            onClick={toggleSidebar}
+                            onClick={toggleSidebar} // Button only toggles sidebar
                         >
                             <LayoutGrid className="mr-2 h-5 w-5 flex-shrink-0" />
-                            <span className={`${collapsed ? "opacity-0 w-0" : "opacity-100 w-auto"} transition-all duration-300`}>Dashboard</span>
+                            <span
+                                onClick={() => router.push("/admin/dashboard")} // Text navigates
+                                className={`${collapsed ? "opacity-0 w-0" : "opacity-100 w-auto"} transition-all duration-300 cursor-pointer`}
+                            >
+                                Dashboard
+                            </span>
                         </Button>
 
                         {/* Divider */}
@@ -49,8 +53,8 @@ const AdminSideNav: React.FC<AdminSideNavProps> = ({ collapsed, toggleSidebar })
                         {/* Users */}
                         <Button
                             variant="ghost"
-                            className={`w-full justify-start flex items-center ${pathname === "/users" ? "text-[#8a2be2] bg-[#eff1fb]" : "text-[#919191]"} font-medium`}
-                            onClick={() => router.push("/users")}
+                            className={`w-full justify-start flex items-center ${pathname === "/admin/users" ? "text-[#8a2be2] bg-[#eff1fb]" : "text-[#919191]"} font-medium`}
+                            onClick={() => router.push("/admin/users")}
                         >
                             <Users className="mr-2 h-5 w-5 flex-shrink-0" />
                             <span className={`${collapsed ? "opacity-0 w-0" : "opacity-100 w-auto"} transition-all duration-300`}>Users</span>

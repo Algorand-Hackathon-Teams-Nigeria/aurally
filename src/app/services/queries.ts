@@ -32,3 +32,15 @@ export const APP_STATISTICS = gql`
     }
   }
 `;
+
+export const GET_USERS = gql`
+  query GetUsers {
+    users {
+      id
+      username
+      walletAddress
+      purchasedSongs
+      dateJoined
+    }
+  }
+`;

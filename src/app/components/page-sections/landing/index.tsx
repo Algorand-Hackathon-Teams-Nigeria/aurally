@@ -31,6 +31,7 @@ import CreativeCommunity from "./new-creatives/pl-community how-it-works"
 import ProductCommunity from "./pl-products/community"
 import AdminLogin from "./pl-admin"
 import AdminDashboard from "./pl-admin/dashboard"
+import AdminUsers from "./pl-admin/users"
 
 import ArtistsPage from "./pl-new-artists";
 
@@ -68,7 +69,8 @@ const Landing = {
   ProductCommunity,
   AcademyWorks,
   AdminLogin,
-  AdminDashboard
+  AdminDashboard,
+  AdminUsers
 };
 
 export default Landing;
