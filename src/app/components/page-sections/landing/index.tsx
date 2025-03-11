@@ -32,6 +32,7 @@ import ProductCommunity from "./pl-products/community"
 import AdminLogin from "./pl-admin"
 import AdminDashboard from "./pl-admin/dashboard"
 import AdminUsers from "./pl-admin/users"
+import AdminTransactions from "./pl-admin/transactions"
 
 import ArtistsPage from "./pl-new-artists";
 
@@ -70,7 +71,8 @@ const Landing = {
   AcademyWorks,
   AdminLogin,
   AdminDashboard,
-  AdminUsers
+  AdminUsers,
+  AdminTransactions
 };
 
 export default Landing;

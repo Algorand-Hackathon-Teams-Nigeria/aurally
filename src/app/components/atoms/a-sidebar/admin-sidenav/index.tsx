@@ -110,7 +110,7 @@ const AdminSideNav: React.FC<AdminSideNavProps> = ({ collapsed, toggleSidebar })
                         <Button
                             variant="ghost"
                             className={`w-full justify-start flex items-center ${pathname === "/transactions" ? "text-[#8a2be2] bg-[#eff1fb]" : "text-[#919191]"} font-medium`}
-                            onClick={() => router.push("/transactions")}
+                            onClick={() => router.push("/admin/transactions")}
                         >
                             <BarChart3 className="mr-2 h-5 w-5 flex-shrink-0" />
                             <span className={`${collapsed ? "opacity-0 w-0" : "opacity-100 w-auto"} transition-all duration-300`}>Transactions</span>
