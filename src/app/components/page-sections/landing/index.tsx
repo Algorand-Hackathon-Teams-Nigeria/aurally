@@ -34,6 +34,8 @@ import AdminDashboard from "./pl-admin/dashboard"
 import AdminUsers from "./pl-admin/users"
 import AdminTransactions from "./pl-admin/transactions"
 
+import MusicApproval from "./pl-admin/approvals/music"
+
 import ArtistsPage from "./pl-new-artists";
 
 const Landing = {
@@ -72,7 +74,9 @@ const Landing = {
   AdminLogin,
   AdminDashboard,
   AdminUsers,
-  AdminTransactions
+  AdminTransactions,
+
+  MusicApproval
 };
 
 export default Landing;
