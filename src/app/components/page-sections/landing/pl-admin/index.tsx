@@ -19,7 +19,7 @@ export default function AdminLogin() {
   return (
     <div
       className="min-h-screen flex flex-col bg-gradient-to-br from-[#ebebeb] to-[#f0e6ff] bg-cover bg-center"
-      style={{ backgroundImage: "url('/bg.svg')" }}
+     
     >
       <div className="flex-1 flex flex-col items-center justify-center p-4 mt-[100px]">
         <div className="w-full max-w-md mb-8">
