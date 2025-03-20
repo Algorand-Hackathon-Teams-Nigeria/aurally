@@ -1,5 +1,5 @@
 "use client";
-import { Bell, ChevronDown, LayoutGrid, MoreVertical, Search, Settings as LucideSettings, Users } from "lucide-react"
+import { Bell, ChevronDown, LayoutGrid, MoreVertical, Search, Settings as LucideSettings, Users, Plus } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/app/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/app/components/ui/admin-dashoard/dropdown-menu"
@@ -7,19 +7,69 @@ import { Input } from "@/app/components/ui/input"
 import AdminSideNav from "@atoms/a-sidebar/admin-sidenav";
 import AdminNav from "@atoms/a-sidebar/admin-nav";
 import { useState } from "react"
-
-
+import Modal from "@/app/components/ui/settings-modal"; // Import the Modal component
+import SuccessModal from "@/app/components/ui/success-modal";
 
 export default function Settings() {
-
-    const [collapsed, setCollapsed] = useState(false)
+  const [collapsed, setCollapsed] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [error, setError] = useState("");
 
   const toggleSidebar = () => {
-    setCollapsed((prev) => !prev)
-  }
+    setCollapsed((prev) => !prev);
+  };
+
+  // Basic email validation regex
+  const isValidEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const handleAddUserSubmit = () => {
+    // Basic validation: Check if fields are filled
+    if (!firstName || !lastName || !email) {
+      setError("Please fill in all fields.");
+      return;
+    }
+
+    // Email validation
+    if (!isValidEmail(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    setError(""); // Clear any previous error
+
+    // Simulate adding a user
+    console.log("Adding user:", { firstName, lastName, email });
+
+    setShowModal(false);
+    setShowSuccessModal(true);
+
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+  };
+
+  const handleCloseSuccessModal = () => {
+    setShowSuccessModal(false);
+  };
+
+  const handleAddAnotherUser = () => {
+    setShowSuccessModal(false);
+    setShowModal(true);
+  };
+
+  const handleDoneAddingUsers = () => {
+    setShowSuccessModal(false);
+  };
   return (
     <div className="min-h-screen flex bg-[#f0f0f0]">
-      
+
        {/* Sidebar */}
             <AdminSideNav collapsed={collapsed} toggleSidebar={toggleSidebar} />
 
@@ -33,7 +83,10 @@ export default function Settings() {
           <div className="bg-white rounded-lg shadow-sm overflow-hidden">
             <div className="flex items-center justify-between p-6 border-b border-[#e9e9e9]">
               <h1 className="text-xl font-semibold text-[#483D3D]">Admins</h1>
-              <Button className="bg-[#8a2be2] hover:bg-[#7928c9] text-white rounded-md">Add new user</Button>
+              <Button onClick={() => setShowModal(true)} className="bg-[#8a2be2] hover:bg-[#7a1bd2] text-white">
+              <Plus size={16} className="mr-2" />
+              Add New User
+            </Button>
             </div>
 
             {/* Table */}
@@ -166,6 +219,63 @@ export default function Settings() {
           </div>
         </main>
       </div>
+       {/* "Add New User" Modal */}
+       <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+        <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6 text-black">
+          <h2 className="text-xl font-bold mb-6">Add New User</h2>
+
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">First name</label>
+              <Input
+                placeholder="eg. john"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                className="w-full"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Last name</label>
+              <Input
+                placeholder="eg. john"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                className="w-full"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Email address</label>
+              <Input
+                placeholder="e.g john@gmail.com"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full"
+              />
+            </div>
+
+            {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+
+            <Button
+              className="w-full bg-[#8a2be2] hover:bg-[#7a1bd2] text-white mt-4"
+              onClick={handleAddUserSubmit}
+            >
+              Add user
+            </Button>
+          </div>
+        </div>
+      </Modal>
+
+
+      {/* Success Modal */}
+      <SuccessModal
+        isOpen={showSuccessModal}
+        onClose={handleCloseSuccessModal}
+        onAddAnother={handleAddAnotherUser}
+      />
     </div>
+
   )
 }

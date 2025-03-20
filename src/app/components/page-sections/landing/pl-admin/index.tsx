@@ -11,15 +11,57 @@ import { BigLogo } from "@atoms/a-big-logo";
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(""); // State for error message
+
+  // Basic email validation regex (same as in Settings.tsx)
+  const isValidEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent default form submission
+
+    // Basic validation: Check if fields are filled
+    if (!email || !password) {
+      setError("Please fill in all fields.");
+      return;
+    }
+
+    // Email validation
+    if (!isValidEmail(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    setError(""); // Clear any previous error
+
+    // Simulate login submission (replace with actual API call)
+    console.log("Login submitted:", { email, password });
+    // In a real application, you would make an API call here to authenticate the admin.
+    // Example:
+    // fetch('/api/admin/login', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify({ email, password }),
+    // })
+    // .then(response => {
+    //   if (response.ok) {
+    //     // Login successful, redirect or set authentication state
+    //   } else {
+    //     // Login failed, handle error (e.g., display error message from server)
+    //     setError("Invalid email or password."); // Example server-side error
+    //   }
+    // })
+    // .catch(error => {
+    //   setError("An error occurred during login."); // Network or other error
+    // });
   };
 
   return (
     <div
       className="min-h-screen flex flex-col bg-gradient-to-br from-[#ebebeb] to-[#f0e6ff] bg-cover bg-center"
-     
+
     >
       <div className="flex-1 flex flex-col items-center justify-center p-4 mt-[100px]">
         <div className="w-full max-w-md mb-8">
@@ -68,6 +110,8 @@ export default function AdminLogin() {
                 className="border-[#d7d7d7] h-12 rounded text-[#0a0212]"
               />
             </div>
+
+            {error && <p className="text-red-500 text-sm mt-1">{error}</p>} {/* Error message display */}
 
             <Button type="submit" className="w-full h-12 bg-[#8a2be2] hover:bg-[#7424c1] text-white font-medium">
               Login
