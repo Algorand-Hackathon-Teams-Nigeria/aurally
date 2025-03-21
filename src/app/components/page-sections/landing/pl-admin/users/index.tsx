@@ -33,7 +33,7 @@ export default function AdminUsers() {
            <AdminSideNav collapsed={collapsed} toggleSidebar={toggleSidebar} />
 
         {/* Main Content */}
-        <div className="flex-1">
+        <div className="flex-1 overflow-hidden z-20">
         {/* Header */}
         <AdminNav />
 

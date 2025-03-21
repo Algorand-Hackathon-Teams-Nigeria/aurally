@@ -74,7 +74,7 @@ export default function Settings() {
             <AdminSideNav collapsed={collapsed} toggleSidebar={toggleSidebar} />
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col overflow-hidden z-20">
         {/* Header */}
                <AdminNav />
 
