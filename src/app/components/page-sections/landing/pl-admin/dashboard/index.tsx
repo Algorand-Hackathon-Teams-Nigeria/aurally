@@ -54,39 +54,28 @@ export default function Dashboard() {
 
   // Calculate percentage changes
   const getPercentageChange = (current: number, previous: number) => {
-    if (!previous) return 0
+    if (!previous || previous === 0) return current === 0 ? 0 : 100; // Handle division by zero
     return ((current - previous) / previous) * 100
   }
 
-  const stats = statsData?.appStatistics
-    ? {
-      totalRevenue: 0, // No equivalent field in appStatistics, keeping as 0
-      totalUsers: statsData.appStatistics.totalRegisteredUsers || 0,
-      uploadedSongs: statsData.appStatistics.totalSoundNfts || 0,
-      purchasedSongs: statsData.appStatistics.totalPurchases || 0,
-      newUsers: 0, // No direct equivalent, keeping as 0
-      creators: statsData.appStatistics.totalCreators || 0,
-      previousTotalRevenue: 0,
-      previousTotalUsers: 0,
-      previousUploadedSongs: 0,
-      previousPurchasedSongs: 0,
-      previousNewUsers: 0,
-      previousCreators: 0,
-    }
-    : {
-      totalRevenue: 0,
-      totalUsers: 0,
-      uploadedSongs: 0,
-      purchasedSongs: 0,
-      newUsers: 0,
-      creators: 0,
-      previousTotalRevenue: 0,
-      previousTotalUsers: 0,
-      previousUploadedSongs: 0,
-      previousPurchasedSongs: 0,
-      previousNewUsers: 0,
-      previousCreators: 0,
-    };
+  // Using optional chaining and nullish coalescing for safer access
+  const appStats = statsData?.appStatistics;
+  const stats = {
+    totalRevenue: 0, // Still 0 as no direct data
+    totalUsers: appStats?.totalRegisteredUsers ?? 0,
+    uploadedSongs: appStats?.totalSoundNfts ?? 0,
+    purchasedSongs: appStats?.totalPurchases ?? 0,
+    newUsers: 0, // Still 0 as no direct data
+    creators: appStats?.totalCreators ?? 0,
+    // Note: Previous values are still hardcoded as 0. You'll need historical data for these.
+    previousTotalRevenue: 0,
+    previousTotalUsers: 0,
+    previousUploadedSongs: 0,
+    previousPurchasedSongs: 0,
+    previousNewUsers: 0,
+    previousCreators: 0,
+  };
+
 
   // Statistics cards data
   const statisticsCards = [
@@ -95,48 +84,54 @@ export default function Dashboard() {
       value: stats.totalRevenue,
       change: getPercentageChange(stats.totalRevenue, stats.previousTotalRevenue),
       icon: "dollar",
-      bgColor: "bg-[#fef9ec]",
+      bgColor: "bg-[#fef9ec]", // Added background color
       iconColor: "#fbb03b",
+      imageSrc: "/images/dollar.svg" // Added image source
     },
     {
       title: "Total Users",
-      value: statsData?.appStatistics?.totalRegisteredUsers ?? 0,
+      value: stats.totalUsers,
       change: getPercentageChange(stats.totalUsers, stats.previousTotalUsers),
       icon: "users",
-      bgColor: "bg-[#eff1fb]",
+      bgColor: "bg-[#eff1fb]", // Added background color
       iconColor: "#2f4dc4",
+      imageSrc: "/images/users.svg" // Added image source
     },
     {
       title: "Uploaded Songs",
-      value: statsData?.appStatistics?.totalSoundNfts ?? 0,
+      value: stats.uploadedSongs,
       change: getPercentageChange(stats.uploadedSongs, stats.previousUploadedSongs),
       icon: "music",
-      bgColor: "bg-[#f0f5ea]",
+      bgColor: "bg-[#f0f5ea]", // Added background color
       iconColor: "#669f2a",
+      imageSrc: "/images/music.svg" // Added image source
     },
     {
       title: "Purchased songs",
-      value: statsData?.appStatistics?.totalPurchases ?? 0,
+      value: stats.purchasedSongs,
       change: getPercentageChange(stats.purchasedSongs, stats.previousPurchasedSongs),
       icon: "shoppingCart",
-      bgColor: "bg-[#eff1fb]",
+      bgColor: "bg-[#eff1fb]", // Added background color (assuming same as users based on original)
       iconColor: "#2f4dc4",
+      imageSrc: "/images/users.svg" // Added image source (assuming path)
     },
     {
       title: "New users",
       value: stats.newUsers,
       change: getPercentageChange(stats.newUsers, stats.previousNewUsers),
       icon: "userPlus",
-      bgColor: "bg-[#fef9ec]",
+      bgColor: "bg-[#fef9ec]", // Added background color (assuming same as dollar based on original)
       iconColor: "#fbb03b",
+      imageSrc: "/images/user-plus.svg" // Added image source
     },
     {
       title: "Creators",
-      value: statsData?.appStatistics?.totalCreators ?? 0,
+      value: stats.creators,
       change: getPercentageChange(stats.creators, stats.previousCreators),
       icon: "star",
-      bgColor: "bg-[#feeceb]",
+      bgColor: "bg-[#feeceb]", // Added background color
       iconColor: "#f04438",
+      imageSrc: "/images/creators.svg" // Added image source
     },
   ];
 
@@ -162,48 +157,25 @@ export default function Dashboard() {
                   ? Array(3)
                     .fill(0)
                     .map((_, i) => (
-                      <div key={i} className="bg-white rounded-lg p-5 shadow-sm">
-                        <Skeleton className="h-8 w-8 rounded-full mb-4" />
+                      <div key={i} className="bg-white p-5 shadow-sm">
+                        {/* Make Skeleton match the larger size */}
+                        <Skeleton className="h-16 w-16 rounded-full mb-4" />
                         <Skeleton className="h-6 w-24 mb-2" />
                         <Skeleton className="h-8 w-32" />
                       </div>
                     ))
                   : statisticsCards.slice(0, 3).map((card, index) => (
-                    <div key={index} className="bg-white rounded-lg p-5 shadow-sm">
-                      <div className="mb-4 flex flex-col items-start"> {/* Modified div here */}
-                        <div className={`w-8 h-8 rounded-full ${card.bgColor} flex items-center justify-center mb-2`}> {/* Added mb-2 here for spacing */}
-                          {/* Render appropriate icon based on card.icon */}
-                          {/* Icon rendering code remains the same */}
-
-                          {card.icon === "dollar" && (
-                            <Image
-                              src="/images/dollar.svg" // Path relative to the public folder
-                              alt="Dollar Icon"
-                              width={24} // Adjust the width
-                              height={24} // Adjust the height
-                              style={{ pointerEvents: "none" }}
-                            />
-                          )}
-
-                          {card.icon === "users" && (
-                            <Image
-                              src="/images/users.svg" // Path relative to the public folder
-                              alt="Users Icon"
-                              width={24} // Adjust the width
-                              height={24} // Adjust the height
-                              style={{ pointerEvents: "none" }}
-                            />
-                          )}
-                          {card.icon === "music" && (
-                            <Image
-                              src="/images/music.svg" // Path relative to the public folder
-                              alt="Users Icon"
-                              width={24} // Adjust the width
-                              height={24} // Adjust the height
-                              style={{ pointerEvents: "none" }}
-                            />
-                          )}
-
+                    <div key={index} className="bg-white p-5 shadow-sm">
+                      <div className="mb-4 flex flex-col items-start">
+                        {/* Increased container size w-16 h-16 and added bgColor */}
+                        <div className={`w-16 h-16  flex items-center justify-center mb-2`}>
+                          <Image
+                            src={card.imageSrc} // Use imageSrc from card data
+                            alt={`${card.title} Icon`}
+                            width={48} // Increased width
+                            height={48} // Increased height
+                            style={{ pointerEvents: "none" }}
+                          />
                         </div>
                         <span className="text-[#483D3D] font-bold">{card.title}</span>
                       </div>
@@ -229,127 +201,24 @@ export default function Dashboard() {
                     .fill(0)
                     .map((_, i) => (
                       <div key={i + 3} className="bg-white rounded-lg p-5 shadow-sm">
-                        <Skeleton className="h-8 w-8 rounded-full mb-4" />
+                         {/* Make Skeleton match the larger size */}
+                        <Skeleton className="h-16 w-16 rounded-full mb-4" />
                         <Skeleton className="h-6 w-24 mb-2" />
                         <Skeleton className="h-8 w-32" />
                       </div>
                     ))
                   : statisticsCards.slice(3).map((card, index) => (
                     <div key={index + 3} className="bg-white rounded-lg p-5 shadow-sm">
-                      <div className="mb-4 flex flex-col items-start"> {/* Modified div here */}
-                        <div className={`w-8 h-8 rounded-full  flex items-center justify-center mb-2`}> {/* Added mb-2 here for spacing */}
-                          {/* Render appropriate icon based on card.icon */}
-                          {/* Icon rendering code remains the same */}
-                          {card.icon === "dollar" && (
-                            <svg
-                              width="16"
-                              height="16"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM12.31 11.14C10.54 10.69 9.97 10.2 9.97 9.47C9.97 8.63 10.76 8.04 12.07 8.04C13.45 8.04 13.97 8.7 14.01 9.68H15.72C15.67 8.34 14.85 7.11 13.23 6.71V5H10.9V6.69C9.39 7.01 8.18 7.99 8.18 9.5C8.18 11.29 9.67 12.19 11.84 12.71C13.79 13.17 14.18 13.86 14.18 14.58C14.18 15.11 13.79 15.97 12.08 15.97C10.48 15.97 9.85 15.25 9.76 14.33H8.04C8.14 16.03 9.4 16.99 10.9 17.3V19H13.24V17.33C14.76 17.04 15.98 16.17 15.98 14.56C15.97 12.36 14.07 11.6 12.31 11.14Z"
-                                fill={card.iconColor}
-                              />
-                            </svg>
-                          )}
-                          {card.icon === "users" && (
-                            <svg
-                              width="16"
-                              height="16"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M16 21V19C16 17.9391 15.5786 16.9217 14.8284 16.1716C14.0783 15.4214 13.0609 15 12 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21"
-                                stroke={card.iconColor}
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                              <path
-                                d="M8.5 11C10.7091 11 12.5 9.20914 12.5 7C12.5 4.79086 10.7091 3 8.5 3C6.29086 3 4.5 4.79086 4.5 7C4.5 9.20914 6.29086 11 8.5 11Z"
-                                stroke={card.iconColor}
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                              <path
-                                d="M23 21V19C22.9993 18.1137 22.7044 17.2528 22.1614 16.5523C21.6184 15.8519 20.8581 15.3516 20 15.13"
-                                stroke={card.iconColor}
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                              <path
-                                d="M17 3.13C17.8604 3.35031 18.623 3.85071 19.1676 4.55232C19.7122 5.25392 20.0078 6.11683 20.0078 7.005C20.0078 7.89318 19.7122 8.75608 19.1676 9.45769C18.623 10.1593 17.8604 10.6597 17 10.88"
-                                stroke={card.iconColor}
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
-                          )}
-                          {card.icon === "music" && (
-                            <svg
-                              width="16"
-                              height="16"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M9 18V5L21 3V16"
-                                stroke={card.iconColor}
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                              <path
-                                d="M6 21C7.65685 21 9 19.6569 9 18C9 16.3431 7.65685 15 6 15C4.34315 15 3 16.3431 3 18C3 19.6569 4.34315 21 6 21Z"
-                                stroke={card.iconColor}
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                              <path
-                                d="M18 19C19.6569 19 21 17.6569 21 16C21 14.3431 19.6569 13 18 13C16.3431 13 15 14.3431 15 16C15 17.6569 16.3431 19 18 19Z"
-                                stroke={card.iconColor}
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
-                          )}
-                          {card.icon === "shoppingCart" && (
-                            <Image
-                              src="/images/users.svg" // Path relative to the public folder
-                              alt="Users Icon"
-                              width={24} // Adjust the width
-                              height={24} // Adjust the height
+                      <div className="mb-4 flex flex-col items-start">
+                        {/* Increased container size w-16 h-16 and added bgColor */}
+                        <div className={`w-16 h-16  flex items-center justify-center mb-2`}>
+                          <Image
+                              src={card.imageSrc} // Use imageSrc from card data
+                              alt={`${card.title} Icon`}
+                              width={48} // Increased width
+                              height={48} // Increased height
                               style={{ pointerEvents: "none" }}
                             />
-                          )}
-                          {card.icon === "userPlus" && (
-                            <Image
-                              src="/images/user-plus.svg" // Path relative to the public folder
-                              alt="Users Icon"
-                              width={24} // Adjust the width
-                              height={24} // Adjust the height
-                              style={{ pointerEvents: "none" }}
-                            />
-                          )}
-                          {card.icon === "star" && (
-                            <Image
-                              src="/images/creators.svg" // Path relative to the public folder
-                              alt="Users Icon"
-                              width={24} // Adjust the width
-                              height={24} // Adjust the height
-                              style={{ pointerEvents: "none" }}
-                            />
-                          )}
                         </div>
                         <span className="text-[#483D3D] font-bold">{card.title}</span>
                       </div>
@@ -466,12 +335,12 @@ export default function Dashboard() {
                             strokeWidth="10"
                             strokeDasharray={`${2 * Math.PI * 45}`}
                             strokeDashoffset={
-                              2 * Math.PI * 45 * (1 - (statsData?.appStatistics?.totalCreators || 0) / (statsData?.appStatistics?.totalRegisteredUsers || 1))
+                              2 * Math.PI * 45 * (1 - (appStats?.totalCreators ?? 0) / (appStats?.totalRegisteredUsers || 1)) // Use appStats
                             }
                             transform="rotate(-90 50 50)"
                           />
                           <text x="50" y="55" textAnchor="middle" fontSize="18" fontWeight="bold" className="truncate">
-                            {statsData?.appStatistics?.totalRegisteredUsers.toLocaleString() || 0}
+                            {(appStats?.totalRegisteredUsers ?? 0).toLocaleString()} {/* Use appStats */}
                           </text>
                         </svg>
                       </div>
@@ -479,18 +348,18 @@ export default function Dashboard() {
 
                     <div className="space-y-5">
                       {[
-                        { label: "Total users", value: statsData?.appStatistics?.totalRegisteredUsers || 0 },
-                        { label: "Total creators", value: statsData?.appStatistics?.totalCreators || 0 },
-                        { label: "Uploaded songs", value: statsData?.appStatistics?.totalSoundNfts || 0 },
-                        { label: "Purchased songs", value: statsData?.appStatistics?.totalPurchases || 0 },
+                        { label: "Total users", value: appStats?.totalRegisteredUsers ?? 0 }, // Use appStats
+                        { label: "Total creators", value: appStats?.totalCreators ?? 0 }, // Use appStats
+                        { label: "Uploaded songs", value: appStats?.totalSoundNfts ?? 0 }, // Use appStats
+                        { label: "Purchased songs", value: appStats?.totalPurchases ?? 0 }, // Use appStats
                       ].map((stat, index) => {
-                        const totalSum =
-                          (statsData?.appStatistics?.totalRegisteredUsers || 0) +
-                          (statsData?.appStatistics?.totalCreators || 0) +
-                          (statsData?.appStatistics?.totalSoundNfts || 0) +
-                          (statsData?.appStatistics?.totalPurchases || 0);
+                        const totalSum = // Use appStats for calculations
+                          (appStats?.totalRegisteredUsers ?? 0) +
+                          (appStats?.totalCreators ?? 0) +
+                          (appStats?.totalSoundNfts ?? 0) +
+                          (appStats?.totalPurchases ?? 0);
 
-                        const percentage = ((stat.value / (totalSum || 1)) * 100);
+                        const percentage = ((stat.value / (totalSum || 1)) * 100); // Handle potential totalSum=0
 
                         return (
                           <div key={index}>

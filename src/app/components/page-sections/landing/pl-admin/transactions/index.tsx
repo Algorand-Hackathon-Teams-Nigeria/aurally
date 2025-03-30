@@ -22,9 +22,9 @@ import { Button } from "@/app/components/ui/button";
 import AdminSideNav from "@atoms/a-sidebar/admin-sidenav";
 import AdminNav from "@atoms/a-sidebar/admin-nav";
 import { useQuery } from "@apollo/client";
-import { AppStatisticsDocument } from "@/app/services/graphl_generated" // Adjust path as needed
+import { AppStatisticsDocument } from "@/app/services/graphl_generated"; // Adjust path as needed
 import { Skeleton } from "@/app/components/ui/admin-dashoard/skeleton";
-import Image from "next/image";
+import Image from "next/image"; // Ensure Image is imported
 
 // Helper function to calculate percentage change
 const getPercentageChange = (current: number, previous: number): number => {
@@ -33,6 +33,19 @@ const getPercentageChange = (current: number, previous: number): number => {
   }
   return ((current - previous) / previous) * 100;
 };
+
+// Define the reusable Price Icon component as requested (optional, but good practice)
+const PriceIcon = () => (
+  <Image
+    src="/images/price.svg"
+    alt="Price Icon"
+    width={16}
+    height={16}
+    className="ml-2" // Adjusted margin to ml-2 to match the original SVG spacing
+    style={{ pointerEvents: "none" }} // Keep pointer-events none if needed
+  />
+);
+
 
 export default function AdminTransactions() {
   const [openApprovals, setOpenApprovals] = useState(true);
@@ -113,65 +126,66 @@ export default function AdminTransactions() {
                     </div>
                   ))
               : statisticsCards.map((card, index) => (
-                  <div key={index} className="bg-white rounded-lg p-5 shadow-sm">
-                    <div className="mb-4 flex flex-col items-start">
-                      <div
-                        className={`w-8 h-8 rounded-full ${card.bgColor} flex items-center justify-center mb-2`}
-                      >
-                        {/* Render appropriate icon based on card.icon */}
-                        {card.icon === "music" && (
-                          <Image
-                            src="/images/music.svg" // Path relative to the public folder
-                            alt="Music Icon"
-                            width={24} // Adjust the width
-                            height={24} // Adjust the height
-                            style={{ pointerEvents: "none" }}
-                          />
-                        )}
-                        {card.icon === "video" && (
-                          <Image
-                            src="/images/video.svg" // Path relative to the public folder
-                            alt="Video Icon"
-                            width={24} // Adjust the width
-                            height={24} // Adjust the height
-                            style={{ pointerEvents: "none" }}
-                          />
-                        )}
-                        {card.icon === "album" && (
-                          <Image
-                            src="/images/album.svg" // Path relative to the public folder
-                            alt="Album Icon"
-                            width={24} // Adjust the width
-                            height={24} // Adjust the height
-                            style={{ pointerEvents: "none" }}
-                          />
-                        )}
-                        {card.icon === "art" && (
-                          <Image
-                            src="/images/art.svg" // Path relative to the public folder
-                            alt="Art Icon"
-                            width={24} // Adjust the width
-                            height={24} // Adjust the height
-                            style={{ pointerEvents: "none" }}
-                          />
-                        )}
-                      </div>
-                      <span className="text-[#483D3D] font-bold">{card.title}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div className="text-2xl font-bold">{card.value.toLocaleString()}</div>
-                      <div
-                        className={`text-xs px-2 py-1 rounded ${
-                          card.change >= 0
-                            ? "bg-[#f0f5ea] text-[#669f2a]"
-                            : "bg-[#feeceb] text-[#f04438]"
-                        }`}
-                      >
-                        {card.change >= 0 ? "+" : ""}
-                        {card.change.toFixed(1)}%
-                      </div>
-                    </div>
+                <div key={index} className="bg-white rounded-lg p-5 shadow-sm">
+                <div className="mb-4 flex flex-col items-start">
+                  {/* Increased container size w-16 h-16 */}
+                  <div
+                    className={`w-16 h-16 rounded-full flex items-center justify-center mb-2`} // Increased size here
+                  >
+                    {/* Render appropriate icon based on card.icon */}
+                    {card.icon === "music" && (
+                      <Image
+                        src="/images/trans-music.svg"
+                        alt="Music Icon"
+                        width={48} // Increased width
+                        height={48} // Increased height
+                        style={{ pointerEvents: "none" }}
+                      />
+                    )}
+                    {card.icon === "video" && (
+                      <Image
+                        src="/images/trans-video.svg"
+                        alt="Video Icon"
+                        width={48} // Increased width
+                        height={48} // Increased height
+                        style={{ pointerEvents: "none" }}
+                      />
+                    )}
+                    {card.icon === "album" && (
+                      <Image
+                        src="/images/trans-album.svg"
+                        alt="Album Icon"
+                        width={48} // Increased width
+                        height={48} // Increased height
+                        style={{ pointerEvents: "none" }}
+                      />
+                    )}
+                    {card.icon === "art" && (
+                      <Image
+                        src="/images/trans-art.svg"
+                        alt="Art Icon"
+                        width={48} // Increased width
+                        height={48} // Increased height
+                        style={{ pointerEvents: "none" }}
+                      />
+                    )}
                   </div>
+                  <span className="text-[#483D3D] font-bold">{card.title}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="text-2xl font-bold">{card.value.toLocaleString()}</div>
+                  <div
+                    className={`text-xs px-2 py-1 rounded ${
+                      card.change >= 0
+                        ? "bg-[#f0f5ea] text-[#669f2a]"
+                        : "bg-[#feeceb] text-[#f04438]"
+                    }`}
+                  >
+                    {card.change >= 0 ? "+" : ""}
+                    {card.change.toFixed(1)}%
+                  </div>
+                </div>
+              </div>
                 ))}
           </div>
 
@@ -218,6 +232,7 @@ export default function AdminTransactions() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#e2e2e2]">
+                  {/* --- Row 1 --- */}
                   <tr>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-[#007600]">
                       Video
@@ -225,28 +240,7 @@ export default function AdminTransactions() {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-[#1e1e1e]">
                       <div className="flex items-center">
                         30.2
-                        <svg
-                          className="ml-2"
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-                            fill="#e2e2e2"
-                            stroke="#1e1e1e"
-                            strokeWidth="1"
-                          />
-                          <path
-                            d="M7 12L12 7M12 7L17 12M12 7V17"
-                            stroke="#1e1e1e"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
+                        <PriceIcon /> {/* Use the PriceIcon component */}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-[#1e1e1e]">
@@ -259,6 +253,7 @@ export default function AdminTransactions() {
                       </button>
                     </td>
                   </tr>
+                  {/* --- Row 2 --- */}
                   <tr>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-[#cd0e0e]">
                       Sound
@@ -266,28 +261,7 @@ export default function AdminTransactions() {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-[#1e1e1e]">
                       <div className="flex items-center">
                         30.2
-                        <svg
-                          className="ml-2"
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-                            fill="#e2e2e2"
-                            stroke="#1e1e1e"
-                            strokeWidth="1"
-                          />
-                          <path
-                            d="M7 12L12 7M12 7L17 12M12 7V17"
-                            stroke="#1e1e1e"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
+                        <PriceIcon /> {/* Use the PriceIcon component */}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-[#1e1e1e]">
@@ -300,6 +274,7 @@ export default function AdminTransactions() {
                       </button>
                     </td>
                   </tr>
+                  {/* --- Row 3 --- */}
                   <tr>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-[#007600]">
                       Art
@@ -307,28 +282,7 @@ export default function AdminTransactions() {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-[#1e1e1e]">
                       <div className="flex items-center">
                         30.2
-                        <svg
-                          className="ml-2"
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-                            fill="#e2e2e2"
-                            stroke="#1e1e1e"
-                            strokeWidth="1"
-                          />
-                          <path
-                            d="M7 12L12 7M12 7L17 12M12 7V17"
-                            stroke="#1e1e1e"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
+                        <PriceIcon /> {/* Use the PriceIcon component */}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-[#1e1e1e]">
@@ -341,6 +295,7 @@ export default function AdminTransactions() {
                       </button>
                     </td>
                   </tr>
+                  {/* --- Row 4 --- */}
                   <tr>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-[#8a2be2]">
                       Album
@@ -348,28 +303,7 @@ export default function AdminTransactions() {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-[#1e1e1e]">
                       <div className="flex items-center">
                         30.2
-                        <svg
-                          className="ml-2"
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-                            fill="#e2e2e2"
-                            stroke="#1e1e1e"
-                            strokeWidth="1"
-                          />
-                          <path
-                            d="M7 12L12 7M12 7L17 12M12 7V17"
-                            stroke="#1e1e1e"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
+                        <PriceIcon /> {/* Use the PriceIcon component */}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-[#1e1e1e]">
@@ -382,6 +316,7 @@ export default function AdminTransactions() {
                       </button>
                     </td>
                   </tr>
+                  {/* --- Row 5 --- */}
                   <tr>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-[#007600]">
                       Video
@@ -389,28 +324,7 @@ export default function AdminTransactions() {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-[#1e1e1e]">
                       <div className="flex items-center">
                         30.2
-                        <svg
-                          className="ml-2"
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-                            fill="#e2e2e2"
-                            stroke="#1e1e1e"
-                            strokeWidth="1"
-                          />
-                          <path
-                            d="M7 12L12 7M12 7L17 12M12 7V17"
-                            stroke="#1e1e1e"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
+                         <PriceIcon /> {/* Use the PriceIcon component */}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-[#1e1e1e]">
@@ -423,6 +337,7 @@ export default function AdminTransactions() {
                       </button>
                     </td>
                   </tr>
+                  {/* --- Row 6 --- */}
                   <tr>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-[#cd0e0e]">
                       Album
@@ -430,28 +345,7 @@ export default function AdminTransactions() {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-[#1e1e1e]">
                       <div className="flex items-center">
                         30.2
-                        <svg
-                          className="ml-2"
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-                            fill="#e2e2e2"
-                            stroke="#1e1e1e"
-                            strokeWidth="1"
-                          />
-                          <path
-                            d="M7 12L12 7M12 7L17 12M12 7V17"
-                            stroke="#1e1e1e"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
+                        <PriceIcon /> {/* Use the PriceIcon component */}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-[#1e1e1e]">

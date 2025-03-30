@@ -16,9 +16,91 @@ import NFTMarketplace from "@page-sections/landing/pl-admin/approvals/music/pend
 import ApprovedNFTMarketplace from "@page-sections/landing/pl-admin/approvals/music/approved"
 import DisapprovedNFTMarketplace from "@page-sections/landing/pl-admin/approvals/music/disapproved"
 import Modal from "@/app/components/ui/modal" // Import the Modal component
+import Image from "next/image";
 
 // Define a type for selectedPage
 type PageType = "pending" | "all" | "approved" | "disapproved" | null
+
+// Define the NFT data type
+interface NFT {
+  creator: string;
+  nftName: string;
+  supply: string;
+  description: string;
+  price: string;
+  status: "Pending Approval" | "Approved" | "Disapproved" | "Video conversion pending" | "Video conversion complete";
+  note?: string; // Optional note property
+}
+
+const initialNftData: NFT[] = [
+  {
+    creator: "Eleanor Pena",
+    nftName: "Space Artist",
+    supply: "1,000,000",
+    description: "A music artist nft crea...",
+    price: "8,000",
+    status: "Pending Approval",
+  },
+  {
+    creator: "Eleanor Pena",
+    nftName: "Space Artist",
+    supply: "1,000,000",
+    description: "A music artist nft crea...",
+    price: "Free",
+    status: "Approved",
+    note: "Video conversion pending",
+  },
+  {
+    creator: "Eleanor Pena",
+    nftName: "Space Artist",
+    supply: "1,000,000",
+    description: "A music artist nft crea...",
+    price: "8,000",
+    status: "Disapproved",
+  },
+  {
+    creator: "Eleanor Pena",
+    nftName: "Space Artist",
+    supply: "1,000,000",
+    description: "A music artist nft crea...",
+    price: "8,000",
+    status: "Approved",
+    note: "Video conversion complete",
+  },
+  {
+    creator: "Eleanor Pena",
+    nftName: "Space Artist",
+    supply: "1,000,000",
+    description: "A music artist nft crea...",
+    price: "Free",
+    status: "Pending Approval",
+  },
+  {
+    creator: "Eleanor Pena",
+    nftName: "Space Artist",
+    supply: "1,000,000",
+    description: "A music artist nft crea...",
+    price: "8,000",
+    status: "Pending Approval",
+  },
+  {
+    creator: "Eleanor Pena",
+    nftName: "Space Artist",
+    supply: "1,000,000",
+    description: "A music artist nft crea...",
+    price: "8,000",
+    status: "Disapproved",
+  },
+  {
+    creator: "Eleanor Pena",
+    nftName: "Space Artist",
+    supply: "1,000,000",
+    description: "A music artist nft crea...",
+    price: "8,000",
+    status: "Pending Approval",
+  },
+];
+
 
 export default function Video() {
   const [collapsed, setCollapsed] = useState(false)
@@ -26,6 +108,8 @@ export default function Video() {
   const [isPendingModalOpen, setIsPendingModalOpen] = useState(false)
   const [isApprovedModalOpen, setIsApprovedModalOpen] = useState(false)
   const [isDisapprovedModalOpen, setIsDisapprovedModalOpen] = useState(false)
+  const [nftData, setNftData] = useState<NFT[]>(initialNftData); // NFT Data state
+
 
   const toggleSidebar = () => {
     setCollapsed((prev) => !prev)
@@ -56,6 +140,20 @@ export default function Video() {
   const closePendingModal = () => setIsPendingModalOpen(false)
   const closeApprovedModal = () => setIsApprovedModalOpen(false)
   const closeDisapprovedModal = () => setIsDisapprovedModalOpen(false)
+
+
+  const handleApprove = (index: number) => {
+    const updatedNftData = [...nftData];
+    updatedNftData[index].status = "Approved";
+    setNftData(updatedNftData);
+  };
+
+  const handleDisapprove = (index: number) => {
+    const updatedNftData = [...nftData];
+    updatedNftData[index].status = "Disapproved";
+    setNftData(updatedNftData);
+  };
+
 
   return (
     <div className="flex h-screen bg-white relative">
@@ -177,46 +275,24 @@ export default function Video() {
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             <div className="flex items-center">
                               {nft.price}
-                              <svg
-                                className="ml-1 h-4 w-4"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-                                  stroke="black"
-                                  strokeWidth="2"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                                <path
-                                  d="M17 12L12 7L7 12"
-                                  stroke="black"
-                                  strokeWidth="2"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                                <path
-                                  d="M12 17V7"
-                                  stroke="black"
-                                  strokeWidth="2"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                              </svg>
+                              <Image
+                                src="/images/price.svg"
+                                alt="Price Icon"
+                                width={16}
+                                height={16}
+                                className="ml-1"
+                              />
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="flex flex-col">
                               <span
-                                className={`inline-flex text-sm ${
-                                  nft.status === "Approved"
+                                className={`inline-flex text-sm ${nft.status === "Approved" || nft.status === "Video conversion complete"
                                     ? "text-green-600"
                                     : nft.status === "Disapproved"
                                       ? "text-red-600"
                                       : "text-gray-600"
-                                }`}
+                                  }`}
                               >
                                 {nft.status}
                               </span>
@@ -229,12 +305,12 @@ export default function Video() {
                                 <MoreVertical className="h-5 w-5 text-[#aaaaaa]" />
                               </DropdownMenuTrigger>
                               <DropdownMenuContent align="end">
-                                <DropdownMenuItem className="flex items-center gap-2 text-[#007600] cursor-pointer">
-                                  <Check className="h-4 w-4" />
+                                <DropdownMenuItem className="flex items-center gap-2 text-[#007600] cursor-pointer" onClick={() => handleApprove(index)}>
+                                  <Image src="/images/approved-sign.svg" alt="Approve" width={16} height={16} />
                                   <span>Approve</span>
                                 </DropdownMenuItem>
-                                <DropdownMenuItem className="flex items-center gap-2 text-[#d90429] cursor-pointer">
-                                  <X className="h-4 w-4" />
+                                <DropdownMenuItem className="flex items-center gap-2 text-[#d90429] cursor-pointer" onClick={() => handleDisapprove(index)}>
+                                  <Image src="/images/disapproved-sign.svg" alt="Disapprove" width={16} height={16} />
                                   <span>Disapprove</span>
                                 </DropdownMenuItem>
                               </DropdownMenuContent>
@@ -263,73 +339,3 @@ export default function Video() {
     </div>
   )
 }
-
-const nftData = [
-  {
-    creator: "Eleanor Pena",
-    nftName: "Space Artist",
-    supply: "1,000,000",
-    description: "A music artist nft crea...",
-    price: "8,000",
-    status: "Pending Approval",
-  },
-  {
-    creator: "Eleanor Pena",
-    nftName: "Space Artist",
-    supply: "1,000,000",
-    description: "A music artist nft crea...",
-    price: "Free",
-    status: "Approved",
-    note: "Video conversion pending",
-  },
-  {
-    creator: "Eleanor Pena",
-    nftName: "Space Artist",
-    supply: "1,000,000",
-    description: "A music artist nft crea...",
-    price: "8,000",
-    status: "Disapproved",
-  },
-  {
-    creator: "Eleanor Pena",
-    nftName: "Space Artist",
-    supply: "1,000,000",
-    description: "A music artist nft crea...",
-    price: "8,000",
-    status: "Approved",
-    note: "Video conversion complete",
-  },
-  {
-    creator: "Eleanor Pena",
-    nftName: "Space Artist",
-    supply: "1,000,000",
-    description: "A music artist nft crea...",
-    price: "Free",
-    status: "Pending Approval",
-  },
-  {
-    creator: "Eleanor Pena",
-    nftName: "Space Artist",
-    supply: "1,000,000",
-    description: "A music artist nft crea...",
-    price: "8,000",
-    status: "Pending Approval",
-  },
-  {
-    creator: "Eleanor Pena",
-    nftName: "Space Artist",
-    supply: "1,000,000",
-    description: "A music artist nft crea...",
-    price: "8,000",
-    status: "Disapproved",
-  },
-  {
-    creator: "Eleanor Pena",
-    nftName: "Space Artist",
-    supply: "1,000,000",
-    description: "A music artist nft crea...",
-    price: "8,000",
-    status: "Pending Approval",
-  },
-]
-

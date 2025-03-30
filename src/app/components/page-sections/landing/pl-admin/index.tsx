@@ -1,68 +1,65 @@
 "use client";
-import type React from "react";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { gql, useMutation } from "@apollo/client";
 import Link from "next/link";
 import { Input } from "@/app/components/ui/input";
 import { Button } from "@/app/components/ui/button";
 import { Label } from "@/app/components/ui/label";
 import { BigLogo } from "@atoms/a-big-logo";
+import Cookies from 'js-cookie';
+
+// GraphQL Login Mutation
+const LOGIN_MUTATION = gql`
+  mutation StaffSignIn($email: String!, $password: String!) {
+    staffSignIn(input: { email: $email, password: $password }) {
+      token
+    }
+  }
+`;
 
 export default function AdminLogin() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(""); // State for error message
+  const [error, setError] = useState("");
 
-  // Basic email validation regex (same as in Settings.tsx)
-  const isValidEmail = (email: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
+  // Apollo useMutation hook
+  const [staffSignIn, { loading }] = useMutation(LOGIN_MUTATION, {
+    onCompleted: (data) => {
+      console.log("onCompleted called!", data);
+      if (data?.staffSignIn?.token) {
+        console.log("Token received:", data.staffSignIn.token);
+        Cookies.set('token', data.staffSignIn.token, { path: '/admin' });
+        router.push("/admin/dashboard");
+      } else {
+        console.log("No token received in onCompleted:", data);
+      }
+    },
+    onError: (err) => {
+      setError("Login failed. Check your credentials.");
+      console.error("Login error:", err);
+    },
+  });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault(); // Prevent default form submission
 
-    // Basic validation: Check if fields are filled
+  
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     if (!email || !password) {
       setError("Please fill in all fields.");
       return;
     }
+    setError("");
 
-    // Email validation
-    if (!isValidEmail(email)) {
-      setError("Please enter a valid email address.");
-      return;
-    }
-
-    setError(""); // Clear any previous error
-
-    // Simulate login submission (replace with actual API call)
-    console.log("Login submitted:", { email, password });
-    // In a real application, you would make an API call here to authenticate the admin.
-    // Example:
-    // fetch('/api/admin/login', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({ email, password }),
-    // })
-    // .then(response => {
-    //   if (response.ok) {
-    //     // Login successful, redirect or set authentication state
-    //   } else {
-    //     // Login failed, handle error (e.g., display error message from server)
-    //     setError("Invalid email or password."); // Example server-side error
-    //   }
-    // })
-    // .catch(error => {
-    //   setError("An error occurred during login."); // Network or other error
-    // });
+    staffSignIn({ variables: { email, password } });
   };
 
-  return (
-    <div
-      className="min-h-screen flex flex-col bg-gradient-to-br from-[#ebebeb] to-[#f0e6ff] bg-cover bg-center"
 
-    >
+
+  return (
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-[#ebebeb] to-[#f0e6ff] bg-cover bg-center">
       <div className="flex-1 flex flex-col items-center justify-center p-4 mt-[100px]">
         <div className="w-full max-w-md mb-8">
           <div className="flex justify-center">
@@ -82,39 +79,33 @@ export default function AdminLogin() {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-[#0a0212]">
-                Email address<span className="text-[#8a2be2]">*</span>
-              </Label>
+              <Label htmlFor="email" className="text-[#0a0212]">Email Address</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="e.g john@gmail.com"
+                placeholder="e.g. admin@gmail.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="border-[#d7d7d7] h-12 rounded text-[#0a0212]"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-[#0a0212]">
-                Password<span className="text-[#8a2be2]">*</span>
-              </Label>
+              <Label htmlFor="password" className="text-[#0a0212]">Password</Label>
               <Input
                 id="password"
                 type="password"
-                placeholder="@tyr$#wti"
+                placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="border-[#d7d7d7] h-12 rounded text-[#0a0212]"
               />
             </div>
 
-            {error && <p className="text-red-500 text-sm mt-1">{error}</p>} {/* Error message display */}
+            {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
 
-            <Button type="submit" className="w-full h-12 bg-[#8a2be2] hover:bg-[#7424c1] text-white font-medium">
-              Login
+            <Button type="submit" className="w-full h-12 bg-[#8a2be2] hover:bg-[#7424c1]" disabled={loading}>
+              {loading ? "Logging in..." : "Login"}
             </Button>
           </form>
 
@@ -145,16 +136,13 @@ export default function AdminLogin() {
           </div>
         </div>
       </footer>
+
     </div>
   );
 }
 
 function AurallyLogo() {
   return (
-    <BigLogo
-      to="/admin"
-      className="w-88 h-28 xl:w-80 xl:h-48 2xl:w-64 2xl:h-64 lg:translate-y-[50px]"
-      color="#8a2be2"
-    />
+    <BigLogo to="/admin" className="w-88 h-28 xl:w-80 xl:h-48 2xl:w-64 2xl:h-64 lg:translate-y-[50px]" color="#8a2be2" />
   );
 }

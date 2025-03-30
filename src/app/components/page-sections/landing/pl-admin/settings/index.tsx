@@ -2,13 +2,14 @@
 import { Bell, ChevronDown, LayoutGrid, MoreVertical, Search, Settings as LucideSettings, Users, Plus } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/app/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/app/components/ui/admin-dashoard/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/app/components/ui/admin-dashoard/dropdown-menu" // Ensure this path is correct
 import { Input } from "@/app/components/ui/input"
-import AdminSideNav from "@atoms/a-sidebar/admin-sidenav";
-import AdminNav from "@atoms/a-sidebar/admin-nav";
+import AdminSideNav from "@atoms/a-sidebar/admin-sidenav"; // Ensure this path is correct
+import AdminNav from "@atoms/a-sidebar/admin-nav"; // Ensure this path is correct
 import { useState } from "react"
 import Modal from "@/app/components/ui/settings-modal"; // Import the Modal component
-import SuccessModal from "@/app/components/ui/success-modal";
+import SuccessModal from "@/app/components/ui/success-modal"; // Import the SuccessModal component
+import Image from "next/image";
 
 export default function Settings() {
   const [collapsed, setCollapsed] = useState(false);
@@ -19,37 +20,51 @@ export default function Settings() {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [error, setError] = useState("");
 
+  // --- User Data (Example - Replace with actual data fetching/state) ---
+  // In a real app, this data would likely come from an API or state management
+  const [users, setUsers] = useState([
+    { id: 1, fullname: 'Eleanor Pena', phone: '08178230133', email: 'eleanorpena@gmail.com', status: 'Active' },
+    { id: 2, fullname: 'BillsOnMe', phone: '08178230133', email: 'billsonme@example.com', status: 'Disabled' },
+    { id: 3, fullname: 'Ade ayah', phone: '08178230133', email: 'adeayah@example.com', status: 'Active' },
+    { id: 4, fullname: 'Roya Aledei', phone: '08178230133', email: 'royaaledei@example.com', status: 'Active' },
+  ]);
+  // ---------------------------------------------------------------------
+
+
   const toggleSidebar = () => {
     setCollapsed((prev) => !prev);
   };
 
-  // Basic email validation regex
   const isValidEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
   const handleAddUserSubmit = () => {
-    // Basic validation: Check if fields are filled
     if (!firstName || !lastName || !email) {
       setError("Please fill in all fields.");
       return;
     }
-
-    // Email validation
     if (!isValidEmail(email)) {
       setError("Please enter a valid email address.");
       return;
     }
+    setError("");
 
-    setError(""); // Clear any previous error
+    // --- Simulate adding a user (Update state) ---
+    const newUser = {
+      id: Date.now(), // Simple unique ID generation
+      fullname: `${firstName} ${lastName}`,
+      phone: 'N/A', // Add phone input if needed
+      email: email,
+      status: 'Active' // Default new users to Active
+    };
+    setUsers(prevUsers => [...prevUsers, newUser]);
+    // ---------------------------------------------
 
-    // Simulate adding a user
     console.log("Adding user:", { firstName, lastName, email });
-
     setShowModal(false);
     setShowSuccessModal(true);
-
     setFirstName("");
     setLastName("");
     setEmail("");
@@ -64,19 +79,39 @@ export default function Settings() {
     setShowModal(true);
   };
 
-  const handleDoneAddingUsers = () => {
-    setShowSuccessModal(false);
+  // --- Functions to handle Enable/Disable (Example) ---
+  const handleEnableUser = (userId: number) => {
+    setUsers(prevUsers =>
+      prevUsers.map(user =>
+        user.id === userId ? { ...user, status: 'Active' } : user
+      )
+    );
+    console.log(`Enabling user with ID: ${userId}`);
+    // Add API call here in a real app
   };
+
+  const handleDisableUser = (userId: number) => {
+     setUsers(prevUsers =>
+      prevUsers.map(user =>
+        user.id === userId ? { ...user, status: 'Disabled' } : user
+      )
+    );
+    console.log(`Disabling user with ID: ${userId}`);
+    // Add API call here in a real app
+  };
+  // ----------------------------------------------------
+
+
   return (
     <div className="min-h-screen flex bg-[#f0f0f0]">
 
-       {/* Sidebar */}
-            <AdminSideNav collapsed={collapsed} toggleSidebar={toggleSidebar} />
+      {/* Sidebar */}
+      <AdminSideNav collapsed={collapsed} toggleSidebar={toggleSidebar} />
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden z-20">
         {/* Header */}
-               <AdminNav />
+        <AdminNav />
 
         {/* Content */}
         <main className="flex-1 p-6">
@@ -84,9 +119,9 @@ export default function Settings() {
             <div className="flex items-center justify-between p-6 border-b border-[#e9e9e9]">
               <h1 className="text-xl font-semibold text-[#483D3D]">Admins</h1>
               <Button onClick={() => setShowModal(true)} className="bg-[#8a2be2] hover:bg-[#7a1bd2] text-white">
-              <Plus size={16} className="mr-2" />
-              Add New User
-            </Button>
+                <Plus size={16} className="mr-2" />
+                Add New User
+              </Button>
             </div>
 
             {/* Table */}
@@ -102,126 +137,57 @@ export default function Settings() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#e9e9e9]">
-                  <tr>
-                    <td className="px-6 py-4 whitespace-nowrap">Eleanor Pena</td>
-                    <td className="px-6 py-4 whitespace-nowrap">08178230133</td>
-                    <td className="px-6 py-4 whitespace-nowrap">eleanorpena@gmail.com</td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <span className="h-2 w-2 bg-[#007600] rounded-full mr-2"></span>
-                        <span className="text-[#007600]">Active</span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon">
-                            <MoreVertical className="h-5 w-5" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem>
-                            <span className="flex items-center">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="mr-2 h-4 w-4 text-[#007600]"
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              >
-                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                                <polyline points="22 4 12 14.01 9 11.01" />
-                              </svg>
-                              Enable user
-                            </span>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem>
-                            <span className="flex items-center">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="mr-2 h-4 w-4 text-[#d90429]"
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              >
-                                <circle cx="12" cy="12" r="10" />
-                                <line x1="15" y1="9" x2="9" y2="15" />
-                                <line x1="9" y1="9" x2="15" y2="15" />
-                              </svg>
-                              Disable user
-                            </span>
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="px-6 py-4 whitespace-nowrap">BillsOnMe</td>
-                    <td className="px-6 py-4 whitespace-nowrap">08178230133</td>
-                    <td className="px-6 py-4 whitespace-nowrap">eleanorpena@gmail.com</td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <span className="h-2 w-2 bg-[#d90429] rounded-full mr-2"></span>
-                        <span className="text-[#d90429]">Disabled</span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <Button variant="ghost" size="icon">
-                        <MoreVertical className="h-5 w-5" />
-                      </Button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="px-6 py-4 whitespace-nowrap">Ade ayah</td>
-                    <td className="px-6 py-4 whitespace-nowrap">08178230133</td>
-                    <td className="px-6 py-4 whitespace-nowrap">eleanorpena@gmail.com</td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <span className="h-2 w-2 bg-[#007600] rounded-full mr-2"></span>
-                        <span className="text-[#007600]">Active</span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <Button variant="ghost" size="icon">
-                        <MoreVertical className="h-5 w-5" />
-                      </Button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="px-6 py-4 whitespace-nowrap">Roya Aledei</td>
-                    <td className="px-6 py-4 whitespace-nowrap">08178230133</td>
-                    <td className="px-6 py-4 whitespace-nowrap">eleanorpena@gmail.com</td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <span className="h-2 w-2 bg-[#007600] rounded-full mr-2"></span>
-                        <span className="text-[#007600]">Active</span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <Button variant="ghost" size="icon">
-                        <MoreVertical className="h-5 w-5" />
-                      </Button>
-                    </td>
-                  </tr>
+                  {/* Map over user data to generate rows */}
+                  {users.map((user) => (
+                    <tr key={user.id}>
+                      <td className="px-6 py-4 whitespace-nowrap">{user.fullname}</td>
+                      <td className="px-6 py-4 whitespace-nowrap">{user.phone}</td>
+                      <td className="px-6 py-4 whitespace-nowrap">{user.email}</td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center">
+                          <span className={`h-2 w-2 ${user.status === 'Active' ? 'bg-[#007600]' : 'bg-[#d90429]'} rounded-full mr-2`}></span>
+                          <span className={`${user.status === 'Active' ? 'text-[#007600]' : 'text-[#d90429]'}`}>{user.status}</span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        {/* Action Dropdown Menu for EVERY row */}
+                        <DropdownMenu>
+                          <DropdownMenuTrigger className="focus:outline-none p-1 rounded hover:bg-gray-100"> {/* Added padding/hover for better click area */}
+                            <MoreVertical className="h-5 w-5 text-[#aaaaaa]" />
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-[#007600] cursor-pointer"
+                              onClick={() => handleEnableUser(user.id)} // Add onClick handler
+                              disabled={user.status === 'Active'} // Optionally disable if already active
+                            >
+                              <Image src="/images/approved-sign.svg" alt="Enable" width={16} height={16} />
+                              <span>Enable user</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-[#d90429] cursor-pointer"
+                              onClick={() => handleDisableUser(user.id)} // Add onClick handler
+                              disabled={user.status === 'Disabled'} // Optionally disable if already disabled
+                            >
+                              <Image src="/images/disapproved-sign.svg" alt="Disable" width={16} height={16} />
+                              <span>Disable user</span>
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
           </div>
         </main>
       </div>
-       {/* "Add New User" Modal */}
-       <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-        <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6 text-black">
+
+      {/* "Add New User" Modal */}
+      <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+         {/* ... (Modal content remains the same) ... */}
+         <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6 text-black">
           <h2 className="text-xl font-bold mb-6">Add New User</h2>
 
           <div className="space-y-4">
@@ -238,7 +204,7 @@ export default function Settings() {
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Last name</label>
               <Input
-                placeholder="eg. john"
+                placeholder="eg. doe" // Corrected placeholder
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 className="w-full"
@@ -268,14 +234,13 @@ export default function Settings() {
         </div>
       </Modal>
 
-
       {/* Success Modal */}
       <SuccessModal
         isOpen={showSuccessModal}
-        onClose={handleCloseSuccessModal}
+        onClose={handleCloseSuccessModal} // Changed to use the correct close handler
         onAddAnother={handleAddAnotherUser}
+      
       />
     </div>
-
   )
 }
