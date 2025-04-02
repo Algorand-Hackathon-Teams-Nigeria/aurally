@@ -241,7 +241,7 @@ export default function Dashboard() {
               <div className="bg-white rounded-lg p-5 shadow-sm mb-6 2xl:mt-[70px] lg:mt-[30px]">
 
                 <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-lg font-medium">Overview</h2>
+                  <h2 className="text-lg font-medium">Overview Chart</h2>
                   <div className="flex space-x-2">
                     {Object.keys(TIME_PERIODS).map((period) => (
                       <Button
