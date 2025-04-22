@@ -27,3 +27,20 @@ export const { getClient } = registerApolloClient(() => {
 // });
 
 // export default client;
+
+
+
+
+//Connecting directly yo localhost
+// import { ApolloClient, InMemoryCache, HttpLink } from "@apollo/client";
+
+// const client = new ApolloClient({
+//   link: new HttpLink({
+//     uri: "http://localhost:8000/graphql", // Directly pointing to localhost
+//     credentials: "include", // Ensures cookies and authentication work
+//   }),
+//   cache: new InMemoryCache(),
+// });
+
+// export default client;
+

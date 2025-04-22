@@ -14,7 +14,7 @@ const Layout: React.FC<Props> = ({ children }) => {
       <div className="relative overflow-hidden font-space bg-dark01">
         <div className="min-h-screen">{children}</div>
       </div>
-    // </ApolloProvider>
+    //  </ApolloProvider>
   );
 };
 

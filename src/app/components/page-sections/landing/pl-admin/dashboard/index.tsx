@@ -2,7 +2,7 @@
 import { Bell, ChevronDown, LayoutGrid, Settings, Users, FileText, BarChart3 } from "lucide-react"
 import { Input } from "@/app/components/ui/input"
 import { Button } from "@/app/components/ui/button"
-import { useAppStatisticsQuery, useRevenueOverTimeQuery, useUserStatisticsQuery } from "@/app/services/graphl_generated"
+import { useAppStatisticsQuery, useRevenueOverTimeQuery } from "@/app/services/graphl_generated"
 import { useState } from "react"
 import { format } from "date-fns"
 import { Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ComposedChart, Area } from "recharts"
@@ -43,7 +43,7 @@ export default function Dashboard() {
   })
 
   // Fetch user statistics
-  const { data: userStatsData, loading: userStatsLoading } = useUserStatisticsQuery()
+  const { data: userStatsData, loading: userStatsLoading } = useAppStatisticsQuery()
 
   // Format revenue data for the chart
   const chartData =
@@ -58,16 +58,17 @@ export default function Dashboard() {
     return ((current - previous) / previous) * 100
   }
 
-  // Using optional chaining and nullish coalescing for safer access
   const appStats = statsData?.appStatistics;
+
+  // --- MODIFIED THIS OBJECT ONLY for totalRevenue and newUsers ---
   const stats = {
-    totalRevenue: 0, // Still 0 as no direct data
+    totalRevenue: appStats?.totalRevenue ?? 0,          // <-- USE FETCHED DATA
     totalUsers: appStats?.totalRegisteredUsers ?? 0,
     uploadedSongs: appStats?.totalSoundNfts ?? 0,
     purchasedSongs: appStats?.totalPurchases ?? 0,
-    newUsers: 0, // Still 0 as no direct data
+    newUsers: appStats?.newUsersToday ?? 0,              // <-- USE FETCHED DATA
     creators: appStats?.totalCreators ?? 0,
-    // Note: Previous values are still hardcoded as 0. You'll need historical data for these.
+    // Previous values remain hardcoded (Untouched)
     previousTotalRevenue: 0,
     previousTotalUsers: 0,
     previousUploadedSongs: 0,
@@ -75,6 +76,7 @@ export default function Dashboard() {
     previousNewUsers: 0,
     previousCreators: 0,
   };
+  // ---- END MODIFICATION ----
 
 
   // Statistics cards data
@@ -201,7 +203,7 @@ export default function Dashboard() {
                     .fill(0)
                     .map((_, i) => (
                       <div key={i + 3} className="bg-white rounded-lg p-5 shadow-sm">
-                         {/* Make Skeleton match the larger size */}
+                        {/* Make Skeleton match the larger size */}
                         <Skeleton className="h-16 w-16 rounded-full mb-4" />
                         <Skeleton className="h-6 w-24 mb-2" />
                         <Skeleton className="h-8 w-32" />
@@ -213,12 +215,12 @@ export default function Dashboard() {
                         {/* Increased container size w-16 h-16 and added bgColor */}
                         <div className={`w-16 h-16  flex items-center justify-center mb-2`}>
                           <Image
-                              src={card.imageSrc} // Use imageSrc from card data
-                              alt={`${card.title} Icon`}
-                              width={48} // Increased width
-                              height={48} // Increased height
-                              style={{ pointerEvents: "none" }}
-                            />
+                            src={card.imageSrc} // Use imageSrc from card data
+                            alt={`${card.title} Icon`}
+                            width={48} // Increased width
+                            height={48} // Increased height
+                            style={{ pointerEvents: "none" }}
+                          />
                         </div>
                         <span className="text-[#483D3D] font-bold">{card.title}</span>
                       </div>

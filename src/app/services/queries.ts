@@ -29,18 +29,29 @@ export const APP_STATISTICS = gql`
       totalRegisteredUsers
       totalSoundNfts
       totalCreators
+      totalRevenue
+      newUsersToday
     }
   }
 `;
 
-export const GET_USERS = gql`
-  query GetUsers {
-    users {
-      id
-      username
-      walletAddress
-      purchasedSongs
-      dateJoined
+export const REVENUE_OVER_TIME = gql`
+  query RevenueOverTime($days: Int!) { # Query name for frontend use
+    revenueOverTime(days: $days) {     # Field name matching backend @strawberry.field
+      date                             # Fields matching RevenueDataPoint type
+      amount
     }
   }
 `;
+
+// export const GET_USERS = gql`
+//   query GetUsers {
+//     users {
+//       id
+//       username
+//       walletAddress
+//       purchasedSongs
+//       dateJoined
+//     }
+//   }
+// `;
