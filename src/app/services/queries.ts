@@ -44,6 +44,12 @@ export const REVENUE_OVER_TIME = gql`
   }
 `;
 
+export const SIGN_OUT = gql`
+  mutation SignOut {
+    signOut
+  }
+`;
+
 // export const GET_USERS = gql`
 //   query GetUsers {
 //     users {
