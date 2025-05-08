@@ -15,7 +15,7 @@ import { ApolloClient, InMemoryCache, HttpLink } from "@apollo/client";
 
 const client = new ApolloClient({
   link: new HttpLink({
-    uri: "https://devapi.aurally.xyz/graphql",
+    uri: "https://xyzapiroute.aurally.xyz/graphql",
     credentials: "include",
   }),
   cache: new InMemoryCache(),
