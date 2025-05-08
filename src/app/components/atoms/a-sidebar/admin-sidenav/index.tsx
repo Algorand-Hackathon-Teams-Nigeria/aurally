@@ -83,13 +83,13 @@ const AdminSideNav: React.FC<AdminSideNavProps> = ({ collapsed, toggleSidebar })
                         >
                             {isSidebarExpanded ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
                         </button>
-                        <button
+                        {/* <button
                             onClick={() => setIsPinned(!isPinned)}
                             className="bg-white border border-gray-300 rounded-full shadow w-8 h-8 flex items-center justify-center"
                             title={isPinned ? "Unpin Sidebar" : "Pin Sidebar"}
                         >
                             {isPinned ? <PinOff size={16} /> : <Pin size={16} />}
-                        </button>
+                        </button> */}
                     </div>
                 </div>
 
